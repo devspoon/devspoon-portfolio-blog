@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 
     'users',
     'blog',
-    
+
     'anymail',
 
     'imagekit',
@@ -168,3 +168,4 @@ MESSAGE_TAGS = {
 #Django Session Timeout Code
 SESSION_COOKIE_AGE = 1200 # second
 SESSION_SAVE_EVERY_REQUEST = True
+
