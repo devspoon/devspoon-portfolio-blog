@@ -1,0 +1,557 @@
+<!doctype html>
+<html class="no-js" lang="ko">
+
+<head>
+	<meta charset="utf-8">
+
+	<!--====== Title ======-->
+	<title>ClassiList Classified Ads Template</title>
+
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!--====== Favicon Icon ======-->
+	<link rel="shortcut icon" href="assets/images/favicon.png" type="image/png">
+
+	<!--====== Animate CSS ======-->
+	<link rel="stylesheet" href="assets/vendors/animate/animate-4.1.0.min.css">
+
+	<!--====== Tiny-slider slider CSS ======-->
+	<link rel="stylesheet" href="assets/vendors/slider/tiny-slider/tiny-slider-2.9.3.css">
+
+    <!--====== Aos slider CSS ======-->
+	<!-- <link rel="stylesheet" href="assets/vendors/slider/aos/aos-180708.css"> -->
+
+  	<!--====== glightbox CSS ======-->
+	<link rel="stylesheet" href="assets/vendors/litebox/css/glightbox-3.1.0.min.css">
+
+	<!--====== Selectr CSS ======-->
+	<link rel="stylesheet" href="assets/vendors/selectr/selectr.css">
+
+	<!--====== Nouislider CSS ======-->
+	<link rel="stylesheet" href="assets/vendors/nouislider/css/nouislider-15.5.1.css">
+
+	<!--====== Bootstrap CSS ======-->
+	<link rel="stylesheet" href="assets/vendors/bootstrap/bootstrap-5.1.3.min.css">
+
+    <!--====== Lineicons icons CSS ======-->
+	<link rel="stylesheet" href="assets/vendors/icons/Lineicons/Lineicons-3.0.css">
+
+    <!--====== Ionicframework icons CSS ======-->
+    <!--<link rel="stylesheet" href="assets/vendors/icons/ionicons/ionicons-2.0.0.min.css">-->
+
+    <!--====== Icofont CSS icons ======-->
+    <link rel="stylesheet" href="assets/vendors/icons/icofont/icofont-1.0.1.min.css">
+
+    <!--====== Floaticon CSS icons ======-->
+    <link rel="stylesheet" href="assets/vendors/icons/floaticon/flaticon.css">
+
+    
+    <!--====== simple-line-icons icons CSS ======-->
+    <!--<link rel="stylesheet" href="assets/vendors/icons/simple-line-icons/simple-line-icons-2.4.0.css">-->
+
+	<!--====== Style CSS ======-->
+	<link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+
+<body>
+	<!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
+
+	<!--====== PRELOADER PART START ======-->
+
+	<div class="preloader">
+		<div class="loader">
+			<div class="ytp-spinner">
+				<div class="ytp-spinner-container">
+					<div class="ytp-spinner-rotator">
+						<div class="ytp-spinner-left">
+							<div class="ytp-spinner-circle"></div>
+						</div>
+						<div class="ytp-spinner-right">
+							<div class="ytp-spinner-circle"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--====== PRELOADER PART ENDS ======-->
+
+     <!--offcanvas menu area start-->
+     <div class="body_overlay">
+
+    </div>
+    <div class="offcanvas_menu">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="offcanvas_menu_wrapper">
+                        <div class="canvas_close">
+                            <a href="#" onclick="return false;"><i class="ion-android-close"></i></a>
+                        </div>
+                        <div class="header_contact_info">
+                            <ul class="d-flex">
+                                <li class="text-white"> <i class="lni lni-phone"></i> <a href="tel:+05483716566">+054
+                                        8371 65 66</a></li>
+                                <li class="text-white"> <i class="icofont-ui-email"></i> <a href="#" onclick="return false;">uthrstore@domain.com</a></li>
+                            </ul>
+                        </div>
+                        <div class="header_social d-flex">
+                            <span>Follow us</span>
+                            <ul class="d-flex">
+                                <li><a href="#" onclick="return false;"><i class="lni lni-twitter"></i></a></li>
+                                <li><a href="#" onclick="return false;"><i class="lni lni-facebook"></i></a></li>
+                                <li><a href="#" onclick="return false;"><i class="lni lni-instagram"></i></a></li>
+                                <li><a href="#" onclick="return false;"><i class="lni lni-youtube"></i></a></li>
+                                <li><a href="#" onclick="return false;"><i class="lni lni-pinterest"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="language_currency">
+                            <ul class="d-flex">
+                                <li class="language"><a href="#" onclick="return false;"> Eng <i class="icon-right ion-ios-arrow-down"></i></a>
+                                    <ul class="dropdown_language">
+                                        <li><a href="#" onclick="return false;">French</a></li>
+                                        <li><a href="#" onclick="return false;">Spanish</a></li>
+                                        <li><a href="#" onclick="return false;">Russian</a></li>
+                                    </ul>
+                                </li>
+                                <li class="currency"><a href="#" onclick="return false;"> USd <i class="icon-right ion-ios-arrow-down"></i></a>
+                                    <ul class="dropdown_currency">
+                                        <li><a href="#" onclick="return false;">€ Euro</a></li>
+                                        <li><a href="#" onclick="return false;">£ Pound Sterling</a></li>
+                                        <li><a href="#" onclick="return false;">$ US Dollar</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="menu" class="sub-menu-bar text-left ">
+                            <ul class="offcanvas_main_menu navbar-nav">
+                                <li class="menu-item-has-children nav-item ">
+                                    <a class="page-scroll dd-menu collapsed" href="#" onclick="return false;"
+                                        data-bs-toggle="collapse" data-bs-target="#submenu-1-1"
+                                        aria-controls="navbarSupportedContent" aria-expanded="false"
+                                        aria-label="Toggle navigation">Home<i class="icofont-rounded-down"></i></a>                                       
+                                    <ul class="sub-menu collapse" id="submenu-1-1">
+                                        <li class="nav-item "><a href="index.html">Home Default1</a></li>
+                                        <li class="nav-item "><a href="index.html">Home Default2</a></li>
+                                        <li class="nav-item "><a href="index.html">Home Default3</a></li>
+                                        <li class="nav-item "><a href="index.html">Home Default4</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children nav-item">
+                                    <a href="shop.html">Shop</a>
+                                </li>
+                                <li class="menu-item-has-children nav-item">
+                                    <a href="product-details.html"> Product Details</a>
+                                </li>
+                                <li class="menu-item-has-children nav-item">
+                                    <a href="#" onclick="return false;">sale</a>
+                                </li>
+                                <li class="menu-item-has-children nav-item">
+                                    <a class="page-scroll  dd-menu collapsed" href="#" onclick="return false;"
+                                        data-bs-toggle="collapse" data-bs-target="#submenu-5-1"
+                                        aria-controls="navbarSupportedContent" aria-expanded="false"
+                                        aria-label="Toggle navigation">pages<i class="icofont-rounded-down"></i> </a>
+                                        <ul class="sub-menu collapse" id="submenu-5-1">
+                                            <li><a href="cart.html">cart</a></li>
+                                            <li><a href="checkout.html">Checkout</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children nav-item">
+                                    <a class="page-scroll  dd-menu collapsed" href="#" onclick="return false;"
+                                        data-bs-toggle="collapse" data-bs-target="#submenu-6-1"
+                                        aria-controls="navbarSupportedContent" aria-expanded="false"
+                                        aria-label="Toggle navigation">blog<i class="icofont-rounded-down"></i></a>
+                                        <ul class="sub-menu collapse" id="submenu-6-1">
+                                            <li><a href="blog.html">blog</a></li>
+                                            <li><a href="blog-details.html">blog details</a></li>
+                                    </ul>
+
+                                </li>
+                                <li class="menu-item-has-children nav-item">
+                                    <a href="#" onclick="return false;">buy</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--offcanvas menu area end-->
+
+	<!--====== HEADER PART START ======-->
+
+	<header class="header_area">
+		<div id="header_navbar" class="header_navbar">
+			<div class="container position-relative">
+				<div class="row align-items-center">
+					<div class="col-xl-12">
+						<nav class="navbar navbar-expand-lg">
+							<a class="navbar-brand" href="index.html">
+								<img id="logo" src="assets/images/logo/logo-2.svg" alt="Logo">
+							</a>
+							<!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+								aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+								<span class="toggler-icon"></span>
+								<span class="toggler-icon"></span>
+								<span class="toggler-icon"></span>
+							</button>-->
+							<div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+								<ul id="nav" class="navbar-nav">
+									<li class="nav-item">
+										<a class="page-scroll" href="index.html">Home</a>
+									</li>
+									<li class="nav-item">
+										<a class="page-scroll" data-toggle="collapse" data-target="#sub-nav1" aria-controls="sub-nav1"
+											aria-expanded="false" aria-label="Toggle navigation" href="javascript:void(0)">Pages
+											<div class="sub-nav-toggler">
+												<span></span>
+											</div>
+										</a>
+										<ul class="sub-menu collapse" id="sub-nav1">
+											<li><a href="about.html">About</a></li>
+											<li><a href="service.html">Service</a></li>
+											<li><a href="category-list.html">Category List</a></li>
+											<li><a href="category.html">Category Grid</a></li>
+											<li><a href="pricing.html">Pricing</a></li>
+											<li><a href="accordions.html">Accordions</a></li>
+											<li><a href="product-details.html">Product Details</a></li>
+											<li><a href="login.html">Login</a></li>
+											<li><a href="signup.html">Sign Up</a></li>
+											<li><a href="404.html">404 Page</a></li>
+										</ul>
+									</li>
+									<li class="nav-item">
+										<a class="page-scroll" data-toggle="collapse" data-target="#sub-nav" aria-controls="sub-nav"
+											aria-expanded="false" aria-label="Toggle navigation" href="javascript:void(0)">Category
+											<div class="sub-nav-toggler">
+												<span></span>
+											</div>
+										</a>
+										<ul class="sub-menu collapse" id="sub-nav">
+											<li><a href="category.html">Category Grid</a></li>
+											<li><a href="category-list.html">Category List</a></li>
+										</ul>
+									</li>
+									<li class="nav-item">
+										<a class="page-scroll" href="product-details.html">Product Details</a>
+									</li>
+								</ul>
+							</div>
+                            <div class="mobile-manu row-vh d-flex flex-row justify-content-around">
+                                <ul class="header-btn d-md-flex">
+                                    <li>
+                                        <a href="#" onclick="return false;" class="main-btn account-btn">
+                                            <span class="d-md-none"><i class="lni lni-user"></i></span>
+                                            <span class="d-none d-md-block">My Account</span>
+                                        </a>
+                                        <ul class="dropdown-nav">
+                                            <li><a href="dashboard.html">Dashboard</a></li>
+                                            <li><a href="profile-settings.html">Profile Settings</a></li>
+                                            <li><a href="post-ad.html">Post Ad</a></li>
+                                            <li><a href="my-ads.html">My Ads</a></li>
+                                            <li><a href="offers.html">Offers/Messages</a></li>
+                                            <li><a href="payments.html">Payments</a></li>
+                                            <li><a href="favorites.html">Favorites</a></li>
+                                            <li><a href="privacy.html">Privacy</a></li>
+                                            <li><a href="javascript:void(0)">Sign Out</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="post-ad.html" class="main-btn btn-hover d-none d-md-block">Post An Ad</a>
+                                    </li>
+                                </ul>
+                                <div class="canvas_open d-md-none">
+                                    <a href="#" onclick="return false;"><ion-icon name="menu-outline"></ion-icon></a>
+                                </div> 
+                            </div>
+						</nav> <!-- navbar -->
+					</div>
+				</div> <!-- row -->
+			</div> <!-- container -->
+		</div> <!-- header navbar -->
+	</header>
+
+	<!--====== HEADER PART ENDS ======-->
+
+    <!--== Start Page Title Area ==-->
+    <section class="page-title-area">
+        <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+            <div class="page-title-content text-center pb-lg-30 pb-80">
+                <h2 class="title">latest<span> from our blog</span></h2>
+                <div class="bread-crumbs pb-1"><a href="index.html">Home<span class="breadcrumb-sep">/</span></a><span class="active">Blog</span></div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    <!--== End Page Title Area ==-->
+
+    <!--== Start Blog Area Wrapper ==-->
+    <section class="blog-grid-area pb-1">
+        <div class="container">    
+            <div class="row ">
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                <!--== Start Blog Post Item ==-->
+                    <div class="card-box post-item">
+                        <div class="card-img thumb">
+                            <a href="product-details.html">
+                                <img src="assets/images/product/l-product-1.jpg" alt="">
+                            </a>
+                            <a class="icon" href="#" onclick="return false;">
+                                <ion-icon name="videocam-outline" class="ion-size"></ion-icon>
+                            </a>
+                        </div>
+
+                        <div class="card-content content">
+                            <h3 class="title">
+                                <a href="blog-details.html">Your Brand’s Next On Social Media</a>
+                            </h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur cora</p>
+                            <div class="meta bottom meta-bottom">
+                                <div class="blog-info">
+                                    <a class="post-date" href="#" onclick="return false;"><ion-icon name="calendar-outline"></ion-icon> 16/4/2021</a>
+                                    <a class="tags" href="#" onclick="return false;"><ion-icon name="pricetag-outline"></ion-icon> django, framework </a>                                    
+                                    <a class="reply" href="#" onclick="return false;"><ion-icon name="chatbox-outline"></ion-icon> 16</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!--== End Blog Post Item ==-->
+                </div>
+
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <!--== Start Blog Post Item ==-->
+					<div class="card-box post-item">
+						<div class="card-img thumb">
+							<a href="product-details.html">
+								<img src="assets/images/product/l-product-3.jpg" alt="">
+							</a>
+							<a class="icon" href="#" onclick="return false;">
+                                <ion-icon name="volume-medium-outline"></ion-icon>
+                            </a>
+						</div>
+
+						<div class="card-content content">
+                            <h3 class="title">
+                                <a href="blog-details.html">Your Brand’s Next On Social Media</a>
+                              </h3>
+                              <p>Lorem ipsum dolor sit amet, consectetur cora adipiscing elit....</p>
+                              <div class="meta bottom meta-bottom">
+                                <div class="blog-info">
+                                    <a class="post-date" href="#" onclick="return false;"><ion-icon name="calendar-outline"></ion-icon> 16/4/2021</a>
+                                    <a class="tags" href="#" onclick="return false;"><ion-icon name="pricetag-outline"></ion-icon> django, framework </a>                                    
+                                    <a class="reply" href="#" onclick="return false;"><ion-icon name="chatbox-outline"></ion-icon> 16</a>
+                                </div>
+						    </div>
+						</div>
+					</div>
+                    <!--== End Blog Post Item ==-->
+				</div>
+
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <!--== Start Blog Post Item ==-->
+					<div class="card-box post-item">
+						<div class="card-img thumb">
+							<a href="product-details.html">
+								<img src="assets/images/product/l-product-2.jpg" alt="">
+							</a>
+						</div>
+
+						<div class="card-content content">
+                                <h3 class="title">
+                                <a href="blog-details.html">Sample Articles With Long Text Lorem Ispum</a>
+                              </h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</p>                  
+                              <div class="meta bottom meta-bottom">
+                                <div class="blog-info">
+                                    <a class="post-date" href="#" onclick="return false;"><ion-icon name="calendar-outline"></ion-icon> 16/4/2021</a>
+                                    <a class="tags" href="#" onclick="return false;"><ion-icon name="pricetag-outline"></ion-icon> django, framework </a>                                    
+                                    <a class="reply" href="#" onclick="return false;"><ion-icon name="chatbox-outline"></ion-icon> 16</a>
+                                </div>
+						    </div>
+						</div>
+					</div>
+                    <!--== End Blog Post Item ==-->
+				</div>
+
+                <div class="row">
+                    <div class="col-lg-12 pb-xs-30 pb-sm-70 pb-100">
+                    <div class="pagination-area text-center lg-pt-0 sm-pb-0 pb-lg-30 pb-100">
+                        <nav>
+                        <ul class="page-numbers">
+                            <li>
+                                <a class="page-number prev" href="#">
+                                    <ion-icon name="chevron-back-outline"></ion-icon>
+                                </a>
+                            </li>
+                            <li>
+                            <span class="page-number current">1</span>
+                            </li>
+                            <li>
+                            <a class="page-number" href="#">2</a>
+                            </li>
+                            <li>
+                            <a class="page-number" href="#">3</a>
+                            </li>
+                            <li>
+                            <a class="page-number" href="#">4</a>
+                            </li>
+                            <li>
+                                <a class="page-number next" href="#">
+                                    <ion-icon name="chevron-forward-outline"></ion-icon>
+                                </a>
+                            </li>
+                        </ul>
+                        </nav>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--== End Blog Area Wrapper ==-->
+
+	<!--====== FOOTER PART START ======-->
+	<footer class="footer-area">
+		<div class="widget-wrapper">
+			<div class="map-img">
+				<img src="assets/images/footer/map-img.svg" alt="">
+			</div>
+			<div class="container">
+				<div class="row">
+
+					<div class="col-xl-4 col-md-7">
+						<div class="footer-widget about">
+							<a href="index.html" class="d-inline-block mb-30">
+								<img src="assets/images/logo/logo.svg" alt="">
+							</a>
+							<p class="text-white mb-25">Buy And Sell Everything From Used Cars To Mobile Phones And Computers, Search For Property, Jobs And More</p>
+							<ul class="social">
+								<li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a></li>
+								<li><a href="javascript:void(0)"><i class="lni lni-twitter-filled"></i></a></li>
+								<li><a href="javascript:void(0)"><i class="lni lni-instagram-filled"></i></a></li>
+								<li><a href="javascript:void(0)"><i class="lni lni-linkedin-original"></i></a></li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="col-xl-2 col-md-4 order-md-2 order-xl-1 col-sm-6">
+						<div class="footer-widget">
+							<h3>Quick Link</h3>
+							<ul class="link">
+								<li><a href="javascript:void(0)">Home</a></li>
+								<li><a href="javascript:void(0)">About</a></li>
+								<li><a href="javascript:void(0)">Category</a></li>
+								<li><a href="javascript:void(0)">Product details</a></li>
+								<li><a href="javascript:void(0)">Contact</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="col-xl-2 col-md-4 order-md-3 order-xl-2 col-sm-6">
+						<div class="footer-widget">
+							<h3>Support</h3>
+							<ul class="link">
+								<li><a href="javascript:void(0)">Live Chat</a></li>
+								<li><a href="javascript:void(0)">Privacy Policy</a></li>
+								<li><a href="javascript:void(0)">Purchase</a></li>
+								<li><a href="javascript:void(0)">Protection</a></li>
+								<li><a href="javascript:void(0)">Support</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="col-xl-2 col-md-4 order-md-4 order-xl-3 col-sm-6">
+						<div class="footer-widget">
+							<h3>Information</h3>
+							<ul class="link">
+								<li><a href="javascript:void(0)">Company</a></li>
+								<li><a href="javascript:void(0)">Contact Info</a></li>
+								<li><a href="javascript:void(0)">Blog & Articles</a></li>
+								<li><a href="javascript:void(0)">Terms of Service</a></li>
+								<li><a href="javascript:void(0)">Privacy Policy</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="col-xl-2 col-md-5 order-md-1 order-xl-4 col-sm-6">
+						<div class="footer-widget">
+							<h3>Contact Us</h3>
+							<ul>
+								<li>
+									<span>Phone:</span>
+									0345983672937
+								</li>
+								<li>
+									<span>Email:</span>
+									yourmail@gmail.com
+								</li>
+								<li>
+									<span>Location:</span>
+									United State of America
+								</li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="copy-right">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="text-center">
+							<p>Designed & Developed By <a href="https://graygrids.com/" rel="nofollow" target="_blank">GrayGrids</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!--====== FOOTER PART ENDS ======-->
+
+	<!--====== BACK TOP TOP PART START ======-->
+	<a href="#" class="back-to-top btn-hover"><i class="lni lni-chevron-up"></i></a>
+	<!--====== BACK TOP TOP PART ENDS ======-->
+
+	<!--====== Bootstrap js ======-->
+	<script src="assets/vendors/bootstrap/bootstrap-5.1.3.bundle.min.js"></script>
+
+	<!--====== Tiny-slider slider js ======-->
+	<script src="assets/vendors/slider/tiny-slider/tiny-slider-2.9.3.js"></script>
+
+    <!--====== Aos slider js ======-->
+	<!-- <script rel="stylesheet" href="assets/vendors/slider/aos/aos-180708.js"></script> -->
+
+	<!--====== wow js ======-->
+	<script src="assets/vendors/slider/wow/wow-1.3.0.min.js"></script>
+
+	<!--====== glightbox js ======-->
+	<script src="assets/vendors/litebox/js/glightbox-3.1.0.min.js"></script>
+	
+	<!--====== Selectr js ======-->
+	<script src="assets/vendors/selectr/selectr.min.js"></script>
+
+	<!--====== Nouislider js ======-->
+	<script src="assets/vendors/nouislider/js/nouislider-15.5.1.js"></script>
+
+    <!--====== Ionicframework icons CSS ======-->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  
+	<!--====== Main js ======-->
+	<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

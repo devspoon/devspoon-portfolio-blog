@@ -1,0 +1,240 @@
+@media (min-width: 1200px) {
+  .nav-item.dropdown .dropdown-menu {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    top: 120%;
+  }
+  .nav-item.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    top: 100%;
+  }
+}
+
+@media (max-width: 992px) {
+  .section-padding {
+    padding: 60px 0px;
+  }
+  .navbar-nav .nav-link {
+    padding: 10px 0px;
+  }
+  .header-socials {
+    display: none;
+  }
+  .site-navigation {
+    padding: 5px 0px;
+  }
+  .section-heading {
+    margin-bottom: 30px;
+  }
+  .client-logo {
+    margin-bottom: 30px;
+  }
+  .navbar-toggler {
+    background: #fff;
+    border-radius: 0px;
+  }
+  .banner {
+    padding: 40px 0px 200px;
+  }
+  .banner-img img {
+    width: 100%;
+  }
+  .banner .banner-img {
+    position: relative;
+    bottom: 0px;
+  }
+  .section-heading h2 {
+    font-size: 42px;
+    line-height: 50px;
+  }
+  .feature-box .feature-icon {
+    margin-bottom: 20px;
+    float: none;
+    margin-right: 0px;
+  }
+  .about-box {
+    padding: 20px;
+    margin: 0px;
+  }
+  .about-box .btn {
+    margin-top: 25px;
+  }
+  .about-box ul {
+    padding: 0px;
+  }
+  .about-box .about-header {
+    margin-bottom: 20px;
+  }
+  .process-box {
+    margin-bottom: 20px;
+  }
+  .process-box span {
+    display: inline-block;
+  }
+  .pricing-wrap {
+    display: block;
+  }
+  .pricing-item {
+    width: 48%;
+    float: left;
+    margin: 0px 5px;
+  }
+  .clients-inner {
+    display: block;
+  }
+  .clients-inner .client-logo {
+    float: left;
+    margin: 10px 4px;
+    width: 30%;
+  }
+  .header-info-single {
+    margin-left: 15px;
+  }
+  .team-item {
+    margin-bottom: 30px;
+  }
+  .blog-sidebar {
+    padding-left: 0px;
+    margin-top: 50px;
+  }
+  .post-single blockquote {
+    padding: 50px 0px;
+  }
+  .contact-info-block {
+    padding: 0px;
+  }
+  .banner-about {
+    height: 400px;
+  }
+  .about-box .btn {
+    padding: 16px 28px;
+    font-size: 16px;
+  }
+  .review-item .info-desc {
+    font-size: 23px;
+    line-height: 48px;
+    padding: 50px 0px;
+  }
+  .pricing-item {
+    border: 1px solid #dedede !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner .banner-content h1 {
+    font-size: 40px;
+    line-height: 50px;
+    margin-bottom: 20px;
+  }
+  .banner .banner-content p {
+    margin-bottom: 30px;
+  }
+  .section-heading h2 {
+    font-size: 36px;
+    line-height: 50px;
+  }
+  .client-logo {
+    margin-bottom: 30px;
+  }
+  .pricing-item {
+    width: 48%;
+  }
+  .clients-inner .client-logo {
+    width: 48%;
+  }
+  .faq-single .faq-body {
+    padding-right: 15px;
+  }
+  .blog-sidebar {
+    padding-left: 0px;
+    margin-top: 50px;
+  }
+  .post-single blockquote {
+    padding: 50px 0px;
+  }
+  .contact-info-block {
+    padding: 0px;
+  }
+  .banner-about {
+    height: 380px;
+  }
+  .feature-box {
+    text-align: center;
+  }
+  .feature-box .feature-icon {
+    margin: 0 auto 20px;
+  }
+  .portfolio-wrap {
+    padding-bottom: 40px;
+  }
+  .pagination {
+    margin-bottom: 100px;
+  }
+  .portfolio-gallery .owl-dots {
+    bottom: 10px;
+  }
+  .feature {
+    padding-bottom: 0px;
+  }
+  .review-item .info-desc {
+    font-size: 23px;
+    line-height: 48px;
+    padding: 50px 0px;
+  }
+  .pricing-item {
+    border: 1px solid #dedede !important;
+  }
+}
+
+@media (min-width: 316px) and (max-width: 576px) {
+  .banner .btn {
+    margin-bottom: 10px;
+  }
+  .page-header .page-header-content h2 {
+    font-size: 30px;
+  }
+  .portfolio-filter li {
+    display: block;
+  }
+  .blog-filter {
+    text-align: center;
+  }
+  h1 {
+    font-size: 38px;
+  }
+  .comments .media .user-img {
+    float: none;
+    padding-bottom: 20px;
+  }
+  .banner-about {
+    height: 280px;
+  }
+  .feature-box {
+    text-align: center;
+  }
+  .feature-box .feature-icon {
+    margin: 0 auto 20px;
+  }
+  .page-header {
+    padding: 40px 0px 40px;
+  }
+  .portfolio-gallery .owl-dots {
+    bottom: 10px;
+  }
+  .feature {
+    padding-bottom: 0px;
+  }
+  .review-item .info-desc {
+    font-size: 23px;
+    line-height: 48px;
+    padding: 50px 0px;
+  }
+  .pricing-item {
+    width: 100%;
+  }
+  .clients-inner .client-logo {
+    width: 100%;
+  }
+}
