@@ -1,0 +1,15 @@
+# cache files
+__pycache__/
+migrations/
+
+# secure files
+/.env
+.env
+
+# log files
+logs/
+.log
+
+# prof files
+*.prof
+

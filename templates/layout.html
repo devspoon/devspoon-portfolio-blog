@@ -1,0 +1,695 @@
+{% extends "base/base.html" %}
+{% comment %} {% load search_tags %} {% endcomment %}
+{% load static %}
+
+{% block title %}레이아웃{% endblock %}
+
+{% block content %}
+
+<!--====== ILLUST START ======-->
+
+<section class="illust full-screen d-lg-flex justify-content-center align-items-center" id="illust">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-12 col-12 d-flex align-items-center">
+                <div class="about-text">
+                    <small class="small-text">Welcome to <span class="mobile-block">my portfolio website!</span></small>
+                    <h1 class="animated animated-text">
+                        <span class="mr-2">Hey folks, I'm</span>
+                            <div class="animated-info">
+                                <span class="animated-item">Marvel Sann</span>
+                                <span class="animated-item">Web Designer</span>
+                                <span class="animated-item">UI Specialist</span>
+                            </div>
+                    </h1>
+
+                    <p>Building a successful product is a challenge. I am highly energetic in user experience design, interfaces and web development.</p>
+
+                    <div class="custom-btn-group mt-4">
+                      <a href="#" onclick="return false;" class="btn mr-lg-2 custom-btn"><i class='uil uil-file-alt'></i> Download Resume</a>
+                      <a href="#contact" class="btn custom-btn custom-btn-bg custom-btn-link">Get a free quote</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-12 col-12">
+                <div class="about-image svg">
+                    <img src="{% static 'images/undraw_software_engineer_lvl5.svg' %}" class="img-fluid" alt="svg image">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--====== ILLUST END ======-->
+
+<!--====== PORTFOLIO START ======-->
+<section class="portfolio py-5" id="portfolio">
+    <div class="container">
+        <div class="row">
+            <div class="mx-auto col-lg-6 col-10">
+                <div class="text-center portfolio-section-title mb-50">
+                    <h1>Featured Products</h1>
+                    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt ut labore et dolore magna.</p>
+                    <a href="https://rebrand.ly/gg-classilist/" class="main-btn btn-hover">See More Portfolio</a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="product-carousel-wrapper">
+            <div class="row portfolio-product-carousel">
+                <div class="col-lg-12 col-12">
+                    <div class="card-box">
+                        <div class="card-img">
+                            <a href="javascript:void(0)" class="badge"><i class="icofont-clip"></i> Development</a>
+                            <a href="javascript:void(0)" class="badge bottom "><i class="icofont-id-card"></i> open-source</a>
+                            <img src="assets/images/project/project-image01.png" class="img-fluid" alt="project image">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-12">
+                    <div class="card-box">
+                        <div class="card-img">
+                            <a href="javascript:void(0)" class="badge"><i class="icofont-clip"></i>Development</a>
+                            <a href="javascript:void(0)" class="badge bottom"><i class="icofont-id-card"></i>startup</a>
+                            <img src="assets/images/project/project-image02.png" class="img-fluid" alt="project image">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-12">
+                    <div class="card-box">
+                        <div class="card-img">
+                            <a href="javascript:void(0)" class="badge"><i class="icofont-clip"></i>Development</a>
+                            <a href="javascript:void(0)" class="badge bottom"><i class="icofont-id-card"></i>marketing</a>
+                            <img src="assets/images/project/project-image03.png" class="img-fluid" alt="project image">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-12">
+                    <div class="card-box">
+                        <div class="card-img">
+                            <a href="javascript:void(0)" class="badge"><i class="icofont-clip"></i>Development</a>
+                            <a href="javascript:void(0)" class="badge bottom"><i class="icofont-id-card"></i>wipro</a>
+                            <img src="assets/images/project/project-image04.png" class="img-fluid" alt="project image">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-12">
+                    <div class="card-box">
+                        <div class="card-img">
+                            <a href="javascript:void(0)" class="badge"><i class="icofont-clip"></i>Development</a>
+                            <a href="javascript:void(0)" class="badge bottom">wipro</a>
+                            <img src="assets/images/project/project-image05.png" class="img-fluid" alt="project image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--====== PORTFOLIO ENDS ======-->
+
+<!--====== SKILL START ======-->
+<section class="skills py-5" id="services-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+                <span class="subheading">I am grat at</span>
+                <h2 class="mb-4">We do awesome services for our clients</h2>
+                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-3d-design"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">Web Design</h3>
+                        <p>A small river named Duden flows by their place and supplies.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-app-development"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">Web Application</h3>
+                        <p>A small river named Duden flows by their place and supplies.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-web-programming"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">Web Development</h3>
+                        <p>A small river named Duden flows by their place and supplies.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-branding"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">Banner Design</h3>
+                        <p>A small river named Duden flows by their place and supplies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-computer"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">Branding</h3>
+                        <p>A small river named Duden flows by their place and supplies.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-vector"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">Icon Design</h3>
+                        <p>A small river named Duden flows by their place and supplies.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-vector"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">Graphic Design</h3>
+                        <p>A small river named Duden flows by their place and supplies.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-zoom"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">SEO</h3>
+                        <p>A small river named Duden flows by their place and supplies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--====== SKILL ENDS ======-->
+
+<!--====== PROJECTS START ======-->
+<section class="latest-product-area py-5 pb-110">
+    <div class="container">
+        <div class="row">
+            <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
+                <div class="text-center section-title mb-60">
+                    <h1>Latest Products</h1>
+                    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt dolore magna.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="card-box">
+                    <div class="card-img">
+                        <a href="product-details.html">
+                            <img src="assets/images/product/l-product-1.jpg" alt="">
+                        </a>
+                        <div class="product-action">
+                            <a href="javascript:void(0)" class="share" title="site link"><i class="lni lni-world"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
+                        <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
+                        <ul class="project-info">
+                            <li>
+                                <i class="lni lni-calendar"></i> 20 June, 2023
+                            </li>
+                            <li>
+                                <i class="lni lni-bookmark"></i> Django
+                            </li>
+                            <li>
+                                <i class="lni lni-user"></i> Owner
+                            </li>
+                            <li>
+                                <i class="lni lni-code"></i> Ver 1.2.5
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="card-box">
+                    <div class="card-img">
+                        <a href="product-details.html">
+                            <img src="assets/images/product/l-product-2.jpg" alt="">
+                        </a>
+                        <div class="product-action">
+                            <a href="javascript:void(0)" class="share" title="site link"><i class="lni lni-world"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
+                        <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
+                        <ul class="project-info">
+                            <li>
+                                <i class="lni lni-calendar"></i> 20 June, 2023
+                            </li>
+                            <li>
+                                <i class="lni lni-bookmark"></i> Django
+                            </li>
+                            <li>
+                                <i class="lni lni-user"></i> Owner
+                            </li>
+                            <li>
+                                <i class="lni lni-code"></i> Ver 1.2.5
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="card-box">
+                    <div class="card-img">
+                        <a href="product-details.html">
+                            <img src="assets/images/product/l-product-3.jpg" alt="">
+                        </a>
+                        <div class="product-action">
+                            <a href="javascript:void(0)" class="share" title="site link"><i class="lni lni-world"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
+                        <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
+                        <ul class="project-info">
+                            <li>
+                                <i class="lni lni-calendar"></i> 20 June, 2023
+                            </li>
+                            <li>
+                                <i class="lni lni-bookmark"></i> Django
+                            </li>
+                            <li>
+                                <i class="lni lni-user"></i> Owner
+                            </li>
+                            <li>
+                                <i class="lni lni-code"></i> Ver 1.2.5
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="card-box">
+                    <div class="card-img">
+                        <a href="product-details.html">
+                            <img src="assets/images/product/l-product-4.jpg" alt="">
+                        </a>
+                        <div class="product-action">
+                            <a href="javascript:void(0)" class="share" title="site link"><i class="lni lni-world"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
+                        <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
+                        <ul class="project-info">
+                            <li>
+                                <i class="lni lni-calendar"></i> 20 June, 2023
+                            </li>
+                            <li>
+                                <i class="lni lni-bookmark"></i> Django
+                            </li>
+                            <li>
+                                <i class="lni lni-user"></i> Owner
+                            </li>
+                            <li>
+                                <i class="lni lni-code"></i> Ver 1.2.5
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="card-box">
+                    <div class="card-img">
+                        <a href="product-details.html">
+                            <img src="assets/images/product/l-product-5.jpg" alt="">
+                        </a>
+                        <div class="product-action">
+                            <a href="javascript:void(0)" class="share" title="site link"><i class="lni lni-world"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
+                        <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
+                        <ul class="project-info">
+                            <li>
+                                <i class="lni lni-calendar"></i> 20 June, 2023
+                            </li>
+                            <li>
+                                <i class="lni lni-bookmark"></i> Django
+                            </li>
+                            <li>
+                                <i class="lni lni-user"></i> Owner
+                            </li>
+                            <li>
+                                <i class="lni lni-code"></i> Ver 1.2.5
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="card-box">
+                    <div class="card-img">
+                        <a href="product-details.html">
+                            <img src="assets/images/product/l-product-6.jpg" alt="">
+                        </a>
+                        <div class="product-action">
+                            <a href="javascript:void(0)" class="share" title="site link"><i class="lni lni-world"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
+                        <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
+                        <ul class="project-info">
+                            <li>
+                                <i class="lni lni-calendar"></i> 20 June, 2023
+                            </li>
+                            <li>
+                                <i class="lni lni-bookmark"></i> Django
+                            </li>
+                            <li>
+                                <i class="lni lni-user"></i> Owner
+                            </li>
+                            <li>
+                                <i class="lni lni-code"></i> Ver 1.2.5
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--====== PROJECTS ENDS ======-->
+
+<!--====== ANALYZE START ======-->
+<section class="analyze-area py-5" >
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 m-auto">
+          <div class="section-title text-center" >
+            <h2 class="title text-uppercase"><span>Best Services</span> For You</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="icon-box-style1 mb-sm-70 mb-lg-80 mb-100" >
+            <div class="icon-box-list">
+              <div class="icon-box-item">
+                <div class="icon-box">
+                    <i class="lni lni-pie-chart icon-img"></i>
+                </div>
+                <div class="content">
+                  <h4><a href="service-details.html">Organic Search (SEO)</a></h4>
+                  <p>Stop selling. Start helping. Utilize SEO to capture early stage awareness queries through
+                    relevant content</p>
+                </div>
+                <span class="icon-box-number">01</span>
+              </div>
+              <div class="icon-box-item">
+                <div class="icon-box">
+                  <!-- <img class="icon-img" src="assets/img/icons/s02.png" alt="Icon"> -->
+                  <i class="lni lni-pie-chart icon-img"></i>
+                </div>
+                <div class="content">
+                  <h4><a href="service-details.html">Link Building Services</a></h4>
+                  <p>Our full-service link building company specializes in custom link building campaigns that earn
+                    high-quality links</p>
+                </div>
+                <span class="icon-box-number">02</span>
+              </div>
+              <div class="icon-box-item">
+                <div class="icon-box">
+                    <i class="lni lni-pie-chart icon-img"></i>
+                </div>
+                <div class="content">
+                  <h4><a href="service-details.html">Paid Search (PPC)</a></h4>
+                  <p>Search engine marketing (SEM, which can include SEO), pay-per-click (PPC), search engine
+                    advertising sponsored</p>
+                </div>
+                <span class="icon-box-number">03</span>
+              </div>
+            </div>
+            <div class="icon-box-list">
+              <div class="icon-box-item">
+                <div class="icon-box">
+                    <i class="lni lni-pie-chart icon-img"></i>
+                </div>
+                <div class="content">
+                  <h4><a href="service-details.html">SEO Auditing Services</a></h4>
+                  <p>If you haven't recently audited you website, we recommend an SEO audit before you begin a
+                    campaign</p>
+                </div>
+                <span class="icon-box-number">04</span>
+              </div>
+              <div class="icon-box-item">
+                <div class="icon-box">
+                    <i class="lni lni-pie-chart icon-img"></i>
+                </div>
+                <div class="content">
+                  <h4><a href="service-details.html">B2B SEO Services</a></h4>
+                  <p>B2B SEO campaign will include a study of business goals, followed by an evaluation of
+                    pre-purchase</p>
+                </div>
+                <span class="icon-box-number">05</span>
+              </div>
+              <div class="icon-box-item">
+                <div class="icon-box">
+                  <i class="lni lni-pie-chart icon-img"></i>
+                </div>
+                <div class="content">
+                  <h4><a href="service-details.html">Full Service SEO</a></h4>
+                  <p>Based in Americas, Boseo offers full service SEO marketing solutions for companies of all sizes
+                    and types</p>
+                </div>
+                <span class="icon-box-number">06</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<!--====== ANALYZE ENDS ======-->
+
+<!--====== BLOG START ======-->
+<section class="blog py-5">
+    <div class="container">
+        <div class="row">
+            <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
+                <div class="text-center section-title mb-60">
+                    <h1>Latest Blog Posts</h1>
+                    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt dolore magna.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <!--== Start Blog Post Item ==-->
+                <div class="card-box post-item">
+                    <div class="card-img thumb">
+                        <a href="product-details.html">
+                            <img src="assets/images/product/l-product-1.jpg" alt="">
+                        </a>
+                        <a class="icon" href="#" onclick="return false;">
+                            <ion-icon name="videocam-outline" class="ion-size"></ion-icon>
+                        </a>
+                    </div>
+
+                    <div class="card-content content">
+                        <h4 class="title">
+                            <a href="blog-details.html">Your Brand’s Next On Social Media</a>
+                        </h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur cora</p>
+                        <div class="meta bottom meta-bottom">
+                            <div class="blog-info">
+                                <a class="category" href="blog.html"><ion-icon name="folder-open-outline"></ion-icon> In <span>News</span></a>
+                                <a class="post-date" href="blog.html"><ion-icon name="calendar-outline"></ion-icon> 16/4/2021</a>
+                                <a class="reply" href="#" onclick="return false;"><ion-icon name="chatbox-outline"></ion-icon> 16</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--== End Blog Post Item ==-->
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <!--== Start Blog Post Item ==-->
+                <div class="card-box post-item">
+                    <div class="card-img thumb">
+                        <a href="product-details.html">
+                            <img src="assets/images/product/l-product-2.jpg" alt="">
+                        </a>
+                    </div>
+
+                    <div class="card-content content">
+                        <h4 class="title">
+                            <a href="blog-details.html">Sample Articles With Long Text Lorem Ispum</a>
+                          </h4>
+                          <p>Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</p>
+                          <div class="meta bottom meta-bottom ">
+                            <div>
+                                <a class="category" href="blog.html"><ion-icon name="folder-open-outline"></ion-icon> In <span>News</span></a>
+                                <a class="post-date" href="blog.html"><ion-icon name="calendar-outline"></ion-icon> 16/4/2021</a>
+                                <a class="reply" href="#" onclick="return false;"><ion-icon name="chatbox-outline"></ion-icon> 16</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--== End Blog Post Item ==-->
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <!--== Start Blog Post Item ==-->
+                <div class="card-box post-item">
+                    <div class="card-img thumb">
+                        <a href="product-details.html">
+                            <img src="assets/images/product/l-product-3.jpg" alt="">
+                        </a>
+                        <a class="icon" href="#" onclick="return false;">
+                            <ion-icon name="volume-medium-outline"></ion-icon>
+                        </a>
+                    </div>
+
+                    <div class="card-content content">
+                        <h4 class="title">
+                            <a href="blog-details.html">Your Brand’s Next On Social Media</a>
+                          </h4>
+                          <p>Lorem ipsum dolor sit amet, consectetur cora adipiscing elit....</p>
+                          <div class="meta bottom meta-bottom">
+                            <div>
+                                <a class="category" href="blog.html"><ion-icon name="folder-open-outline"></ion-icon> In <span>News</span></a>
+                                <a class="post-date" href="blog.html"><ion-icon name="calendar-outline"></ion-icon> 16/4/2021</a>
+                                <a class="reply" href="#" onclick="return false;"><ion-icon name="chatbox-outline"></ion-icon> 16</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--== End Blog Post Item ==-->
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <!--== Start Blog Post Item ==-->
+                <div class="card-box post-item">
+                    <div class="card-img thumb">
+                        <a href="product-details.html">
+                            <img src="assets/images/product/l-product-1.jpg" alt="">
+                        </a>
+                        <a class="icon" href="#" onclick="return false;">
+                            <ion-icon name="videocam-outline" class="ion-size"></ion-icon>
+                        </a>
+                    </div>
+
+                    <div class="card-content content">
+                        <h4 class="title">
+                            <a href="blog-details.html">Your Brand’s Next On Social Media</a>
+                        </h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur cora</p>
+                        <div class="meta bottom meta-bottom">
+                            <div>
+                                <a class="category" href="blog.html"><ion-icon name="folder-open-outline"></ion-icon> In <span>News</span></a>
+                                <a class="post-date" href="blog.html"><ion-icon name="calendar-outline"></ion-icon> 16/4/2021</a>
+                                <a class="reply" href="#" onclick="return false;"><ion-icon name="chatbox-outline"></ion-icon> 16</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--== End Blog Post Item ==-->
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <!--== Start Blog Post Item ==-->
+                <div class="card-box post-item">
+                    <div class="card-img thumb">
+                        <a href="product-details.html">
+                            <img src="assets/images/product/l-product-2.jpg" alt="">
+                        </a>
+                    </div>
+
+                    <div class="card-content content">
+                        <h4 class="title">
+                            <a href="blog-details.html">Sample Articles With Long Text Lorem Ispum</a>
+                          </h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</p>
+                          <div class="meta bottom meta-bottom">
+                            <div>
+                                <a class="category" href="blog.html"><ion-icon name="folder-open-outline"></ion-icon> In <span>News</span></a>
+                                <a class="post-date" href="blog.html"><ion-icon name="calendar-outline"></ion-icon> 16/4/2021</a>
+                                <a class="reply" href="#" onclick="return false;"><ion-icon name="chatbox-outline"></ion-icon> 16</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--== End Blog Post Item ==-->
+            </div>
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <!--== Start Blog Post Item ==-->
+                <div class="card-box post-item">
+                    <div class="card-img thumb">
+                        <a href="product-details.html">
+                            <img src="assets/images/product/l-product-3.jpg" alt="">
+                        </a>
+                        <a class="icon" href="#" onclick="return false;">
+                            <ion-icon name="volume-medium-outline"></ion-icon>
+                        </a>
+                    </div>
+
+                    <div class="card-content content">
+                        <h4 class="title">
+                            <a href="blog-details.html">Your Brand’s Next On Social Media</a>
+                          </h4>
+                          <p>Lorem ipsum dolor sit amet, consectetur cora adipiscing elit....</p>
+                          <div class="meta bottom meta-bottom">
+                            <div>
+                                <a class="category" href="blog.html"><ion-icon name="folder-open-outline"></ion-icon> In <span>News</span></a>
+                                <a class="post-date" href="blog.html"><ion-icon name="calendar-outline"></ion-icon> 16/4/2021</a>
+                                <a class="reply" href="#" onclick="return false;"><ion-icon name="chatbox-outline"></ion-icon> 16</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--== End Blog Post Item ==-->
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--====== BLOG ENDS ======-->
+
+<!--====== ChatBot START ======-->
+<!--====== ChatBot ENDS ======-->
+
+{% endblock %}
