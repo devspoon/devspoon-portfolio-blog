@@ -17,9 +17,9 @@ from os.path import join
 from django.contrib import messages
 
 #from .sub_settings.email.gmail import *
-from .sub_settings.email.sendinblue import *
-#from .sub_settings.email.mailgun import *
-#from .sub_settings.email.sendgrid import *
+#from .sub_settings.email.sendinblue import *
+from .sub_settings.email.mailgun import *
+# from .sub_settings.email.sendgrid import *
 #from .sub_settings.email.aws_ses import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -45,20 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
 
     'users',
     'blog',
 
-    'anymail',
-
     'imagekit',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.auth0',
-    # 'allauth.socialaccount.providers.google',
-    # 'allauth.socialaccount.providers.kakao',
 ]
 
 MIDDLEWARE = [
@@ -139,16 +130,17 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # 기본 로그인 페이지 URL 지정
 # login_required 장식자 등에 의해서 사용
-LOGIN_URL = "/login/"
+LOGIN_URL = "/users/login/"
 
 # 로그인 완료 후 next 인자가 지정되면 해당 URL 페이지로 이동
 # next 인자가 없으면 아래 URL로 이동
-LOGIN_REDIRECT_URL = "/"
+
+LOGIN_REDIRECT_URL = ""
 
 # 로그아웃 후에 next 인자기 지정되면 해당 URL 페이지로 이동
 # next 인자가 없으면 LOGOUT_REDIRECT_URL로 이동
 # LOGOUT_REDIRECT_URL이 None(디폴트)이면, 'registration/logged_out.html' 템플릿 렌더링
-# LOGOUT_REDIRECT_URL = None
+LOGOUT_REDIRECT_URL = LOGIN_REDIRECT_URL
 
 # 인증에 사용할 커스텀 User 모델 지정 : '앱이름.모델명'
 # AUTH_USER_MODEL = 'user.Usert'
@@ -165,7 +157,8 @@ MESSAGE_TAGS = {
 }
 
 
-#Django Session Timeout Code
+# Django Session Timeout Code
 SESSION_COOKIE_AGE = 1200 # second
 SESSION_SAVE_EVERY_REQUEST = True
+
 

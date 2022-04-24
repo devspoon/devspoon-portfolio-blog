@@ -2,9 +2,12 @@
 {% comment %} {% load search_tags %} {% endcomment %}
 {% load static %}
 
+{% load socialaccount %}
+
 {% block title %}login{% endblock %}
 
 {% block content %}
+{% providers_media_js %}
 
 	<!--====== LOGIN PART START ======-->
     <section class="login first grey">
@@ -27,7 +30,7 @@
                                 <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" />
                             </div>
                             {% if field.errors %}
-                            <ol>
+                            <ol class="validation_error">
                                 {% for error in field.errors %}
                                     <li><strong>{{ error|escape }}</strong></li>
                                 {% endfor %}
@@ -46,7 +49,9 @@
                             <div class="title-line">
                                 or
                             </div>
-                             <a href="#" class="btn btn-social col-12 facebook"><i class="ion-social-facebook"></i> Login with Facebook</a>
+                             <a href="{% provider_login_url 'google' %}" class="btn btn-social col-12 google"><i class="ion-social-facebook"></i> Login with google</a>
+                             <a href="{% provider_login_url 'kakao' %}" class="btn btn-social col-12 kakao mt-1"><i class="ion-social-facebook"></i> Login with kakaotalk</a>
+                             <a href="{% provider_login_url 'naver' %}" class="btn btn-social col-12 naver mt-1"><i class="ion-social-facebook"></i> Login with naver</a>
                         </form>
                     </div>
                 </div>

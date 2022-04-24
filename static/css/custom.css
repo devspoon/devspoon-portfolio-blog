@@ -7,6 +7,10 @@ body {
   padding-top: 70px;
 }
 
+.validation_error{
+    color:#eb4435;
+    font-size:0.8rem;
+}
 /*===========================
     01.Header css 
 ===========================*/
@@ -1472,15 +1476,35 @@ section.first button.btn {
     opacity: .8;
   }
   
-.box-body a.facebook {
+.box-body a.google {
     background-color: #3b5998;
     color: #fff !important;
   }
 
+.box-body a.kakao {
+    background-color: #dfcd30;
+    color: #fff !important;
+}
+
+.box-body a.naver {
+    background-color: #36a021;
+    color: #fff !important;
+}
 /*===========================
     11. User Edit section css 
 ===========================*/
 /*=====  =====*/
+
+.custom-control
+{
+    float: left;
+}
+
+.custom-control-input
+{
+    width: 15px; height: 15px;
+}
+
 .e-profile .mx-auto
 {
     width: 140px;
