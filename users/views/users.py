@@ -1,4 +1,3 @@
-import imp
 import logging
 from datetime import timedelta
 from django.utils import timezone
@@ -11,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
 
 from django.urls import reverse, reverse_lazy
-from django.shortcuts import redirect, render, HttpResponseRedirect
+from django.shortcuts import redirect, render, HttpResponseRedirect, get_object_or_404
 
 from django.contrib.auth.hashers import check_password, make_password
 from django.core.exceptions import ObjectDoesNotExist
@@ -19,9 +18,9 @@ from django.http import Http404
 
 from allauth.socialaccount.models import SocialAccount
 
-from .users_forms import RegisterForm, LoginForm, ResendVerificationEmailForm, ResetPasswordForm, UpdatePasswordForm
+from .users_forms import RegisterForm, LoginForm, ResendVerificationEmailForm, ResetPasswordForm, UpdatePasswordForm, ProfileForm
 from utils.email.verify_email_mixins import VerifyEmailMixin
-from ..models import User, UserVerification
+from ..models import User, UserVerification, UserProfile
 
 # Create your views here.
 logger = logging.getLogger(__name__)
@@ -49,9 +48,11 @@ class RegisterView(VerifyEmailMixin, FormView):
 
         result = self.send_verification_email_management(self.verify_email_template_name1, settings.DEFAULT_FROM_EMAIL ,user, self.token_gen_type)
 
-        # print('generator success sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
+        #print('result of sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
 
-        logger.debug('generator success sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
+        logger.debug('result of sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
+
+        messages.success(self.request,"Verification Email is sending to your mailbox.")
 
         if result['sending_mail_num'] == 0 :
             UserVerification.objects.create(user=user, key=result['token'], sending_result=False,verify_name=0)
@@ -113,6 +114,12 @@ class LogoutView(View):
     def get(self, request):
         auth.logout(request)
         return redirect(reverse('blog:index'))
+
+
+class UserDeleteView(View):
+    def get(self, request, *args, **kwargs):
+        User.objects.get(id=request.user.pk).set_delete()
+        return redirect(reverse('users:login'))
 
 
 class VerificationView(View):
@@ -197,3 +204,34 @@ class UpdatePasswordView(FormView):
 
         return super().form_valid(form)
 
+
+class ProfileView(LoginRequiredMixin, UpdateView):
+    template_name = "users/profile.html"
+    form_class = ProfileForm
+    success_url = reverse_lazy('users:profile')
+
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(User, pk=self.request.user.pk)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        userprofile = UserProfile.objects.filter(user_id=self.request.user.pk).first()
+        context['user_point'] = userprofile.point
+        context['email_notifications'] = userprofile.email_notifications
+        return context
+
+
+    # def form_valid(self, form, **kwargs):
+    #     users = self.get_object()
+    #     return super().form_valid(form)
+
+    def form_invalid(self, form, **kwargs):
+    # error status test code
+
+        for field in form :
+            if field.errors:
+                for error in field.errors:
+                    print(f"{field} is {error}error!!! ")
+
+        return super().form_invalid(form)

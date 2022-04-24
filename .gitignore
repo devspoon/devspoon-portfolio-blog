@@ -13,3 +13,5 @@ logs/
 # prof files
 *.prof
 
+# media files
+media/
