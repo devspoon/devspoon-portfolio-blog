@@ -13,7 +13,6 @@ def test_registerview_post_test(client):
         reverse('register'),
         {'email': 'redhohoho@naver.com', 'password': 'redhohoho', 'password_confirm': 'redhohoho', 'username': 'redhohoho', 'nickname': 'redhohoho', 'profile_image':''}
     )
-    print("test!!!")
     assert response.status_code == 200
 
 
