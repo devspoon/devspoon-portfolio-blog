@@ -29,8 +29,6 @@ class VerifyEmailMixin:
             if template is not None:
                 self.email_template_name_generator_token = template
 
-            print("email_template_name_generator_token : ",self.email_template_name_generator_token)
-
             return self.__create_verification_email_generator_token(from_email, user)
         else :
             if template is not None:

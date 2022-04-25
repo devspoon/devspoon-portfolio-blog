@@ -27,7 +27,6 @@ from django.contrib.auth.models import AbstractUser
 from allauth.account.models import EmailAddress
 
 from utils.email import *
-
 from utils.os.file_path_name_gen import date_upload_to
 
 # Create your models here.
@@ -188,6 +187,24 @@ class UserProfile(models.Model):
         return _('UserProfile')
 
 
+class SendingEmailMonitor(models.Model):
+    vendor = models.CharField( max_length=20, blank=False, verbose_name=_('Vendor Name'))
+    sending_success_cnt = models.IntegerField( blank=True, default=0, verbose_name=_('Sending Success Count'))
+    sending_failed_cnt = models.IntegerField( blank=True, default=0, verbose_name=_('Sending Failed Count'))
+    sending_total_cnt = models.IntegerField( blank=False, default=0, verbose_name=_('Sending Total Count'))
+    this_month = models.PositiveIntegerField( blank=False, validators=[MinValueValidator(1), MaxValueValidator(12)], verbose_name=_('This Month'))
+    last_sending_state = models.BooleanField( blank=False, default=False, verbose_name=_('Last Sending State'))
+    last_success_at = models.DateTimeField(null=True, blank=True, verbose_name=_('Success Time'))
+    last_failed_at = models.DateTimeField(null=True, blank=True, verbose_name=_('Failed Time'))
+
+    class Meta:
+            db_table = 'sending_email_monitor'
+            verbose_name = _('sending email monitor')
+            verbose_name_plural = _('sending email monitor')
+
+    def __str__(self):
+        return _('SendingEmailMonitor')
+
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
 
@@ -210,14 +227,6 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
 
     def populate_user(self, request, sociallogin, data):
         user = super().populate_user(request, sociallogin, data)
-        # print("email : ",user.email)
-        # print("nickname : ",user.nickname)
-        # print("profile_image : ",user.profile_image)
-        # print("gender : ",user.gender)
-        # print("id : ",user.id)
-        # print("username : ",user.username)
-        # print("first_name : ",user.first_name)
-        # print("last_name : ",user.last_name)
         #user.username = user.email[:30]
 
         if user.email is not None:

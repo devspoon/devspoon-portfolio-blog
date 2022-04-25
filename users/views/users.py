@@ -17,17 +17,26 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 
 from allauth.socialaccount.models import SocialAccount
+from django.db.models import F
 
 from .users_forms import RegisterForm, LoginForm, ResendVerificationEmailForm, ResetPasswordForm, UpdatePasswordForm, ProfileForm
 from utils.email.verify_email_mixins import VerifyEmailMixin
-from ..models import User, UserVerification, UserProfile
+from ..models import User, UserVerification, UserProfile, SendingEmailMonitor
 
 # Create your views here.
 logger = logging.getLogger(__name__)
 
+def update_or_create_sending_email_result(result:list) -> None :
+    if not SendingEmailMonitor.objects.filter(vendor=settings.MAIL_VENDOR, this_month=timezone.now().month):
+        obj, created = SendingEmailMonitor.objects.create(
+            vendor=settings.MAIL_VENDOR,
+            this_month=timezone.now().month,
+            last_sending_state=False)
 
-
-
+    if result['sending_mail_num'] == 0:
+        obj= SendingEmailMonitor.objects.filter(vendor=settings.MAIL_VENDOR, this_month=timezone.now().month).update(sending_failed_cnt=F('sending_failed_cnt') + 1, sending_total_cnt=F('sending_total_cnt') + 1, last_sending_state=False , last_failed_at=timezone.now())
+    else:
+        obj= SendingEmailMonitor.objects.filter(vendor=settings.MAIL_VENDOR, this_month=timezone.now().month).update(sending_success_cnt=F('sending_success_cnt') + 1, sending_total_cnt=F('sending_total_cnt') + 1, last_sending_state=True ,last_success_at=timezone.now())
 
 class RegisterView(VerifyEmailMixin, FormView):
     template_name = 'users/register.html'
@@ -51,6 +60,8 @@ class RegisterView(VerifyEmailMixin, FormView):
         #print('result of sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
 
         logger.debug('result of sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
+
+        update_or_create_sending_email_result(result)
 
         messages.success(self.request,"Verification Email is sending to your mailbox.")
 
@@ -81,6 +92,8 @@ class ResendVerificationEmailView(VerifyEmailMixin, FormView):
         # print('generator success sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
 
         logger.debug('generator success sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
+
+        update_or_create_sending_email_result(result)
 
         if result['sending_mail_num'] == 0 :
             UserVerification.objects.create(user=user, key=result['token'], sending_result=False,verify_name=0)
@@ -125,7 +138,7 @@ class UserDeleteView(View):
 class VerificationView(View):
     def get(self, request):
         key = request.GET.get('key', '')
-        print('key : ',key)
+
         try:
             verification = UserVerification.objects.get(key=key)
         except UserVerification.DoesNotExist:
@@ -164,7 +177,7 @@ class ForgetPasswordView(VerifyEmailMixin, FormView):
     template_name = 'users/reset_password.html'
     form_class = ResetPasswordForm
     success_url = reverse_lazy('users:login')
-    reset_password_template_name = '\\email\\reset_password_email.html'
+    reset_password_template_name = '/email/reset_password_email.html'
 
     def form_valid(self, form):
         email = form.cleaned_data['email']
@@ -226,12 +239,12 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     #     users = self.get_object()
     #     return super().form_valid(form)
 
-    def form_invalid(self, form, **kwargs):
-    # error status test code
+    # def form_invalid(self, form, **kwargs):
+    # # error status test code
 
-        for field in form :
-            if field.errors:
-                for error in field.errors:
-                    print(f"{field} is {error}error!!! ")
+    #     for field in form :
+    #         if field.errors:
+    #             for error in field.errors:
+    #                 print(f"{field} is {error}error!!! ")
 
-        return super().form_invalid(form)
+    #     return super().form_invalid(form)
