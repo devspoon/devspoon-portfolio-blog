@@ -71,6 +71,7 @@ class User(AbstractUser):
     )
 
     is_deleted = models.BooleanField(default=False, verbose_name=_('Deleted State'))
+    is_site_register = models.BooleanField(default=False, verbose_name=_('Site Register User'))
     last_login_at = models.DateTimeField(blank=True, null=True, verbose_name=_('Last Login Time'))
     updated_at = models.DateTimeField(auto_now=True,null=True, verbose_name=_('Updated Time'))
     deleted_at = models.DateTimeField(blank=True, null=True, verbose_name=_('Deleted Time'))
@@ -208,22 +209,20 @@ class SendingEmailMonitor(models.Model):
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
 
-    # def pre_social_login(self, request, sociallogin):
-    #     """
-    #     Invoked just after a user successfully authenticates via a
-    #     social provider, but before the login is actually processed
-    #     (and before the pre_social_login signal is emitted).
+    def pre_social_login(self, request, sociallogin):
+        """
+        Invoked just after a user successfully authenticates via a
+        social provider, but before the login is actually processed
+        (and before the pre_social_login signal is emitted).
 
-    #     You can use this hook to intervene, e.g. abort the login by
-    #     raising an ImmediateHttpResponse
+        You can use this hook to intervene, e.g. abort the login by
+        raising an ImmediateHttpResponse
 
-    #     Why both an adapter hook and the signal? Intervening in
-    #     e.g. the flow from within a signal handler is bad -- multiple
-    #     handlers may be active and are executed in undetermined order.
-    #     """
-    #     messages.warning("You are already registered.")
-    #     raise ImmediateHttpResponse(redirect(reverse('users:login')))
-
+        Why both an adapter hook and the signal? Intervening in
+        e.g. the flow from within a signal handler is bad -- multiple
+        handlers may be active and are executed in undetermined order.
+        """
+        pass
 
     def populate_user(self, request, sociallogin, data):
         user = super().populate_user(request, sociallogin, data)

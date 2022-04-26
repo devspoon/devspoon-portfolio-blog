@@ -24,7 +24,7 @@ class RegisteredEmailValidator:
 
     def __call__(self, email):
         try:
-            user = self.user_model.objects.get(email=email)
+            user = self.user_model.objects.get(email=email, is_site_register=True)
         except self.user_model.DoesNotExist:
             return
         else:
@@ -32,7 +32,6 @@ class RegisteredEmailValidator:
                 raise ValidationError('Get your email verified.', code=self.code)
             if user.is_active:
                 raise ValidationError('Already certified.', code=self.code)
-
         return
 
 
@@ -42,9 +41,9 @@ class LoginVerificationEmailValidator:
 
     def __call__(self, email):
         try:
-            user = self.user_model.objects.get(email=email)
+            user = self.user_model.objects.get(email=email, is_site_register=True)
         except self.user_model.DoesNotExist:
-            raise ValidationError('You must register first.', code=self.code)
+            raise ValidationError('You must register first or try social login.', code=self.code)
         else:
             if user.verified is not True:
                 raise ValidationError('You have to get email verification first', code=self.code)
@@ -58,9 +57,9 @@ class ResendVerificationEmailValidator:
 
     def __call__(self, email):
         try:
-            user = self.user_model.objects.get(email=email)
+            user = self.user_model.objects.get(email=email, is_site_register=True)
         except self.user_model.DoesNotExist:
-            raise ValidationError('You must register first.', code=self.code)
+            raise ValidationError('You must register first. You might be a social login user', code=self.code)
         else:
             if user.verified is True:
                 raise ValidationError('Your email verification is successfully finished', code=self.code)
@@ -74,8 +73,8 @@ class ResetPasswordEmailValidator:
 
     def __call__(self, email):
         try:
-            self.user_model.objects.get(email=email)
+            self.user_model.objects.get(email=email, is_site_register=True)
         except self.user_model.DoesNotExist:
-            raise ValidationError('Your email information does not exist.', code=self.code)
+            raise ValidationError('Your email information does not exist or try social login.', code=self.code)
 
         return
