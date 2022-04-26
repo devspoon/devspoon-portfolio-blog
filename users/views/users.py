@@ -114,9 +114,8 @@ class LoginView(AnonymousRequiredMixin, FormView):
         logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
-        user = User.objects.get(email=email, is_site_register=True)
-        print("username!!!! : ",user)
-        user = auth.authenticate(username=user.username, password=password)
+        user_temp = User.objects.get(email=email, is_site_register=True)
+        user = auth.authenticate(username=user_temp.username, password=password)
         if user:
             auth.login(self.request, user)
             user= User.objects.get(username=user.username, is_site_register=True)
