@@ -8,6 +8,8 @@ from django.views.generic import FormView, UpdateView
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
+from braces.views import AnonymousRequiredMixin
+
 
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import redirect, render, HttpResponseRedirect, get_object_or_404
@@ -53,13 +55,11 @@ class RegisterView(VerifyEmailMixin, FormView):
         nickname = form.cleaned_data['nickname']
         profile_image = form.cleaned_data['profile_image']
 
-        user = User.objects.create_user(email=email, password=password, username=username, nickname=nickname, profile_image=profile_image)
+        user = User.objects.create_user(email=email, password=password, username=username, nickname=nickname, profile_image=profile_image, is_site_register=True)
 
         result = self.send_verification_email_management(self.verify_email_template_name1, settings.DEFAULT_FROM_EMAIL ,user, self.token_gen_type)
 
-        #print('result of sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
-
-        logger.debug('result of sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
+        logger.info('result of sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
 
         update_or_create_sending_email_result(result)
 
@@ -89,9 +89,7 @@ class ResendVerificationEmailView(VerifyEmailMixin, FormView):
 
         result = self.send_verification_email_management(self.verify_email_template_name1, settings.DEFAULT_FROM_EMAIL ,user, self.token_gen_type)
 
-        # print('generator success sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
-
-        logger.debug('generator success sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
+        logger.info('generator success sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
 
         update_or_create_sending_email_result(result)
 
@@ -103,18 +101,25 @@ class ResendVerificationEmailView(VerifyEmailMixin, FormView):
 
         return super().form_valid(form)
 
-class LoginView(FormView):
+class LoginView(AnonymousRequiredMixin, FormView):
     template_name = 'users/login.html'
     success_url = reverse_lazy('blog:index')
     form_class = LoginForm
 
+    def get_context_data(self, **kwargs):
+        logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
+        return super().get_context_data(**kwargs)
+
     def form_valid(self, form):
+        logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
-        user = auth.authenticate(email=email, password=password)
-        if user is not None:
+        user = User.objects.get(email=email, is_site_register=True)
+        print("username!!!! : ",user)
+        user = auth.authenticate(username=user.username, password=password)
+        if user:
             auth.login(self.request, user)
-            user= User.objects.get(email=email)
+            user= User.objects.get(username=user.username, is_site_register=True)
             user.last_login_at = timezone.now()
             user.save()
             return super().form_valid(form)
@@ -185,9 +190,7 @@ class ForgetPasswordView(VerifyEmailMixin, FormView):
 
         result = self.reset_password_management(self.reset_password_template_name, settings.DEFAULT_FROM_EMAIL ,user)
 
-        # print('generator success sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
-
-        logger.debug('generator success sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
+        logger.info('generator success sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
 
         if result['sending_mail_num'] == 0 :
             UserVerification.objects.create(user=user, key=result['token'], sending_result=False,verify_name=1)
@@ -221,13 +224,14 @@ class UpdatePasswordView(FormView):
 class ProfileView(LoginRequiredMixin, UpdateView):
     template_name = "users/profile.html"
     form_class = ProfileForm
-    success_url = reverse_lazy('users:profile')
+    success_url = reverse_lazy('users:login')
 
 
     def get_object(self, queryset=None):
         return get_object_or_404(User, pk=self.request.user.pk)
 
     def get_context_data(self, **kwargs):
+        logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
         context = super().get_context_data()
         userprofile = UserProfile.objects.filter(user_id=self.request.user.pk).first()
         context['user_point'] = userprofile.point
@@ -236,7 +240,6 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
 
     # def form_valid(self, form, **kwargs):
-    #     users = self.get_object()
     #     return super().form_valid(form)
 
     # def form_invalid(self, form, **kwargs):

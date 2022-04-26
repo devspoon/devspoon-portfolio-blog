@@ -1,7 +1,9 @@
 import logging
+from django.utils import timezone
 
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
+from django.http import Http404
 
 from django.db.models import Avg
 from ..models.siteinfo import MainMenu
@@ -20,6 +22,7 @@ class IndexView(TemplateView):
     template_name = 'home/index.html'
 
     def get_context_data(self, **kwargs):
+        logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
         pass
         # recommendations = Recommendation.objects.filter(visible=True).order_by('sort')\
         #                       .select_related('restaurant').all()[:4]
