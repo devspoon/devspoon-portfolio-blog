@@ -29,7 +29,7 @@ from ..models import User, UserVerification, UserProfile, SendingEmailMonitor
 logger = logging.getLogger(__name__)
 
 def update_or_create_sending_email_result(result:list) -> None :
-    if not SendingEmailMonitor.objects.filter(vendor=settings.MAIL_VENDOR, this_month=timezone.now().month):
+    if not SendingEmailMonitor.objects.filter(vendor=settings.MAIL_VENDOR, this_month=timezone.now().month).first():
         obj, created = SendingEmailMonitor.objects.create(
             vendor=settings.MAIL_VENDOR,
             this_month=timezone.now().month,
@@ -85,7 +85,7 @@ class ResendVerificationEmailView(VerifyEmailMixin, FormView):
 
     def form_valid(self, form):
         email = form.cleaned_data['email']
-        user = User.objects.get(email=email)
+        user = User.objects.get(email=email, is_site_register=True)
 
         result = self.send_verification_email_management(self.verify_email_template_name1, settings.DEFAULT_FROM_EMAIL ,user, self.token_gen_type)
 
@@ -106,12 +106,12 @@ class LoginView(AnonymousRequiredMixin, FormView):
     success_url = reverse_lazy('blog:index')
     form_class = LoginForm
 
-    def get_context_data(self, **kwargs):
-        logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
-        return super().get_context_data(**kwargs)
+    # def get_context_data(self, **kwargs):
+    #     logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
+    #     return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
-        logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
+        # logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
         user_temp = User.objects.get(email=email, is_site_register=True)
@@ -185,11 +185,13 @@ class ForgetPasswordView(VerifyEmailMixin, FormView):
 
     def form_valid(self, form):
         email = form.cleaned_data['email']
-        user = User.objects.get(email=email)
+        user = User.objects.get(email=email, is_site_register=True)
 
         result = self.reset_password_management(self.reset_password_template_name, settings.DEFAULT_FROM_EMAIL ,user)
 
         logger.info('generator success sending mail number  = {}, token = {}'.format(result['sending_mail_num'],result['token']))
+
+        update_or_create_sending_email_result(result)
 
         if result['sending_mail_num'] == 0 :
             UserVerification.objects.create(user=user, key=result['token'], sending_result=False,verify_name=1)
@@ -230,7 +232,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         return get_object_or_404(User, pk=self.request.user.pk)
 
     def get_context_data(self, **kwargs):
-        logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
+        #logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
         context = super().get_context_data()
         userprofile = UserProfile.objects.filter(user_id=self.request.user.pk).first()
         context['user_point'] = userprofile.point

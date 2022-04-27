@@ -17,8 +17,8 @@ from os.path import join
 from django.contrib import messages
 
 #from .sub_settings.email.gmail import *
-#from .sub_settings.email.sendinblue import *
-from .sub_settings.email.mailgun import *
+from .sub_settings.email.sendinblue import *
+#from .sub_settings.email.mailgun import *
 # from .sub_settings.email.sendgrid import *
 #from .sub_settings.email.aws_ses import *
 
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'users',
     'blog',
 
+    "anymail",
     'imagekit',
 ]
 
