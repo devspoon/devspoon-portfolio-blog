@@ -167,13 +167,13 @@ class UserVerification(models.Model):
             verbose_name_plural = _('user email verification')
 
     def __str__(self):
-        return _('UserEmailVerification')
+        return "%s" % (self.user)
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE, related_name='user_profile', verbose_name=_('User')
     )
     nickname = models.CharField(null=False, max_length=30)
     point = models.IntegerField()
@@ -185,7 +185,7 @@ class UserProfile(models.Model):
             verbose_name_plural = _('user profile')
 
     def __str__(self):
-        return _('UserProfile')
+        return "%s" % (self.user)
 
 
 class SendingEmailMonitor(models.Model):
@@ -204,7 +204,7 @@ class SendingEmailMonitor(models.Model):
             verbose_name_plural = _('sending email monitor')
 
     def __str__(self):
-        return _('SendingEmailMonitor')
+        return "%s" % (self.vendor)
 
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):

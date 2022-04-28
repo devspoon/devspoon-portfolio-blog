@@ -126,8 +126,8 @@ LOGGING = {
         #     'propagate': False,
         # },
         '': {
-            'handlers': ['console','mail_admins'],
-            'level': 'DEBUG',
+            'handlers': ['console','mail_admins'],#,'file'],
+            'level': 'INFO',
         }
     }
 }

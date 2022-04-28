@@ -11,18 +11,25 @@ from .service.search import BlogSearch
 
 logger = logging.getLogger(__name__)
 
-# logger.info("recommendations: %d", len(recommendations))
+# logger.info("info")
 # logger.warning("warning")
 # logger.debug("debug")
 # logger.error("error")
 
 # Create your views here.
+
+
 class IndexView(TemplateView):
     template_name = 'home/index.html'
 
     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["test"] = "it's test!!!"
+        return context
+
+    # def get_context_data(self, **kwargs):
         #logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_age()} {self.request.session.get_expiry_date()}")
-        pass
+        # pass
         # recommendations = Recommendation.objects.filter(visible=True).order_by('sort')\
         #                       .select_related('restaurant').all()[:4]
         # latest = Restaurant.objects.order_by('-created_at')[:4]
