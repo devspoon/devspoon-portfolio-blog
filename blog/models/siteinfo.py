@@ -19,19 +19,21 @@ class MainMenu(models.Model):
         DETAIL_PAGE = '3', _('detailpage')
         USER_PAGE = '4', _('userpage')
 
-    menu_code = models.CharField(unique=True, max_length=255, blank=False, verbose_name=_(''))
-    menu_name = models.CharField(max_length=255, blank=False, verbose_name=_(''))
-    menu_icon = models.CharField(max_length=100, blank=True, verbose_name=_(''))
-    menu_path = models.CharField(max_length=255, blank=False, verbose_name=_(''))
+    parent_menu_code = models.CharField(max_length=255, blank=True, verbose_name=_('Parent Menu Code'))
+    menu_code = models.CharField(unique=True, max_length=255, blank=False, verbose_name=_('Menu Code'))
+    menu_name = models.CharField(max_length=255, blank=False, verbose_name=_('Menu Name'))
+    menu_icon = models.CharField(max_length=100, blank=True, verbose_name=_('Menu Icon'))
+    menu_path = models.CharField(max_length=255, blank=False, verbose_name=_('Menu Path'))
     menu_type = models.SmallIntegerField(choices = MenuType.choices, default=MenuType.MAIN_PAGE, verbose_name=_('Menu Type'))
-    menu_link = models.CharField(max_length=255, blank=True, verbose_name=_(''))
-    mene_target = models.CharField(max_length=255, blank=False, default='self', verbose_name=_(''))
-    menu_order = models.IntegerField(verbose_name=_(''))
-    menu_permit_level = models.IntegerField(verbose_name=_(''))
-    menu_side = models.BooleanField(default=True, verbose_name=_(''))
-    menu_use = models.BooleanField(default=True, verbose_name=_(''))
-    menu_use_nav = models.BooleanField(default=True, verbose_name=_(''))
-    menu_created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_(''))
+    menu_link = models.URLField(blank=True, default='http://', verbose_name=_('Menu Link'))
+    menu_target = models.CharField(max_length=255, blank=False, default='_self', verbose_name=_('Menu Target'))
+    menu_order = models.IntegerField(verbose_name=_('Menu Order'))
+    menu_permit_level = models.IntegerField(verbose_name=_('Menu Permit Level'))
+    menu_side = models.BooleanField(default=True, verbose_name=_('Menu Side'))
+    menu_use = models.BooleanField(default=True, verbose_name=_('Menu Use'))
+    menu_use_nav = models.BooleanField(default=True, verbose_name=_('Menu Use Nav'))
+    menu_created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Menu Created Time'))
+    menu_update_at = models.DateTimeField(null=True, blank=True, verbose_name=_('Menu Updated Time'))
 
     class Meta:
             db_table = 'main_menu'
@@ -39,17 +41,17 @@ class MainMenu(models.Model):
             verbose_name_plural = _('main menu')
 
     def __str__(self):
-        return "%s" % (self.menu_name)
+        return "%s " % (self.menu_name)
 
 
 # footer info
 class SiteInfo(models.Model):
     country_number_regex = RegexValidator(regex = r'^+([0-9]{2,3})$')
-    country_phone_code = models.CharField(validators = [country_number_regex], max_length = 3, blank=True, default='+82', verbose_name=_(''))
+    country_phone_code = models.CharField(validators = [country_number_regex], max_length = 3, blank=True, default='+82', verbose_name=_('Country Phone Code'))
     phone_number_regex = RegexValidator(regex = r'^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$')
-    phone_number = models.CharField(validators = [phone_number_regex], max_length = 16, unique = True, blank=True, verbose_name=_(''))
-    office_phone_number = models.CharField(max_length = 16, unique = True, blank=True, verbose_name=_(''))
-    email = models.EmailField(max_length=128, unique = True, blank=True, verbose_name=_(''))
+    phone_number = models.CharField(validators = [phone_number_regex], max_length = 16, unique = True, blank=True, verbose_name=_('Phone Number'))
+    office_phone_number = models.CharField(max_length = 16, unique = True, blank=True, verbose_name=_('Office Phone Number'))
+    email = models.EmailField(max_length=128, unique = True, blank=True, verbose_name=_('email'))
 
     class Meta:
             db_table = 'site_info'
@@ -62,23 +64,23 @@ class SiteInfo(models.Model):
 
 # SNS, Portfolio personal page url
 class WorldSocialAccount(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='world_social_account', verbose_name=_('User'), null = True)
-    twitter = models.URLField(blank=True, verbose_name=_(''))
-    facebook = models.URLField(blank=True, verbose_name=_(''))
-    instragram = models.URLField(blank=True, verbose_name=_(''))
-    youtube = models.URLField(blank=True, verbose_name=_(''))
-    pinterest = models.URLField(blank=True, verbose_name=_(''))
-    linkedin = models.URLField(blank=True, verbose_name=_(''))
-    xing = models.URLField(blank=True, verbose_name=_(''))
-    meetup = models.URLField(blank=True, verbose_name=_(''))
-    opportunity = models.URLField(blank=True, verbose_name=_(''))
-    connect = models.URLField(blank=True, verbose_name=_(''))
-    upwork = models.URLField(blank=True, verbose_name=_(''))
-    freelancer = models.URLField(blank=True, verbose_name=_(''))
-    indeed = models.URLField(blank=True, verbose_name=_(''))
-    monster = models.URLField(blank=True, verbose_name=_(''))
-    angel = models.URLField(blank=True, verbose_name=_(''))
-    peoplenjob = models.URLField(blank=True, verbose_name=_(''))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='world_social_account', verbose_name=_('User'))
+    twitter = models.URLField(blank=True, verbose_name=_('twitter'))
+    facebook = models.URLField(blank=True, verbose_name=_('facebook'))
+    instragram = models.URLField(blank=True, verbose_name=_('instragram'))
+    youtube = models.URLField(blank=True, verbose_name=_('youtube'))
+    pinterest = models.URLField(blank=True, verbose_name=_('pinterest'))
+    linkedin = models.URLField(blank=True, verbose_name=_('linkedin'))
+    xing = models.URLField(blank=True, verbose_name=_('xing'))
+    meetup = models.URLField(blank=True, verbose_name=_('meetup'))
+    opportunity = models.URLField(blank=True, verbose_name=_('opportunity'))
+    connect = models.URLField(blank=True, verbose_name=_('connect'))
+    upwork = models.URLField(blank=True, verbose_name=_('upwork'))
+    freelancer = models.URLField(blank=True, verbose_name=_('freelancer'))
+    indeed = models.URLField(blank=True, verbose_name=_('indeed'))
+    monster = models.URLField(blank=True, verbose_name=_('monster'))
+    angel = models.URLField(blank=True, verbose_name=_('angel'))
+    peoplenjob = models.URLField(blank=True, verbose_name=_('peoplenjob'))
 
     class Meta:
             db_table = 'world_social_account'
@@ -91,11 +93,11 @@ class WorldSocialAccount(models.Model):
 
 # portfolio info
 class LocalSocialAccount(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='local_social_account', verbose_name=_('User'), null = True)
-    wanted = models.URLField(blank=True, verbose_name=_(''))
-    rocketpunch = models.URLField(blank=True, verbose_name=_(''))
-    remember = models.URLField(blank=True, verbose_name=_(''))
-    monster = models.URLField(blank=True, verbose_name=_(''))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='local_social_account', verbose_name=_('User'))
+    wanted = models.URLField(blank=True, verbose_name=_('wanted'))
+    rocketpunch = models.URLField(blank=True, verbose_name=_('rocketpunch'))
+    remember = models.URLField(blank=True, verbose_name=_('remember'))
+    monster = models.URLField(blank=True, verbose_name=_('monster'))
     class Meta:
             db_table = 'local_social_account'
             verbose_name = _('local social account')
