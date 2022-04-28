@@ -1172,6 +1172,19 @@ textarea:focus {
   transition: all 0.3s ease-out 0s;
 }
 
+.header_navbar .form-control {
+    flex: 0.5 1 auto;
+    border-color: #FF6B6B;
+    z-index: -1;
+}
+
+.header_navbar .search-btn {
+    height: 65%;
+    padding-left: 15px;
+    color: #FF6B6B;
+    border-color: #FF6B6B;
+}
+
 .sticky {
   position: fixed;
   z-index: 999;
@@ -1721,9 +1734,9 @@ textarea:focus {
   padding: 20px;
   opacity: 0;
   visibility: hidden;
-  min-height: 300px;
   transition: all 0.3s ease-out 0s;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 }
 
 @media (max-width: 767px) {

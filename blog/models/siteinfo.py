@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 
 from django.db import models
+from users.models import User
 
 # Create your models here.
 
@@ -18,7 +19,7 @@ class MainMenu(models.Model):
         DETAIL_PAGE = '3', _('detailpage')
         USER_PAGE = '4', _('userpage')
 
-    menu_code = models.CharField(max_length=255, blank=False, verbose_name=_(''))
+    menu_code = models.CharField(unique=True, max_length=255, blank=False, verbose_name=_(''))
     menu_name = models.CharField(max_length=255, blank=False, verbose_name=_(''))
     menu_icon = models.CharField(max_length=100, blank=True, verbose_name=_(''))
     menu_path = models.CharField(max_length=255, blank=False, verbose_name=_(''))
@@ -38,9 +39,10 @@ class MainMenu(models.Model):
             verbose_name_plural = _('main menu')
 
     def __str__(self):
-        return _('MainMenu')
+        return "%s" % (self.menu_name)
 
 
+# footer info
 class SiteInfo(models.Model):
     country_number_regex = RegexValidator(regex = r'^+([0-9]{2,3})$')
     country_phone_code = models.CharField(validators = [country_number_regex], max_length = 3, blank=True, default='+82', verbose_name=_(''))
@@ -55,26 +57,28 @@ class SiteInfo(models.Model):
             verbose_name_plural = _('site info')
 
     def __str__(self):
-        return _('SiteInfo')
+        return "%s" % (self.phone_number)
 
 
+# SNS, Portfolio personal page url
 class WorldSocialAccount(models.Model):
-    twitter = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    facebook = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    instragram = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    youtube = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    pinterest = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    linkedin = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    xing = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    meetup = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    opportunity = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    connect = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    upwork = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    freelancer = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    indeed = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    monster = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    angel = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    peoplenjob = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='world_social_account', verbose_name=_('User'), null = True)
+    twitter = models.URLField(blank=True, verbose_name=_(''))
+    facebook = models.URLField(blank=True, verbose_name=_(''))
+    instragram = models.URLField(blank=True, verbose_name=_(''))
+    youtube = models.URLField(blank=True, verbose_name=_(''))
+    pinterest = models.URLField(blank=True, verbose_name=_(''))
+    linkedin = models.URLField(blank=True, verbose_name=_(''))
+    xing = models.URLField(blank=True, verbose_name=_(''))
+    meetup = models.URLField(blank=True, verbose_name=_(''))
+    opportunity = models.URLField(blank=True, verbose_name=_(''))
+    connect = models.URLField(blank=True, verbose_name=_(''))
+    upwork = models.URLField(blank=True, verbose_name=_(''))
+    freelancer = models.URLField(blank=True, verbose_name=_(''))
+    indeed = models.URLField(blank=True, verbose_name=_(''))
+    monster = models.URLField(blank=True, verbose_name=_(''))
+    angel = models.URLField(blank=True, verbose_name=_(''))
+    peoplenjob = models.URLField(blank=True, verbose_name=_(''))
 
     class Meta:
             db_table = 'world_social_account'
@@ -82,18 +86,20 @@ class WorldSocialAccount(models.Model):
             verbose_name_plural = _('world social accounts')
 
     def __str__(self):
-        return _('WorldSocialAccount')
+        return "%s" % (self.id)
 
 
+# portfolio info
 class LocalSocialAccount(models.Model):
-    wanted = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    rocketpunch = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    remember = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
-    monster = models.CharField(max_length = 50, unique = True, blank=True, verbose_name=_(''))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='local_social_account', verbose_name=_('User'), null = True)
+    wanted = models.URLField(blank=True, verbose_name=_(''))
+    rocketpunch = models.URLField(blank=True, verbose_name=_(''))
+    remember = models.URLField(blank=True, verbose_name=_(''))
+    monster = models.URLField(blank=True, verbose_name=_(''))
     class Meta:
             db_table = 'local_social_account'
             verbose_name = _('local social account')
             verbose_name_plural = _('local social account')
 
     def __str__(self):
-        return _('LocalSocialAccount')
+        return "%s" % (self.id)
