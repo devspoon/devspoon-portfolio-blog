@@ -4,7 +4,7 @@ from blog.models.siteinfo import MainMenu, SiteInfo, WorldSocialAccount, LocalSo
 
 class MainMenuAdmin(admin.ModelAdmin):
     list_display = [field.name for field in MainMenu._meta.get_fields()]
-    list_display_links = ['id', 'menu_code', 'menu_name']
+    list_display_links = ['id','parent_menu_code', 'menu_code', 'menu_name']
 
 class SiteInfoAdmin(admin.ModelAdmin):
     list_display = [field.name for field in SiteInfo._meta.get_fields()]
