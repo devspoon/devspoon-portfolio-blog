@@ -9,7 +9,7 @@ from users.models import User
 
 # Create your models here.
 
-
+# header info
 class MainMenu(models.Model):
 
     class MenuType(models.TextChoices):
@@ -62,7 +62,7 @@ class SiteInfo(models.Model):
         return "%s" % (self.phone_number)
 
 
-# SNS, Portfolio personal page url
+# Overseas SNS, Portfolio personal page url
 class WorldSocialAccount(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='world_social_account', verbose_name=_('User'))
     twitter = models.URLField(blank=True, verbose_name=_('twitter'))
@@ -91,7 +91,7 @@ class WorldSocialAccount(models.Model):
         return "%s" % (self.id)
 
 
-# portfolio info
+# Local SNS, Portfolio personal page url
 class LocalSocialAccount(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='local_social_account', verbose_name=_('User'))
     wanted = models.URLField(blank=True, verbose_name=_('wanted'))

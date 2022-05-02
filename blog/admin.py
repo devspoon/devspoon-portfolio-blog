@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blog.models.siteinfo import MainMenu, SiteInfo, WorldSocialAccount, LocalSocialAccount
+from blog.models.default import MainMenu, SiteInfo, WorldSocialAccount, LocalSocialAccount
 # Register your models here.
 
 class MainMenuAdmin(admin.ModelAdmin):
