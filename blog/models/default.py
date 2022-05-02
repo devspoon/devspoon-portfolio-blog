@@ -5,12 +5,13 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 
 from django.db import models
+from mptt.models import MPTTModel, TreeForeignKey
 from users.models import User
 
 # Create your models here.
 
 # header info
-class MainMenu(models.Model):
+class MainMenu(MPTTModel):
 
     class MenuType(models.TextChoices):
         ADMIN_PAGE = '0', _('adminpage')
@@ -19,27 +20,44 @@ class MainMenu(models.Model):
         DETAIL_PAGE = '3', _('detailpage')
         USER_PAGE = '4', _('userpage')
 
-    parent_menu_code = models.CharField(max_length=255, blank=True, verbose_name=_('Parent Menu Code'))
-    menu_code = models.CharField(unique=True, max_length=255, blank=False, verbose_name=_('Menu Code'))
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True, on_delete=models.CASCADE, verbose_name=_('Parent'))
     menu_name = models.CharField(max_length=255, blank=False, verbose_name=_('Menu Name'))
     menu_icon = models.CharField(max_length=100, blank=True, verbose_name=_('Menu Icon'))
     menu_path = models.CharField(max_length=255, blank=False, verbose_name=_('Menu Path'))
     menu_type = models.SmallIntegerField(choices = MenuType.choices, default=MenuType.MAIN_PAGE, verbose_name=_('Menu Type'))
+    menu_slug = models.SlugField(blank=True, verbose_name=_('Menu Slug'))
     menu_link = models.URLField(blank=True, default='http://', verbose_name=_('Menu Link'))
     menu_target = models.CharField(max_length=255, blank=False, default='_self', verbose_name=_('Menu Target'))
-    menu_order = models.IntegerField(verbose_name=_('Menu Order'))
-    menu_permit_level = models.IntegerField(verbose_name=_('Menu Permit Level'))
+    menu_permit_level = models.IntegerField(default=0,verbose_name=_('Menu Permit Level'))
     menu_side = models.BooleanField(default=True, verbose_name=_('Menu Side'))
     menu_use = models.BooleanField(default=True, verbose_name=_('Menu Use'))
     menu_use_nav = models.BooleanField(default=True, verbose_name=_('Menu Use Nav'))
     menu_created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Menu Created Time'))
     menu_update_at = models.DateTimeField(null=True, blank=True, verbose_name=_('Menu Updated Time'))
 
+    class MPTTMeta:
+        order_insertion_by = ['menu_name']
+        
     class Meta:
-            db_table = 'main_menu'
-            verbose_name = _('main menu')
-            verbose_name_plural = _('main menu')
+        constraints = [
+            models.UniqueConstraint(fields=['parent', 'menu_slug', 'menu_name'], name='MainMenu unique fields of constraint'),
+        ]
+        db_table = 'main_menu'
+        verbose_name = _('main menu')
+        verbose_name_plural = _('main menu')
 
+    def get_slug_list(self):
+        try:
+            ancestors = self.get_ancestors(include_self=True)
+        except:
+            ancestors = list()
+        else:
+            ancestors = [i.menu_slug for i in ancestors]
+        slugs = list()
+        for i in range(len(ancestors)):
+            slugs.append('/'.join(ancestors[:i+1]))
+        return slugs
+    
     def __str__(self):
         return "%s " % (self.menu_name)
 

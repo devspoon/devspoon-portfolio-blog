@@ -21,7 +21,7 @@
                                             <span></span>
                                         </div>
                                     </a>
-                                    <ul class="sub-menu collapse" id="sub-nav1">
+                                    <ul class="dropdown-menu sub-menu collapse" id="sub-nav1">
                                         <li><a href="about.html">About</a></li>
                                         <li><a href="service.html">Service</a></li>
                                         <li><a href="category-list.html">Category List</a></li>
@@ -41,7 +41,7 @@
                                             <span></span>
                                         </div>
                                     </a>
-                                    <ul class="sub-menu collapse" id="sub-nav">
+                                    <ul class="dropdown-menu  sub-menu collapse" id="sub-nav">
                                         <li><a href="category.html">Category Grid</a></li>
                                         <li><a href="category-list.html">Category List</a></li>
                                     </ul>
@@ -52,7 +52,7 @@
                             </ul>
                         </div>
                         <div class="mobile-manu row-vh d-flex flex-row justify-content-around">
-                            <ul class="header-btn d-md-flex">
+                            <ul class="header-btn d-sm-flex">
                                 {% if request.user.is_authenticated %}
 
                                 <li>
@@ -82,7 +82,7 @@
                                 </li>
                                 {% endif %}
                             </ul>
-                            <div class="canvas_open d-md-none">
+                            <div class="canvas_open d-lg-none">
                                 <a href="#" onclick="return false;"><ion-icon name="menu-outline"></ion-icon></a>
                             </div>
                         </div>

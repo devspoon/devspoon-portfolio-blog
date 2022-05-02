@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'users',
     'blog',
 
+    "mptt",
     "anymail",
     'imagekit',
 ]
