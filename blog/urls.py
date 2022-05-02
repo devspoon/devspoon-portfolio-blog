@@ -1,7 +1,7 @@
 from django.urls import path, include
 from . import views
 
-from .views.main import IndexView
+from .views.index import IndexView
 
 app_name = "blog"
 

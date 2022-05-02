@@ -5,7 +5,7 @@ from django.views.generic import TemplateView, View
 from django.http import Http404
 
 from django.db.models import Avg
-from ..models.siteinfo import MainMenu
+from ..models.default import MainMenu
 
 from .service.search import BlogSearch
 
@@ -17,6 +17,9 @@ logger = logging.getLogger(__name__)
 # logger.error("error")
 
 # Create your views here.
+
+def main_menu() -> MainMenu:
+    menu = MainMenu.objects.all()
 
 
 class IndexView(TemplateView):

@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 def update_or_create_sending_email_result(result:list) -> None :
     if not SendingEmailMonitor.objects.filter(vendor=settings.MAIL_VENDOR, this_month=timezone.now().month).first():
-        obj, created = SendingEmailMonitor.objects.create(
+        obj = SendingEmailMonitor.objects.create(
             vendor=settings.MAIL_VENDOR,
             this_month=timezone.now().month,
             last_sending_state=False)
