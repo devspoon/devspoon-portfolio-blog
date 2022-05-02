@@ -1,10 +1,7 @@
 from django.contrib import admin
+from mptt.admin import DraggableMPTTAdmin    # 관리자페이지에서 카테고리를 트리형식으로
 from blog.models.default import MainMenu, SiteInfo, WorldSocialAccount, LocalSocialAccount
 # Register your models here.
-
-class MainMenuAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in MainMenu._meta.get_fields()]
-    list_display_links = ['id','parent_menu_code', 'menu_code', 'menu_name']
 
 class SiteInfoAdmin(admin.ModelAdmin):
     list_display = [field.name for field in SiteInfo._meta.get_fields()]
@@ -18,7 +15,7 @@ class LocalSocialAccountAdmin(admin.ModelAdmin):
     list_display = [field.name for field in LocalSocialAccount._meta.get_fields()]
     list_display_links = ['id']
 
-admin.site.register(MainMenu, MainMenuAdmin)
+admin.site.register(MainMenu, DraggableMPTTAdmin)
 admin.site.register(SiteInfo, SiteInfoAdmin)
 admin.site.register(WorldSocialAccount, WorldSocialAccountAdmin)
 admin.site.register(LocalSocialAccount, LocalSocialAccountAdmin)

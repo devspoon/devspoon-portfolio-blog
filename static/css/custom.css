@@ -265,6 +265,7 @@ body {
     padding-bottom: 12px;
     margin-bottom: 12px;
     border-bottom: 1px solid #ededed;
+    color: #000000;
   }
 
   .offcanvas_main_menu li a:hover {
@@ -297,6 +298,7 @@ body {
   .canvas_close a:hover {
     color: #6a7964;
   }
+
 
 /*===== 03.canvas_open here =====*/
   
@@ -688,43 +690,7 @@ body {
   
 /*===== 07.offcanvas_main_menu here =====*/
 
-.offcanvas_main_menu > li.menu-item-has-children.menu-open > span.menu-expand {
-    transform: rotate(180deg);
-  }
-  .offcanvas_main_menu > li ul li.menu-item-has-children.menu-open span.menu-expand {
-    transform: rotate(180deg);
-  }
-  
-  .offcanvas_main_menu li {
-    position: relative;
-  }
-  .offcanvas_main_menu li:last-child {
-    margin: 0;
-  }
-  .offcanvas_main_menu li span.menu-expand {
-    position: absolute;
-    right: 0;
-    cursor: pointer;
-  }
-  .offcanvas_main_menu li span.menu-expand:hover {
-    color: #6a7964;
-  }
-  .offcanvas_main_menu li a {
-    font-size: 14px;
-    font-weight: 400;
-    text-transform: capitalize;
-    display: block;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-    border-bottom: 1px solid #ededed;
-    color: #000000;
-  }
-  .offcanvas_main_menu li a:hover {
-    color: #6a7964;
-  }
-  .offcanvas_main_menu li ul.sub-menu {
-    padding-left: 20px;
-  }
+
 /*===== 08.icons here =====*/
 .icofont-rounded-down {
     margin: 0px 10px;

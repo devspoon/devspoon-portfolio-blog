@@ -1173,9 +1173,8 @@ textarea:focus {
 }
 
 .header_navbar .form-control {
-    flex: 0.5 1 auto;
+    flex: 1 1 auto;
     border-color: #FF6B6B;
-    z-index: -1;
 }
 
 .header_navbar .search-btn {
@@ -1739,7 +1738,7 @@ textarea:focus {
   z-index: 10;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 994px) {
   .dropdown-nav {
     right: 0;
     left: auto;
