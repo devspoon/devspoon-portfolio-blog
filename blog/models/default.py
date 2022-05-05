@@ -14,19 +14,19 @@ from users.models import User
 class MainMenu(MPTTModel):
 
     class MenuType(models.TextChoices):
-        ADMIN_PAGE = '0', _('adminpage')
-        MAIN_PAGE = '1', _('mainpage')
-        LIST_PAGE = '2', _('listpage')
-        DETAIL_PAGE = '3', _('detailpage')
-        USER_PAGE = '4', _('userpage')
+        ADMIN_PAGE = '0', _('admin page')
+        MAIN_PAGE = '1', _('main page')
+        LIST_PAGE = '2', _('list page')
+        DETAIL_PAGE = '3', _('detail page')
+        USER_PAGE = '4', _('user page')
 
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True, on_delete=models.CASCADE, verbose_name=_('Parent'))
     menu_name = models.CharField(max_length=255, blank=False, verbose_name=_('Menu Name'))
     menu_icon = models.CharField(max_length=100, blank=True, verbose_name=_('Menu Icon'))
     menu_path = models.CharField(max_length=255, blank=False, verbose_name=_('Menu Path'))
-    menu_type = models.SmallIntegerField(choices = MenuType.choices, default=MenuType.MAIN_PAGE, verbose_name=_('Menu Type'))
+    menu_type = models.CharField(max_length=15, choices = MenuType.choices, default=MenuType.MAIN_PAGE, verbose_name=_('Menu Type'))
     menu_slug = models.SlugField(blank=True, verbose_name=_('Menu Slug'))
-    menu_link = models.URLField(blank=True, default='http://', verbose_name=_('Menu Link'))
+    menu_link = models.URLField(blank=True, verbose_name=_('Menu Link'))
     menu_target = models.CharField(max_length=255, blank=False, default='_self', verbose_name=_('Menu Target'))
     menu_permit_level = models.IntegerField(default=0,verbose_name=_('Menu Permit Level'))
     menu_side = models.BooleanField(default=True, verbose_name=_('Menu Side'))
@@ -61,6 +61,9 @@ class MainMenu(MPTTModel):
     def __str__(self):
         return "%s " % (self.menu_name)
 
+    def get_absolute_url(self):
+        ...
+        #return reverse('blog:category', kwargs={'slug': self.slug, 'id': self.id})
 
 # footer info
 class SiteInfo(models.Model):

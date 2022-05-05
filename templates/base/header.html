@@ -1,4 +1,5 @@
 {% load static %}
+{% load mptt_tags %}
 
 <header class="header_area">
     <div id="header_navbar" class="header_navbar">
@@ -11,10 +12,46 @@
                         </a>
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav">
+                                
+                                {% recursetree main_menu %}           
+                                {% if node.is_root_node %}                
                                 <li class="nav-item">
-                                    <a class="page-scroll" href="index.html">Home</a>
-                                </li>
-                                <li class="nav-item">
+                                    <a class="page-scroll" data-toggle="collapse" data-target="#{{ node.pk}}" aria-controls="{{ node.pk }}"
+                                        aria-expanded="false" aria-label="Toggle navigation" href="javascript:void(0)">{{node.menu_name}}
+                                        <div class="sub-nav-toggler">
+                                            <span></span>
+                                        </div>
+                                    </a>
+                                    {% if not node.is_leaf_node %} 
+                                    <ul class="dropdown-menu sub-menu collapse" id="{{ node.pk }}">    
+                                    {% elif node.is_leaf_node %}                                                        
+                                    </li>
+                                    {% endif %}                            
+                                {% elif node.is_child_node and node.level == 1%}  
+                                    {% if node.menu_link  %}
+                                    <li class="nav-item">
+                                        <a class="page-scroll" href="{{ node.menu_link }}">{{ node.menu_name }}</a>
+                                    </li>
+                                    {% elif node.menu_slug %}
+                                    <li class="nav-item">
+                                        <a class="page-scroll" href="{{ node.get_absolute_url  }}">{{ node.menu_name }}</a>
+                                    </li>
+                                    {% else %}
+                                    <li class="nav-item">
+                                        <a class="page-scroll">{{ node.menu_name }}</a>
+                                    </li>
+                                        {% if not node.get_next_sibling %}                
+                                            </ul>
+                                        </li>
+                                        {% endif %}
+                                    {% endif %}
+                                {%  endif %}
+                                {% if not node.is_leaf_node %}  
+                                {{ children }}                                    
+                                {%  endif %}                                    
+                                {% endrecursetree %}
+                               
+                                {% comment %} <li class="nav-item">
                                     <a class="page-scroll" data-toggle="collapse" data-target="#sub-nav1" aria-controls="sub-nav1"
                                         aria-expanded="false" aria-label="Toggle navigation" href="javascript:void(0)">Pages
                                         <div class="sub-nav-toggler">
@@ -48,7 +85,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="page-scroll" href="product-details.html">Product Details</a>
-                                </li>
+                                </li> {% endcomment %}
                             </ul>
                         </div>
                         <div class="mobile-manu row-vh d-flex flex-row justify-content-around">

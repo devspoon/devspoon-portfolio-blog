@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 # Create your views here.
 
 def main_menu() -> MainMenu:
-    menu = MainMenu.objects.all()
+    return MainMenu.objects.all()
 
 
 class IndexView(TemplateView):
@@ -27,7 +27,8 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["test"] = "it's test!!!"
+        context["main_menu"] = main_menu()
+
         return context
 
     # def get_context_data(self, **kwargs):
