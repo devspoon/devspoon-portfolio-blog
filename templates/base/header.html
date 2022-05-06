@@ -2,6 +2,8 @@
 {% load mptt_tags %}
 {% load default_tags %}
 
+{% main_menu_tag as main_menu %}
+
 <header class="header_area">
     <div id="header_navbar" class="header_navbar">
         <div class="container position-relative">
@@ -13,7 +15,7 @@
                         </a>
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav">
-                                {% main_menu_tag as main_menu %}
+                                
                                 {% recursetree main_menu %}           
                                 {% if node.is_root_node %}                
                                 <li class="nav-item">
@@ -50,43 +52,7 @@
                                 {% if not node.is_leaf_node %}  
                                 {{ children }}                                    
                                 {%  endif %}                                    
-                                {% endrecursetree %}
-                               
-                                {% comment %} <li class="nav-item">
-                                    <a class="page-scroll" data-toggle="collapse" data-target="#sub-nav1" aria-controls="sub-nav1"
-                                        aria-expanded="false" aria-label="Toggle navigation" href="javascript:void(0)">Pages
-                                        <div class="sub-nav-toggler">
-                                            <span></span>
-                                        </div>
-                                    </a>
-                                    <ul class="dropdown-menu sub-menu collapse" id="sub-nav1">
-                                        <li><a href="about.html">About</a></li>
-                                        <li><a href="service.html">Service</a></li>
-                                        <li><a href="category-list.html">Category List</a></li>
-                                        <li><a href="category.html">Category Grid</a></li>
-                                        <li><a href="pricing.html">Pricing</a></li>
-                                        <li><a href="accordions.html">Accordions</a></li>
-                                        <li><a href="product-details.html">Product Details</a></li>
-                                        <li><a href="login.html">Login</a></li>
-                                        <li><a href="signup.html">Sign Up</a></li>
-                                        <li><a href="404.html">404 Page</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="page-scroll" data-toggle="collapse" data-target="#sub-nav" aria-controls="sub-nav"
-                                        aria-expanded="false" aria-label="Toggle navigation" href="javascript:void(0)">Category
-                                        <div class="sub-nav-toggler">
-                                            <span></span>
-                                        </div>
-                                    </a>
-                                    <ul class="dropdown-menu  sub-menu collapse" id="sub-nav">
-                                        <li><a href="category.html">Category Grid</a></li>
-                                        <li><a href="category-list.html">Category List</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="page-scroll" href="product-details.html">Product Details</a>
-                                </li> {% endcomment %}
+                                {% endrecursetree %}                               
                             </ul>
                         </div>
                         <div class="mobile-manu row-vh d-flex flex-row justify-content-around">
@@ -96,24 +62,23 @@
                                 <li>
                                     <a href="#" onclick="return false;" class="main-btn account-btn">
                                         <span class="d-md-none"><i class="lni lni-user"></i></span>
-                                        <span class="d-none d-md-block">My Account</span>
+                                        <span class="d-none d-md-block">
+                                            {% if request.session.username %} {{request.session.username}}
+                                            {% else %} {{request.session.email}}
+                                            {% endif %}
+                                        </span>
                                     </a>
                                     <ul class="dropdown-nav">
                                         <li><a href="{% url 'blog:index' %}">Favorite Post</a></li>
                                         <li><a href="{% url 'users:profile' %}">Profile Settings</a></li>
                                         <li><a href="{% url 'users:logout' %}">LogOut</a></li>
                                     </ul>
-                                </li>
-                                {% else %}
+                                </li>                                
                                 {% endif %}
 
-                                {% if request.user.is_authenticated %}
-                                {% comment %} <li>
-                                    <a href="{% url 'users:logout' %}" class="main-btn btn-hover d-none d-md-block">Logout</a>
-                                </li> {% endcomment %}
-                                {% else %}
+                                {% if not request.user.is_authenticated %}                                
                                 <li>
-                                    <a href="{% url 'users:login' %}" class="main-btn btn-hover login d-none d-md-block">Login</a>
+                                    <a href="{% url 'users:login' %}" class="main-btn btn-hover login d-block">Login</a>
                                 </li>
                                 <li>
                                     <a href="{% url 'users:register' %}" class="main-btn btn-hover d-none d-md-block">Register</a>
