@@ -1,3 +1,10 @@
+{% load static %}
+{% load mptt_tags %}
+{% load default_tags %}
+
+{% main_menu_tag as main_menu %}
+{% site_info_tag as site_info %}
+
 <div class="body_overlay">
 
 </div>
@@ -11,79 +18,82 @@
                     </div>
                     <div class="header_contact_info">
                         <ul class="d-flex">
-                            <li class="text-white"> <i class="lni lni-phone"></i> <a href="tel:+05483716566">+054
-                                    8371 65 66</a></li>
-                            <li class="text-white"> <i class="icofont-ui-email"></i> <a href="#" onclick="return false;">uthrstore@domain.com</a></li>
+                            <li class="text-white"> <i class="lni lni-phone"></i> <a href="tel:{{site_info.country_code}}-{{site_info.office_phone_number}}">{{site_info.country_code}}-{{site_info.office_pone_number}}</a></li>
+                            <li class="text-white"> <i class="icofont-ui-email"></i> <a href="#" onclick="return false;">{{site_info.office_email}}</a></li>
                         </ul>
                     </div>
                     <div class="header_social d-flex">
                         <span>Follow us</span>
                         <ul class="d-flex">
-                            <li><a href="#" onclick="return false;"><i class="lni lni-twitter"></i></a></li>
+                            {% if site_info.office_twitter %}
+                                <li><a href="#" onclick="return false;"><i class="lni lni-twitter"></i></a></li>
+                            {% endif %}
+
+                            {% if site_info.office_facebook %}
                             <li><a href="#" onclick="return false;"><i class="lni lni-facebook"></i></a></li>
+                            {% endif %}
+
+                            {% if site_info.office_instragram %}
                             <li><a href="#" onclick="return false;"><i class="lni lni-instagram"></i></a></li>
+                            {% endif %}
+
+                            {% if site_info.office_youtube %}
                             <li><a href="#" onclick="return false;"><i class="lni lni-youtube"></i></a></li>
-                            <li><a href="#" onclick="return false;"><i class="lni lni-pinterest"></i></a></li>
+                            {% endif %}                            
                         </ul>
                     </div>
                     <div class="language_currency">
                         <ul class="d-flex">
                             <li class="language"><a href="#" onclick="return false;"> Eng <i class="icon-right ion-ios-arrow-down"></i></a>
-                                <ul class="dropdown_language">
-                                    <li><a href="#" onclick="return false;">Ko</a></li>
+                                <ul class="dropdown_language">                                    
+                                    <li><a href="#" onclick="return false;">Eng</a></li>
+                                    <li><a href="#" onclick="return false;">Kor</a></li>
                                 </ul>
                             </li>
                         </ul>
                     </div>
+
                     <div id="menu" class="sub-menu-bar text-left ">
                         <ul class="offcanvas_main_menu navbar-nav">
+                            {% recursetree main_menu %}
+
+                            {% if node.is_root_node %}
                             <li class="menu-item-has-children nav-item ">
                                 <a class="page-scroll dd-menu collapsed" href="#" onclick="return false;"
-                                    data-bs-toggle="collapse" data-bs-target="#submenu-1-1"
+                                    data-bs-toggle="collapse" data-bs-target="#submenu-{{node.pk}}"
                                     aria-controls="navbarSupportedContent" aria-expanded="false"
-                                    aria-label="Toggle navigation">Home<i class="icofont-rounded-down"></i></a>
-                                <ul class="sub-menu collapse" id="submenu-1-1">
-                                    <li class="nav-item "><a href="index.html">Home Default1</a></li>
-                                    <li class="nav-item "><a href="index.html">Home Default2</a></li>
-                                    <li class="nav-item "><a href="index.html">Home Default3</a></li>
-                                    <li class="nav-item "><a href="index.html">Home Default4</a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-item-has-children nav-item">
-                                <a href="shop.html">Shop</a>
-                            </li>
-                            <li class="menu-item-has-children nav-item">
-                                <a href="product-details.html"> Product Details</a>
-                            </li>
-                            <li class="menu-item-has-children nav-item">
-                                <a href="#" onclick="return false;">sale</a>
-                            </li>
-                            <li class="menu-item-has-children nav-item">
-                                <a class="page-scroll  dd-menu collapsed" href="#" onclick="return false;"
-                                    data-bs-toggle="collapse" data-bs-target="#submenu-5-1"
-                                    aria-controls="navbarSupportedContent" aria-expanded="false"
-                                    aria-label="Toggle navigation">pages<i class="icofont-rounded-down"></i> </a>
-                                    <ul class="sub-menu collapse" id="submenu-5-1">
-                                        <li><a href="cart.html">cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-item-has-children nav-item">
-                                <a class="page-scroll  dd-menu collapsed" href="#" onclick="return false;"
-                                    data-bs-toggle="collapse" data-bs-target="#submenu-6-1"
-                                    aria-controls="navbarSupportedContent" aria-expanded="false"
-                                    aria-label="Toggle navigation">blog<i class="icofont-rounded-down"></i></a>
-                                    <ul class="sub-menu collapse" id="submenu-6-1">
-                                        <li><a href="blog.html">blog</a></li>
-                                        <li><a href="blog-details.html">blog details</a></li>
-                                </ul>
+                                    aria-label="Toggle navigation">{{ node.menu_name }}
+                                    
+                                {% if not node.is_leaf_node %} 
+                                    <i class="icofont-rounded-down"></i></a>
+                                    <ul class="sub-menu collapse" id="submenu-{{node.pk}}">
+                                {% elif node.is_leaf_node %}                                    
+                                    </a></li>
+                                {% endif %}                                
 
-                            </li>
-                            <li class="menu-item-has-children nav-item">
-                                <a href="#" onclick="return false;">buy</a>
-                            </li>
+                            {% elif node.is_child_node and node.level == 1 %}                                    
+                                {% if node.menu_link  %}
+                                    <li class="nav-item "><a href="{{ node.menu_link }}">{{ node.menu_name }}</a></li>
+                                {% elif node.menu_slug %}
+                                    <li class="nav-item "><a href="{{ node.get_absolute_url }}">{{ node.menu_name }}</a></li>
+                                {% else %}
+                                    <li class="nav-item ">{{ node.menu_name }}</li>                                    
+                                {% endif %}
+
+                                {% if not node.get_next_sibling %}                
+                                    </ul>
+                                </li>                            
+                                {% endif %}
+
+                            {% endif %}
+
+                            {% if not node.is_leaf_node %}                              
+                            {{ children }}                                    
+                            {% endif %}  
+                            {% endrecursetree %}     
                         </ul>
                     </div>
+
                 </div>
             </div>
         </div>

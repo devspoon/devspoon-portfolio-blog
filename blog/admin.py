@@ -5,7 +5,7 @@ from blog.models.default import MainMenu, SiteInfo, WorldSocialAccount, LocalSoc
 
 class SiteInfoAdmin(admin.ModelAdmin):
     list_display = [field.name for field in SiteInfo._meta.get_fields()]
-    list_display_links = ['id', 'phone_number','email']
+    list_display_links = ['id', 'phone_number','office_email']
 
 class WorldSocialAccountAdmin(admin.ModelAdmin):
     list_display = [field.name for field in WorldSocialAccount._meta.get_fields()]

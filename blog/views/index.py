@@ -18,17 +18,13 @@ logger = logging.getLogger(__name__)
 
 # Create your views here.
 
-def main_menu() -> MainMenu:
-    return MainMenu.objects.all()
-
-
 class IndexView(TemplateView):
     template_name = 'home/index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #context["main_menu"] = main_menu()
-
+        print("session : ",self.request.session.values())
+      
         return context
 
     # def get_context_data(self, **kwargs):

@@ -117,8 +117,10 @@ class LoginView(AnonymousRequiredMixin, FormView):
         user_temp = User.objects.get(email=email, is_site_register=True)
         user = auth.authenticate(username=user_temp.username, password=password)
         if user:
-            auth.login(self.request, user)
+            auth.login(self.request, user)            
             user= User.objects.get(username=user.username, is_site_register=True)
+            self.request.session['email']=user.email
+            self.request.session['username']=user.username
             user.last_login_at = timezone.now()
             user.save()
             return super().form_valid(form)

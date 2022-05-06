@@ -1,6 +1,6 @@
 from django import template
 from django.core.paginator import Page
-from blog.models.default import MainMenu
+from blog.models.default import MainMenu, SiteInfo
 
 register = template.Library()
 
@@ -25,3 +25,8 @@ def slice_visible_pages(paging: Page):
 def main_menu_tag():
     menu = MainMenu.objects.all()
     return menu
+
+@register.simple_tag
+def site_info_tag():
+    info = SiteInfo.objects.all().first()
+    return info

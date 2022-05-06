@@ -67,12 +67,21 @@ class MainMenu(MPTTModel):
 
 # footer info
 class SiteInfo(models.Model):
-    country_number_regex = RegexValidator(regex = r'^+([0-9]{2,3})$')
-    country_phone_code = models.CharField(validators = [country_number_regex], max_length = 3, blank=True, default='+82', verbose_name=_('Country Phone Code'))
+    class Language(models.TextChoices):
+        ENGLISH = '0', _('Eng')
+        KOREAN = '1', _('Kor')        
+
+    country_code_regex = RegexValidator(regex = r'^\+([0-9]{2,3})$')
+    country_code = models.CharField(validators = [country_code_regex], max_length = 3, blank=True, default='+82', verbose_name=_('Country Phone Code'))
     phone_number_regex = RegexValidator(regex = r'^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$')
     phone_number = models.CharField(validators = [phone_number_regex], max_length = 16, unique = True, blank=True, verbose_name=_('Phone Number'))
     office_phone_number = models.CharField(max_length = 16, unique = True, blank=True, verbose_name=_('Office Phone Number'))
-    email = models.EmailField(max_length=128, unique = True, blank=True, verbose_name=_('email'))
+    office_email = models.EmailField(max_length=128, unique = True, blank=True, verbose_name=_('Office Email'))
+    office_twitter = models.URLField(blank=True, verbose_name=_('Office Twitter'))
+    office_facebook = models.URLField(blank=True, verbose_name=_('Office Facebook'))
+    office_instragram = models.URLField(blank=True, verbose_name=_('Office Instragram'))
+    office_youtube = models.URLField(blank=True, verbose_name=_('Office Youtube'))
+    site_language = models.CharField(blank=True, max_length=10, choices = Language.choices, default=Language.ENGLISH, verbose_name=_('Language'))
 
     class Meta:
             db_table = 'site_info'
