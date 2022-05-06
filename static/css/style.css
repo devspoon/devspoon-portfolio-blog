@@ -1173,7 +1173,7 @@ textarea:focus {
 }
 
 .header_navbar .form-control {
-    flex: 1 1 auto;
+    flex: 0.5 1 auto;
     border-color: #FF6B6B;
 }
 

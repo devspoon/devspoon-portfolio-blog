@@ -27,7 +27,7 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["main_menu"] = main_menu()
+        #context["main_menu"] = main_menu()
 
         return context
 

@@ -1,5 +1,6 @@
 {% load static %}
 {% load mptt_tags %}
+{% load default_tags %}
 
 <header class="header_area">
     <div id="header_navbar" class="header_navbar">
@@ -12,7 +13,7 @@
                         </a>
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav">
-                                
+                                {% main_menu_tag as main_menu %}
                                 {% recursetree main_menu %}           
                                 {% if node.is_root_node %}                
                                 <li class="nav-item">
