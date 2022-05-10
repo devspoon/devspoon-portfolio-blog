@@ -9,7 +9,29 @@
 	<!--====== REGISTER PART START ======-->
     <section class="login first grey">
         <div class="container">
-            <div class="box-wrapper">
+
+            {% for page in policy_pages %}
+            <div class="row justify-content-md-center">             
+                <div class="col col-lg-6 text-center mt-2 border">
+                <h4 class="my-2">{{page.title}}</h4>
+                    <div class="policy-box overflow-auto my-3">
+                    <textarea cols="50" rows="15" wrap="hard">{{page.content}}</textarea>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+
+            <div class="row justify-content-md-center">
+                <div class="policy-notice col col-lg-6 text-center mt-2 border">
+                    <div class="overflow-auto my-3">
+                    * By signing up, you signify that you have read and 
+                    agree to all of the above policies.
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-wrapper col col-lg-6 mt-4">
                 <div class="box box-border">
                     <div class="box-body">
                         <h4>Register</h4>

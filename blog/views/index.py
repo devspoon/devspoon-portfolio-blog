@@ -23,7 +23,6 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print("session : ",self.request.session.values())
       
         return context
 

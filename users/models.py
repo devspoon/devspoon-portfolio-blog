@@ -25,6 +25,8 @@ from django.db import models
 from django.db.models import F
 from django.contrib.auth.models import AbstractUser
 from allauth.account.models import EmailAddress
+from django.utils.text import slugify
+
 
 from utils.email import *
 from utils.os.file_path_name_gen import date_upload_to
@@ -69,11 +71,17 @@ class User(AbstractUser):
         format="JPEG",  # 최종 저장 포맷
         options={"quality": 100},  # 저장 옵션
     )
-
-    is_deleted = models.BooleanField(default=False, verbose_name=_('Deleted State'))
-    is_site_register = models.BooleanField(default=False, verbose_name=_('Site Register User'))
+    
+    
+    is_privacy_policy = models.BooleanField(blank=True, default=True, verbose_name=_('Privacy Policy'))
+    is_terms_of_service = models.BooleanField(blank=True, default=True, verbose_name=_('Terms of Service'))
+    is_mobile_authentication = models.BooleanField(blank=True, default=False, verbose_name=_('Mobile Athentication'))
+    is_dormant_account = models.BooleanField(blank=True, default=False, verbose_name=_('Dormant Account State'))
+    is_deleted = models.BooleanField(blank=True, default=False, verbose_name=_('Deleted State'))
+    is_site_register = models.BooleanField(blank=True, default=False, verbose_name=_('Site Register User'))
     last_login_at = models.DateTimeField(blank=True, null=True, verbose_name=_('Last Login Time'))
     updated_at = models.DateTimeField(auto_now=True,null=True, verbose_name=_('Updated Time'))
+    dormant_account_at = models.DateTimeField(blank=True, null=True, verbose_name=_('Dormant Account Time'))
     deleted_at = models.DateTimeField(blank=True, null=True, verbose_name=_('Deleted Time'))
 
     object = models.Manager()
@@ -106,13 +114,25 @@ class User(AbstractUser):
 
     get_full_name.short_description = _('Full name')
 
-    def get_short_name(self):
-        return self.nickname
-
-    get_short_name.short_description = _('Name')
-
     def get_absolute_url(self):
         return reverse('') # profile page
+    
+    def set_dormant_account(self):
+        # self.instance
+        # send email
+        # save dormant_account user to new table
+        # it can recover using user id(pk)
+        # this process run by celery
+        self.is_dormant_account = True
+        self.email = ''
+        self.username = ''
+        self.nickname = ''
+        self.first_name = ''
+        self.last_name = ''
+        self.password = ''
+        self.dormant_account_at = timezone.now()
+        self.save()
+        
 
     def set_delete(self):
         socialaccount=SocialAccount.objects.filter(user=self.pk).first()
@@ -205,6 +225,26 @@ class SendingEmailMonitor(models.Model):
 
     def __str__(self):
         return "%s" % (self.vendor)
+
+
+class PolicyPages(models.Model):
+    title = models.CharField(max_length=150, blank=False, verbose_name=_('Page Title'))
+    content = models.TextField(blank=False, verbose_name=_('Page Content'))
+    slug = models.SlugField(max_length=150, blank=True, unique=True, allow_unicode=True, db_index=True, verbose_name=_('Page Slug'))
+    is_necessary_policy =  models.BooleanField( blank=False, default=True, verbose_name=_('Necessary Policy'))
+    created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
+    
+    class Meta:
+            db_table = 'policy_pages'
+            verbose_name = _('pilicy pages')
+            verbose_name_plural = _('policy pages')
+
+    def __str__(self):
+        return "%s" % (self.title)
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title, allow_unicode=True)
+        super().save(*args, **kwargs)
 
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):

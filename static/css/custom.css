@@ -1371,8 +1371,18 @@ section.first {
     -moz-transition: all 0.5s;
 }
 
+/* .policy-box {
+    height: 400px;
+} */
+
+.policy-notice {
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .box-wrapper {
-    width: 400px;
+    /* width: 400px; */
     margin: 0 auto;
   }
 
