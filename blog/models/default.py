@@ -71,6 +71,8 @@ class SiteInfo(models.Model):
         ENGLISH = '0', _('Eng')
         KOREAN = '1', _('Kor')        
 
+    site_name = models.CharField(max_length=255, blank=False, verbose_name=_('Site Name'))
+    site_owner = models.CharField(max_length=255, blank=False, verbose_name=_('Site Owner'))
     country_code_regex = RegexValidator(regex = r'^\+([0-9]{2,3})$')
     country_code = models.CharField(validators = [country_code_regex], max_length = 3, blank=True, default='+82', verbose_name=_('Country Phone Code'))
     phone_number_regex = RegexValidator(regex = r'^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$')

@@ -23,7 +23,7 @@ from django.db.models import F
 
 from .users_forms import RegisterForm, LoginForm, ResendVerificationEmailForm, ResetPasswordForm, UpdatePasswordForm, ProfileForm
 from utils.email.verify_email_mixins import VerifyEmailMixin
-from ..models import User, UserVerification, UserProfile, SendingEmailMonitor
+from ..models import User, UserVerification, UserProfile, SendingEmailMonitor, PolicyPages
 
 # Create your views here.
 logger = logging.getLogger(__name__)
@@ -47,6 +47,11 @@ class RegisterView(VerifyEmailMixin, FormView):
     verify_email_template_name1 = '/email/registration_verification.html'
     verify_email_template_name2 = '/email/verification.html'
     token_gen_type = 1
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['policy_pages'] = PolicyPages.objects.all()
+        return context
 
     def form_valid(self, form):
         email = form.cleaned_data['email']
@@ -55,7 +60,10 @@ class RegisterView(VerifyEmailMixin, FormView):
         nickname = form.cleaned_data['nickname']
         profile_image = form.cleaned_data['profile_image']
 
-        user = User.objects.create_user(email=email, password=password, username=username, nickname=nickname, profile_image=profile_image, is_site_register=True)
+        if profile_image:
+            user = User.objects.create_user(email=email, password=password, username=username, nickname=nickname, profile_image=profile_image, is_site_register=True)
+        else:
+            user = User.objects.create_user(email=email, password=password, username=username, nickname=nickname, is_site_register=True)
 
         result = self.send_verification_email_management(self.verify_email_template_name1, settings.DEFAULT_FROM_EMAIL ,user, self.token_gen_type)
 
