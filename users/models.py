@@ -29,7 +29,7 @@ from django.utils.text import slugify
 
 
 from utils.email import *
-from utils.os.file_path_name_gen import date_upload_to
+from utils.os.file_path_name_gen import date_upload_to_for_image
 
 # Create your models here.
 
@@ -64,7 +64,7 @@ class User(AbstractUser):
     nickname = models.CharField(null=False, max_length=30, verbose_name=_('Nick Name'))
     gender = models.CharField(max_length=15, choices = Gender.choices, default=Gender.NO_DISCLOSE, verbose_name=_('Gender'))
     verified = models.BooleanField(default=False, verbose_name=_('Email Verified State'))
-    profile_image = models.ImageField(upload_to=date_upload_to, default='default/no_img.png', verbose_name=_('User Profile Image'))
+    profile_image = models.ImageField(upload_to=date_upload_to_for_image, default='default/no_img.png', verbose_name=_('User Profile Image'))
     photo_thumbnail = ImageSpecField(
         source="profile_image",  # 원본 ImageField이름
         processors=[ResizeToFill(140, 140)],  # 사이즈 조정

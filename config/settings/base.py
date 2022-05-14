@@ -48,7 +48,7 @@ INSTALLED_APPS = [
 
     'users',
     'blog',
-
+    "django_summernote",
     "mptt",
     "anymail",
     'imagekit',
@@ -164,3 +164,8 @@ SESSION_COOKIE_AGE = 1200 # second
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_COOKIE_SECURE = True # https
+
+
+#Summer note
+#click jacking setting
+X_FRAME_OPTIONS = "SAMEORIGIN"

@@ -45,6 +45,7 @@ class MainMenu(MPTTModel):
         db_table = 'main_menu'
         verbose_name = _('main menu')
         verbose_name_plural = _('main menu')
+        app_label = "blog"
 
     def get_slug_list(self):
         try:
@@ -83,12 +84,13 @@ class SiteInfo(models.Model):
     office_facebook = models.URLField(blank=True, verbose_name=_('Office Facebook'))
     office_instragram = models.URLField(blank=True, verbose_name=_('Office Instragram'))
     office_youtube = models.URLField(blank=True, verbose_name=_('Office Youtube'))
-    site_language = models.CharField(blank=True, max_length=10, choices = Language.choices, default=Language.ENGLISH, verbose_name=_('Language'))
+    national_language = models.CharField(blank=True, max_length=10, choices = Language.choices, default=Language.ENGLISH, verbose_name=_('National Language'))
 
     class Meta:
-            db_table = 'site_info'
-            verbose_name = _('site info')
-            verbose_name_plural = _('site info')
+        db_table = 'site_info'
+        verbose_name = _('site info')
+        verbose_name_plural = _('site info')
+        app_label = "blog"
 
     def __str__(self):
         return "%s" % (self.phone_number)
@@ -115,9 +117,10 @@ class WorldSocialAccount(models.Model):
     peoplenjob = models.URLField(blank=True, verbose_name=_('peoplenjob'))
 
     class Meta:
-            db_table = 'world_social_account'
-            verbose_name = _('world social account')
-            verbose_name_plural = _('world social accounts')
+        db_table = 'world_social_account'
+        verbose_name = _('world social account')
+        verbose_name_plural = _('world social accounts')
+        app_label = "blog"
 
     def __str__(self):
         return "%s" % (self.id)
@@ -131,9 +134,10 @@ class LocalSocialAccount(models.Model):
     remember = models.URLField(blank=True, verbose_name=_('remember'))
     monster = models.URLField(blank=True, verbose_name=_('monster'))
     class Meta:
-            db_table = 'local_social_account'
-            verbose_name = _('local social account')
-            verbose_name_plural = _('local social account')
+        db_table = 'local_social_account'
+        verbose_name = _('local social account')
+        verbose_name_plural = _('local social account')
+        app_label = "blog"
 
     def __str__(self):
         return "%s" % (self.id)
