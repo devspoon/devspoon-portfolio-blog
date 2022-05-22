@@ -143,6 +143,8 @@ SILKY_PYTHON_PROFILER_BINARY = False
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(ROOT_DIR, "media")
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600  
+
 STATIC_URL = "/static/"
 # STATIC_URL = "/assets/"
 STATIC_DIR = os.path.join(ROOT_DIR, 'static')

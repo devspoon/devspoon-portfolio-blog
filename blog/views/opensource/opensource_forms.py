@@ -1,0 +1,41 @@
+from django import forms
+from django.utils.translation import gettext_lazy as _
+from blog.models.boards import InterestingOpenSourcePost
+from django_summernote.widgets import SummernoteWidget
+
+class OpenSourceForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super(OpenSourceForm, self).__init__(*args, **kwargs)
+        self.fields['title'].required = True
+        self.fields['content'].required = True
+        self.fields['dev_lang'].required = True        
+        self.fields['repogitory'].required = True
+        
+        self.fields['content'].widget.attrs.update({
+            'placeholder': _('Enter Content'),
+            'class': 'form-control',
+            'autofocus': True,
+        })
+
+    class Meta:
+        model = InterestingOpenSourcePost
+        fields = ["title", "categoty", "role", "dev_lang", "branch","repogitory", "difficulty_level", "content", "link1", "link2", "file1", "file2"]
+        # fields = "__all__"
+        labels = {
+            "link1": "link1",
+            "link2": "link2",
+            "title": "title",
+            "categoty": "categoty",
+            "role": "role",
+            "content": "content",
+            "dev_lang": "dev_lang",
+            "branch": "branch",
+            "repogitory": "repogitory",
+            "difficulty_level": "difficulty_level",
+            "file1": "file1",
+            "file2": "file2"
+        }
+        widgets = {
+            'content': SummernoteWidget(),
+        }
