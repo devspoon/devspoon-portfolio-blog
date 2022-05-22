@@ -11,30 +11,44 @@ from django.db.models.signals import pre_save, post_delete
 from django.db import models
 from django.db.models.constraints import UniqueConstraint
 from utils.os.file_path_name_gen import date_upload_to_for_file
-
-
-class PostFiles(models.Model):
-    file = models.FileField(upload_to=date_upload_to_for_file, blank=True, verbose_name=_('file'))
-    
-    class Meta:
-        db_table = 'post_files'
-        verbose_name = _('post files')
-        verbose_name_plural = _('post files') 
-        app_label = "blog"
-        
+      
    
 class Post(models.Model):
-
+    class Categoty(models.TextChoices):
+        PROJECT = '0', _('Project')
+        ONLINE_STUDY = '1', _('Online Study')
+        BLOG = '2', _('Blog')
+        INTERESTING_OPEN_SOURCE = '3', _('Interesting Open Source')
+        BOOKS = '4', _('Books')       
+    
+    class Difficulty(models.TextChoices):
+        BEGINNER = '0', _('Beginner')
+        INTERMEDIATE = '1', _('Intermediate')
+        ADVANCED = '2', _('Advanced')
+        
+    class ProjectRole(models.TextChoices):
+        OWNER = '0', _('Owner')
+        MAINTAINER = '1', _('Maintainer')
+        DEVELOPER = '2', _('Developer')
+        REPORTER = '3', _('Reporter')
+        GUEST = '4', _('Guest')
+    
+    class Branch(models.TextChoices):
+        FRONTEND = '0', _('Frontend')
+        BACKEND = '1', _('Backend')
+        INFRASTRUCTURE = '2', _('Infrastructure')
+        DATABASE = '3', _('Database')
+        ANALYSIS = '4', _('Analysis')
+        MONITORING = '5', _('Monitoring')
+    
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_('Author'))
+    title = models.CharField(max_length=200, blank=False, verbose_name=_('Title'))  
+    categoty = models.CharField(max_length=15, choices = Categoty.choices, default=Categoty.BLOG, verbose_name=_('Category'))
+    content = models.TextField(blank=False, verbose_name=_('Content'))
     link1 = models.URLField(blank=True, verbose_name=_('Link1'))
     link2 = models.URLField(blank=True, verbose_name=_('Link2'))
-    title = models.CharField(max_length=200, blank=False, verbose_name=_('Title'))  
-    categoty = models.CharField(max_length=30, blank=False, verbose_name=_('Categoty'))
-    content = models.TextField(blank=False, verbose_name=_('Content'))
-    files = models.ManyToManyField(PostFiles,
-                                           blank=True,
-                                           
-                                           verbose_name=_('post files')) 
+    file1 = models.FileField(upload_to=date_upload_to_for_file, blank=True, verbose_name=_('file1'))
+    file2 = models.FileField(upload_to=date_upload_to_for_file, blank=True, verbose_name=_('file2'))    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -69,20 +83,14 @@ class Post(models.Model):
     
     def __str__(self):
         return self.title
-    
-    
+
+
 class ProjectPost(Post):
-    class ProjectRole(models.TextChoices):
-        OWNER = '0', _('Owner')
-        MAINTAINER = '1', _('Maintainer')
-        DEVELOPER = '2', _('Developer')
-        REPORTER = '3', _('Reporter')
-        GUEST = '4', _('Guest')
- 
-    role = models.CharField(max_length=15, choices = ProjectRole.choices, default=ProjectRole.OWNER, verbose_name=_('Project Role'))
+
+    role = models.CharField(max_length=15, choices = Post.ProjectRole.choices, default=Post.ProjectRole.OWNER, verbose_name=_('Project Role'))
     dev_lang = models.CharField(max_length=20, blank=False, verbose_name=_('Development Language'))
     version = models.CharField(max_length=10, blank=False, verbose_name=_('Version'))
-    branch = models.CharField(max_length=30, blank=False, verbose_name=_('Project Branch')) 
+    branch = models.CharField(max_length=15, choices = Post.Branch.choices, default=Post.Branch.BACKEND, verbose_name=_('Project Branch')) 
     repogitory = models.URLField(blank=True, verbose_name=_('Repogitory'))
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
@@ -100,16 +108,10 @@ class ProjectPost(Post):
         verbose_name_plural = _('project')
         
     
-class OnlineStudyPost(Post):
-    
-    class Difficulty(models.TextChoices):
-        BEGINNER = '0', _('Beginner')
-        INTERMEDIATE = '1', _('Intermediate')
-        ADVANCED = '2', _('Advanced')
-
+class OnlineStudyPost(Post):    
     dev_lang = models.CharField(max_length=20, blank=False, verbose_name=_('Development Language')) 
-    branch = models.CharField(max_length=30, blank=False, verbose_name=_('Project Branch')) 
-    difficulty_level = models.CharField(max_length=15, choices = Difficulty.choices, default=Difficulty.BEGINNER, verbose_name=_('Difficulty Level'))
+    branch = models.CharField(max_length=15, choices = Post.Branch.choices, default=Post.Branch.BACKEND, verbose_name=_('Project Branch')) 
+    difficulty_level = models.CharField(max_length=15, choices = Post.Difficulty.choices, default=Post.Difficulty.BEGINNER, verbose_name=_('Difficulty Level'))
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='OnlineStudyPost_like_set',
@@ -143,25 +145,13 @@ class BlogPost(Post):
         verbose_name_plural = _('blog post')
         
     
-class InterestingOpenSourcePost(Post):
-    
-    class ProjectRole(models.TextChoices):
-        OWNER = '0', _('Owner')
-        MAINTAINER = '1', _('Maintainer')
-        DEVELOPER = '2', _('Developer')
-        REPORTER = '3', _('Reporter')
-        GUEST = '4', _('Guest')
+class InterestingOpenSourcePost(Post):       
         
-    class Difficulty(models.TextChoices):
-        BEGINNER = '0', _('Beginner')
-        INTERMEDIATE = '1', _('Intermediate')
-        ADVANCED = '2', _('Advanced')
-        
-    role = models.CharField(max_length=15, choices = ProjectRole.choices, default=ProjectRole.OWNER, verbose_name=_('Project Role'))
+    role = models.CharField(max_length=15, choices = Post.ProjectRole.choices, default=Post.ProjectRole.OWNER, verbose_name=_('Project Role'))
     dev_lang = models.CharField(max_length=20, blank=False, verbose_name=_('Development Language'))
-    branch = models.CharField(max_length=30, blank=False, verbose_name=_('Project Branch')) 
+    branch = models.CharField(max_length=15, choices = Post.Branch.choices, default=Post.Branch.BACKEND, verbose_name=_('Project Branch')) 
     repogitory = models.URLField(blank=True, verbose_name=_('Repogitory'))
-    difficulty_level = models.CharField(max_length=15, choices = Difficulty.choices, default=Difficulty.BEGINNER, verbose_name=_('Difficulty Level'))
+    difficulty_level = models.CharField(max_length=15, choices = Post.Difficulty.choices, default=Post.Difficulty.BEGINNER, verbose_name=_('Difficulty Level'))
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='InterestingOpenSourcePost_like_set',
@@ -180,14 +170,9 @@ class InterestingOpenSourcePost(Post):
         
 class BooksPost(Post):
 
-    class Difficulty(models.TextChoices):
-        BEGINNER = '0', _('Beginner')
-        INTERMEDIATE = '1', _('Intermediate')
-        ADVANCED = '2', _('Advanced')
-        
     dev_lang = models.CharField(max_length=20, blank=False, verbose_name=_('Development Language')) 
-    branch = models.CharField(max_length=30, blank=False, verbose_name=_('Project Branch')) 
-    difficulty_level = models.CharField(max_length=15, choices = Difficulty.choices, default=Difficulty.BEGINNER, verbose_name=_('Difficulty Level'))
+    branch = models.CharField(max_length=15, choices = Post.Branch.choices, default=Post.Branch.BACKEND, verbose_name=_('Project Branch')) 
+    difficulty_level = models.CharField(max_length=15, choices = Post.Difficulty.choices, default=Post.Difficulty.BEGINNER, verbose_name=_('Difficulty Level'))
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='BooksPost_like_set',
