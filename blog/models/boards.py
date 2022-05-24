@@ -1,3 +1,6 @@
+import os
+import logging
+
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
@@ -11,7 +14,8 @@ from django.db.models.signals import pre_save, post_delete
 from django.db import models
 from django.db.models.constraints import UniqueConstraint
 from utils.os.file_path_name_gen import date_upload_to_for_file
-      
+         
+logger = logging.getLogger(__name__)
    
 class Post(models.Model):
     class Categoty(models.TextChoices):
@@ -242,42 +246,44 @@ class Bookmark(models.Model):
         app_label = "blog"
       
         
-# @receiver(pre_save, sender=User)
-# def auto_delete_file_on_save(sender, instance, **kwargs):
-#     if not instance.pk:
-#         return False
+@receiver(pre_save)
+def auto_delete_file_on_save(sender, instance=None, **kwargs):
+    if not instance.pk:
+        return False
 
-#     try:
-#         old_obj = sender.objects.get(pk=instance.pk)
+    try:
+        old_obj = sender.objects.get(pk=instance.pk)
 
-#     except sender.DoesNotExist:
-#         return False
+    except sender.DoesNotExist:
+        return False
 
-#     for field in instance._meta.fields:
-#         field_type = field.get_internal_type()
+    for field in instance._meta.fields:
+        field_type = field.get_internal_type()
 
-#         if field_type == 'FileField' or field_type == 'ImageField' or field_type == 'ImageSpecField':
-#             origin_file = getattr(old_obj, field.name)
-#             new_file = getattr(instance, field.name)
+        if field_type == 'FileField' or field_type == 'ImageField' or field_type == 'ImageSpecField':
+            origin_file = getattr(old_obj, field.name)
+            new_file = getattr(instance, field.name)
 
-#             if not origin_file:
-#                 return True
+            if not origin_file:
+                return True
 
-#             if origin_file != new_file  and os.path.isfile(origin_file.path):
-#                 os.remove(origin_file.path)
-#                 logger.debug('updating {} field file are replacing  from = {}, to = {}'.format(field_type,origin_file,new_file))
-#                 delete_thumbnail(origin_file, instance)
+            if origin_file != new_file  and os.path.isfile(origin_file.path):
+                os.remove(origin_file.path)
+                logger.debug('updating {} field file are replacing  from = {}, to = {} at model of {}'.format(field_type,origin_file,new_file,sender.__name__))
+               
 
 
-# @receiver(post_delete, sender=User)
-# def auto_delete_file_on_delete(sender, instance, **kwargs):
-#     for field in instance._meta.fields:
-#         field_type = field.get_internal_type()
+@receiver(post_delete)
+def auto_delete_file_on_delete(sender, instance=None, **kwargs):
+    list_of_models = ('ProjectPost', 'OnlineStudyPost', 'BlogPost', 'InterestingOpenSourcePost', 'BooksPost')
+    if sender.__name__ in list_of_models: # this is the dynamic part you want
+       
+        for field in instance._meta.fields:
+            field_type = field.get_internal_type()
 
-#         if field_type == 'FileField' or field_type == 'ImageField' or field_type == 'ImageSpecField':
-#             origin_file = getattr(instance, field.name)
+            if field_type == 'FileField' or field_type == 'ImageField' or field_type == 'ImageSpecField':
+                origin_file = getattr(instance, field.name)
 
-#             if origin_file and os.path.isfile(origin_file.path):
-#                 os.remove(origin_file.path)
-#                 logger.debug('{} field file is deleted name of {}'.format(field_type,origin_file))
-#                 delete_thumbnail(origin_file, instance)
+                if origin_file and os.path.isfile(origin_file.path):
+                    os.remove(origin_file.path)
+                    logger.debug('{} field file is deleted name of {} at model of {}'.format(field_type,origin_file,sender.__name__))
