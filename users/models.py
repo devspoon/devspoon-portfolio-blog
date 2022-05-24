@@ -1,7 +1,6 @@
 import os
 import shutil
 import logging
-from stat import FILE_ATTRIBUTE_ARCHIVE
 import string
 from uuid import uuid4
 from django.utils import timezone
