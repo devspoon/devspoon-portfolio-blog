@@ -3,8 +3,10 @@ from .base import *
 # from .sub_settings.http.cors import *
 from .sub_settings.system.logs import *
 from .sub_settings.oauth.allauth_default import *
-
 # from .sub_settings.oauth import *
+
+from .sub_settings.editor.summernote import *
+
 from decouple import config
 
 # import status checking
