@@ -35,9 +35,9 @@
                                     {% comment %} {{ field }} {% endcomment %}
                                     {% endfor %}
                                 </select>
-                                {% else %}                                
+                                {% else %}
                                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                    <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" />                                
+                                    <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" />
                                 {% endif %}
                             </div>
 

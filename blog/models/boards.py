@@ -14,29 +14,29 @@ from django.db.models.signals import pre_save, post_delete
 from django.db import models
 from django.db.models.constraints import UniqueConstraint
 from utils.os.file_path_name_gen import date_upload_to_for_file
-         
+
 logger = logging.getLogger(__name__)
-   
+
 class Post(models.Model):
-    class Categoty(models.TextChoices):
-        PROJECT = '0', _('Project')
-        ONLINE_STUDY = '1', _('Online Study')
-        BLOG = '2', _('Blog')
-        INTERESTING_OPEN_SOURCE = '3', _('Interesting Open Source')
-        BOOKS = '4', _('Books')       
-    
+    # class Category(models.TextChoices):
+    #     PROJECT = '0', _('Project')
+    #     ONLINE_STUDY = '1', _('Online Study')
+    #     BLOG = '2', _('Blog')
+    #     INTERESTING_OPEN_SOURCE = '3', _('Interesting Open Source')
+    #     BOOKS = '4', _('Books')
+
     class Difficulty(models.TextChoices):
         BEGINNER = '0', _('Beginner')
         INTERMEDIATE = '1', _('Intermediate')
         ADVANCED = '2', _('Advanced')
-        
+
     class ProjectRole(models.TextChoices):
         OWNER = '0', _('Owner')
         MAINTAINER = '1', _('Maintainer')
         DEVELOPER = '2', _('Developer')
         REPORTER = '3', _('Reporter')
         GUEST = '4', _('Guest')
-    
+
     class Branch(models.TextChoices):
         FRONTEND = '0', _('Frontend')
         BACKEND = '1', _('Backend')
@@ -44,47 +44,47 @@ class Post(models.Model):
         DATABASE = '3', _('Database')
         ANALYSIS = '4', _('Analysis')
         MONITORING = '5', _('Monitoring')
-    
+
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_('Author'))
     title = models.CharField(max_length=200, blank=False, verbose_name=_('Title'))  
-    categoty = models.CharField(max_length=15, choices = Categoty.choices, default=Categoty.BLOG, verbose_name=_('Category'))
+    # category = models.CharField(max_length=15, choices = Category.choices, default=Category.BLOG, verbose_name=_('Category'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
     link1 = models.URLField(blank=True, verbose_name=_('Link1'))
     link2 = models.URLField(blank=True, verbose_name=_('Link2'))
     file1 = models.FileField(upload_to=date_upload_to_for_file, blank=True, verbose_name=_('file1'))
-    file2 = models.FileField(upload_to=date_upload_to_for_file, blank=True, verbose_name=_('file2'))    
+    file2 = models.FileField(upload_to=date_upload_to_for_file, blank=True, verbose_name=_('file2'))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     tag_set = models.ManyToManyField('Tag', blank=True, verbose_name=_('Tags Set'))
-    
+
     like_count = models.IntegerField(default=0, verbose_name=_('Like Count'))
     bookmark_count = models.IntegerField(default=0, verbose_name=_('Bookmark Count'))
-    
-    
+
+
     class Meta:
         abstract = True
         ordering = ['-created_at']
         app_label = "blog"
-        
+
     def tag_save(self):
         tags = re.findall(r'#(\w+)\b', self.content)
-        
+
         if not tags:
             return
-        
+
         for t in tags:
             tag, tag_created = Tag.objects.get_or_create(tag=t)
             self.tag_set.add(tag)
-    
+
     @property
     def get_like_count(self):
         return self.like_user_set.count()
-    
+
     @property
     def get_bookmark_count(self):
         return self.bookmark_user_set.count()
-    
+
     def __str__(self):
         return self.title
 
@@ -94,115 +94,114 @@ class ProjectPost(Post):
     role = models.CharField(max_length=15, choices = Post.ProjectRole.choices, default=Post.ProjectRole.OWNER, verbose_name=_('Project Role'))
     dev_lang = models.CharField(max_length=20, blank=False, verbose_name=_('Development Language'))
     version = models.CharField(max_length=10, blank=False, verbose_name=_('Version'))
-    branch = models.CharField(max_length=15, choices = Post.Branch.choices, default=Post.Branch.BACKEND, verbose_name=_('Project Branch')) 
-    repogitory = models.URLField(blank=True, verbose_name=_('Repogitory'))
+    branch = models.CharField(max_length=15, choices = Post.Branch.choices, default=Post.Branch.BACKEND, verbose_name=_('Project Branch'))
+    repository = models.URLField(blank=True, verbose_name=_('Repository'))
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='ProjectPost_like_set',
-									   through='Like',verbose_name=_('Like Set')) 
-									   
+									   through='Like',verbose_name=_('Like Set'))
+
     bookmark_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='ProjectPost_bookmark_set',
-									   through='Bookmark', verbose_name=_('Bookmark Set')) 
- 
+									   through='Bookmark', verbose_name=_('Bookmark Set'))
+
     class Meta:
         db_table = 'project_post'
         verbose_name = _('project')
         verbose_name_plural = _('project')
-        
-    
-class OnlineStudyPost(Post):    
-    dev_lang = models.CharField(max_length=20, blank=False, verbose_name=_('Development Language')) 
-    branch = models.CharField(max_length=15, choices = Post.Branch.choices, default=Post.Branch.BACKEND, verbose_name=_('Project Branch')) 
+
+
+class OnlineStudyPost(Post):
+    dev_lang = models.CharField(max_length=20, blank=False, verbose_name=_('Development Language'))
+    branch = models.CharField(max_length=15, choices = Post.Branch.choices, default=Post.Branch.BACKEND, verbose_name=_('Project Branch'))
     difficulty_level = models.CharField(max_length=15, choices = Post.Difficulty.choices, default=Post.Difficulty.BEGINNER, verbose_name=_('Difficulty Level'))
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='OnlineStudyPost_like_set',
-									   through='Like',verbose_name=_('Like Set')) 
-									   
+									   through='Like',verbose_name=_('Like Set'))
+
     bookmark_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='OnlineStudyPost_bookmark_set',
-									   through='Bookmark', verbose_name=_('Bookmark Set')) 
-    
+									   through='Bookmark', verbose_name=_('Bookmark Set'))
+
     class Meta:
         db_table = 'online_study_post'
         verbose_name = _('online study')
         verbose_name_plural = _('online study')
-              
-    
+
+
 class BlogPost(Post):
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='BlogPost_like_set',
-									   through='Like',verbose_name=_('Like Set')) 
-									   
+									   through='Like',verbose_name=_('Like Set'))
+
     bookmark_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='BlogPost_bookmark_set',
-									   through='Bookmark', verbose_name=_('Bookmark Set')) 
-    
+									   through='Bookmark', verbose_name=_('Bookmark Set'))
+
     class Meta:
         db_table = 'blog_post'
         verbose_name = _('blog post')
         verbose_name_plural = _('blog post')
-        
-    
-class InterestingOpenSourcePost(Post):       
-        
+
+
+class InterestingOpenSourcePost(Post):
+
     role = models.CharField(max_length=15, choices = Post.ProjectRole.choices, default=Post.ProjectRole.OWNER, verbose_name=_('Project Role'))
     dev_lang = models.CharField(max_length=20, blank=False, verbose_name=_('Development Language'))
-    branch = models.CharField(max_length=15, choices = Post.Branch.choices, default=Post.Branch.BACKEND, verbose_name=_('Project Branch')) 
-    repogitory = models.URLField(blank=True, verbose_name=_('Repogitory'))
+    branch = models.CharField(max_length=15, choices = Post.Branch.choices, default=Post.Branch.BACKEND, verbose_name=_('Project Branch'))
+    repository = models.URLField(blank=True, verbose_name=_('Repository'))
     difficulty_level = models.CharField(max_length=15, choices = Post.Difficulty.choices, default=Post.Difficulty.BEGINNER, verbose_name=_('Difficulty Level'))
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='InterestingOpenSourcePost_like_set',
-									   through='Like',verbose_name=_('Like Set')) 
-									   
+									   through='Like',verbose_name=_('Like Set'))
+
     bookmark_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='InterestingOpenSourcePost_bookmark_set',
-									   through='Bookmark', verbose_name=_('Bookmark Set')) 
-         
+									   through='Bookmark', verbose_name=_('Bookmark Set'))
+
     class Meta:
         db_table = 'interesting_open_source_post'
         verbose_name = _('interesting open source post')
         verbose_name_plural = _('interesting open source post')
-        
-        
+
+
 class BooksPost(Post):
 
-    dev_lang = models.CharField(max_length=20, blank=False, verbose_name=_('Development Language')) 
-    branch = models.CharField(max_length=15, choices = Post.Branch.choices, default=Post.Branch.BACKEND, verbose_name=_('Project Branch')) 
+    dev_lang = models.CharField(max_length=20, blank=False, verbose_name=_('Development Language'))
+    branch = models.CharField(max_length=15, choices = Post.Branch.choices, default=Post.Branch.BACKEND, verbose_name=_('Project Branch'))
     difficulty_level = models.CharField(max_length=15, choices = Post.Difficulty.choices, default=Post.Difficulty.BEGINNER, verbose_name=_('Difficulty Level'))
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='BooksPost_like_set',
 									   through='Like',verbose_name=_('Like Set')) 
-									   
+
     bookmark_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='BooksPost_bookmark_set',
 									   through='Bookmark', verbose_name=_('Bookmark Set')) 
-        
+
     class Meta:
         db_table = 'books_post'
         verbose_name = _('books post')
         verbose_name_plural = _('books post')
-        
 
-  
+
 class Tag(models.Model):
     tag = models.CharField(max_length=140, unique=True)
-    
+
     class Meta:
          app_label = "blog"
-         
+
     def __str__(self):
         return self.tag
-    
+
 
 class Like(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -213,7 +212,7 @@ class Like(models.Model):
     books = models.ForeignKey(BooksPost, blank=True, null=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         constraints = [
             UniqueConstraint(fields=['user', 'project'], name='like unique with project'),
@@ -234,7 +233,7 @@ class Bookmark(models.Model):
     books = models.ForeignKey(BooksPost, blank=True, null=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         constraints = [
             UniqueConstraint(fields=['user', 'project'], name='Bookmark unique with project'),
@@ -244,8 +243,8 @@ class Bookmark(models.Model):
             UniqueConstraint(fields=['user', 'books'], name='Bookmark unique with books'),
         ]
         app_label = "blog"
-      
-        
+
+
 @receiver(pre_save)
 def auto_delete_file_on_save(sender, instance=None, **kwargs):
     if not instance.pk:
@@ -270,14 +269,14 @@ def auto_delete_file_on_save(sender, instance=None, **kwargs):
             if origin_file != new_file  and os.path.isfile(origin_file.path):
                 os.remove(origin_file.path)
                 logger.debug('updating {} field file are replacing  from = {}, to = {} at model of {}'.format(field_type,origin_file,new_file,sender.__name__))
-               
+
 
 
 @receiver(post_delete)
 def auto_delete_file_on_delete(sender, instance=None, **kwargs):
     list_of_models = ('ProjectPost', 'OnlineStudyPost', 'BlogPost', 'InterestingOpenSourcePost', 'BooksPost')
     if sender.__name__ in list_of_models: # this is the dynamic part you want
-       
+
         for field in instance._meta.fields:
             field_type = field.get_internal_type()
 

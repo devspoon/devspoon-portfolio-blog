@@ -15,23 +15,27 @@
                         </a>
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav">
-                                
-                                {% recursetree main_menu %}           
-                                {% if node.is_root_node %}                
+
+                                {% recursetree main_menu %}
+                                {% if node.is_root_node %}
                                 <li class="nav-item">
                                     <a class="page-scroll" data-toggle="collapse" data-target="#{{ node.pk}}" aria-controls="{{ node.pk }}"
-                                        aria-expanded="false" aria-label="Toggle navigation" href="javascript:void(0)">{{node.menu_name}}
+                                        aria-expanded="false" aria-label="Toggle navigation" href="{{ node.menu_path }}">{{node.menu_name}}
                                         <div class="sub-nav-toggler">
                                             <span></span>
                                         </div>
                                     </a>
-                                    {% if not node.is_leaf_node %} 
-                                    <ul class="dropdown-menu sub-menu collapse" id="{{ node.pk }}">    
-                                    {% elif node.is_leaf_node %}                                                        
+                                        {% if not node.is_leaf_node %}
+                                        <ul class="dropdown-menu sub-menu collapse" id="{{ node.pk }}">
+                                        {% elif node.is_leaf_node %}
+                                        </li>
+                                        {% endif %}
+                                {% elif node.is_child_node and node.level == 1%}
+                                    {% if node.menu_path  %}
+                                    <li class="nav-item">
+                                        <a class="page-scroll" href="{% url node.menu_path %}" >{{ node.menu_name }}</a>
                                     </li>
-                                    {% endif %}                            
-                                {% elif node.is_child_node and node.level == 1%}  
-                                    {% if node.menu_link  %}
+                                    {% elif node.menu_link  %}
                                     <li class="nav-item">
                                         <a class="page-scroll" href="{{ node.menu_link }}">{{ node.menu_name }}</a>
                                     </li>
@@ -39,20 +43,23 @@
                                     <li class="nav-item">
                                         <a class="page-scroll" href="{{ node.get_absolute_url  }}">{{ node.menu_name }}</a>
                                     </li>
-                                    {% else %}
+                                    {% else %} 
                                     <li class="nav-item">
-                                        <a class="page-scroll">{{ node.menu_name }}</a>
+                                        <a class="page-scroll">{{ node.menu_name }} }}</a>
                                     </li>
-                                        {% if not node.get_next_sibling %}                
-                                            </ul>
-                                        </li>
-                                        {% endif %}
                                     {% endif %}
+
+                                    {% if not node.get_next_sibling %}
+                                        </ul>
+                                    </li>
+                                    {% endif %}
+
                                 {%  endif %}
-                                {% if not node.is_leaf_node %}  
-                                {{ children }}                                    
-                                {%  endif %}                                    
-                                {% endrecursetree %}                               
+
+                                {% if not node.is_leaf_node %}
+                                    {{ children }}
+                                {%  endif %}
+                                {% endrecursetree %}
                             </ul>
                         </div>
                         <div class="mobile-manu row-vh d-flex flex-row justify-content-around">
@@ -73,10 +80,10 @@
                                         <li><a href="{% url 'users:profile' %}">Profile Settings</a></li>
                                         <li><a href="{% url 'users:logout' %}">LogOut</a></li>
                                     </ul>
-                                </li>                                
+                                </li>
                                 {% endif %}
 
-                                {% if not request.user.is_authenticated %}                                
+                                {% if not request.user.is_authenticated %}
                                 <li>
                                     <a href="{% url 'users:login' %}" class="main-btn btn-hover login d-block">Login</a>
                                 </li>

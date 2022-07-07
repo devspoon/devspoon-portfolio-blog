@@ -2,7 +2,9 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-from  config.settings.base import INSTALLED_APPS, MIDDLEWARE
+from utils.os.file_path_name_gen import date_upload_to_for_summernote
+
+from  config.settings.base import INSTALLED_APPS
 
 INSTALLED_APPS += [
     "django_summernote",
@@ -47,6 +49,7 @@ SUMMERNOTE_CONFIG = {
     'attachment_filesize_limit': 5 * 1024 * 1024,
     # Set `upload_to` function for attachments.
     #'attachment_upload_to': my_custom_upload_to_func(),
+    'attachment_upload_to': date_upload_to_for_summernote,
 
     # Set custom storage class for attachments.
     #'attachment_storage_class': 'my.custom.storage.class.name',
@@ -56,7 +59,7 @@ SUMMERNOTE_CONFIG = {
 
     # You can disable attachment feature.
     #'disable_attachment': False,
-    
+
     # Set `True` to return attachment paths in absolute URIs.
     #'attachment_absolute_uri': False,
 
