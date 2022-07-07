@@ -20,20 +20,20 @@ logger = logging.getLogger(__name__)
 
 class OpenSourceListView(ListView):
     model = InterestingOpenSourcePost
-    template_name = 'opensource/opensource_list.html' 
+    template_name = 'opensource/opensource_list.html'
     paginate_by = 5
     paginate_orphans = 1
-    context_object_name = 'board' 
-    
+    context_object_name = 'board'
+
     # def get_queryset(self):
     #     return Review.objects.filter(user=self.request.user).all()
-    
-    
+
+
 class OpenSourceDetailView(DetailView):
     model = InterestingOpenSourcePost
-    template_name = 'opensource/opensource_detail.html' 
-    context_object_name = 'board' 
-    
+    template_name = 'opensource/opensource_detail.html'
+    context_object_name = 'board'
+
     # def get_object(self):
     #     id_ = self.kwargs.get("pk")
     #     return get_object_or_404(Board, id=id_)
@@ -55,18 +55,18 @@ class OpenSourceCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         data = form.save(commit=False)
         data.author = self.request.user
-        data.save()    
+        data.save()
         # file1 = self.request.FILES.getlist('file1')
         # print('file1 : ',file1)
         # if file1 :
         #     PostFiles.objects.create(file=file1)
-            
+
         # file2 = self.request.FILES.getlist('file2')
         # if file2 :
-        #     PostFiles.objects.create(file=file2)            
-        
+        #     PostFiles.objects.create(file=file2)
+
         return super().form_valid(form)
-    
+
 
 class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
     ...
@@ -82,7 +82,7 @@ class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
     #     if review.user != self.request.user:
     #         raise PermissionDenied()
     #     return super().form_valid(form)
-    
+
 
 class OpenSourceDeleteView(LoginRequiredMixin, DeleteView):
     ...

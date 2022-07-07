@@ -37,7 +37,7 @@ class MainMenu(MPTTModel):
 
     class MPTTMeta:
         order_insertion_by = ['menu_name']
-        
+
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['parent', 'menu_slug', 'menu_name'], name='MainMenu unique fields of constraint'),
@@ -58,7 +58,7 @@ class MainMenu(MPTTModel):
         for i in range(len(ancestors)):
             slugs.append('/'.join(ancestors[:i+1]))
         return slugs
-    
+
     def __str__(self):
         return "%s " % (self.menu_name)
 
@@ -70,7 +70,7 @@ class MainMenu(MPTTModel):
 class SiteInfo(models.Model):
     class Language(models.TextChoices):
         ENGLISH = '0', _('Eng')
-        KOREAN = '1', _('Kor')        
+        KOREAN = '1', _('Kor')
 
     site_name = models.CharField(max_length=255, blank=False, verbose_name=_('Site Name'))
     site_owner = models.CharField(max_length=255, blank=False, verbose_name=_('Site Owner'))
