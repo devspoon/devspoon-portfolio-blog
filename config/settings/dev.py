@@ -59,7 +59,7 @@ DEBUG_TOOLBAR_CONFIG = {
 INSTALLED_APPS += [
     "debug_toolbar",
     "django_nose",
-    "silk",
+    #"silk",
     'django_extensions',
 ]
 
@@ -72,7 +72,7 @@ GRAPH_MODELS = {
 
 MIDDLEWARE += [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-    "silk.middleware.SilkyMiddleware",
+    #"silk.middleware.SilkyMiddleware",
 ]
 
 # Database

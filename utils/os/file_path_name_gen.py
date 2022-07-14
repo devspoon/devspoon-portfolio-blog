@@ -38,8 +38,6 @@ def date_upload_to_for_summernote(self, filename):
     # 확장자 추출
     extension = os.path.splitext(filename)[-1].lower()
     # 결합 후 return
-    print('self : ',type(self))
-    print('filename : ',filename)
 
     return "/".join(
         [

@@ -115,7 +115,7 @@ class User(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('') # profile page
-    
+
     def set_dormant_account(self):
         # self.instance
         # send email
@@ -131,7 +131,6 @@ class User(AbstractUser):
         self.password = ''
         self.dormant_account_at = timezone.now()
         self.save()
-        
 
     def set_delete(self):
         socialaccount=SocialAccount.objects.filter(user=self.pk).first()
@@ -232,7 +231,7 @@ class PolicyPages(models.Model):
     slug = models.SlugField(max_length=150, blank=True, unique=True, allow_unicode=True, db_index=True, verbose_name=_('Page Slug'))
     is_necessary_policy =  models.BooleanField( blank=False, default=True, verbose_name=_('Necessary Policy'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
-    
+
     class Meta:
             db_table = 'policy_pages'
             verbose_name = _('pilicy pages')
@@ -240,7 +239,7 @@ class PolicyPages(models.Model):
 
     def __str__(self):
         return "%s" % (self.title)
-    
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title, allow_unicode=True)
         super().save(*args, **kwargs)

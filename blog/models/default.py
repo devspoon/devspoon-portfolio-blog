@@ -25,7 +25,7 @@ class MainMenu(MPTTModel):
     menu_icon = models.CharField(max_length=100, blank=True, verbose_name=_('Menu Icon'))
     menu_path = models.CharField(max_length=255, blank=False, verbose_name=_('Menu Path'))
     menu_type = models.CharField(max_length=15, choices = MenuType.choices, default=MenuType.MAIN_PAGE, verbose_name=_('Menu Type'))
-    menu_slug = models.SlugField(blank=True, verbose_name=_('Menu Slug'))
+    # menu_slug = models.SlugField(blank=True, verbose_name=_('Menu Slug'))
     menu_link = models.URLField(blank=True, verbose_name=_('Menu Link'))
     menu_target = models.CharField(max_length=255, blank=False, default='_self', verbose_name=_('Menu Target'))
     menu_permit_level = models.IntegerField(default=0,verbose_name=_('Menu Permit Level'))
@@ -40,24 +40,24 @@ class MainMenu(MPTTModel):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['parent', 'menu_slug', 'menu_name'], name='MainMenu unique fields of constraint'),
+            models.UniqueConstraint(fields=['parent', 'menu_name'], name='MainMenu unique fields of constraint'),
         ]
         db_table = 'main_menu'
         verbose_name = _('main menu')
         verbose_name_plural = _('main menu')
         app_label = "blog"
 
-    def get_slug_list(self):
-        try:
-            ancestors = self.get_ancestors(include_self=True)
-        except:
-            ancestors = list()
-        else:
-            ancestors = [i.menu_slug for i in ancestors]
-        slugs = list()
-        for i in range(len(ancestors)):
-            slugs.append('/'.join(ancestors[:i+1]))
-        return slugs
+    # def get_slug_list(self):
+    #     try:
+    #         ancestors = self.get_ancestors(include_self=True)
+    #     except:
+    #         ancestors = list()
+    #     else:
+    #         ancestors = [i.menu_slug for i in ancestors]
+    #     slugs = list()
+    #     for i in range(len(ancestors)):
+    #         slugs.append('/'.join(ancestors[:i+1]))
+    #     return slugs
 
     def __str__(self):
         return "%s " % (self.menu_name)

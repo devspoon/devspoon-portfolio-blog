@@ -1,10 +1,10 @@
 import os
 import logging
 
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 import re
+from bs4 import BeautifulSoup as Bs
 
 from django.urls import reverse
 
@@ -14,6 +14,7 @@ from django.db.models.signals import pre_save, post_delete
 from django.db import models
 from django.db.models.constraints import UniqueConstraint
 from utils.os.file_path_name_gen import date_upload_to_for_file
+
 
 logger = logging.getLogger(__name__)
 
@@ -46,9 +47,10 @@ class Post(models.Model):
         MONITORING = '5', _('Monitoring')
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_('Author'))
-    title = models.CharField(max_length=200, blank=False, verbose_name=_('Title'))  
+    title = models.CharField(max_length=200, blank=False, verbose_name=_('Title'))
     # category = models.CharField(max_length=15, choices = Category.choices, default=Category.BLOG, verbose_name=_('Category'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
+    title_image = models.ImageField(blank=True, verbose_name=_('title_image'))
     link1 = models.URLField(blank=True, verbose_name=_('Link1'))
     link2 = models.URLField(blank=True, verbose_name=_('Link2'))
     file1 = models.FileField(upload_to=date_upload_to_for_file, blank=True, verbose_name=_('file1'))
@@ -180,12 +182,12 @@ class BooksPost(Post):
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='BooksPost_like_set',
-									   through='Like',verbose_name=_('Like Set')) 
+									   through='Like',verbose_name=_('Like Set'))
 
     bookmark_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='BooksPost_bookmark_set',
-									   through='Bookmark', verbose_name=_('Bookmark Set')) 
+									   through='Bookmark', verbose_name=_('Bookmark Set'))
 
     class Meta:
         db_table = 'books_post'
@@ -245,8 +247,22 @@ class Bookmark(models.Model):
         app_label = "blog"
 
 
-@receiver(pre_save)
-def auto_delete_file_on_save(sender, instance=None, **kwargs):
+def get_title_image_url_in_textfield(instance):
+    for field in instance._meta.fields:
+        field_name = field.name
+
+        if field_name == 'content' :
+            new_content = getattr(instance, field_name)
+            html = Bs(new_content, 'html.parser')
+            img_urls = [url['src'] for url in html.find_all('img')]
+
+            if img_urls :
+                setattr(instance, 'title_image',img_urls[0])
+            else :
+                setattr(instance, 'title_image','')
+
+
+def auto_delete_file_on_save_for_blog(sender, instance):
     if not instance.pk:
         return False
 
@@ -258,10 +274,11 @@ def auto_delete_file_on_save(sender, instance=None, **kwargs):
 
     for field in instance._meta.fields:
         field_type = field.get_internal_type()
+        field_name = field.name
 
-        if field_type == 'FileField' or field_type == 'ImageField' or field_type == 'ImageSpecField':
-            origin_file = getattr(old_obj, field.name)
-            new_file = getattr(instance, field.name)
+        if (field_type == 'FileField' or field_type == 'ImageField' or field_type == 'ImageSpecField') and field_name != 'title_image':
+            origin_file = getattr(old_obj, field_name)
+            new_file = getattr(instance, field_name)
 
             if not origin_file:
                 return True
@@ -272,8 +289,19 @@ def auto_delete_file_on_save(sender, instance=None, **kwargs):
 
 
 
+@receiver(pre_save)
+def pre_save_handler_for_blog(sender, instance=None, **kwargs):
+    list_of_models = ('ProjectPost', 'OnlineStudyPost', 'BlogPost', 'InterestingOpenSourcePost', 'BooksPost')
+    if sender.__name__ in list_of_models: # this is the dynamic part you want
+        get_title_image_url_in_textfield(instance)
+        auto_delete_file_on_save_for_blog(sender, instance)
+
+
+
+
+
 @receiver(post_delete)
-def auto_delete_file_on_delete(sender, instance=None, **kwargs):
+def auto_delete_file_on_delete_for_blog(sender, instance=None, **kwargs):
     list_of_models = ('ProjectPost', 'OnlineStudyPost', 'BlogPost', 'InterestingOpenSourcePost', 'BooksPost')
     if sender.__name__ in list_of_models: # this is the dynamic part you want
 

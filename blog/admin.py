@@ -16,7 +16,7 @@ class WorldSocialAccountAdmin(admin.ModelAdmin):
 class LocalSocialAccountAdmin(admin.ModelAdmin):
     list_display = [field.name for field in LocalSocialAccount._meta.get_fields()]
     list_display_links = ['id']
-    
+
 
 class InterestingOpenSourcePostAdmin(SummernoteModelAdmin):
     list_display = ['id','author','title']
