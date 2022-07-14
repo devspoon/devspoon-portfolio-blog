@@ -19,17 +19,23 @@
                                 {% recursetree main_menu %}
                                 {% if node.is_root_node %}
                                 <li class="nav-item">
-                                    <a class="page-scroll" data-toggle="collapse" data-target="#{{ node.pk}}" aria-controls="{{ node.pk }}"
-                                        aria-expanded="false" aria-label="Toggle navigation" href="{{ node.menu_path }}">{{node.menu_name}}
-                                        <div class="sub-nav-toggler">
-                                            <span></span>
-                                        </div>
-                                    </a>
-                                        {% if not node.is_leaf_node %}
-                                        <ul class="dropdown-menu sub-menu collapse" id="{{ node.pk }}">
-                                        {% elif node.is_leaf_node %}
-                                        </li>
-                                        {% endif %}
+                                        <a class="page-scroll" data-toggle="collapse" data-target="#{{ node.pk}}" aria-controls="{{ node.pk }}"
+                                            aria-expanded="false" aria-label="Toggle navigation" href="
+                                            {% if node.menu_path  %}
+                                                {% url node.menu_path %}
+                                            {% elif node.menu_link  %}
+                                                {{node.menu_link}}
+                                            {% endif %}
+                                            ">{{node.menu_name}}
+                                            <div class="sub-nav-toggler">
+                                                <span></span>
+                                            </div>
+                                        </a>
+                                            {% if not node.is_leaf_node %}
+                                            <ul class="dropdown-menu sub-menu collapse" id="{{ node.pk }}">
+                                            {% elif node.is_leaf_node %}
+                                            </li>
+                                            {% endif %}
                                 {% elif node.is_child_node and node.level == 1%}
                                     {% if node.menu_path  %}
                                     <li class="nav-item">
@@ -39,11 +45,7 @@
                                     <li class="nav-item">
                                         <a class="page-scroll" href="{{ node.menu_link }}">{{ node.menu_name }}</a>
                                     </li>
-                                    {% elif node.menu_slug %}
-                                    <li class="nav-item">
-                                        <a class="page-scroll" href="{{ node.get_absolute_url  }}">{{ node.menu_name }}</a>
-                                    </li>
-                                    {% else %} 
+                                    {% else %}
                                     <li class="nav-item">
                                         <a class="page-scroll">{{ node.menu_name }} }}</a>
                                     </li>

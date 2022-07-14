@@ -39,13 +39,13 @@
 
                             {% if site_info.office_youtube %}
                             <li><a href="{{ site_info.office_youtube }}"><i class="lni lni-youtube"></i></a></li>
-                            {% endif %}                            
+                            {% endif %}
                         </ul>
                     </div>
                     <div class="language_currency">
                         <ul class="d-flex">
                             <li class="language"><a href="#" onclick="return false;"> Eng <i class="icon-right ion-ios-arrow-down"></i></a>
-                                <ul class="dropdown_language">                                    
+                                <ul class="dropdown_language">
                                     <li><a href="#" onclick="return false;">Eng</a></li>
                                     <li><a href="#" onclick="return false;">Kor</a></li>
                                 </ul>
@@ -63,34 +63,32 @@
                                     data-bs-toggle="collapse" data-bs-target="#submenu-{{node.pk}}"
                                     aria-controls="navbarSupportedContent" aria-expanded="false"
                                     aria-label="Toggle navigation">{{ node.menu_name }}
-                                    
-                                {% if not node.is_leaf_node %} 
+
+                                {% if not node.is_leaf_node %}
                                     <i class="icofont-rounded-down"></i></a>
                                     <ul class="sub-menu collapse" id="submenu-{{node.pk}}">
-                                {% elif node.is_leaf_node %}                                    
+                                {% elif node.is_leaf_node %}
                                     </a></li>
-                                {% endif %}                                
-
-                            {% elif node.is_child_node and node.level == 1 %}                                    
-                                {% if node.menu_link  %}
-                                    <li class="nav-item "><a href="{{ node.menu_link }}">{{ node.menu_name }}</a></li>
-                                {% elif node.menu_slug %}
-                                    <li class="nav-item "><a href="{{ node.get_absolute_url }}">{{ node.menu_name }}</a></li>
-                                {% else %}
-                                    <li class="nav-item ">{{ node.menu_name }}</li>                                    
                                 {% endif %}
 
-                                {% if not node.get_next_sibling %}                
+                            {% elif node.is_child_node and node.level == 1 %}
+                                {% if node.menu_link  %}
+                                    <li class="nav-item "><a href="{{ node.menu_link }}">{{ node.menu_name }}</a></li>
+                                {% else %}
+                                    <li class="nav-item ">{{ node.menu_name }}</li>
+                                {% endif %}
+
+                                {% if not node.get_next_sibling %}
                                     </ul>
-                                </li>                            
+                                </li>
                                 {% endif %}
 
                             {% endif %}
 
-                            {% if not node.is_leaf_node %}                              
-                            {{ children }}                                    
-                            {% endif %}  
-                            {% endrecursetree %}     
+                            {% if not node.is_leaf_node %}
+                            {{ children }}
+                            {% endif %}
+                            {% endrecursetree %}
                         </ul>
                     </div>
 

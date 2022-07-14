@@ -35,6 +35,7 @@ opensource_patterns = [
 portfolio_patterns = []
 project_patterns = []
 study_patterns = []
+online_patterns = []
 
 urlpatterns = [
     path('', include(main_patterns)),
@@ -46,4 +47,5 @@ urlpatterns = [
     path('portfolio/', include(portfolio_patterns)),
     path('project/', include(project_patterns)),
     path('study/', include(study_patterns)),
+    path('online/', include(online_patterns)),
 ]
