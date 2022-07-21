@@ -10,7 +10,7 @@ from django.http import Http404
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from django.db.models import Avg
+from django.db.models import Avg, Q
 from isort import file
 from ...models.boards import InterestingOpenSourcePost
 from .opensource_forms import OpenSourceForm
@@ -38,11 +38,20 @@ class OpenSourceDetailView(DetailView):
     #     id_ = self.kwargs.get("pk")
     #     return get_object_or_404(Board, id=id_)
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     args = {"board": self.kwargs.get("pk"), "is_deleted": False}
-    #     context["comments"] = Comment.objects.filter(**args)
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # args = {"board": self.kwargs.get("pk"), "is_deleted": False}
+        # context["comments"] = Comment.objects.filter(**args)
+        temp_queryset = InterestingOpenSourcePost.objects.filter(Q(pk=context['board'].pk-1) | Q(pk=context['board'].pk+1))
+        context['pre_board'] = temp_queryset[0]
+
+        if temp_queryset.count() == 2 :
+            context['next_board'] = temp_queryset[1]
+
+        else :
+            context['next_board'] = ''
+
+        return context
 
 
 class OpenSourceCreateView(LoginRequiredMixin, CreateView):
@@ -56,26 +65,18 @@ class OpenSourceCreateView(LoginRequiredMixin, CreateView):
         data = form.save(commit=False)
         data.author = self.request.user
         data.save()
-        # file1 = self.request.FILES.getlist('file1')
-        # print('file1 : ',file1)
-        # if file1 :
-        #     PostFiles.objects.create(file=file1)
-
-        # file2 = self.request.FILES.getlist('file2')
-        # if file2 :
-        #     PostFiles.objects.create(file=file2)
 
         return super().form_valid(form)
 
 
 class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
-    ...
-    # model = InterestingOpenSourcePost
-    # pk_url_kwarg = 'review_id'
-    # fields = ['comment', 'ratings']
-    # template_name = 'opensource/update.html'
-    # success_url = reverse_lazy('review-history')
-    # login_url = reverse_lazy('login')
+    model = InterestingOpenSourcePost
+    pk_url_kwarg = 'pk'
+    #fields = ['comment', 'ratings']
+    form_class = OpenSourceForm
+    template_name = 'opensource/opensource_edit.html'
+    success_url = reverse_lazy('blog:opensource_update  ')
+    login_url = reverse_lazy('login')
 
     # def form_valid(self, form):
     #     review = self.get_object()

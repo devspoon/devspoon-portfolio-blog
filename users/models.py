@@ -103,8 +103,11 @@ class User(AbstractUser):
         ]
 
     def __str__(self):
-        return "%s - %s" % (
-            self.username,
+        # return "%s - %s" % (
+        #     self.username,
+        #     self.nickname,
+        # )
+        return "%s" % (
             self.nickname,
         )
 
