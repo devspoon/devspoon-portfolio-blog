@@ -11,29 +11,29 @@
         <div class="container">
           <div class="row">
             <div class="col-lg-8 m-auto text-center">
-              <h2 class="title">latest <span>from our blog</span></h2>
-              Link
-              <a href="#" onclick="return false;"><h4 class="pb-2">project name</h4></a>
+              <h2 class="title">{{board.title}}</h2>
+              Repository
+              <a href="{{board.repository}}"><h4 class="pb-2">{{board.title}}</h4></a>
               <div class="post-info d-flex justify-content-center">
                 <div>
                     Use
-                    <a href="#" onclick="return false;">Django</a>
+                    <a href="#" onclick="return false;">{{board.dev_lang}}</a>
                 </div>
                 <div>
                     Branch
-                    <a href="#" onclick="return false;">Front-End</a>
+                    <a href="#" onclick="return false;">{{board.branch}}</a>
                 </div>
                 <div>
                     Roles
-                    <a href="#" onclick="return false;">Committer</a>
+                    <a href="#" onclick="return false;">{{board.role}}</a>
                 </div>
               </div>
 
               <div class="meta">
                 By
-                <a class="author" href="#" onclick="return false;">Admin</a>
-                <a href="#" onclick="return false;">28 April 2021</a>
-                <a class="category" href="#" onclick="return false;"><span>In</span>Google Ads</a>
+                <a class="author" href="#" onclick="return false;">{{board.author}}</a>
+                <a href="#" onclick="return false;">{{board.created_at|date:'Y-m-d H:i'}}</a>
+                <a class="category" href="#" onclick="return false;"><span>Difficulty</span>{{board.get_difficulty_level_display}}</a>
               </div>
             </div>
 
@@ -41,81 +41,49 @@
                 <div class="post-details-content">
                   <div class="post-details-body">
                     <div class="content">
-                      <p class="text-pra">Lorem ipsum dolor sit amet, consectetur <span>adipiscing elit.</span> Nulla felis risus, commo do ac facilisis nec, tristique nec massa. Sed hendrerit mi et quam accumsan laoreet id sed quam.</p>
-                      <p>Fusce quis neque id lectus tempor sodales ac at nunc. Sed at vulputate lorem, non egestas mi. Sed suscipit scelerisque sollicitudin. Vivamus ut eleifend dui. Quisque feugiat, mauris nec tincidunt maximus, enim odio facilisis lectus, et accumsan dolor purus mollis turpis. Praesent posuere ultricies diam, nec auctor turpis. Vestibulum condimentum elit eget lacus molestie bibendum. Etiam ac porta lorem.</p>
-                      <div class="blockquote-area">
-                        <blockquote class="blockquote-style">
-                          <div class="icon">
-                            <img src="assets/img/icons/right-quote.png" alt="Icon">
-                          </div>
-                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel felis arcu. Integer maximus felis in massa commodo ultricies. Aenean ut enim vitae arcu iaculis euismod ac nec enim. Mauris fermentum pellentesque orci</p>
-                        </blockquote>
-                      </div>
-                      <p class="mb-40">Praesent luctus turpis in nisi pulvinar, vestibulum fringilla felis tincidunt. Mauris placerat justo tincidunt commodo dapibus. Aliquam viverra neque tellus, non finibus sem posuere pellentesque. Ut nunc libero, hendrerit a diam eu, imperdiet pretium purus.</p>
-                      <h4>Determining a Marketing Budget Can be Frustrating.</h4>
-                      <p>Vivamus ac tortor non diam tincidunt tincidunt non sed dolor. Pellentesque semper ipsum venenatis diam elementum, quis molestie velit ullamcorper. Etiam condimentum maximus posuere. Phasellus et magna sapien. Vivamus sed aliquam nisl. Curabitur tincidunt eros purus, vel molestie ex malesuada non. Nulla consequat diam quis dictum feugiat.</p>
-                      <ul class="list-style">
-                        <li><i class="icon_box-checked"></i> Aliquam eu porta enim, a pellentesque nulla. Aliquam erat volutpat.</li>
-                        <li><i class="icon_box-checked"></i> Pellentesque habitant morbi tristique senectus et netus et malesuada</li>
-                        <li><i class="icon_box-checked"></i> fames ac turpis egestas. Integer id quam sit amet lorem maximus efficitur.</li>
-                        <li><i class="icon_box-checked"></i> Vestibulum a enim facilisis, rutrum ex non, elementum ante.</li>
-                      </ul>
-                      <p class="mb-0">Ut dignissim nibh sed nisi ultrices, eu mattis nibh euismod. Proin eget euismod augue. Vestibulum nisi neque, porta a blandit ac, vestibulum convallis dui. Donec sit amet eleifend ipsum.</p>
-                      
-                      <!-- widget social tags start -->
-                      <div class="widget-social-tags">
-                        <div class="widget-tags">
-                          <ul>
-                            <li><a href="#/">Digital</a></li>
-                            <li><a href="#/">Growth Hack</a></li>
-                            <li><a href="#/">Business</a></li>                       
-                          </ul>
-                        </div>
-                        <!-- <div class="widget-social-icons">
-                          <span>Share On: </span>
-                          <a class="facebook" href="#/"><i class="social_facebook"></i></a>
-                          <a class="twitter" href="#/"><i class="social_twitter"></i></a>
-                          <a class="dribbble" href="#/"><i class="social_dribbble"></i></a>
-                          <a class="pinterest" href="#/"><i class="social_pinterest"></i></a>
-                        </div> -->
-                      </div>
-                      <!-- widget social tags end -->
-  
-                      <!-- reply list start -->
-                      <!-- <div class="author-info">
-                        <div class="thumb">
-                          <img src="assets/img/blog/author-01.png" alt="Image">
-                        </div>
-                        <div class="author-details">
-                          <ul>
-                            <li class="name">Admin</li>
-                            <li class="author">Author</li>
-                          </ul>
-                          <p>Admin is the founder of Yoast Academy and CEO of Yoast. Her favorite SEO topics are SEO copywriting and site structure.</p>
-                        </div>
-                      </div> -->
-                      <!-- reply list end -->
+                        {{board.content | safe}}
 
-                    <!-- blog history navigation list start -->
+                    </div>
+                    <div class="blog-links">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                link 1 :<a href='{{ board.link1 }}'>{{ board.link1|urlizetrunc:30 }}</a>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                link 2 :<a href='{{ board.link1 }}'>{{ board.link1|urlizetrunc:30 }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blog-files mt-5">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                file 1 :<a href='{{ board.file1 }}'>{{ board.file1|truncatechars:30 }}</a>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                file 2 :<a href='{{ board.file1 }}'>{{ board.file1|truncatechars:30 }}</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="blog-history-navigation">
                         <div class="row">
                           <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="nav-prev">
-                              <a href="blog-details.html">
+                              <a href="{% url 'blog:opensource_detail' pre_board.pk %}">
                                 <span><i class="lni lni-arrow-left"></i> Older</span>
-                                Seo Explained in Fewer than <br>140 Characters
+                                {{pre_board.title}} <br>{{pre_board|striptags|truncatechars:140 }}
                               </a>
                             </div>
                           </div>
+                          {% if next_board %}
                           <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="nav-next">
-                              <a href="blog-details.html">
+                              <a href="{% url 'blog:opensource_detail' next_board.pk %}">
                                 <span>Newer <i class="lni lni-arrow-right"></i></span>
-                                The Dummies Guide to Enterprise <br>Customer Data Platforms
+                                {{next_board.title}} <br>{{next_board|striptags|truncatechars:140 }}
                               </a>
                             </div>
                           </div>
+                          {% endif %}
                         </div>
                     </div>
                     <!-- blog history navigation end -->
