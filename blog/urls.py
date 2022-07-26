@@ -1,5 +1,4 @@
 from django.urls import path, include
-from . import views
 
 from .views.index import IndexView
 from blog.views.opensource.opensource_board import OpenSourceListView, OpenSourceDetailView, OpenSourceCreateView, OpenSourceUpdateView, OpenSourceDeleteView
