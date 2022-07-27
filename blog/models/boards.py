@@ -66,8 +66,7 @@ class Post(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['-created_at']
-        app_label = "blog"
+        #app_label = "blog"
 
     def tag_save(self):
         tags = re.findall(r'#(\w+)\b', self.content)
@@ -112,6 +111,7 @@ class ProjectPost(Post):
         db_table = 'project_post'
         verbose_name = _('project')
         verbose_name_plural = _('project')
+        ordering = ['-created_at']
 
 
 class OnlineStudyPost(Post):
@@ -132,6 +132,7 @@ class OnlineStudyPost(Post):
         db_table = 'online_study_post'
         verbose_name = _('online study')
         verbose_name_plural = _('online study')
+        ordering = ['-created_at']
 
 
 class BlogPost(Post):
@@ -149,6 +150,7 @@ class BlogPost(Post):
         db_table = 'blog_post'
         verbose_name = _('blog post')
         verbose_name_plural = _('blog post')
+        ordering = ['-created_at']
 
 
 class InterestingOpenSourcePost(Post):
@@ -172,6 +174,7 @@ class InterestingOpenSourcePost(Post):
         db_table = 'interesting_open_source_post'
         verbose_name = _('interesting open source post')
         verbose_name_plural = _('interesting open source post')
+        ordering = ['-created_at']
 
 
 class BooksPost(Post):
@@ -193,13 +196,11 @@ class BooksPost(Post):
         db_table = 'books_post'
         verbose_name = _('books post')
         verbose_name_plural = _('books post')
+        ordering = ['-created_at']
 
 
 class Tag(models.Model):
     tag = models.CharField(max_length=140, unique=True)
-
-    class Meta:
-         app_label = "blog"
 
     def __str__(self):
         return self.tag
@@ -223,7 +224,7 @@ class Like(models.Model):
             UniqueConstraint(fields=['user', 'interesting_open_source'], name='like unique with interesting_open_source'),
             UniqueConstraint(fields=['user', 'books'], name='like unique with books'),
         ]
-        app_label = "blog"
+        ordering = ['-created_at']
 
 
 class Bookmark(models.Model):
@@ -244,7 +245,7 @@ class Bookmark(models.Model):
             UniqueConstraint(fields=['user', 'interesting_open_source'], name='Bookmark unique with interesting_open_source'),
             UniqueConstraint(fields=['user', 'books'], name='Bookmark unique with books'),
         ]
-        app_label = "blog"
+        ordering = ['-created_at']
 
 
 def get_title_image_url_in_textfield(instance):

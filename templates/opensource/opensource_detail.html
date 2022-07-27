@@ -1,7 +1,7 @@
 {% extends "base/base.html" %}
 {% comment %} {% load search_tags %} {% endcomment %}
 {% load static %}
-{% load default_tags %}
+{% load public_tags %}
 
 {% block title %}opensource list{% endblock %}
 
@@ -42,7 +42,7 @@
                 <div class="post-details-content">
                   <div class="post-details-body">
                     <div class="content">
-                        {{board.content | safe}}
+                        {{board.content|safe}}
 
                     </div>
                     <div class="blog-links">

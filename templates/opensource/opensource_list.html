@@ -1,7 +1,6 @@
 {% extends "base/base.html" %}
 {% comment %} {% load search_tags %} {% endcomment %}
 {% load static %}
-
 {% block title %}opensource edit{% endblock %}
 
 {% block content %}
@@ -12,8 +11,8 @@
         <div class="row">
             <div class="col-lg-12">
             <div class="page-title-content text-center pb-lg-30 pb-80">
-                <h2 class="title">latest<span> from our blog</span></h2>
-                <div class="bread-crumbs pb-1"><a href="index.html">Home<span class="breadcrumb-sep">/</span></a><span class="active">Blog</span></div>
+                <h2 class="title">open source <span>blog</span></h2>
+                <div class="bread-crumbs pb-1"><a href="{% url 'blog:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active">Opensource</span></div>
             </div>
             </div>
         </div>
@@ -32,28 +31,28 @@
                     <div class="card-box">
                         <div class="card-img">
                             <a href="product-details.html">
-                                <img src="{{item.title_image}}" alt="">
+                                <img src="{{item.title_image}}">
                             </a>
                             <div class="product-action">
-                                <a href="{% url 'blog:opensource_list' %}"  class="share" title="Bookstore link"><i class="lni lni-world"></i></a>
+                                <a href="{% url 'blog:opensource_detail' item.pk %}"  class="share" title="Bookstore link"><i class="lni lni-world"></i></a>
                             </div>
                         </div>
 
                         <div class="card-content">
-                            <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
-                            <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
+                            <h3 class="name"><i class="lni lni-github"></i> <a href="{% url 'blog:opensource_detail' item.pk %}">{{item.title}}</a></h3>
+                            <span class="update">{{board.content|safe|truncatechars:80}}</span>
                             <ul class="project-info">
                                 <li>
-                                    <i class="lni lni-calendar"></i> 20 June, 2023
+                                    <i class="lni lni-calendar"></i> {{item.created_at|date:'Y-m-d H:i'}}
                                 </li>
                                 <li>
-                                    <i class="lni lni-bookmark"></i> Django
+                                    <i class="lni lni-bookmark"></i> {{item.dev_lang}}
                                 </li>
                                 <li>
-                                    <i class="lni lni-layers"></i> Front-End
+                                    <i class="lni lni-layers"></i> {{item.branch}}
                                 </li>
                                 <li>
-                                    <i class="lni lni-user"></i> Committer
+                                    <i class="lni lni-user"></i> {{item.role}}
                                 </li>
                             </ul>
                         </div>
@@ -62,38 +61,7 @@
                 </div>
                 {% endfor %}
 
-                <div class="row">
-                    <div class="col-lg-12 pb-xs-30 pb-sm-70 pb-100">
-                    <div class="pagination-area text-center lg-pt-0 sm-pb-0 pb-lg-30 pb-100">
-                        <nav>
-                        <ul class="page-numbers">
-                            <li>
-                                <a class="page-number prev" href="#">
-                                    <ion-icon name="chevron-back-outline"></ion-icon>
-                                </a>
-                            </li>
-                            <li>
-                            <span class="page-number current">1</span>
-                            </li>
-                            <li>
-                            <a class="page-number" href="#">2</a>
-                            </li>
-                            <li>
-                            <a class="page-number" href="#">3</a>
-                            </li>
-                            <li>
-                            <a class="page-number" href="#">4</a>
-                            </li>
-                            <li>
-                                <a class="page-number next" href="#">
-                                    <ion-icon name="chevron-forward-outline"></ion-icon>
-                                </a>
-                            </li>
-                        </ul>
-                        </nav>
-                    </div>
-                    </div>
-                </div>
+                {% include "base/pagenation.html" %}
             </div>
         </div>
     </section>

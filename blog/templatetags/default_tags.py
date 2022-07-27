@@ -30,10 +30,3 @@ def main_menu_tag():
 def site_info_tag():
     info = SiteInfo.objects.all().first()
     return info
-
-@register.filter(name='filename')
-def get_filename(full_file_path):
-    temp = str(full_file_path)
-    temp_list = temp.split('/')
-
-    return temp_list[-1]
