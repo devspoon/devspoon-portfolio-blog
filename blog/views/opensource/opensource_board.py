@@ -21,8 +21,8 @@ logger = logging.getLogger(__name__)
 class OpenSourceListView(ListView):
     model = InterestingOpenSourcePost
     template_name = 'opensource/opensource_list.html'
-    paginate_by = 5
-    paginate_orphans = 1
+    paginate_by = 2
+    paginate_orphans = 1 # if last page has 1 item, it will add in last page.
     context_object_name = 'board'
 
     # def get_queryset(self):
