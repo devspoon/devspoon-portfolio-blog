@@ -1,6 +1,7 @@
 {% extends "base/base.html" %}
 {% comment %} {% load search_tags %} {% endcomment %}
 {% load static %}
+{% load public_tags %}
 
 {% block title %}opensource edit{% endblock %}
 
@@ -36,8 +37,12 @@
                                     {% endfor %}
                                 </select>
                                 {% else %}
-                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                    <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" />
+                                    {% if field.label == 'file1' or field.label == 'file2' %}
+                                        {{field.label}} :<a href='{{ field.url }}'>{{ field.value|filename }}</a>
+                                    {% else %}
+                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {% endif %}
+                                    <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" value="{{ field.value}}"/>
                                 {% endif %}
                             </div>
 

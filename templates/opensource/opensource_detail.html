@@ -45,7 +45,17 @@
                         {{board.content|safe}}
 
                     </div>
-                    <div class="blog-links">
+
+                    <div class="blog-button">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <a href="{% url 'blog:opensource_update' board.pk%}"><button type="button" class="btn btn-outline-primary btn-lg">Edit</button></a>
+                                <a href="{% url 'blog:opensource_delete' board.pk%}"><button type="button" class="btn btn-outline-danger btn-lg">Delete</button></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="blog-links mt-5">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 link 1 :<a href='{{ board.link1 }}'>{{ board.link1|urlizetrunc:30 }}</a>

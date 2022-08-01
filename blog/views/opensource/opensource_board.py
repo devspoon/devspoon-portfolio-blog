@@ -72,11 +72,12 @@ class OpenSourceCreateView(LoginRequiredMixin, CreateView):
 class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
     model = InterestingOpenSourcePost
     pk_url_kwarg = 'pk'
-    #fields = ['comment', 'ratings']
     form_class = OpenSourceForm
-    template_name = 'opensource/opensource_edit.html'
-    success_url = reverse_lazy('blog:opensource_update  ')
-    login_url = reverse_lazy('login')
+    template_name = 'opensource/opensource_update.html'
+    login_url = reverse_lazy('users:login')
+
+    def get_success_url(self):
+        return reverse_lazy('blog:opensource_update', kwargs={'pk': self.object.pk})
 
     # def form_valid(self, form):
     #     review = self.get_object()
@@ -86,17 +87,16 @@ class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class OpenSourceDeleteView(LoginRequiredMixin, DeleteView):
-    ...
-    # model = InterestingOpenSourcePost
-    # pk_url_kwarg = 'review_id'
-    # success_url = reverse_lazy('review-history')
-    # login_url = reverse_lazy('login')
+    model = InterestingOpenSourcePost
+    pk_url_kwarg = 'pk'
+    success_url = reverse_lazy('blog:opensource_list')
+    login_url = reverse_lazy('users:login')
 
-    # def get(self, request, *args, **kwargs):
-    #     return self.post(request, *args, **kwargs)
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
-    # def post(self, request, *args, **kwargs):
-    #     self.object = super().get_object()
-    #     if self.request.user != self.object.user:
-    #         raise PermissionDenied()
-    #     return super().form_valid(None)
+    def post(self, request, *args, **kwargs):
+        self.object = super().get_object()
+        #if self.request.user != self.object.user:
+        #    raise PermissionDenied()
+        return super().form_valid(None)
