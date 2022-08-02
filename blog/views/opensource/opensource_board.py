@@ -97,6 +97,7 @@ class OpenSourceDeleteView(LoginRequiredMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         self.object = super().get_object()
-        #if self.request.user != self.object.user:
-        #    raise PermissionDenied()
-        return super().form_valid(None)
+        if self.request.user != self.object.user:
+           raise PermissionDenied()
+        return super().post(self, request, args, kwargs)
+        # return super().form_valid(None)

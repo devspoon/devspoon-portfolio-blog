@@ -58,20 +58,23 @@
                     <div class="blog-links mt-5">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                link 1 :<a href='{{ board.link1 }}'>{{ board.link1|urlizetrunc:30 }}</a>
+                                link 1 :
+                                {% if board.link1 %}<a href='{{ board.link1 }}'>{{ board.link1|urlizetrunc:30 }}</a> {% endif %}
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                link 2 :<a href='{{ board.link1 }}'>{{ board.link1|urlizetrunc:30 }}</a>
+                                link 2 :
+                                {% if board.link2 %}<a href='{{ board.link2 }}'>{{ board.link2|urlizetrunc:30 }}</a> {% endif %}
                             </div>
                         </div>
                     </div>
                     <div class="blog-files mt-5">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                file 1 :<a href='{{ board.file1.url }}'>{{ board.file1|filename }}</a>
+                                file 1 :
+                                {% if board.file1 %}<a href='{{ board.file1.url }}'>{{ board.file1|filename }}</a> {% endif %}
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                file 2 :<a href='{{ board.file2.url }}'>{{ board.file2|filename }}</a>
+                                file 2 :{% if board.file2 %}<a href='{{ board.file2.url }}'>{{ board.file2|filename }}</a> {% endif %}
                             </div>
                         </div>
                     </div>
