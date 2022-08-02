@@ -312,7 +312,7 @@ def auto_delete_file_on_delete_for_blog(sender, instance=None, **kwargs):
             if field_type == 'FileField' or field_type == 'ImageField' or field_type == 'ImageSpecField':
                 origin_file = getattr(instance, field.name)
 
-                if origin_file == 'title_image':
+                if field.name == 'title_image':
                     continue
 
                 if origin_file and os.path.isfile(origin_file.path):
