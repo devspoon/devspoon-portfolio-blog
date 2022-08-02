@@ -10,7 +10,7 @@ from django.http import Http404
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from django.db.models import Avg, Q
+from django.db.models import Avg, Q, F
 from isort import file
 from ...models.boards import InterestingOpenSourcePost
 from .opensource_forms import OpenSourceForm
@@ -42,14 +42,18 @@ class OpenSourceDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         # args = {"board": self.kwargs.get("pk"), "is_deleted": False}
         # context["comments"] = Comment.objects.filter(**args)
-        temp_queryset = InterestingOpenSourcePost.objects.filter(Q(pk=context['board'].pk-1) | Q(pk=context['board'].pk+1))
-        context['pre_board'] = temp_queryset[0]
+        pre_temp_queryset = InterestingOpenSourcePost.objects.filter(pk__lt=context['board'].pk).order_by('-pk').first()
+        next_temp_queryset = InterestingOpenSourcePost.objects.filter(pk__gt=context['board'].pk).order_by('pk').first()
 
-        if temp_queryset.count() == 2 :
-            context['next_board'] = temp_queryset[1]
-
+        if not pre_temp_queryset :
+            context['pre_board'] = ''
         else :
+            context['pre_board'] = pre_temp_queryset
+
+        if not pre_temp_queryset :
             context['next_board'] = ''
+        else :
+            context['next_board'] = next_temp_queryset
 
         return context
 

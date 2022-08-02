@@ -80,6 +80,7 @@
                     </div>
                     <div class="blog-history-navigation">
                         <div class="row">
+                        {% if pre_board %}
                           <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="nav-prev">
                               <a href="{% url 'blog:opensource_detail' pre_board.pk %}">
@@ -88,6 +89,7 @@
                               </a>
                             </div>
                           </div>
+                          {% endif %}
                           {% if next_board %}
                           <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="nav-next">
