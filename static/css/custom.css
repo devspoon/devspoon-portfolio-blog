@@ -2090,7 +2090,17 @@ section.first button.btn {
     color: #fff;
   }
 
-/*===== blog history navigation =====*/  
+.blog-like .btn_container .like-btn:hover {
+    background:rgba(218, 222, 228, 0.65);
+    caret-color: rgba(0,0,0,0);
+}
+
+.blog-like .btn_container .like-btn .lni-heart.clicked{
+    color: #FF6B6B;
+    caret-color: rgba(0,0,0,0);
+}
+
+/*===== blog history navigation =====*/
 
   .blog-history-navigation {
     border-bottom: 1px solid #f0f1f3;

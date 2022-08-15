@@ -1,6 +1,6 @@
 from .base import *
 # from .sub_settings.debug.nose import * #NOSE coverage trace
-# from .sub_settings.http.cors import *
+from .sub_settings.http.cors import *
 from .sub_settings.system.logs import *
 from .sub_settings.oauth.allauth_default import *
 # from .sub_settings.oauth import *
@@ -62,7 +62,6 @@ INSTALLED_APPS += [
     #"silk",
     'django_extensions',
 ]
-
 
 # django-extentions로 ERP 만들때 해줘야 하는 설정
 GRAPH_MODELS = {

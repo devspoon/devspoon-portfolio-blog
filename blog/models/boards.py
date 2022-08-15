@@ -6,15 +6,13 @@ from django.conf import settings
 import re
 from bs4 import BeautifulSoup as Bs
 
-from django.urls import reverse
-
 from django.dispatch import receiver
 from django.db.models.signals import pre_save, post_delete
 
 from django.db import models
-from django.db.models.constraints import UniqueConstraint
-from utils.os.file_path_name_gen import date_upload_to_for_file
+# from django.db.models.constraints import UniqueConstraint
 
+from utils.os.file_path_name_gen import date_upload_to_for_file
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +59,6 @@ class Post(models.Model):
     tag_set = models.ManyToManyField('Tag', blank=True, verbose_name=_('Tags Set'))
 
     like_count = models.IntegerField(default=0, verbose_name=_('Like Count'))
-    bookmark_count = models.IntegerField(default=0, verbose_name=_('Bookmark Count'))
 
 
     class Meta:
@@ -78,14 +75,6 @@ class Post(models.Model):
             tag, tag_created = Tag.objects.get_or_create(tag=t)
             self.tag_set.add(tag)
 
-    @property
-    def get_like_count(self):
-        return self.like_user_set.count()
-
-    @property
-    def get_bookmark_count(self):
-        return self.bookmark_user_set.count()
-
     def __str__(self):
         return self.title
 
@@ -100,12 +89,7 @@ class ProjectPost(Post):
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='ProjectPost_like_set',
-									   through='Like',verbose_name=_('Like Set'))
-
-    bookmark_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
-									   blank=True,
-									   related_name='ProjectPost_bookmark_set',
-									   through='Bookmark', verbose_name=_('Bookmark Set'))
+									   through='blog.ProjectLike',verbose_name=_('Like Set'))
 
     class Meta:
         db_table = 'project_post'
@@ -121,12 +105,7 @@ class OnlineStudyPost(Post):
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='OnlineStudyPost_like_set',
-									   through='Like',verbose_name=_('Like Set'))
-
-    bookmark_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
-									   blank=True,
-									   related_name='OnlineStudyPost_bookmark_set',
-									   through='Bookmark', verbose_name=_('Bookmark Set'))
+									   through='blog.OnlineStudyLike',verbose_name=_('Like Set'))
 
     class Meta:
         db_table = 'online_study_post'
@@ -139,12 +118,7 @@ class BlogPost(Post):
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='BlogPost_like_set',
-									   through='Like',verbose_name=_('Like Set'))
-
-    bookmark_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
-									   blank=True,
-									   related_name='BlogPost_bookmark_set',
-									   through='Bookmark', verbose_name=_('Bookmark Set'))
+									   through='blog.BlogLike',verbose_name=_('Like Set'))
 
     class Meta:
         db_table = 'blog_post'
@@ -153,7 +127,7 @@ class BlogPost(Post):
         ordering = ['-created_at']
 
 
-class InterestingOpenSourcePost(Post):
+class OpenSourcePost(Post):
 
     role = models.CharField(max_length=15, choices = Post.ProjectRole.choices, default=Post.ProjectRole.OWNER, verbose_name=_('Project Role'))
     dev_lang = models.CharField(max_length=20, blank=False, verbose_name=_('Development Language'))
@@ -162,16 +136,11 @@ class InterestingOpenSourcePost(Post):
     difficulty_level = models.CharField(max_length=15, choices = Post.Difficulty.choices, default=Post.Difficulty.BEGINNER, verbose_name=_('Difficulty Level'))
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
-									   related_name='InterestingOpenSourcePost_like_set',
-									   through='Like',verbose_name=_('Like Set'))
-
-    bookmark_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
-									   blank=True,
-									   related_name='InterestingOpenSourcePost_bookmark_set',
-									   through='Bookmark', verbose_name=_('Bookmark Set'))
+									   related_name='+',
+									   through='OpenSourceLike' ,verbose_name=_('Like Set'))
 
     class Meta:
-        db_table = 'interesting_open_source_post'
+        db_table = 'open_source_post'
         verbose_name = _('interesting open source post')
         verbose_name_plural = _('interesting open source post')
         ordering = ['-created_at']
@@ -185,12 +154,7 @@ class BooksPost(Post):
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
 									   blank=True,
 									   related_name='BooksPost_like_set',
-									   through='Like',verbose_name=_('Like Set'))
-
-    bookmark_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
-									   blank=True,
-									   related_name='BooksPost_bookmark_set',
-									   through='Bookmark', verbose_name=_('Bookmark Set'))
+									   through='blog.BooksLike',verbose_name=_('Like Set'))
 
     class Meta:
         db_table = 'books_post'
@@ -204,48 +168,6 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.tag
-
-
-class Like(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    project = models.ForeignKey(ProjectPost, blank=True, null=True, on_delete=models.CASCADE)
-    online_study = models.ForeignKey(OnlineStudyPost, blank=True, null=True, on_delete=models.CASCADE)
-    blog = models.ForeignKey(BlogPost, blank=True, null=True, on_delete=models.CASCADE)
-    interesting_open_source = models.ForeignKey(InterestingOpenSourcePost, blank=True, null=True, on_delete=models.CASCADE)
-    books = models.ForeignKey(BooksPost, blank=True, null=True, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        constraints = [
-            UniqueConstraint(fields=['user', 'project'], name='like unique with project'),
-            UniqueConstraint(fields=['user', 'online_study'], name='like unique with online_study'),
-            UniqueConstraint(fields=['user', 'blog'], name='like unique with blog'),
-            UniqueConstraint(fields=['user', 'interesting_open_source'], name='like unique with interesting_open_source'),
-            UniqueConstraint(fields=['user', 'books'], name='like unique with books'),
-        ]
-        ordering = ['-created_at']
-
-
-class Bookmark(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    project = models.ForeignKey(ProjectPost, blank=True, null=True, on_delete=models.CASCADE)
-    online_study = models.ForeignKey(OnlineStudyPost, blank=True, null=True, on_delete=models.CASCADE)
-    blog = models.ForeignKey(BlogPost, blank=True, null=True, on_delete=models.CASCADE)
-    interesting_open_source = models.ForeignKey(InterestingOpenSourcePost, blank=True, null=True, on_delete=models.CASCADE)
-    books = models.ForeignKey(BooksPost, blank=True, null=True, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        constraints = [
-            UniqueConstraint(fields=['user', 'project'], name='Bookmark unique with project'),
-            UniqueConstraint(fields=['user', 'online_study'], name='Bookmark unique with online_study'),
-            UniqueConstraint(fields=['user', 'blog'], name='Bookmark unique with blog'),
-            UniqueConstraint(fields=['user', 'interesting_open_source'], name='Bookmark unique with interesting_open_source'),
-            UniqueConstraint(fields=['user', 'books'], name='Bookmark unique with books'),
-        ]
-        ordering = ['-created_at']
 
 
 def get_title_image_url_in_textfield(instance):
@@ -292,7 +214,7 @@ def auto_delete_file_on_save_for_blog(sender, instance):
 
 @receiver(pre_save)
 def pre_save_handler_for_blog(sender, instance=None, **kwargs):
-    list_of_models = ('ProjectPost', 'OnlineStudyPost', 'BlogPost', 'InterestingOpenSourcePost', 'BooksPost')
+    list_of_models = ('ProjectPost', 'OnlineStudyPost', 'BlogPost', 'OpenSourcePost', 'BooksPost')
     if sender.__name__ in list_of_models: # this is the dynamic part you want
         get_title_image_url_in_textfield(instance)
         auto_delete_file_on_save_for_blog(sender, instance)
@@ -303,7 +225,7 @@ def pre_save_handler_for_blog(sender, instance=None, **kwargs):
 
 @receiver(post_delete)
 def auto_delete_file_on_delete_for_blog(sender, instance=None, **kwargs):
-    list_of_models = ('ProjectPost', 'OnlineStudyPost', 'BlogPost', 'InterestingOpenSourcePost', 'BooksPost')
+    list_of_models = ('ProjectPost', 'OnlineStudyPost', 'BlogPost', 'OpenSourcePost', 'BooksPost')
     if sender.__name__ in list_of_models: # this is the dynamic part you want
 
         for field in instance._meta.fields:

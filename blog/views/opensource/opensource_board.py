@@ -11,15 +11,21 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models import Avg, Q, F
+from django.db import transaction
 from isort import file
-from ...models.boards import InterestingOpenSourcePost
+from django.db.models import Prefetch
+
+from ...models.boards import OpenSourcePost
 from .opensource_forms import OpenSourceForm
+
+from django.http import JsonResponse
+
 
 logger = logging.getLogger(__name__)
 
 
 class OpenSourceListView(ListView):
-    model = InterestingOpenSourcePost
+    model = OpenSourcePost
     template_name = 'opensource/opensource_list.html'
     paginate_by = 2
     paginate_orphans = 1 # if last page has 1 item, it will add in last page.
@@ -30,7 +36,7 @@ class OpenSourceListView(ListView):
 
 
 class OpenSourceDetailView(DetailView):
-    model = InterestingOpenSourcePost
+    model = OpenSourcePost
     template_name = 'opensource/opensource_detail.html'
     context_object_name = 'board'
 
@@ -42,8 +48,9 @@ class OpenSourceDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         # args = {"board": self.kwargs.get("pk"), "is_deleted": False}
         # context["comments"] = Comment.objects.filter(**args)
-        pre_temp_queryset = InterestingOpenSourcePost.objects.filter(pk__lt=context['board'].pk).order_by('-pk').first()
-        next_temp_queryset = InterestingOpenSourcePost.objects.filter(pk__gt=context['board'].pk).order_by('pk').first()
+
+        pre_temp_queryset = OpenSourcePost.objects.filter(pk__lt=context['board'].pk).order_by('-pk').first()
+        next_temp_queryset = OpenSourcePost.objects.filter(pk__gt=context['board'].pk).order_by('pk').first()
 
         if not pre_temp_queryset :
             context['pre_board'] = ''
@@ -55,11 +62,14 @@ class OpenSourceDetailView(DetailView):
         else :
             context['next_board'] = next_temp_queryset
 
+        context['like_state'] = OpenSourcePost.objects.filter(pk=self.kwargs.get('pk')).first().like_user_set.filter(pk=self.request.user.pk).exists()
+        print('test : ',context['like_state'])
+
         return context
 
 
 class OpenSourceCreateView(LoginRequiredMixin, CreateView):
-    model = InterestingOpenSourcePost
+    model = OpenSourcePost
     template_name = 'opensource/opensource_edit.html'
     success_url = reverse_lazy('blog:index')
     form_class = OpenSourceForm
@@ -74,7 +84,7 @@ class OpenSourceCreateView(LoginRequiredMixin, CreateView):
 
 
 class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
-    model = InterestingOpenSourcePost
+    model = OpenSourcePost
     pk_url_kwarg = 'pk'
     form_class = OpenSourceForm
     template_name = 'opensource/opensource_update.html'
@@ -83,15 +93,15 @@ class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('blog:opensource_update', kwargs={'pk': self.object.pk})
 
-    # def form_valid(self, form):
-    #     review = self.get_object()
-    #     if review.user != self.request.user:
-    #         raise PermissionDenied()
-    #     return super().form_valid(form)
+    def form_valid(self, form):
+        review = self.get_object()
+        if self.request.user != review.author:
+            raise PermissionDenied()
+        return super().form_valid(form)
 
 
 class OpenSourceDeleteView(LoginRequiredMixin, DeleteView):
-    model = InterestingOpenSourcePost
+    model = OpenSourcePost
     pk_url_kwarg = 'pk'
     success_url = reverse_lazy('blog:opensource_list')
     login_url = reverse_lazy('users:login')
@@ -103,5 +113,29 @@ class OpenSourceDeleteView(LoginRequiredMixin, DeleteView):
         self.object = super().get_object()
         if self.request.user != self.object.author:
            raise PermissionDenied()
-        # return super().post(self, request, args, kwargs)
         return super().form_valid(None)
+
+
+class OpenSourceLikeJsonView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        post = get_object_or_404(OpenSourcePost, pk=pk)
+
+        with transaction.atomic():
+            post_like = post.like_user_set.filter(pk=self.request.user.pk)
+
+            if post_like: # there are field data already, not created
+                message = "Like canceled"
+                if post.like_count != 0:
+                    post.like_count = post.like_count - 1
+                    post.save()
+                    post.like_user_set.remove(self.request.user)
+            else:
+                message = "Like"
+                post.like_count = post.like_count + 1
+                post.save()
+                post.like_user_set.add(self.request.user)
+
+        context = {'like_count': post.like_count,
+                'message': message}
+
+        return JsonResponse(context, safe=True)

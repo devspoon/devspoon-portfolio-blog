@@ -1,7 +1,7 @@
 (function() {
-    
+
     "use strict";
-    
+
     //===== Prealoder
 
     window.onload = function() {
@@ -12,6 +12,36 @@
         document.querySelector('.preloader').style.opacity = '0';
         document.querySelector('.preloader').style.display = 'none';
     }
+
+    /*=====================================
+    blog like event
+    ======================================= */
+    const likeToggler = document.querySelector(".lni-heart");
+    const likeTogglerDiv = document.querySelector(".like-btn");
+    const likeCount = document.querySelector(".like_count");
+
+    likeToggler.addEventListener('click', function() {
+
+        let httpRequest = new XMLHttpRequest();
+        const url = window.location.origin + '/opensource/like/json/'
+        let post_num = window.location.href.split('/')
+        post_num = post_num[post_num.length - 2]
+        const full_url = url + post_num + '/'
+
+        httpRequest.addEventListener("load", (e) => {
+            let jsonResponse = JSON.parse(e.target.responseText);
+
+            console.log(`like count: ${jsonResponse.like_count}`);
+            likeCount.textContent=jsonResponse.like_count;
+            likeToggler.classList.toggle('clicked');
+            likeTogglerDiv.setAttribute('onfocus','this.blur()');
+            likeTogglerDiv.setAttribute('readonly',true);
+        });
+
+        httpRequest.open("GET", url + post_num);
+        httpRequest.send();
+
+    })
 
     /*=====================================
     Sticky
@@ -59,12 +89,12 @@
         console.log('canvas_open');
         bodyOverlayToggler.classList.add("active");
         offcanvasMenuToggler.classList.add("active");
-    }) 
+    })
 
     canvasCloseToggler.addEventListener('click', function() {
         offcanvasMenuToggler.classList.remove("active");
         bodyOverlayToggler.classList.remove("active");
-    }) 
+    })
 
     bodyOverlayToggler.addEventListener('click', function() {
         offcanvasMenuToggler.classList.remove("active");
@@ -146,9 +176,9 @@
 		// 			items: 3,
 		// 		}
 		// 	}
-		// });       
+		// });
 
-    //AOS Scroll 
+    //AOS Scroll
     AOS.init({
         once: true,
     });

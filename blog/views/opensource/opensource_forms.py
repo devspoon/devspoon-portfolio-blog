@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from blog.models.boards import InterestingOpenSourcePost
+from blog.models.boards import OpenSourcePost
 from django_summernote.widgets import SummernoteWidget
 from bs4 import BeautifulSoup as Bs
 
@@ -20,7 +20,7 @@ class OpenSourceForm(forms.ModelForm):
         })
 
     class Meta:
-        model = InterestingOpenSourcePost
+        model = OpenSourcePost
         fields = ["title", "role", "dev_lang", "branch","repository", "difficulty_level", "content", "link1", "link2", "file1", "file2"]
         # fields = "__all__"
         labels = {
