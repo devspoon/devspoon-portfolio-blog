@@ -58,12 +58,12 @@ class Post(models.Model):
 
     tag_set = models.ManyToManyField('Tag', blank=True, verbose_name=_('Tags Set'))
 
+    reply_count = models.IntegerField(default=0, verbose_name=_('Reply Count'))
     like_count = models.IntegerField(default=0, verbose_name=_('Like Count'))
 
 
     class Meta:
         abstract = True
-        #app_label = "blog"
 
     def tag_save(self):
         tags = re.findall(r'#(\w+)\b', self.content)
@@ -141,8 +141,8 @@ class OpenSourcePost(Post):
 
     class Meta:
         db_table = 'open_source_post'
-        verbose_name = _('interesting open source post')
-        verbose_name_plural = _('interesting open source post')
+        verbose_name = _('open source post')
+        verbose_name_plural = _('open source post')
         ordering = ['-created_at']
 
 

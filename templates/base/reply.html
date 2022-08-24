@@ -1,0 +1,61 @@
+
+
+<div class="comment-area">
+    <h2 class="inner-title">{{board.reply_count}} Comments</h2>
+    <div class="comment-content">
+        {% for comment in comments %}
+            {% if comment.depth == 0 %}
+                <div class="single-comment">
+            {% elif comment.depth == 1 %}
+                <div class="single-comment fist-reply">
+            {% else %}
+                <div class="single-comment second-reply">
+            {% endif %}
+                    <div class="author-info">
+                        <div class="thumb">
+                            <img src="{{comment.author.photo_thumbnail.url}}" alt="Image">
+                        </div>
+                        <div class="author-details reply-{{comment.pk}}">
+                            <ul>
+                                <li class="name" id="name">{{comment.author}}</li>
+                                <li class="meta-date ms-2" id="{{comment.pk}}">{{comment.updated_at}}</li>
+                            </ul>
+                            <p>{{comment.comment|safe}}</p>
+                            <div class="d-flex justify-content-end">
+                                <a class="btn btn-outline-primary btn-sm mx-3 " href="javascript:void(0);" onclick="CreateReplyBox(); return false;">Update</a>
+                                <a class="btn btn-outline-secondary btn-sm mx-3" href="javascript:void(0);">Delete</a>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3">
+                                <a class="btn btn-outline-danger btn-sm mx-3" href="javascript:void(0);" onclick="NewReplyBox({{comment.pk}},{{comment.depth}}); return false;">Reply</a>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+        {% endfor %}
+        <div class="reply-input  comment-form-wrap mt-5">
+            <div class="clearfix"></div>
+            <form action="{% url 'blog:opensource_reply_create' board.pk %}" method="post">
+                {% csrf_token %}
+                <div class="comment-form-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <textarea class="form-control reply-input-box" name="comment" id="comment" cols="45" rows="7" placeholder="Your Comment *" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="d-flex justify-content-end">
+                            <div class="form-group mb-0 mx-3">
+                                <button class="btn btn-outline-danger btn-sm" type="submit">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

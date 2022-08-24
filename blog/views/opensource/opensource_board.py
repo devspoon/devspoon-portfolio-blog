@@ -17,6 +17,7 @@ from django.db.models import Prefetch
 
 from ...models.boards import OpenSourcePost
 from .opensource_forms import OpenSourceForm
+from ...models.reply import OpenSourcePostReply
 
 from django.http import JsonResponse
 
@@ -63,8 +64,9 @@ class OpenSourceDetailView(DetailView):
             context['next_board'] = next_temp_queryset
 
         context['like_state'] = OpenSourcePost.objects.filter(pk=self.kwargs.get('pk')).first().like_user_set.filter(pk=self.request.user.pk).exists()
-        print('test : ',context['like_state'])
 
+        #context['comment']=OpenSourcePostReply.objects.select_related('author').all()
+        context['comments']=OpenSourcePostReply.objects.all().select_related('author')
         return context
 
 

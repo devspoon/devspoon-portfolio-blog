@@ -184,3 +184,28 @@
     });
 
 })();
+
+/*=====================================
+reply dynamic input box
+======================================= */
+
+function NewReplyBox(replyNum,depth)
+{
+    const replyNode = document.querySelector(".reply-input");
+    const targetNode = document.querySelector(".reply-"+ replyNum);
+    const newNode = replyNode.cloneNode(true);
+    const author = document.getElementById("name");
+
+    targetNode.appendChild(newNode);
+    replyNode.parentNode.removeChild(replyNode);
+
+    if ( 1 < depth) {
+        reply_input_box = document.getElementById("comment");
+        reply_input_box.textContent= "@"+author.textContent + " ";
+
+    }
+    else {
+        reply_input_box = document.getElementById("comment");
+        reply_input_box.textContent= "";
+    }
+}

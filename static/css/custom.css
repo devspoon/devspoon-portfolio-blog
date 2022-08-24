@@ -2100,6 +2100,10 @@ section.first button.btn {
     caret-color: rgba(0,0,0,0);
 }
 
+.author-info .thumb img{
+    width: 100px !important;
+}
+
 /*===== blog history navigation =====*/
 
   .blog-history-navigation {

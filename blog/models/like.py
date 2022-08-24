@@ -14,7 +14,6 @@ class ProjectLike(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        app_label  = 'blog'
 
 
 class OnlineStudyLike(models.Model):
@@ -25,7 +24,6 @@ class OnlineStudyLike(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        app_label  = 'blog'
 
 
 class BlogLike(models.Model):
@@ -36,7 +34,6 @@ class BlogLike(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        app_label  = 'blog'
 
 
 class OpenSourceLike(models.Model):
@@ -47,7 +44,6 @@ class OpenSourceLike(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        app_label  = 'blog'
 
 
 class BooksLike(models.Model):
@@ -58,4 +54,3 @@ class BooksLike(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        app_label  = 'blog'

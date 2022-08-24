@@ -2,6 +2,7 @@ from django.urls import path, include
 
 from .views.index import IndexView
 from blog.views.opensource.opensource_board import OpenSourceListView, OpenSourceDetailView, OpenSourceCreateView, OpenSourceUpdateView, OpenSourceDeleteView, OpenSourceLikeJsonView
+from blog.views.opensource.opensource_reply import OpenSourceReplyCreateView, OpenSourceReplyUpdateView, OpenSourceReplyDeleteView
 
 app_name = "blog"
 
@@ -29,6 +30,9 @@ opensource_patterns = [
     path('update/<int:pk>/', OpenSourceUpdateView.as_view(), name='opensource_update'),
     path('delete/<int:pk>/', OpenSourceDeleteView.as_view(), name='opensource_delete'),
     path('like/json/<int:pk>/', OpenSourceLikeJsonView.as_view(),name='opensource_like'),
+    path('reply/create/<int:pk>/',OpenSourceReplyCreateView.as_view(),name='opensource_reply_create'),
+    path('reply/update/<int:pk>/',OpenSourceReplyUpdateView.as_view(),name='opensource_reply_update'),
+    path('reply/delete/<int:pk>/',OpenSourceReplyDeleteView.as_view(),name='opensource_reply_delete')
 ]
 portfolio_patterns = []
 project_patterns = []
