@@ -199,6 +199,24 @@ function NewReplyBox(replyNum,depth)
     targetNode.appendChild(newNode);
     replyNode.parentNode.removeChild(replyNode);
 
+    const depth_input = document.getElementById("depth");
+    const parent_input = document.getElementById("parent");
+
+    if (depth < 2) {
+        console.log("depth : ",depth);
+        depth_input.setAttribute("value",depth+1);
+        console.log("depth value: ",depth_input.getAttribute("value"));
+    }
+    else {
+        console.log("depth : ",depth);
+        depth_input.setAttribute("value",2);
+        console.log("depth value: ",depth_input.getAttribute("value"));
+    }
+
+    console.log("replyNum : ",replyNum);
+    parent_input.setAttribute("value",replyNum);
+    console.log("replyNum value: ",parent_input.getAttribute("value"));
+
     if ( 1 < depth) {
         reply_input_box = document.getElementById("comment");
         reply_input_box.textContent= "@"+author.textContent + " ";

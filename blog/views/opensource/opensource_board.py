@@ -128,13 +128,11 @@ class OpenSourceLikeJsonView(LoginRequiredMixin, View):
             if post_like: # there are field data already, not created
                 message = "Like canceled"
                 if post.like_count != 0:
-                    post.like_count = post.like_count - 1
-                    post.save()
+                    post.objects.update(like_count=F('last_group_num') - 1)
                     post.like_user_set.remove(self.request.user)
             else:
                 message = "Like"
-                post.like_count = post.like_count + 1
-                post.save()
+                post.objects.update(like_count=F('last_group_num') + 1)
                 post.like_user_set.add(self.request.user)
 
         context = {'like_count': post.like_count,

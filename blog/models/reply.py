@@ -11,6 +11,7 @@ class Reply(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     comment = models.TextField(default='', blank=False, verbose_name=_('Comment'))
     depth = models.SmallIntegerField(default=0, verbose_name=_('Reply depth'))
+    group = models.SmallIntegerField(default=0, verbose_name=_('Reply group'))
     parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='parent_set' , null=True, blank=True, default = None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -29,6 +30,7 @@ class ProjectPostReply(Reply):
         db_table = 'project_post_reply'
         verbose_name = _('project post reply')
         verbose_name_plural = _('project post reply')
+        ordering = [('group'),]
 
 
 class OnlineStudyPostReply(Reply):
@@ -38,6 +40,7 @@ class OnlineStudyPostReply(Reply):
         db_table = 'online_study_post_reply'
         verbose_name = _('online study post reply')
         verbose_name_plural = _('online study post reply')
+        ordering = [('group'),]
 
 
 class BlogPostReply(Reply):
@@ -47,6 +50,7 @@ class BlogPostReply(Reply):
         db_table = 'blog_post_reply'
         verbose_name = _('blog post reply')
         verbose_name_plural = _('blog post reply')
+        ordering = [('group'),]
 
 
 class OpenSourcePostReply(Reply):
@@ -56,6 +60,7 @@ class OpenSourcePostReply(Reply):
         db_table = 'open_source_post_reply'
         verbose_name = _('open source post reply')
         verbose_name_plural = _('open source post reply')
+        ordering = [('group'),]
 
 
 class BooksPostReply(Reply):
@@ -65,3 +70,4 @@ class BooksPostReply(Reply):
         db_table = 'books_post_reply'
         verbose_name = _('books post reply')
         verbose_name_plural = _('books post reply')
+        ordering = [('group'),]

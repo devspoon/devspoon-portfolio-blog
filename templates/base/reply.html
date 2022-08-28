@@ -28,9 +28,6 @@
                             <div class="d-flex justify-content-end mt-3">
                                 <a class="btn btn-outline-danger btn-sm mx-3" href="javascript:void(0);" onclick="NewReplyBox({{comment.pk}},{{comment.depth}}); return false;">Reply</a>
                             </div>
-
-
-
                         </div>
                     </div>
                 </div>
@@ -44,6 +41,8 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <textarea class="form-control reply-input-box" name="comment" id="comment" cols="45" rows="7" placeholder="Your Comment *" required></textarea>
+                                <input type="hidden" id="depth" name="depth" value="0">
+                                <input type="hidden" id="parent" name="parent" value="">
                             </div>
                         </div>
                     </div>
