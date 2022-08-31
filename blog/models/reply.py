@@ -3,9 +3,14 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
 from django.urls import reverse
+from django.dispatch import receiver
+from django.db.models.signals import pre_save, post_delete
+
+from django.db.models import F
+from django.db import transaction
 
 from django.db import models
-#from .boards import ProjectPost, OnlineStudyPost, BlogPost, OpenSourcePost, BooksPost
+from .boards import ProjectPost, OnlineStudyPost, BlogPost, OpenSourcePost, BooksPost
 
 class Reply(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -13,6 +18,7 @@ class Reply(models.Model):
     depth = models.SmallIntegerField(default=0, verbose_name=_('Reply depth'))
     group = models.SmallIntegerField(default=0, verbose_name=_('Reply group'))
     parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='parent_set' , null=True, blank=True, default = None)
+    reply_count = models.IntegerField(default=0, verbose_name=_('Reply Count'))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -71,3 +77,16 @@ class BooksPostReply(Reply):
         verbose_name = _('books post reply')
         verbose_name_plural = _('books post reply')
         ordering = [('group'),]
+
+
+@receiver(post_delete)
+def auto_delete_file_on_delete_for_blog(sender, instance=None, **kwargs):
+    list_of_models = ('ProjectPostReply', 'OnlineStudyPostReply', 'BlogPostReply', 'OpenSourcePostReply', 'BooksPostReply')
+    if sender.__name__ in list_of_models: # this is the dynamic part you want
+
+        post = getattr(instance, 'post')
+
+        with transaction.atomic():
+            post=OpenSourcePost.objects.select_for_update().filter(pk=post.pk)
+            if post.values('reply_count') != 0 :
+                post.update(reply_count=F('reply_count') - 1)

@@ -41,13 +41,14 @@ class OpenSourceReplyCreateView(LoginRequiredMixin, View):
             post = get_object_or_404(OpenSourcePost,pk=kwargs.get("pk"))
         else :
             with transaction.atomic():
-                OpenSourcePost.objects.filter(pk=kwargs.get("pk")).update(last_group_num=F('last_group_num') + 1)
+                OpenSourcePost.objects.select_for_update().filter(pk=kwargs.get("pk")).update(last_group_num=F('last_group_num') + 1)
                 post = get_object_or_404(OpenSourcePost,pk=kwargs.get("pk"))
+            group=post.last_group_num
 
-        post_reply = OpenSourcePostReply(author=author, comment=comment, depth=depth, group=group,  parent=parent, post=post)
-        post_reply.save()
+        with transaction.atomic():
+            OpenSourcePostReply.objects.create(author=author, comment=comment, depth=depth, group=group,  parent=parent, post=post)
 
-        OpenSourcePost.objects.filter(pk=kwargs.get("pk")).update(reply_count=F('reply_count')+1)
+            OpenSourcePost.objects.select_for_update().filter(pk=kwargs.get("pk")).update(reply_count=F('reply_count') + 1)
 
         return redirect('blog:opensource_detail', kwargs.get('pk'))
 
@@ -74,7 +75,6 @@ class OpenSourceReplyDeleteView(LoginRequiredMixin, DeleteView):
 
     model = OpenSourcePostReply
     pk_url_kwarg = 'pk'
-    success_url = reverse_lazy('blog:opensource_list')
     login_url = reverse_lazy('users:login')
 
     def get(self, request, *args, **kwargs):
@@ -82,6 +82,12 @@ class OpenSourceReplyDeleteView(LoginRequiredMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         self.object = super().get_object()
+
         if self.request.user != self.object.author:
            raise PermissionDenied()
+
+        self.post_pk = self.object.post.pk
         return super().form_valid(None)
+
+    def get_success_url(self):
+        return reverse_lazy('blog:opensource_detail', kwargs={'pk': self.post_pk})

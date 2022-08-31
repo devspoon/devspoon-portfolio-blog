@@ -23,7 +23,7 @@
                             <p>{{comment.comment|safe}}</p>
                             <div class="d-flex justify-content-end">
                                 <a class="btn btn-outline-primary btn-sm mx-3 " href="javascript:void(0);" onclick="CreateReplyBox(); return false;">Update</a>
-                                <a class="btn btn-outline-secondary btn-sm mx-3" href="javascript:void(0);">Delete</a>
+                                <a class="btn btn-outline-secondary btn-sm mx-3" href="{% url 'blog:opensource_reply_delete' comment.pk%}">Delete</a>
                             </div>
                             <div class="d-flex justify-content-end mt-3">
                                 <a class="btn btn-outline-danger btn-sm mx-3" href="javascript:void(0);" onclick="NewReplyBox({{comment.pk}},{{comment.depth}}); return false;">Reply</a>

@@ -66,7 +66,22 @@ class OpenSourceDetailView(DetailView):
         context['like_state'] = OpenSourcePost.objects.filter(pk=self.kwargs.get('pk')).first().like_user_set.filter(pk=self.request.user.pk).exists()
 
         #context['comment']=OpenSourcePostReply.objects.select_related('author').all()
-        context['comments']=OpenSourcePostReply.objects.all().select_related('author')
+        #context['comments']=OpenSourcePostReply.objects.filter(post=context['board'].pk).select_related('author').order_by('parent_id')
+        context['comments']=OpenSourcePostReply.objects.raw(raw_query="""
+                with recursive CTE as (
+                    select id, author_id , post_id , `depth` , parent_id ,comment ,`group` ,created_at ,updated_at
+                    FROM open_source_post_reply
+                    WHERE post_id = %(board_pk)s
+                    union
+                    select p.id, p.author_id , p.post_id , p.`depth` , p.parent_id , p.comment , p.`group` , p.created_at ,p.updated_at
+                    FROM open_source_post_reply p
+                    INNER JOIN CTE ON CTE.id = p.parent_id
+                )
+                select * from CTE order by parent_id;
+                """,
+                params={
+                    'board_pk': context['board'].pk,
+                },).prefetch_related('author')
         return context
 
 
@@ -123,17 +138,19 @@ class OpenSourceLikeJsonView(LoginRequiredMixin, View):
         post = get_object_or_404(OpenSourcePost, pk=pk)
 
         with transaction.atomic():
-            post_like = post.like_user_set.filter(pk=self.request.user.pk)
+            post_like = post.like_user_set.select_for_update().filter(pk=self.request.user.pk)
 
             if post_like: # there are field data already, not created
                 message = "Like canceled"
                 if post.like_count != 0:
-                    post.objects.update(like_count=F('last_group_num') - 1)
+                    OpenSourcePost.objects.filter(pk=pk).update(like_count=F('like_count') - 1)
                     post.like_user_set.remove(self.request.user)
             else:
                 message = "Like"
-                post.objects.update(like_count=F('last_group_num') + 1)
+                OpenSourcePost.objects.filter(pk=pk).update(like_count=F('like_count') + 1)
                 post.like_user_set.add(self.request.user)
+
+        post = OpenSourcePost.objects.get(pk=pk) # get latest post information
 
         context = {'like_count': post.like_count,
                 'message': message}
