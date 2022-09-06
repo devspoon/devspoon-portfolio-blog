@@ -18,7 +18,6 @@ class Reply(models.Model):
     depth = models.SmallIntegerField(default=0, verbose_name=_('Reply depth'))
     group = models.SmallIntegerField(default=0, verbose_name=_('Reply group'))
     parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='parent_set' , null=True, blank=True, default = None)
-    reply_count = models.IntegerField(default=0, verbose_name=_('Reply Count'))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

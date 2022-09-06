@@ -65,23 +65,7 @@ class OpenSourceDetailView(DetailView):
 
         context['like_state'] = OpenSourcePost.objects.filter(pk=self.kwargs.get('pk')).first().like_user_set.filter(pk=self.request.user.pk).exists()
 
-        #context['comment']=OpenSourcePostReply.objects.select_related('author').all()
-        #context['comments']=OpenSourcePostReply.objects.filter(post=context['board'].pk).select_related('author').order_by('parent_id')
-        context['comments']=OpenSourcePostReply.objects.raw(raw_query="""
-                with recursive CTE as (
-                    select id, author_id , post_id , `depth` , parent_id ,comment ,`group` ,created_at ,updated_at
-                    FROM open_source_post_reply
-                    WHERE post_id = %(board_pk)s
-                    union
-                    select p.id, p.author_id , p.post_id , p.`depth` , p.parent_id , p.comment , p.`group` , p.created_at ,p.updated_at
-                    FROM open_source_post_reply p
-                    INNER JOIN CTE ON CTE.id = p.parent_id
-                )
-                select * from CTE order by parent_id;
-                """,
-                params={
-                    'board_pk': context['board'].pk,
-                },).prefetch_related('author')
+        context['comments']=OpenSourcePostReply.objects.filter(post=context['board'].pk).select_related('author')
         return context
 
 

@@ -1,47 +1,7 @@
+
 (function() {
 
     "use strict";
-
-    //===== Prealoder
-
-    window.onload = function() {
-        window.setTimeout(fadeout, 500);
-    }
-
-    function fadeout() {
-        document.querySelector('.preloader').style.opacity = '0';
-        document.querySelector('.preloader').style.display = 'none';
-    }
-
-    /*=====================================
-    blog like event
-    ======================================= */
-    const likeToggler = document.querySelector(".lni-heart");
-    const likeTogglerDiv = document.querySelector(".like-btn");
-    const likeCount = document.querySelector(".like_count");
-
-    likeToggler.addEventListener('click', function() {
-
-        let httpRequest = new XMLHttpRequest();
-        const url = window.location.origin + '/opensource/like/json/'
-        let post_num = window.location.href.split('/')
-        post_num = post_num[post_num.length - 2]
-        const full_url = url + post_num + '/'
-
-        httpRequest.addEventListener("load", (e) => {
-            let jsonResponse = JSON.parse(e.target.responseText);
-
-            console.log(`like count: ${jsonResponse.like_count}`);
-            likeCount.textContent=jsonResponse.like_count;
-            likeToggler.classList.toggle('clicked');
-            likeTogglerDiv.setAttribute('onfocus','this.blur()');
-            likeTogglerDiv.setAttribute('readonly',true);
-        });
-
-        httpRequest.open("GET", url + post_num);
-        httpRequest.send();
-
-    })
 
     /*=====================================
     Sticky
@@ -89,17 +49,17 @@
         console.log('canvas_open');
         bodyOverlayToggler.classList.add("active");
         offcanvasMenuToggler.classList.add("active");
-    })
+    });
 
     canvasCloseToggler.addEventListener('click', function() {
         offcanvasMenuToggler.classList.remove("active");
         bodyOverlayToggler.classList.remove("active");
-    })
+    });
 
     bodyOverlayToggler.addEventListener('click', function() {
         offcanvasMenuToggler.classList.remove("active");
         bodyOverlayToggler.classList.remove("active");
-    })
+    });
 
     //========= glightbox
 		/*const myGallery = GLightbox({
@@ -110,78 +70,7 @@
 			'autoplayVideos': true,
 		});*/
 
-    //======== tiny slider for portfolio-product-carousel 
-    tns({
-        slideBy: 'page',
-        autoplay: false,
-        mouseDrag: true,
-        gutter: 20,
-        nav: false,
-        controls: true,
-        controlsPosition: 'bottom',
-        controlsText: [
-            '<span class="prev"><i class="lni lni-chevron-left"></i></span>', 
-            '<span class="next"><i class="lni lni-chevron-right"></i></span>'
-        ],
-        container: ".portfolio-product-carousel",
-        items: 1,
-        center: false,
-        autoplayTimeout: 5000,
-        swipeAngle: false,
-        speed: 400,
-        responsive: {
-            768: {
-                items: 1,
-            },
 
-            992: {
-                items: 1,
-            },
-
-            1200: {
-                items: 1,
-            }
-        }
-    });
-
-    //======== tiny slider for analyze-product-carousel
-		// tns({
-		// 	slideBy: 'page',
-		// 	autoplay: false,
-		// 	mouseDrag: true,
-		// 	gutter: 20,
-		// 	nav: false,
-		// 	controls: true,
-		// 	controlsPosition: 'bottom',
-		// 	controlsText: [
-		// 		'<span class="prev"><i class="lni lni-chevron-left"></i></span>', 
-		// 		'<span class="next"><i class="lni lni-chevron-right"></i></span>'
-		// 	],
-		// 	container: ".analyze-product-carousel",
-		// 	items: 1,
-		// 	center: false,
-		// 	autoplayTimeout: 5000,
-		// 	swipeAngle: false,
-		// 	speed: 400,
-		// 	responsive: {
-		// 		768: {
-		// 			items: 2,
-		// 		},
-
-		// 		992: {
-		// 			items: 2,
-		// 		},
-
-		// 		1200: {
-		// 			items: 3,
-		// 		}
-		// 	}
-		// });
-
-    //AOS Scroll
-    AOS.init({
-        once: true,
-    });
 
 })();
 
@@ -227,3 +116,86 @@ function NewReplyBox(replyNum,depth)
         reply_input_box.textContent= "";
     }
 }
+
+
+
+
+ //===== Prealoder
+
+window.onload = function() {
+    window.setTimeout(fadeout, 500);
+}
+
+function fadeout() {
+    document.querySelector('.preloader').style.opacity = '0';
+    document.querySelector('.preloader').style.display = 'none';
+}
+
+/*=====================================
+blog like event
+======================================= */
+
+const likeToggler = document.querySelector(".lni-heart");
+const likeTogglerDiv = document.querySelector(".like-btn");
+const likeCount = document.querySelector(".like_count");
+
+likeToggler.addEventListener('click', async function() {
+
+    const url = window.location.origin + '/opensource/like/json/'
+    let post_num = window.location.href.split('/')
+    post_num = post_num[post_num.length - 2]
+    const full_url = url + post_num + '/'
+
+    try {
+        let res = await axios.get(full_url);
+        likeCount.textContent=res.data.like_count;
+        likeToggler.classList.toggle('clicked');
+        likeTogglerDiv.setAttribute('onfocus','this.blur()');
+        likeTogglerDiv.setAttribute('readonly',true);
+    } catch (err){
+        console.log('like error : ' ,err);
+    }
+})
+
+
+
+//======== tiny slider for portfolio-product-carousel 
+tns({
+    slideBy: 'page',
+    autoplay: false,
+    mouseDrag: true,
+    gutter: 20,
+    nav: false,
+    controls: true,
+    controlsPosition: 'bottom',
+    controlsText: [
+        '<span class="prev"><i class="lni lni-chevron-left"></i></span>', 
+        '<span class="next"><i class="lni lni-chevron-right"></i></span>'
+    ],
+    container: ".portfolio-product-carousel",
+    items: 1,
+    center: false,
+    autoplayTimeout: 5000,
+    swipeAngle: false,
+    speed: 400,
+    responsive: {
+        768: {
+            items: 1,
+        },
+
+        992: {
+            items: 1,
+        },
+
+        1200: {
+            items: 1,
+        }
+    }
+});
+
+
+
+//AOS Scroll
+AOS.init({
+    once: true,
+});
