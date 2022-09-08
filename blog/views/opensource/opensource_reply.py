@@ -14,6 +14,32 @@ from ...models.boards import OpenSourcePost
 from django.db.models import F
 from django.db import transaction
 
+from django.http import JsonResponse
+
+
+class OpenSourceReplyListView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        post = OpenSourcePostReply.objects.filter(post=pk).select_related('author')
+
+        # context = {'comments': post.like_count,'message': message}
+        results = list(
+            map(lambda context: {
+                "pk": context.pk,
+                "author": str(context.author.pk),
+                "comment": context.comment,
+                "depth": context.depth,
+                "group": context.group,
+                "parent": context.parent,
+                "post": str(context.post.pk),
+                "created_at": context.post.created_at,
+                'thumbnail': str(context.author.photo_thumbnail.url)
+            }, post)
+        )
+
+        print('result : ',results)
+
+        return JsonResponse(results, safe=False)
+
 
 class OpenSourceReplyCreateView(LoginRequiredMixin, View):
 
@@ -47,7 +73,6 @@ class OpenSourceReplyCreateView(LoginRequiredMixin, View):
 
         with transaction.atomic():
             OpenSourcePostReply.objects.create(author=author, comment=comment, depth=depth, group=group,  parent=parent, post=post)
-
             OpenSourcePost.objects.select_for_update().filter(pk=kwargs.get("pk")).update(reply_count=F('reply_count') + 1)
 
         return redirect('blog:opensource_detail', kwargs.get('pk'))

@@ -3,6 +3,7 @@
 <div class="comment-area">
     <h2 class="inner-title">{{board.reply_count}} Comments</h2>
     <div class="comment-content">
+
         {% for comment in comments %}
             {% if comment.depth == 0 %}
                 <div class="single-comment">
@@ -32,6 +33,7 @@
                     </div>
                 </div>
         {% endfor %}
+        
         <div class="reply-input  comment-form-wrap mt-5">
             <div class="clearfix"></div>
             <form action="{% url 'blog:opensource_reply_create' board.pk %}" method="post">

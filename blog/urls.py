@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from .views.index import IndexView
 from blog.views.opensource.opensource_board import OpenSourceListView, OpenSourceDetailView, OpenSourceCreateView, OpenSourceUpdateView, OpenSourceDeleteView, OpenSourceLikeJsonView
-from blog.views.opensource.opensource_reply import OpenSourceReplyCreateView, OpenSourceReplyUpdateView, OpenSourceReplyDeleteView
+from blog.views.opensource.opensource_reply import OpenSourceReplyCreateView, OpenSourceReplyUpdateView, OpenSourceReplyDeleteView,OpenSourceReplyListView
 
 app_name = "blog"
 
@@ -25,14 +25,15 @@ books_patterns = []
 error_patterns = []
 opensource_patterns = [
     path('', OpenSourceListView.as_view(),name='opensource_list'),
-    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='opensource_detail'),
     path('create/', OpenSourceCreateView.as_view(), name='opensource_create'),
     path('update/<int:pk>/', OpenSourceUpdateView.as_view(), name='opensource_update'),
     path('delete/<int:pk>/', OpenSourceDeleteView.as_view(), name='opensource_delete'),
     path('like/json/<int:pk>/', OpenSourceLikeJsonView.as_view(),name='opensource_like'),
-    path('reply/create/<int:pk>/',OpenSourceReplyCreateView.as_view(),name='opensource_reply_create'),
-    path('reply/update/<int:pk>/',OpenSourceReplyUpdateView.as_view(),name='opensource_reply_update'),
-    path('reply/delete/<int:pk>/',OpenSourceReplyDeleteView.as_view(),name='opensource_reply_delete')
+    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='opensource_detail'),
+    path('detail/<int:pk>/reply/json/',OpenSourceReplyListView.as_view(),name='opensource_reply_list'),
+    path('detail/<int:pk>/reply/json/create/',OpenSourceReplyCreateView.as_view(),name='opensource_reply_create'),
+    path('detail/<int:pk>/reply/json/update/<int:reply_pk>/',OpenSourceReplyUpdateView.as_view(),name='opensource_reply_update'),
+    path('detail/<int:pk>/reply/json/delete/<int:reply_pk>/',OpenSourceReplyDeleteView.as_view(),name='opensource_reply_delete')
 ]
 portfolio_patterns = []
 project_patterns = []

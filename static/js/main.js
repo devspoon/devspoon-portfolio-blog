@@ -19,8 +19,6 @@
             // logo.src = 'assets/images/logo/logo.svg';
         }
 
-
-
         // show or hide the back-top-top button
         var backToTo = document.querySelector(".back-to-top");
         if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
@@ -30,45 +28,7 @@
         }
     };
 
-    //WOW Scroll Spy
-    var wow = new WOW({
-        //disabled for mobile
-        mobile: false
-    });
-    wow.init();
-
-
-    /*---canvas menu activation---*/
-
-    const canvasToggler = document.querySelector(".canvas_open");
-    const offcanvasMenuToggler = document.querySelector(".offcanvas_menu_wrapper");
-    const bodyOverlayToggler = document.querySelector(".body_overlay");
-    const canvasCloseToggler = document.querySelector(".canvas_close");
-
-    canvasToggler.addEventListener('click', function() {
-        console.log('canvas_open');
-        bodyOverlayToggler.classList.add("active");
-        offcanvasMenuToggler.classList.add("active");
-    });
-
-    canvasCloseToggler.addEventListener('click', function() {
-        offcanvasMenuToggler.classList.remove("active");
-        bodyOverlayToggler.classList.remove("active");
-    });
-
-    bodyOverlayToggler.addEventListener('click', function() {
-        offcanvasMenuToggler.classList.remove("active");
-        bodyOverlayToggler.classList.remove("active");
-    });
-
-    //========= glightbox
-		/*const myGallery = GLightbox({
-			'href': 'assets/video/Free App Landing Page Template - AppLand.mp4',
-			'type': 'video',
-			'source': 'youtube', //vimeo, youtube or local
-			'width': 900,
-			'autoplayVideos': true,
-		});*/
+    
 
 
 
@@ -117,9 +77,6 @@ function NewReplyBox(replyNum,depth)
     }
 }
 
-
-
-
  //===== Prealoder
 
 window.onload = function() {
@@ -130,34 +87,6 @@ function fadeout() {
     document.querySelector('.preloader').style.opacity = '0';
     document.querySelector('.preloader').style.display = 'none';
 }
-
-/*=====================================
-blog like event
-======================================= */
-
-const likeToggler = document.querySelector(".lni-heart");
-const likeTogglerDiv = document.querySelector(".like-btn");
-const likeCount = document.querySelector(".like_count");
-
-likeToggler.addEventListener('click', async function() {
-
-    const url = window.location.origin + '/opensource/like/json/'
-    let post_num = window.location.href.split('/')
-    post_num = post_num[post_num.length - 2]
-    const full_url = url + post_num + '/'
-
-    try {
-        let res = await axios.get(full_url);
-        likeCount.textContent=res.data.like_count;
-        likeToggler.classList.toggle('clicked');
-        likeTogglerDiv.setAttribute('onfocus','this.blur()');
-        likeTogglerDiv.setAttribute('readonly',true);
-    } catch (err){
-        console.log('like error : ' ,err);
-    }
-})
-
-
 
 //======== tiny slider for portfolio-product-carousel 
 tns({
@@ -193,9 +122,47 @@ tns({
     }
 });
 
-
-
 //AOS Scroll
 AOS.init({
     once: true,
 });
+
+//WOW Scroll Spy
+var wow = new WOW({
+    //disabled for mobile
+    mobile: false
+});
+wow.init();
+
+
+/*---canvas menu activation---*/
+
+const canvasToggler = document.querySelector(".canvas_open");
+const offcanvasMenuToggler = document.querySelector(".offcanvas_menu_wrapper");
+const bodyOverlayToggler = document.querySelector(".body_overlay");
+const canvasCloseToggler = document.querySelector(".canvas_close");
+
+canvasToggler.addEventListener('click', function() {
+    console.log('canvas_open');
+    bodyOverlayToggler.classList.add("active");
+    offcanvasMenuToggler.classList.add("active");
+});
+
+canvasCloseToggler.addEventListener('click', function() {
+    offcanvasMenuToggler.classList.remove("active");
+    bodyOverlayToggler.classList.remove("active");
+});
+
+bodyOverlayToggler.addEventListener('click', function() {
+    offcanvasMenuToggler.classList.remove("active");
+    bodyOverlayToggler.classList.remove("active");
+});
+
+//========= glightbox
+    /*const myGallery = GLightbox({
+        'href': 'assets/video/Free App Landing Page Template - AppLand.mp4',
+        'type': 'video',
+        'source': 'youtube', //vimeo, youtube or local
+        'width': 900,
+        'autoplayVideos': true,
+    });*/

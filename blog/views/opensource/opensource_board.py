@@ -65,7 +65,7 @@ class OpenSourceDetailView(DetailView):
 
         context['like_state'] = OpenSourcePost.objects.filter(pk=self.kwargs.get('pk')).first().like_user_set.filter(pk=self.request.user.pk).exists()
 
-        context['comments']=OpenSourcePostReply.objects.filter(post=context['board'].pk).select_related('author')
+        # context['comments']=OpenSourcePostReply.objects.filter(post=context['board'].pk).select_related('author')
         return context
 
 
