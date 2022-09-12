@@ -86,6 +86,8 @@ def auto_delete_file_on_delete_for_blog(sender, instance=None, **kwargs):
         post = getattr(instance, 'post')
 
         with transaction.atomic():
-            post=OpenSourcePost.objects.select_for_update().filter(pk=post.pk)
-            if post.values('reply_count') != 0 :
-                post.update(reply_count=F('reply_count') - 1)
+            post=OpenSourcePost.objects.select_for_update().get(pk=post.pk)
+
+            if post.reply_count > 0 :
+                post.reply_count = F('reply_count') - 1
+                post.save()

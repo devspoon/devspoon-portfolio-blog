@@ -1,4 +1,7 @@
+from email.policy import default
 import logging
+from signal import default_int_handler
+import datetime
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -16,27 +19,23 @@ from django.db import transaction
 
 from django.http import JsonResponse
 
-
 class OpenSourceReplyListView(LoginRequiredMixin, View):
     def get(self, request, pk):
         post = OpenSourcePostReply.objects.filter(post=pk).select_related('author')
-
-        # context = {'comments': post.like_count,'message': message}
+            
         results = list(
             map(lambda context: {
                 "pk": context.pk,
-                "author": str(context.author.pk),
+                "author": str(context.author),
                 "comment": context.comment,
                 "depth": context.depth,
                 "group": context.group,
-                "parent": context.parent,
+                "parent": str(context.parent_id),
                 "post": str(context.post.pk),
-                "created_at": context.post.created_at,
-                'thumbnail': str(context.author.photo_thumbnail.url)
+                "created_at":context.created_at.strftime("%Y-%m-%d %I:%M:%S %p"),
+                "thumbnail": str(context.author.photo_thumbnail.url)
             }, post)
         )
-
-        print('result : ',results)
 
         return JsonResponse(results, safe=False)
 
@@ -99,7 +98,7 @@ class OpenSourceReplyUpdateView(LoginRequiredMixin, UpdateView):
 class OpenSourceReplyDeleteView(LoginRequiredMixin, DeleteView):
 
     model = OpenSourcePostReply
-    pk_url_kwarg = 'pk'
+    pk_url_kwarg = 'reply_pk'
     login_url = reverse_lazy('users:login')
 
     def get(self, request, *args, **kwargs):

@@ -38,7 +38,7 @@
 reply dynamic input box
 ======================================= */
 
-function NewReplyBox(replyNum,depth)
+function newReplyBox(replyNum,depth)
 {
     const replyNode = document.querySelector(".reply-input");
     const targetNode = document.querySelector(".reply-"+ replyNum);
@@ -51,20 +51,14 @@ function NewReplyBox(replyNum,depth)
     const depth_input = document.getElementById("depth");
     const parent_input = document.getElementById("parent");
 
-    if (depth < 2) {
-        console.log("depth : ",depth);
+    if (depth < 3) {
         depth_input.setAttribute("value",depth+1);
-        console.log("depth value: ",depth_input.getAttribute("value"));
     }
     else {
-        console.log("depth : ",depth);
-        depth_input.setAttribute("value",2);
-        console.log("depth value: ",depth_input.getAttribute("value"));
+        depth_input.setAttribute("value",3);
     }
 
-    console.log("replyNum : ",replyNum);
     parent_input.setAttribute("value",replyNum);
-    console.log("replyNum value: ",parent_input.getAttribute("value"));
 
     if ( 1 < depth) {
         reply_input_box = document.getElementById("comment");
