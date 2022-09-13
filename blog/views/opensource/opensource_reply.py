@@ -99,23 +99,6 @@ class OpenSourceReplyUpdateJsonView(LoginRequiredMixin,View):
 
         return JsonResponse(context, safe=True)
 
-class OpenSourceReplyUpdateView(LoginRequiredMixin, UpdateView):
-
-    model = OpenSourcePostReply
-    pk_url_kwarg = 'pk'
-    login_url = reverse_lazy('users:login')
-
-    def get(self, request, *args, **kwargs):
-        return redirect('blog:opensource_detail', kwargs.get('pk'))
-
-    def get_success_url(self):
-        return reverse_lazy('blog:opensource_detail', kwargs={'pk': self.kwargs.get('pk')})
-
-    def form_valid(self, form):
-        review = self.get_object()
-        if self.request.user != review.author:
-            raise PermissionDenied()
-        return super().form_valid(form)
 
 class OpenSourceReplyDeleteView(LoginRequiredMixin, DeleteView):
 
