@@ -5,6 +5,7 @@ import datetime
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
+import json
 
 from django import forms
 from django.views.generic import View, UpdateView, DeleteView
@@ -76,6 +77,27 @@ class OpenSourceReplyCreateView(LoginRequiredMixin, View):
 
         return redirect('blog:opensource_detail', kwargs.get('pk'))
 
+
+class OpenSourceReplyUpdateJsonView(LoginRequiredMixin,View):
+    def post(self, request, pk, reply_pk):
+        content = json.loads(request.body.decode("utf-8"))
+        comment = content["comment"]
+
+        reply = get_object_or_404(OpenSourcePostReply,pk=reply_pk)
+        if self.request.user != reply.author:
+           raise PermissionDenied()
+       
+        if comment is None :
+            message = "Reply note updated"
+        else :
+            reply.comment=comment
+            reply.save()
+
+            message = "Reply updated"
+
+        context = {'message': message}
+
+        return JsonResponse(context, safe=True)
 
 class OpenSourceReplyUpdateView(LoginRequiredMixin, UpdateView):
 

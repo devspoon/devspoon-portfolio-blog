@@ -2335,6 +2335,13 @@ section.first button.btn {
   .comment-area .comment-form-wrap .comment-form-content .form-group .btn-theme:hover {
     background-color: #000;
   }
+
+  #reply-create-fbt{
+    display : block;
+  }
+  #reply-update-fbt{
+    display : none;
+  }
 /*===========================
     14. About me at portfolio page css 
 ===========================*/

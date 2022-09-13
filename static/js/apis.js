@@ -1,4 +1,10 @@
 
+/*=====================================
+global variable
+======================================= */
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 /*=====================================
 blog like event
@@ -10,10 +16,10 @@ likeToggler.addEventListener('click', async function() {
     const likeTogglerDiv = document.querySelector(".like-btn");
     const likeCount = document.querySelector(".like_count");
 
-    const url = window.location.origin + '/opensource/like/json/'
-    let post_num = window.location.href.split('/')
-    post_num = post_num[post_num.length - 2]
-    const full_url = url + post_num + '/'
+    const url = window.location.origin + '/opensource/like/json/';
+    let post_num = window.location.href.split('/');
+    post_num = post_num[post_num.length - 2];
+    const full_url = url + post_num + '/';
 
     try {
         let res = await axios.get(full_url);
@@ -24,7 +30,7 @@ likeToggler.addEventListener('click', async function() {
     } catch (err){
         console.log('like error : ' ,err);
     }
-})
+});
 
 /*=====================================
 Get a list of replies from a blog
@@ -153,7 +159,7 @@ function buildReplyStack(replies,url){
 
         //update, delete button
         snippet +=  '<div class="d-flex justify-content-end"> \n\
-                        <a class="btn btn-outline-primary btn-sm mx-3 " href="javascript:void(0);" onclick="createReplyBox(); return false;">Update</a> \n\
+                        <a class="btn btn-outline-primary btn-sm mx-3 " href="javascript:void(0);" onclick="updateReplyBox('+replies[reply].pk+'); return false;">Update</a> \n\
                         <a class="btn btn-outline-secondary btn-sm mx-3" href="'+url+'delete/'+replies[reply].pk+'/">Delete</a> \n\
                     </div>\n';
 
@@ -183,7 +189,7 @@ const replyList = async function(url) {
         console.log('reply list error : ' ,err);
     }
 
-}
+};
 
 /*=====================================
 Create a reply to a blog
@@ -192,6 +198,49 @@ Create a reply to a blog
 /*=====================================
 Update a reply to a blog
 ======================================= */
+
+async function updateReply(replyKey)
+{
+    comment = document.getElementById("comment").value;
+
+    if (comment)
+    {
+        try {
+            const full_url = location.href+'reply/json/update/'+replyKey+'/';
+            let res = await axios.post(full_url,{comment: comment,});
+
+            document.querySelector(".reply-"+replyKey).querySelector("p").textContent = comment;
+            document.getElementById("comment").value = "";
+        }
+        catch (err){
+            console.log('reply list error : ' ,err);
+        }
+    }
+    else
+    {
+        alert("Reply input can't be null!");
+    }
+}
+
+function updateReplyBox(replyNum)
+{
+    const replyNode = document.querySelector(".reply-input");
+    const targetNode = document.querySelector(".reply-"+ replyNum);
+    const newNode = replyNode.cloneNode(true);
+
+    targetNode.appendChild(newNode);
+    replyNode.parentNode.removeChild(replyNode);
+
+    document.querySelector("#reply-create-fbt").style.display = 'none';
+    update_bt=document.querySelector("#reply-update-fbt");
+    update_bt.style.display = 'block';
+    update_bt.setAttribute("onclick","updateReply("+replyNum+"); return false;");
+
+    comment=targetNode.querySelector("p").innerText;
+
+    reply_input_box = document.getElementById("comment");
+    reply_input_box.textContent = comment;
+}
 
 /*=====================================
 Delete a reply to a blog
@@ -210,7 +259,7 @@ window.addEventListener('DOMContentLoaded', function()
 
         if (check_class)
         {
-            replyList(location.href)
+            replyList(location.href);
         }
     }
 });

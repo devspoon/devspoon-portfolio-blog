@@ -48,6 +48,9 @@ function newReplyBox(replyNum,depth)
     targetNode.appendChild(newNode);
     replyNode.parentNode.removeChild(replyNode);
 
+    document.querySelector("#reply-create-fbt").style.display = 'block';
+    document.querySelector("#reply-update-fbt").style.display = 'none';
+
     const depth_input = document.getElementById("depth");
     const parent_input = document.getElementById("parent");
 
