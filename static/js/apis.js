@@ -6,6 +6,10 @@ global variable
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
+let create_state = true;
+let update_state = true;
+let delete_state = true;
+
 /*=====================================
 blog like event
 ======================================= */
@@ -195,30 +199,47 @@ const replyList = async function(url) {
 Create a reply to a blog
 ======================================= */
 
+function createReply()
+{
+    if (create_state == true)
+    {
+        console.log('called createReply');
+        create_state = false;
+        document.querySelector('#reply-box-form').submit();
+        return false;
+    }
+    
+}
+
 /*=====================================
 Update a reply to a blog
 ======================================= */
 
 async function updateReply(replyKey)
 {
-    comment = document.getElementById("comment").value;
-
-    if (comment)
+    console.log('update_state : ',update_state);
+    if (update_state == true)
     {
-        try {
-            const full_url = location.href+'reply/json/update/'+replyKey+'/';
-            let res = await axios.post(full_url,{comment: comment,});
+        update_state=false;
+        comment = document.getElementById("comment").value;
 
-            document.querySelector(".reply-"+replyKey).querySelector("p").textContent = comment;
-            document.getElementById("comment").value = "";
+        if (comment)
+        {
+            try {
+                const full_url = location.href+'reply/json/update/'+replyKey+'/';
+                let res = await axios.post(full_url,{comment: comment,});
+                update_state=true;
+                document.querySelector(".reply-"+replyKey).querySelector("p").textContent = comment;
+                document.getElementById("comment").value = "";
+            }
+            catch (err){
+                console.log('reply list error : ' ,err);
+            }
         }
-        catch (err){
-            console.log('reply list error : ' ,err);
+        else
+        {
+            alert("Reply input can't be null!");
         }
-    }
-    else
-    {
-        alert("Reply input can't be null!");
     }
 }
 

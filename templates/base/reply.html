@@ -6,7 +6,7 @@
 
         <div class="reply-input comment-form-wrap mt-5">
             <div class="clearfix"></div>
-            <form action="{% url 'blog:opensource_reply_create' board.pk %}" method="post">
+            <form action="{% url 'blog:opensource_reply_create' board.pk %}" method="post" id='reply-box-form'>
                 {% csrf_token %}
                 <div class="comment-form-content">
                     <div class="row">
@@ -21,7 +21,7 @@
                     <div class="row">
                         <div class="d-flex justify-content-end">
                             <div class="form-group mb-0 mx-3">
-                                <button class="btn btn-outline-danger btn-sm" id="reply-create-fbt" type="submit">Save</button>
+                                <button class="btn btn-outline-danger btn-sm" id="reply-create-fbt" onclick="createReply(); return false;" >Save</button>
                                 <button class="btn btn-outline-danger btn-sm" id="reply-update-fbt" >Update</button>
                             </div>
                         </div>
