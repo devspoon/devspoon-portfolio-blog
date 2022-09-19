@@ -3,36 +3,34 @@
 
     "use strict";
 
-    /*=====================================
-    Sticky
-    ======================================= */
-    window.onscroll = function () {
-        var header_navbar = document.getElementById("header_navbar");
-        var sticky = header_navbar.offsetTop;
-        // var logo = document.querySelector('.navbar-brand img')
-
-        if (window.pageYOffset > sticky) {
-            header_navbar.classList.add("sticky");
-            // logo.src = 'assets/images/logo/logo-2.svg';
-        } else {
-            header_navbar.classList.remove("sticky");
-            // logo.src = 'assets/images/logo/logo.svg';
-        }
-
-        // show or hide the back-top-top button
-        var backToTo = document.querySelector(".back-to-top");
-        if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-            backToTo.style.display = "block";
-        } else {
-            backToTo.style.display = "none";
-        }
-    };
-
-    
-
-
 
 })();
+
+/*=====================================
+    Sticky
+======================================= */
+window.onscroll = function () {
+    const header_navbar = document.getElementById("header_navbar");
+    const sticky = header_navbar.offsetTop;
+    // const logo = document.querySelector('.navbar-brand img')
+
+    if (window.pageYOffset > sticky) {
+        header_navbar.classList.add("sticky");
+        // logo.src = 'assets/images/logo/logo-2.svg';
+    } else {
+        header_navbar.classList.remove("sticky");
+        // logo.src = 'assets/images/logo/logo.svg';
+    }
+
+    // show or hide the back-top-top button
+    const backToTo = document.querySelector(".back-to-top");
+    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+        backToTo.style.display = "block";
+    } else {
+        backToTo.style.display = "none";
+    }
+};
+
 
 /*=====================================
 reply dynamic input box
@@ -78,7 +76,7 @@ function newReplyBox(replyNum,depth)
 
 window.onload = function() {
     window.setTimeout(fadeout, 500);
-}
+};
 
 function fadeout() {
     document.querySelector('.preloader').style.opacity = '0';

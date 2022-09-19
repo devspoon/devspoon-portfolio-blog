@@ -10,6 +10,7 @@ let create_state = true;
 let update_state = true;
 let delete_state = true;
 
+
 /*=====================================
 blog like event
 ======================================= */
@@ -36,6 +37,7 @@ likeToggler.addEventListener('click', async function() {
     }
 });
 
+
 /*=====================================
 Get a list of replies from a blog
 ======================================= */
@@ -48,6 +50,7 @@ function resetReplyInputBox()
     resetReplyNode.insertAdjacentElement('beforeend',newNode);
     replyNode.parentNode.removeChild(replyNode);
 }
+
 
 function setReplyLocation(replies,reply_key,snippet){
     const reply_root = document.querySelector(".comment-content");
@@ -103,7 +106,7 @@ function setReplyLocation(replies,reply_key,snippet){
 
         if (sibling_nodes.length != 0)
         {
-            let last_sibling_node_classes = null;
+            let last_sibling_node_classes = null; 
             
             if (sibling_nodes.length == 1)
             {
@@ -127,9 +130,11 @@ function setReplyLocation(replies,reply_key,snippet){
     }
 }
 
+
 function buildReplyStack(replies,url){
 
-    for (const reply in replies) {
+    //for (let reply in replies) {
+    for (let reply = 1; reply < replies.length ; reply++)    {
         snippet = '';
 
         if (replies[reply].depth == 0)
@@ -183,17 +188,24 @@ function buildReplyStack(replies,url){
 }
 
 
+function buildPagination(pagination) {
+    console.log('pagination :',pagination[0]);
+}
+
+
 const replyList = async function(url) {
     try {
         const full_url = url+'reply/json/';
         let res = await axios.get(full_url);
         buildReplyStack(res.data,full_url);
+        buildPagination(res.data);
     }
     catch (err){
         console.log('reply list error : ' ,err);
     }
 
 };
+
 
 /*=====================================
 Create a reply to a blog
@@ -203,7 +215,6 @@ function createReply()
 {
     if (create_state == true)
     {
-        console.log('called createReply');
         create_state = false;
         document.querySelector('#reply-box-form').submit();
         return false;
@@ -211,13 +222,13 @@ function createReply()
     
 }
 
+
 /*=====================================
 Update a reply to a blog
 ======================================= */
 
 async function updateReply(replyKey)
 {
-    console.log('update_state : ',update_state);
     if (update_state == true)
     {
         update_state=false;
@@ -243,6 +254,7 @@ async function updateReply(replyKey)
     }
 }
 
+
 function updateReplyBox(replyNum)
 {
     const replyNode = document.querySelector(".reply-input");
@@ -262,6 +274,7 @@ function updateReplyBox(replyNum)
     reply_input_box = document.getElementById("comment");
     reply_input_box.textContent = comment;
 }
+
 
 /*=====================================
 window.addEventListener

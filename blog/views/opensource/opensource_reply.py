@@ -1,5 +1,6 @@
 from email.policy import default
 import logging
+import re
 from signal import default_int_handler
 import datetime
 
@@ -19,12 +20,30 @@ from django.db.models import F
 from django.db import transaction
 
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
-class OpenSourceReplyListView(LoginRequiredMixin, View):
+
+def make_list_by_paginator(paginator, pages, the_number_of_replies):
+
+    number = pages.number
+    num_pages = paginator.num_pages
+    
+    return [{'number':number, 'num_pages':num_pages, 'items':the_number_of_replies}]
+
+class OpenSourceReplyListView(View):
+    
+    the_number_of_replies = 10
+    
     def get(self, request, pk):
         post = OpenSourcePostReply.objects.filter(post=pk).select_related('author')
-            
-        results = list(
+        paginator = Paginator(post,self.the_number_of_replies)
+        page = request.GET.get('page', 1)
+
+        pages = paginator.get_page(page)
+        
+        pagination_info = make_list_by_paginator(paginator,pages,self.the_number_of_replies)
+                   
+        replies = list(
             map(lambda context: {
                 "pk": context.pk,
                 "author": str(context.author),
@@ -34,9 +53,13 @@ class OpenSourceReplyListView(LoginRequiredMixin, View):
                 "parent": str(context.parent_id),
                 "post": str(context.post.pk),
                 "created_at":context.created_at.strftime("%Y-%m-%d %I:%M:%S %p"),
-                "thumbnail": str(context.author.photo_thumbnail.url)
-            }, post)
+                "thumbnail": str(context.author.photo_thumbnail.url),
+            }, pages.object_list)
         )
+        
+        results = pagination_info + replies
+        
+        #print('results : ',replies)
 
         return JsonResponse(results, safe=False)
 
