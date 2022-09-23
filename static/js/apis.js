@@ -291,8 +291,6 @@ function paginationArrowButton(previous_state=1,next_state=1,pre_page=1,next_pag
     let previous = '';
     let next = '';
 
-    console.log('pagination_parent_node : ',pagination_parent_node);
-
     if (previous_state==true)
     {
         previous = '<li class="page-item" id="previous-li" >\n\
@@ -309,8 +307,6 @@ function paginationArrowButton(previous_state=1,next_state=1,pre_page=1,next_pag
                         </a>\n\
                     </li>';
     }
-
-    console.log('previous : ',previous);
 
     pagination_parent_node.insertAdjacentHTML('beforeend',previous);
 
@@ -330,8 +326,6 @@ function paginationArrowButton(previous_state=1,next_state=1,pre_page=1,next_pag
                     </a>\n\
                 </li>';
     }
-
-    console.log('next : ',next);
 
     pagination_parent_node.insertAdjacentHTML('beforeend',next);
 
