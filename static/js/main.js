@@ -83,6 +83,29 @@ function fadeout() {
     document.querySelector('.preloader').style.display = 'none';
 }
 
+/*---canvas menu activation---*/
+
+const canvasToggler = document.querySelector(".canvas_open");
+const offcanvasMenuToggler = document.querySelector(".offcanvas_menu_wrapper");
+const bodyOverlayToggler = document.querySelector(".body_overlay");
+const canvasCloseToggler = document.querySelector(".canvas_close");
+
+canvasToggler.addEventListener('click', function() {
+    bodyOverlayToggler.classList.add("active");
+    offcanvasMenuToggler.classList.add("active");
+});
+
+canvasCloseToggler.addEventListener('click', function() {
+    offcanvasMenuToggler.classList.remove("active");
+    bodyOverlayToggler.classList.remove("active");
+});
+
+bodyOverlayToggler.addEventListener('click', function() {
+    offcanvasMenuToggler.classList.remove("active");
+    bodyOverlayToggler.classList.remove("active");
+});
+
+
 //======== tiny slider for portfolio-product-carousel 
 tns({
     slideBy: 'page',
@@ -130,28 +153,6 @@ var wow = new WOW({
 wow.init();
 
 
-/*---canvas menu activation---*/
-
-const canvasToggler = document.querySelector(".canvas_open");
-const offcanvasMenuToggler = document.querySelector(".offcanvas_menu_wrapper");
-const bodyOverlayToggler = document.querySelector(".body_overlay");
-const canvasCloseToggler = document.querySelector(".canvas_close");
-
-canvasToggler.addEventListener('click', function() {
-    console.log('canvas_open');
-    bodyOverlayToggler.classList.add("active");
-    offcanvasMenuToggler.classList.add("active");
-});
-
-canvasCloseToggler.addEventListener('click', function() {
-    offcanvasMenuToggler.classList.remove("active");
-    bodyOverlayToggler.classList.remove("active");
-});
-
-bodyOverlayToggler.addEventListener('click', function() {
-    offcanvasMenuToggler.classList.remove("active");
-    bodyOverlayToggler.classList.remove("active");
-});
 
 //========= glightbox
     /*const myGallery = GLightbox({

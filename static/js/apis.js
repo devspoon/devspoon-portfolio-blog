@@ -1,6 +1,6 @@
 
 /*=====================================
-global variable
+global variable and function
 ======================================= */
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -10,6 +10,16 @@ let create_state = true;
 let update_state = true;
 let delete_state = true;
 
+
+function range(start,end) {
+    let array = [];
+
+    for (let i = start; i < end; ++i) {
+      array.push(i);
+    }
+
+    return array;
+}
 
 /*=====================================
 blog like event
@@ -106,8 +116,8 @@ function setReplyLocation(replies,reply_key,snippet){
 
         if (sibling_nodes.length != 0)
         {
-            let last_sibling_node_classes = null; 
-            
+            let last_sibling_node_classes = null;
+
             if (sibling_nodes.length == 1)
             {
                 last_sibling_node_classes = sibling_nodes[0].classList; //get last sibling node's class names
@@ -188,14 +198,10 @@ function buildReplyStack(replies,url){
 }
 
 
-function buildPagination(pagination) {
-    console.log('pagination :',pagination[0]);
-}
 
-
-const replyList = async function(url) {
+const replyList = async function(url,page=1) {
     try {
-        const full_url = url+'reply/json/';
+        const full_url = url+'reply/json/?page='+page;
         let res = await axios.get(full_url);
         buildReplyStack(res.data,full_url);
         buildPagination(res.data);
@@ -219,7 +225,6 @@ function createReply()
         document.querySelector('#reply-box-form').submit();
         return false;
     }
-    
 }
 
 
@@ -273,6 +278,147 @@ function updateReplyBox(replyNum)
 
     reply_input_box = document.getElementById("comment");
     reply_input_box.textContent = comment;
+}
+
+
+/*=====================================
+replies pagination
+======================================= */
+
+function paginationArrowButton(previous_state=1,next_state=1,pre_page=1,next_page=1)
+{
+    pagination_parent_node = document.querySelector('.pagination');
+    let previous = '';
+    let next = '';
+
+    console.log('pagination_parent_node : ',pagination_parent_node);
+
+    if (previous_state==true)
+    {
+        previous = '<li class="page-item" id="previous-li" >\n\
+                        <a class="page-link" id="previous-link" href="javascript:void(0);" onclick="pageBox('+pre_page+'); return false;" aria-label="Previous">\n\
+                            <span aria-hidden="true">&laquo;</span>\n\
+                        </a>\n\
+                    </li>';
+    }
+    else
+    {
+        previous = '<li class="page-item disabled" id="previous-li" >\n\
+                        <a class="page-link" id="previous-link" href="#" tabindex="-1" aria-label="Previous">\n\
+                            <span aria-hidden="true">&laquo;</span>\n\
+                        </a>\n\
+                    </li>';
+    }
+
+    console.log('previous : ',previous);
+
+    pagination_parent_node.insertAdjacentHTML('beforeend',previous);
+
+    if (next_state==true)
+    {
+        next = '<li class="page-item" id="next-li" >\n\
+                    <a class="page-link" id="next-link" href="javascript:void(0);" onclick="pageBox('+next_page+'); return false;" aria-label="next">\n\
+                        <span aria-hidden="true">&raquo;</span>\n\
+                    </a>\n\
+                </li>';
+    }
+    else
+    {
+        next = '<li class="page-item disabled" id="next-li" >\n\
+                    <a class="page-link" id="next-link" href="#" tabindex="-1" aria-label="next">\n\
+                        <span aria-hidden="true">&raquo;</span>\n\
+                    </a>\n\
+                </li>';
+    }
+
+    console.log('next : ',next);
+
+    pagination_parent_node.insertAdjacentHTML('beforeend',next);
+
+}
+
+function pageBox(page) {
+    const replyNode = document.querySelector(".reply-input");
+    const resetReplyNode = document.querySelector(".comment-content");
+    const newNode = replyNode.cloneNode(true);
+    resetReplyNode.replaceChildren();
+    resetReplyNode.insertAdjacentElement('beforeend',newNode);
+
+    const pagination_parent_node = document.querySelector(".pagination");
+    pagination_parent_node.replaceChildren();
+
+    replyList(location.href,page);
+}
+
+
+function buildPagination(pagination) {
+    const pages = pagination[0];
+    const last_page = pages.num_pages;
+    const current_page = pages.number;
+    const max_page_index_numbers = 10;
+    const middle_of_index_number = Math.ceil(Math.round(max_page_index_numbers/2));
+
+    let min_page = '';
+    let max_page = '';
+    let page_range = '';
+
+    let previous_state = '';
+    let next_state = '';
+    let pre_page = '';
+    let next_page = '';
+
+    if (current_page < middle_of_index_number){
+        min_page = 1;
+        max_page = Math.min(min_page + (max_page_index_numbers-1), last_page);
+    }
+    else
+    {
+        min_page = ((current_page-1)/max_page_index_numbers) * max_page_index_numbers +1 - (middle_of_index_number-1);
+        min_page = Math.max(min_page, 1);
+        max_page = Math.min(current_page + (middle_of_index_number), last_page);
+    }
+
+    page_range = range(min_page, max_page+1 );
+
+
+    if (current_page == 1 ) //previous button disable
+    {
+        previous_state=false;
+    }
+    else
+    {
+        previous_state=true;
+        pre_page=min_page-1;
+    }
+
+    if (current_page == last_page ) //next button disable
+    {
+        next_state=false;
+    }
+    else
+    {
+        next_state=true;
+        next_page=max_page+1;
+    }
+
+    paginationArrowButton(previous_state,next_state,pre_page,next_page);
+
+    const sibling_nodes = document.querySelector("#previous-li");
+    let snippet = '';
+
+    for (const page in page_range.reverse())
+    {
+        if (page_range[page]==current_page)
+        {
+            snippet = '<li class="page-item page-number active"><a class="page-link" href="javascript:void(0);" onclick="pageBox('+page_range[page]+'); return false;">'+page_range[page]+'</a></li>';
+        }
+        else
+        {
+            snippet = '<li class="page-item page-number"><a class="page-link" href="javascript:void(0);" onclick="pageBox('+page_range[page]+'); return false;">'+page_range[page]+'</a></li>';
+        }
+        sibling_nodes.insertAdjacentHTML('afterend',snippet);
+    }
+
 }
 
 

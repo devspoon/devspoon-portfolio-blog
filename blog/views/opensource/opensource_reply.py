@@ -23,26 +23,27 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 
 
-def make_list_by_paginator(paginator, pages, the_number_of_replies):
+def make_list_by_paginator(paginator, pages):
 
     number = pages.number
     num_pages = paginator.num_pages
-    
-    return [{'number':number, 'num_pages':num_pages, 'items':the_number_of_replies}]
+
+    return [{'number':number, 'num_pages':num_pages}]
 
 class OpenSourceReplyListView(View):
-    
+
     the_number_of_replies = 10
-    
+
     def get(self, request, pk):
         post = OpenSourcePostReply.objects.filter(post=pk).select_related('author')
         paginator = Paginator(post,self.the_number_of_replies)
         page = request.GET.get('page', 1)
+        print("page : ",page)
 
         pages = paginator.get_page(page)
-        
-        pagination_info = make_list_by_paginator(paginator,pages,self.the_number_of_replies)
-                   
+
+        pagination_info = make_list_by_paginator(paginator,pages)
+
         replies = list(
             map(lambda context: {
                 "pk": context.pk,
@@ -56,10 +57,10 @@ class OpenSourceReplyListView(View):
                 "thumbnail": str(context.author.photo_thumbnail.url),
             }, pages.object_list)
         )
-        
+
         results = pagination_info + replies
-        
-        #print('results : ',replies)
+
+        print('results : ',results)
 
         return JsonResponse(results, safe=False)
 
