@@ -5,6 +5,8 @@ from django_summernote.widgets import SummernoteWidget
 from bs4 import BeautifulSoup as Bs
 
 class OpenSourceForm(forms.ModelForm):
+    
+    tags = forms.CharField(label='tags',help_text=_('Separate tags using ","'),required=False)
 
     def __init__(self, *args, **kwargs):
         super(OpenSourceForm, self).__init__(*args, **kwargs)
@@ -37,5 +39,5 @@ class OpenSourceForm(forms.ModelForm):
             "file2": "file2"
         }
         widgets = {
-            'content': SummernoteWidget(),
+            'content': SummernoteWidget()
         }

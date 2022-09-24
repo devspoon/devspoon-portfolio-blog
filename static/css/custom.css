@@ -1773,13 +1773,9 @@ section.first button.btn {
     }
   }
   .post-details-content .post-details-body .content {
-    margin-bottom: 128px;
+    margin-bottom: 32px;
   }
-  @media only screen and (max-width: 1199px) {
-    .post-details-content .post-details-body .content {
-      margin-bottom: 100px;
-    }
-  }
+
   .post-details-content .post-details-body .content .meta {
     color: #aba5a5;
     font-size: 14px;

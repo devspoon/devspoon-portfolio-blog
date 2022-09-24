@@ -1,23 +1,20 @@
 import logging
-from django.utils import timezone
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 
-from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView, ListView, DetailView
+from django.views.generic import View, CreateView, UpdateView, DeleteView, ListView, DetailView
 from django.http import Http404
 
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from django.db.models import Avg, Q, F
+from django.db.models import F
 from django.db import transaction
 from isort import file
-from django.db.models import Prefetch
 
-from ...models.boards import OpenSourcePost
+from ...models.boards import OpenSourcePost, Tag
 from .opensource_forms import OpenSourceForm
-from ...models.reply import OpenSourcePostReply
 
 from django.http import JsonResponse
 
@@ -41,14 +38,9 @@ class OpenSourceDetailView(DetailView):
     template_name = 'opensource/opensource_detail.html'
     context_object_name = 'board'
 
-    # def get_object(self):
-    #     id_ = self.kwargs.get("pk")
-    #     return get_object_or_404(Board, id=id_)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # args = {"board": self.kwargs.get("pk"), "is_deleted": False}
-        # context["comments"] = Comment.objects.filter(**args)
 
         pre_temp_queryset = OpenSourcePost.objects.filter(pk__lt=context['board'].pk).order_by('-pk').first()
         next_temp_queryset = OpenSourcePost.objects.filter(pk__gt=context['board'].pk).order_by('pk').first()
@@ -65,7 +57,6 @@ class OpenSourceDetailView(DetailView):
 
         context['like_state'] = OpenSourcePost.objects.filter(pk=self.kwargs.get('pk')).first().like_user_set.filter(pk=self.request.user.pk).exists()
 
-        # context['comments']=OpenSourcePostReply.objects.filter(post=context['board'].pk).select_related('author')
         return context
 
 
@@ -74,12 +65,22 @@ class OpenSourceCreateView(LoginRequiredMixin, CreateView):
     template_name = 'opensource/opensource_edit.html'
     success_url = reverse_lazy('blog:index')
     form_class = OpenSourceForm
-    # login_url = reverse_lazy('login')
+    login_url = reverse_lazy('users:login')
 
     def form_valid(self, form):
         data = form.save(commit=False)
         data.author = self.request.user
         data.save()
+
+        tags= form.cleaned_data['tags'].split(',')
+        tags= list(set(tags))
+        for tag in tags:
+            if not tag :
+                continue
+            else:
+                tag = tag.strip()
+                tag_, created = Tag.objects.get_or_create(tag = tag)
+                data.tag_set.add(tag_)
 
         return super().form_valid(form)
 
@@ -98,6 +99,18 @@ class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
         review = self.get_object()
         if self.request.user != review.author:
             raise PermissionDenied()
+        data = form.save(commit=False)
+        data.save()
+        tags= form.cleaned_data['tags'].split(',')
+        tags= list(set(tags))
+        for tag in tags:
+            if not tag :
+                continue
+            else:
+                tag = tag.strip()
+                tag_, created = Tag.objects.get_or_create(tag = tag)
+                data.tag_set.add(tag_)
+
         return super().form_valid(form)
 
 

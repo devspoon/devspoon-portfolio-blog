@@ -41,16 +41,24 @@
             <div class="col-lg-10 col-xl-8 m-auto">
                 <div class="post-details-content">
                   <div class="post-details-body">
-                    <div class="content">
+                    <div class="content form-control">
                         {{board.content|safe}}
 
+                    </div>
+                    <div class="tags mb-3">
+                        <labe for = "tags">tags</labe>
+                            <span id = "tags" class = "form-control">
+                                {{board.tag_set.all | join:", "}}
+                            </span>
                     </div>
 
                     <div class="blog-button">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <a href="{% url 'blog:opensource_update' board.pk%}"><button type="button" class="btn btn-outline-primary btn-lg">Edit</button></a>
-                                <a href="{% url 'blog:opensource_delete' board.pk%}"><button type="button" class="btn btn-outline-danger btn-lg">Delete</button></a>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-end">
+                                    <a href="{% url 'blog:opensource_update' board.pk%}"><button type="button" class="btn btn-outline-primary btn-lg me-3">Edit</button></a>
+                                    <a href="{% url 'blog:opensource_delete' board.pk%}"><button type="button" class="btn btn-outline-danger btn-lg">Delete</button></a>
+                                </div>
                             </div>
                         </div>
                     </div>

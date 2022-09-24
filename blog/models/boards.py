@@ -166,6 +166,8 @@ class BooksPost(Post):
 class Tag(models.Model):
     tag = models.CharField(max_length=140, unique=True)
 
+    class Meta:
+        db_table = 'tag'
     def __str__(self):
         return self.tag
 

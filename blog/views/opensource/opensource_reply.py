@@ -38,7 +38,6 @@ class OpenSourceReplyListView(View):
         post = OpenSourcePostReply.objects.filter(post=pk).select_related('author')
         paginator = Paginator(post,self.the_number_of_replies)
         page = request.GET.get('page', 1)
-        print("page : ",page)
 
         pages = paginator.get_page(page)
 
@@ -59,8 +58,6 @@ class OpenSourceReplyListView(View):
         )
 
         results = pagination_info + replies
-
-        print('results : ',results)
 
         return JsonResponse(results, safe=False)
 
