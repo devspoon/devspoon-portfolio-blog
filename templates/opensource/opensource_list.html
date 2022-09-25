@@ -1,7 +1,7 @@
 {% extends "base/base.html" %}
 {% comment %} {% load search_tags %} {% endcomment %}
 {% load static %}
-{% block title %}opensource list{% endblock %}
+{% block title %}opensource{% endblock %}
 
 {% block content %}
 
@@ -10,10 +10,13 @@
         <div class="container">
         <div class="row">
             <div class="col-lg-12">
-            <div class="page-title-content text-center pb-lg-30 pb-80">
-                <h2 class="title">open source <span>blog</span></h2>
-                <div class="bread-crumbs pb-1"><a href="{% url 'blog:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active">Opensource</span></div>
-            </div>
+                <div class="page-title-content text-center pb-lg-30 pb-80">
+                    <h2 class="title">blog title </h2>
+                    <div class="bread-crumbs pb-1">
+                        <a href="{% url 'blog:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active navi-blog">blog navi</span>
+                    </div>
+                    <a href="{% url 'blog:opensource_create' %}"class="btn btn-outline-success mt-2">write</a>
+                </div>
             </div>
         </div>
         </div>

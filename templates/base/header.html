@@ -19,12 +19,12 @@
                                 {% recursetree main_menu %}
                                 {% if node.is_root_node %}
                                 <li class="nav-item">
-                                        <a class="page-scroll" data-toggle="collapse" data-target="#{{ node.pk}}" aria-controls="{{ node.pk }}"
-                                            aria-expanded="false" aria-label="Toggle navigation" href="
-                                            {% if node.menu_path  %}
-                                                {% url node.menu_path %}
+                                        <a class="page-scroll" data-toggle="collapse" data-target="#{{node.pk}}" aria-controls="{{node.pk}}"
+                                            aria-expanded="false" aria-label="Toggle navigation"
+                                            {% if node.menu_path %}
+                                            href="{% url node.menu_path %}
                                             {% elif node.menu_link  %}
-                                                {{node.menu_link}}
+                                                href="{{node.menu_link}}
                                             {% endif %}
                                             ">{{node.menu_name}}
                                             <div class="sub-nav-toggler">
@@ -39,7 +39,7 @@
                                 {% elif node.is_child_node and node.level == 1%}
                                     {% if node.menu_path  %}
                                     <li class="nav-item">
-                                        <a class="page-scroll" href="{% url node.menu_path %}" >{{ node.menu_name }}</a>
+                                        <a class="page-scroll" href="{% url node.menu_path %}">{{ node.menu_name }}</a>
                                     </li>
                                     {% elif node.menu_link  %}
                                     <li class="nav-item">

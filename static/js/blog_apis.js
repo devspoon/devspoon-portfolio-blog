@@ -1,4 +1,6 @@
 
+"use strict";
+
 /*=====================================
 global variable and function
 ======================================= */
@@ -27,26 +29,28 @@ blog like event
 
 const likeToggler = document.querySelector(".lni-heart");
 
-likeToggler.addEventListener('click', async function() {
-    const likeTogglerDiv = document.querySelector(".like-btn");
-    const likeCount = document.querySelector(".like_count");
+if (likeToggler != null){
 
-    const url = window.location.origin + '/opensource/like/json/';
-    let post_num = window.location.href.split('/');
-    post_num = post_num[post_num.length - 2];
-    const full_url = url + post_num + '/';
+        likeToggler.addEventListener('click', async function() {
+        const likeTogglerDiv = document.querySelector(".like-btn");
+        const likeCount = document.querySelector(".like_count");
 
-    try {
-        let res = await axios.get(full_url);
-        likeCount.textContent=res.data.like_count;
-        likeToggler.classList.toggle('clicked');
-        likeTogglerDiv.setAttribute('onfocus','this.blur()');
-        likeTogglerDiv.setAttribute('readonly',true);
-    } catch (err){
-        console.log('like error : ' ,err);
-    }
-});
+        const url = window.location.origin + '/opensource/like/json/';
+        let post_num = window.location.href.split('/');
+        post_num = post_num[post_num.length - 2];
+        const full_url = url + post_num + '/';
 
+        try {
+            let res = await axios.get(full_url);
+            likeCount.textContent=res.data.like_count;
+            likeToggler.classList.toggle('clicked');
+            likeTogglerDiv.setAttribute('onfocus','this.blur()');
+            likeTogglerDiv.setAttribute('readonly',true);
+        } catch (err){
+            console.log('like error : ' ,err);
+        }
+    });
+}
 
 /*=====================================
 Get a list of replies from a blog
@@ -145,7 +149,7 @@ function buildReplyStack(replies,url){
 
     //for (let reply in replies) {
     for (let reply = 1; reply < replies.length ; reply++)    {
-        snippet = '';
+        let snippet = '';
 
         if (replies[reply].depth == 0)
         {
@@ -270,7 +274,7 @@ function updateReplyBox(replyNum)
     replyNode.parentNode.removeChild(replyNode);
 
     document.querySelector("#reply-create-fbt").style.display = 'none';
-    update_bt=document.querySelector("#reply-update-fbt");
+    let update_bt=document.querySelector("#reply-update-fbt");
     update_bt.style.display = 'block';
     update_bt.setAttribute("onclick","updateReply("+replyNum+"); return false;");
 
@@ -287,7 +291,7 @@ replies pagination
 
 function paginationArrowButton(previous_state=1,next_state=1,pre_page=1,next_page=1)
 {
-    pagination_parent_node = document.querySelector('.pagination');
+    let pagination_parent_node = document.querySelector('.pagination');
     let previous = '';
     let next = '';
 

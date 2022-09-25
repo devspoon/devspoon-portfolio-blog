@@ -1235,6 +1235,7 @@ textarea:focus {
 
 .navbar-brand img {
   width: 150px;
+  margin-left: 10px;
 }
 
 .navbar-toggler {

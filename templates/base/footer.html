@@ -1,7 +1,9 @@
 {% load static %}
 {% load default_tags %}
 
-{% site_info_tag as site_info %}
+{% comment %} 
+mobile_menu.html was previously included.
+{% site_info_tag as site_info %} {% endcomment %}
 
 <footer class="footer-area">
     <div class="widget-wrapper">
@@ -13,7 +15,7 @@
 
                 <div class="col-xl-4 col-md-7">
                     <div class="footer-widget about">
-                        <a href="{% url 'blog:index' %}" class="d-inline-block mb-30 col-md-6 col-sm-4">
+                        <a href="{% url 'blog:index' %}" class="d-inline-block mb-30 col-md-6 col-sm-4 col-6">
                             <img src="{% static 'images/logo.png' %}" alt="">
                         </a>
                         <p class="text-white mb-25">This site is made by open source on 'devspoon' repository</p>

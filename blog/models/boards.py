@@ -58,7 +58,7 @@ class Post(models.Model):
 
     tag_set = models.ManyToManyField('Tag', blank=True, verbose_name=_('Tags Set'))
 
-    reply_count = models.IntegerField(default=1, verbose_name=_('Reply Count'))
+    reply_count = models.IntegerField(default=0, verbose_name=_('Reply Count'))
     like_count = models.IntegerField(default=0, verbose_name=_('Like Count'))
     last_group_num = models.IntegerField(default=0, verbose_name=_('Reply last group id'))
 
