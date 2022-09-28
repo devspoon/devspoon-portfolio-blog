@@ -46,8 +46,8 @@ AUTHENTICATION_BACKENDS += [
 
 
 SITE_ID = 1
-LOGIN_REDIRECT_URL = 'blog:index'
-ACCOUNT_LOGOUT_REDIRECT_URL = 'blog:index'
+LOGIN_REDIRECT_URL = 'home:index'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'home:index'
 
 # logout을 url, get으로 접근해도 처리를 수행할 수 있게 설정
 ACCOUNT_LOGOUT_ON_GET = True

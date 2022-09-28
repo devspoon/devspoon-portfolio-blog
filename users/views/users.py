@@ -84,7 +84,7 @@ class RegisterView(VerifyEmailMixin, FormView):
 
 class ResendVerificationEmailView(VerifyEmailMixin, FormView):
     template_name = 'users/resend_email.html'
-    success_url = reverse_lazy('blog:index')
+    success_url = reverse_lazy('home:index')
     form_class = ResendVerificationEmailForm
     success_url = reverse_lazy('users:login')
     verify_email_template_name1 = '/email/registration_verification.html'
@@ -111,7 +111,7 @@ class ResendVerificationEmailView(VerifyEmailMixin, FormView):
 
 class LoginView(AnonymousRequiredMixin, FormView):
     template_name = 'users/login.html'
-    success_url = reverse_lazy('blog:index')
+    success_url = reverse_lazy('home:index')
     form_class = LoginForm
 
     # def get_context_data(self, **kwargs):
@@ -140,7 +140,7 @@ class LoginView(AnonymousRequiredMixin, FormView):
 class LogoutView(View):
     def get(self, request):
         auth.logout(request)
-        return redirect(reverse('blog:index'))
+        return redirect(reverse('home:index'))
 
 
 class UserDeleteView(View):

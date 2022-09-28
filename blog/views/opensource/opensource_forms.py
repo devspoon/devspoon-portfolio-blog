@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from blog.models.boards import OpenSourcePost
 from django_summernote.widgets import SummernoteWidget
-from bs4 import BeautifulSoup as Bs
+
 
 class OpenSourceForm(forms.ModelForm):
     

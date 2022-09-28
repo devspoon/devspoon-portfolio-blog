@@ -1,6 +1,6 @@
 from django import template
 from django.core.paginator import Page
-from blog.models.default import MainMenu, SiteInfo
+from home.models.default import MainMenu, SiteInfo
 
 register = template.Library()
 

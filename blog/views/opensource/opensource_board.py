@@ -63,7 +63,7 @@ class OpenSourceDetailView(DetailView):
 class OpenSourceCreateView(LoginRequiredMixin, CreateView):
     model = OpenSourcePost
     template_name = 'opensource/opensource_edit.html'
-    success_url = reverse_lazy('blog:index')
+    success_url = reverse_lazy('home:index')
     form_class = OpenSourceForm
     login_url = reverse_lazy('users:login')
 

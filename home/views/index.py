@@ -1,13 +1,5 @@
 import logging
-from django.utils import timezone
-from django.shortcuts import render
-from django.views.generic import TemplateView, View
-from django.http import Http404
-
-from django.db.models import Avg
-from ..models.default import MainMenu
-
-from .service.search import BlogSearch
+from django.views.generic import TemplateView
 
 logger = logging.getLogger(__name__)
 

@@ -47,7 +47,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'users',
+    'home',
     'blog',
+    'board',
 
     "mptt",
     "anymail",

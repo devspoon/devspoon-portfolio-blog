@@ -1,16 +1,9 @@
 from django.urls import path, include
 
-from .views.index import IndexView
 from blog.views.opensource.opensource_board import OpenSourceListView, OpenSourceDetailView, OpenSourceCreateView, OpenSourceUpdateView, OpenSourceDeleteView, OpenSourceLikeJsonView
 from blog.views.opensource.opensource_reply import OpenSourceReplyCreateView, OpenSourceReplyUpdateJsonView, OpenSourceReplyDeleteView,OpenSourceReplyListView
 
 app_name = "blog"
-
-main_patterns = [
-    path('', IndexView.as_view(),name='index'),
-    # path('search/', video_views.like, name='like'),
-    # path('tag/', video_views.like, name='like'),
-]
 
 search_patterns = []
 
@@ -41,7 +34,6 @@ study_patterns = []
 online_patterns = []
 
 urlpatterns = [
-    path('', include(main_patterns)),
     path('search/', include(search_patterns)),
     path('blog/', include(blog_patterns)),
     path('books/', include(books_patterns)),
