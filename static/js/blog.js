@@ -12,8 +12,9 @@ window.addEventListener('DOMContentLoaded', function()
     if (navi != null)
     {
         const title = document.querySelector('.title');
-        title.innerText=location.pathname.replaceAll('/','');
-        navi.innerText=location.pathname.replaceAll('/','');
+        const pathname = location.pathname.split('/');
+        title.innerText=pathname[2];
+        navi.innerText=pathname[2];
     }
 
 });
