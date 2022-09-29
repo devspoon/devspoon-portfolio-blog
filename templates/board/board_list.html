@@ -1,234 +1,79 @@
 {% extends "base/base.html" %}
+{% comment %} {% load search_tags %} {% endcomment %}
 {% load static %}
-
-{% block title %}devspoon home{% endblock %}
+{% block title %}title{% endblock %}
 
 {% block content %}
 
-<!--====== Blog Detail PART START ======-->
-    <section class="blog-details-area">
+    <!--== Start Page Title Area ==-->
+    <section class="page-title-area">
         <div class="container">
-          <div class="row">
-            <div class="col-lg-8 m-auto text-center">
-              <h2 class="title">latest <span>from our blog</span></h2>
-              Link 
-              <a href="#" onclick="return false;"><h4 class="pb-2">project name</h4></a>
-              <div class="post-info d-flex justify-content-center">
-                <div>
-                    Use
-                    <a href="#" onclick="return false;">Django</a>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-title-content text-center pb-lg-30 pb-80">
+                    <h2 class="title">board title </h2>
+                    <div class="bread-crumbs pb-1">
+                        <a href="{% url 'home:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active navi-blog">board navi</span>
+                    </div>
+                    <a href="{% url 'blog:opensource_create' %}"class="btn btn-outline-success mt-2">write</a>
                 </div>
-                <div>
-                    Branch
-                    <a href="#" onclick="return false;">Front-End</a>
-                </div>
-                <div>
-                    Roles                
-                    <a href="#" onclick="return false;">Committer</a>                                
-                </div>
-              </div> 
-              
-              <div class="meta">
-                By
-                <a class="author" href="#" onclick="return false;">Admin</a>
-                <a href="#" onclick="return false;">28 April 2021</a>
-                <a class="category" href="#" onclick="return false;"><span>In</span>Google Ads</a>
-              </div>
             </div>
-            
-            <div class="col-lg-10 col-xl-8 m-auto">
-                <div class="post-details-content">
-                  <div class="post-details-body">
-                    <div class="content">
-                      <p class="text-pra">Lorem ipsum dolor sit amet, consectetur <span>adipiscing elit.</span> Nulla felis risus, commo do ac facilisis nec, tristique nec massa. Sed hendrerit mi et quam accumsan laoreet id sed quam.</p>
-                      <p>Fusce quis neque id lectus tempor sodales ac at nunc. Sed at vulputate lorem, non egestas mi. Sed suscipit scelerisque sollicitudin. Vivamus ut eleifend dui. Quisque feugiat, mauris nec tincidunt maximus, enim odio facilisis lectus, et accumsan dolor purus mollis turpis. Praesent posuere ultricies diam, nec auctor turpis. Vestibulum condimentum elit eget lacus molestie bibendum. Etiam ac porta lorem.</p>
-                      <div class="blockquote-area">
-                        <blockquote class="blockquote-style">
-                          <div class="icon">
-                            <img src="assets/img/icons/right-quote.png" alt="Icon">
-                          </div>
-                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel felis arcu. Integer maximus felis in massa commodo ultricies. Aenean ut enim vitae arcu iaculis euismod ac nec enim. Mauris fermentum pellentesque orci</p>
-                        </blockquote>
-                      </div>
-                      <p class="mb-40">Praesent luctus turpis in nisi pulvinar, vestibulum fringilla felis tincidunt. Mauris placerat justo tincidunt commodo dapibus. Aliquam viverra neque tellus, non finibus sem posuere pellentesque. Ut nunc libero, hendrerit a diam eu, imperdiet pretium purus.</p>
-                      <h4>Determining a Marketing Budget Can be Frustrating.</h4>
-                      <p>Vivamus ac tortor non diam tincidunt tincidunt non sed dolor. Pellentesque semper ipsum venenatis diam elementum, quis molestie velit ullamcorper. Etiam condimentum maximus posuere. Phasellus et magna sapien. Vivamus sed aliquam nisl. Curabitur tincidunt eros purus, vel molestie ex malesuada non. Nulla consequat diam quis dictum feugiat.</p>
-                      <ul class="list-style">
-                        <li><i class="icon_box-checked"></i> Aliquam eu porta enim, a pellentesque nulla. Aliquam erat volutpat.</li>
-                        <li><i class="icon_box-checked"></i> Pellentesque habitant morbi tristique senectus et netus et malesuada</li>
-                        <li><i class="icon_box-checked"></i> fames ac turpis egestas. Integer id quam sit amet lorem maximus efficitur.</li>
-                        <li><i class="icon_box-checked"></i> Vestibulum a enim facilisis, rutrum ex non, elementum ante.</li>
-                      </ul>
-                      <p class="mb-0">Ut dignissim nibh sed nisi ultrices, eu mattis nibh euismod. Proin eget euismod augue. Vestibulum nisi neque, porta a blandit ac, vestibulum convallis dui. Donec sit amet eleifend ipsum.</p>
-                      
-                      <!-- widget social tags start -->
-                      <div class="widget-social-tags">
-                        <div class="widget-tags">
-                          <ul>
-                            <li><a href="#/">Digital</a></li>
-                            <li><a href="#/">Growth Hack</a></li>
-                            <li><a href="#/">Business</a></li>                       
-                          </ul>
-                        </div>
-                        <!-- <div class="widget-social-icons">
-                          <span>Share On: </span>
-                          <a class="facebook" href="#/"><i class="social_facebook"></i></a>
-                          <a class="twitter" href="#/"><i class="social_twitter"></i></a>
-                          <a class="dribbble" href="#/"><i class="social_dribbble"></i></a>
-                          <a class="pinterest" href="#/"><i class="social_pinterest"></i></a>
-                        </div> -->
-                      </div>
-                      <!-- widget social tags end -->
-  
-                      <!-- reply list start -->
-                      <!-- <div class="author-info">
-                        <div class="thumb">
-                          <img src="assets/img/blog/author-01.png" alt="Image">
-                        </div>
-                        <div class="author-details">
-                          <ul>
-                            <li class="name">Admin</li>
-                            <li class="author">Author</li>
-                          </ul>
-                          <p>Admin is the founder of Yoast Academy and CEO of Yoast. Her favorite SEO topics are SEO copywriting and site structure.</p>
-                        </div>
-                      </div> -->
-                      <!-- reply list end -->
-
-                    <!-- blog history navigation list start -->
-                    </div>
-                    <div class="blog-history-navigation">
-                        <div class="row">
-                          <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="nav-prev">
-                              <a href="blog-details.html">
-                                <span><i class="lni lni-arrow-left"></i> Older</span>
-                                Seo Explained in Fewer than <br>140 Characters
-                              </a>
-                            </div>
-                          </div>
-                          <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="nav-next">
-                              <a href="blog-details.html">
-                                <span>Newer <i class="lni lni-arrow-right"></i></span>
-                                The Dummies Guide to Enterprise <br>Customer Data Platforms
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                    <!-- blog history navigation end -->
-
-                    <!-- comment list start -->
-                    <div class="comment-area">
-                        <h2 class="inner-title">02 Comments</h2>
-                        <div class="comment-content">
-                        <div class="single-comment">
-                            <div class="author-info">
-                            <div class="thumb">
-                                <img src="assets/img/blog/author-02.png" alt="Image">
-                            </div>
-                            <div class="author-details">
-                                <ul>
-                                <li class="name">Daniel Vandaft <span>-</span></li>
-                                <li class="meta-date">28 Jan, 2021</li>
-                                </ul>
-                                <p>Ut vitae suscipit nulla, sit amet ullamcorper sapien. Nam eget quam et velit pharetra molestie tincidunt sed tortor. Aliquam neque lorem, semper non luctus eget, aliquet eu nisi.</p>
-                                <a class="btn-reply" href="#/">Reply</a>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="single-comment fist-reply">
-                            <div class="author-info">
-                            <div class="thumb">
-                                <img src="assets/img/blog/author-02.png" alt="Image">
-                            </div>
-                            <div class="author-details">
-                                <ul>
-                                <li class="name">Daniel Vandaft <span>-</span></li>
-                                <li class="meta-date">28 Jan, 2021</li>
-                                </ul>
-                                <p>Ut vitae suscipit nulla, sit amet ullamcorper sapien. Nam eget quam et velit pharetra molestie tincidunt sed tortor. Aliquam neque lorem, semper non luctus eget, aliquet eu nisi.</p>
-                                <a class="btn-reply" href="#/">Reply</a>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="single-comment second-reply">
-                            <div class="author-info">
-                            <div class="thumb">
-                                <img src="assets/img/blog/author-02.png" alt="Image">
-                            </div>
-                            <div class="author-details">
-                                <ul>
-                                <li class="name">Daniel Vandaft <span>-</span></li>
-                                <li class="meta-date">28 Jan, 2021</li>
-                                </ul>
-                                <p>Ut vitae suscipit nulla, sit amet ullamcorper sapien. Nam eget quam et velit pharetra molestie tincidunt sed tortor. Aliquam neque lorem, semper non luctus eget, aliquet eu nisi.</p>
-                                <a class="btn-reply" href="#/">Reply</a>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="single-comment">
-                            <div class="author-info">
-                            <div class="thumb">
-                                <img src="assets/img/blog/author-03.png" alt="Image">
-                            </div>
-                            <div class="author-details">
-                                <ul>
-                                <li class="name">Danny Rivera <span>-</span></li>
-                                <li class="meta-date">28 Jan, 2021</li>
-                                </ul>
-                                <p>Aliquam finibus, lectus eu tempor pretium, tellus erat sodales mauris, ac tincidunt nulla dolor a dui. Nullam pellentesque, felis hendrerit fringilla iaculis, elit ligula bibendum diam</p>
-                                <a class="btn-reply" href="#/">Reply</a>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                        <h2 class="inner-title pt-10">Leave a Comment</h2>
-                        <div class="comment-form-wrap">
-                        <div class="clearfix"></div>
-                        <form action="#" method="post">
-                            <div class="comment-form-content">
-                            <div class="row">
-                                <div class="col-md-6">
-                                <div class="form-group">
-                                    <input class="form-control" type="text" placeholder="Name *" required="">
-                                </div>
-                                </div>
-                                <div class="col-md-6">
-                                <div class="form-group">
-                                    <input class="form-control" type="email" placeholder="Email *" required="">
-                                </div>
-                                </div>
-                                <div class="col-md-12">
-                                <div class="form-group">
-                                    <textarea class="form-control" name="comment" id="comment" cols="45" rows="7" placeholder="Your Comment *" required=""></textarea>
-                                </div>
-                                </div>
-                            </div>
-                            <div class="row pt-30">
-                                <div class="col-md-12">
-                                <div class="form-group mb-0">
-                                    <button class="btn btn-theme" type="submit">Post Comment</button>
-                                </div>
-                                <div class="form-group mb-0">
-                                    <button class="btn btn-theme" type="submit">Log in to leave a comment</button>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                        </form>
-                        </div>
-                    </div>
-                    <!-- reply list end -->
-
-                  </div> 
-                </div>
-              </div>
-
-          </div>
         </div>
-      </section>
-	<!--====== Blog Detail PART END ======-->
+        </div>
+    </section>
+    <!--== End Page Title Area ==-->
 
-    {% endblock %}
+    <!--== Start Blog Area Wrapper ==-->
+    <section class="blog-grid-area pb-1">
+        <div class="container">
+            <div class="row ">
+
+                {% for item in board %}
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                <!--== Start Blog Post Item ==-->
+                    <div class="card-box">
+                        <div class="card-img">
+                            <a href="{% url 'blog:opensource_detail' item.pk %}">
+                                <img src="{{item.title_image}}">
+                            </a>
+                            <div class="product-action">
+                                <a href="{{item.repository}}"  class="share" title="Repository"><i class="lni lni-world"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="card-content">
+                            <h3 class="name"><i class="lni lni-github"></i> <a href="{% url 'blog:opensource_detail' item.pk %}">{{item.title}}</a></h3>
+                            <span class="update">{{board.content|safe|truncatechars:80}}</span>
+                            <ul class="project-info">
+                                <li>
+                                    <i class="lni lni-calendar"></i> {{item.created_at|date:'Y-m-d H:i'}}
+                                </li>
+                                <li>
+                                    <i class="lni lni-bookmark"></i> {{item.dev_lang}}
+                                </li>
+                                <li>
+                                    <i class="lni lni-layers"></i> {{item.branch}}
+                                </li>
+                                <li>
+                                    <i class="lni lni-user"></i> {{item.role}}
+                                </li>
+                                <li>
+                                    <i class="lni lni-heart"></i> {{item.like_count}}
+                                </li>
+                                <li>
+                                    <i class="lni lni-comments-reply"></i> {{item.reply_count}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                <!--== End Blog Post Item ==-->
+                </div>
+                {% endfor %}
+
+                {% include "base/pagenation.html" %}
+            </div>
+        </div>
+    </section>
+    <!--== End Blog Area Wrapper ==-->
+
+	{% endblock %}

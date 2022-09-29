@@ -424,16 +424,44 @@ function buildPagination(pagination) {
 window.addEventListener
 ======================================= */
 
+const visitCount = async function(url,post) {
+    try {
+        const full_url = url+'visit';
+        let res = await axios.get(full_url);
+        console.log("res.data : ",res.data);
+        localStorage.setItem(post, 'true');
+    }
+    catch (err){
+        console.log('visit count error : ' ,err);
+    }
+
+};
+
+
+/*=====================================
+window.addEventListener
+======================================= */
+
 window.addEventListener('DOMContentLoaded', function()
 {
     // call replies list function
     if ((window.location.pathname).includes('detail'))
     {
+        //get reply list
         const check_class = document.querySelector('.comment-area');
 
         if (check_class)
         {
             replyList(location.href);
+        }
+
+        //check visit history and update
+        let post = location.pathname.split('/').filter(Boolean).pop();
+        const visitState = localStorage.getItem(post);
+        console.log('visitState : ',visitState);
+        if (visitState == null){
+            console.log('visitState == null : ');
+            visitCount(location.href, post);
         }
     }
 });

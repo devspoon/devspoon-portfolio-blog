@@ -9,12 +9,14 @@ window.addEventListener('DOMContentLoaded', function()
 {
     const navi = document.querySelector('.navi-blog');
 
-    if (navi != null)
+    if (navi != null) // This web page is a blog.
     {
-        const title = document.querySelector('.title');
-        const pathname = location.pathname.split('/');
-        title.innerText=pathname[2];
-        navi.innerText=pathname[2];
+        const pageTitle = document.querySelector('.title'); //class
+        const title = document.querySelector('title'); //tag
+        const pathName = location.pathname.split('/');
+        pageTitle.innerText=pathName[2];
+        navi.innerText=pathName[2];
+        title.innerText=pathName[2];
     }
 
 });
@@ -36,25 +38,25 @@ function newReplyBox(replyNum,depth)
     document.querySelector("#reply-create-fbt").style.display = 'block';
     document.querySelector("#reply-update-fbt").style.display = 'none';
 
-    const depth_input = document.getElementById("depth");
-    const parent_input = document.getElementById("parent");
+    const depthInput = document.getElementById("depth");
+    const parentInput = document.getElementById("parent");
 
     if (depth < 3) {
-        depth_input.setAttribute("value",depth+1);
+        depthInput.setAttribute("value",depth+1);
     }
     else {
-        depth_input.setAttribute("value",3);
+        depthInput.setAttribute("value",3);
     }
 
-    parent_input.setAttribute("value",replyNum);
+    parentInput.setAttribute("value",replyNum);
 
     if ( 1 < depth) {
-        reply_input_box = document.getElementById("comment");
-        reply_input_box.textContent= "@"+author.textContent + " ";
+        replyInputBox = document.getElementById("comment");
+        replyInputBox.textContent= "@"+author.textContent + " ";
 
     }
     else {
-        reply_input_box = document.getElementById("comment");
-        reply_input_box.textContent= "";
+        replyInputBox = document.getElementById("comment");
+        replyInputBox.textContent= "";
     }
 }

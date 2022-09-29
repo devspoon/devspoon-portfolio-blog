@@ -61,6 +61,7 @@ class Post(models.Model):
     reply_count = models.IntegerField(default=0, verbose_name=_('Reply Count'))
     like_count = models.IntegerField(default=0, verbose_name=_('Like Count'))
     last_group_num = models.IntegerField(default=0, verbose_name=_('Reply last group id'))
+    visit_count = models.PositiveIntegerField(default=0, verbose_name=_('Visit Count'))
 
     class Meta:
         abstract = True

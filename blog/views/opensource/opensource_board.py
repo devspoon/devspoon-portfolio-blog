@@ -153,3 +153,19 @@ class OpenSourceLikeJsonView(LoginRequiredMixin, View):
                 'message': message}
 
         return JsonResponse(context, safe=True)
+
+
+class OpenSourceVisitJsonView(View):
+
+    def get(self, request, pk):
+        post = get_object_or_404(OpenSourcePost, pk=pk)
+        print('post 1 : ', post.visit_count)
+        with transaction.atomic():
+            OpenSourcePost.objects.filter(pk=pk).update(visit_count=F('visit_count') + 1)
+            message = "visit count updated"
+
+        post = get_object_or_404(OpenSourcePost, pk=pk)
+        print('post 2 : ', post.visit_count)
+        context = {'message': message}
+
+        return JsonResponse(context, safe=True)
