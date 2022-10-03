@@ -82,7 +82,15 @@ function setReplyLocation(replies,reply_key,snippet){
         if (nodes)
             reply_root.insertAdjacentHTML('beforeend',snippet);
         else
-            parent_element.insertAdjacentHTML('afterend',snippet);
+            if (parent_element != null)
+            {
+                parent_element.insertAdjacentHTML('afterend',snippet);
+            }
+            else
+            {
+                reply_root.insertAdjacentHTML('beforeend',snippet);
+                resetReplyInputBox();
+            }
 
         resetReplyInputBox();
     }
@@ -104,7 +112,15 @@ function setReplyLocation(replies,reply_key,snippet){
         }
         else
         {
-            parent_element.insertAdjacentHTML('afterend',snippet);
+            if (parent_element != null)
+            {
+                parent_element.insertAdjacentHTML('afterend',snippet);
+            }
+            else
+            {
+                reply_root.insertAdjacentHTML('beforeend',snippet);
+                resetReplyInputBox();
+            }
         }
         resetReplyInputBox();
     }
@@ -134,10 +150,28 @@ function setReplyLocation(replies,reply_key,snippet){
             const last_sibling_node_pk = last_sibling_node_classes[3]; //get last sibling node's pk array of from class names
             const last_sibling_node = document.querySelector(".depth-"+replies[reply_key].depth+'.'+last_sibling_node_pk); //get last sibling node
             last_sibling_node.insertAdjacentHTML('afterend',snippet);
+
+            if (last_sibling_node != null)
+            {
+                last_sibling_node.insertAdjacentHTML('afterend',snippet);
+            }
+            else
+            {
+                reply_root.insertAdjacentHTML('beforeend',snippet);
+                resetReplyInputBox();
+            }
         }
         else
         {
-            parent_element.insertAdjacentHTML('afterend',snippet);
+            if (parent_element != null)
+            {
+                parent_element.insertAdjacentHTML('afterend',snippet);
+            }
+            else
+            {
+                reply_root.insertAdjacentHTML('beforeend',snippet);
+                resetReplyInputBox();
+            }
         }
 
         resetReplyInputBox();
@@ -183,7 +217,7 @@ function buildReplyStack(replies,url){
         //update, delete button
         snippet +=  '<div class="d-flex justify-content-end"> \n\
                         <a class="btn btn-outline-primary btn-sm mx-3 " href="javascript:void(0);" onclick="updateReplyBox('+replies[reply].pk+'); return false;">Update</a> \n\
-                        <a class="btn btn-outline-secondary btn-sm mx-3" href="'+url+'delete/'+replies[reply].pk+'/">Delete</a> \n\
+                        <a class="btn btn-outline-secondary btn-sm mx-3" hhref="javascript:void(0);" onclick="deleteReplyBox('+replies[reply].pk+'); return false;">Delete</a> \n\
                     </div>\n';
 
         //reply button
@@ -241,7 +275,7 @@ async function updateReply(replyKey)
     if (update_state == true)
     {
         update_state=false;
-        comment = document.getElementById("comment").value;
+        let comment = document.getElementById("comment").value;
 
         if (comment)
         {
@@ -278,10 +312,18 @@ function updateReplyBox(replyNum)
     update_bt.style.display = 'block';
     update_bt.setAttribute("onclick","updateReply("+replyNum+"); return false;");
 
-    comment=targetNode.querySelector("p").innerText;
+    let comment=targetNode.querySelector("p").innerText;
 
     reply_input_box = document.getElementById("comment");
     reply_input_box.textContent = comment;
+}
+
+
+async function deleteReplyBox(replyNum)
+{
+    const full_url = location.href + 'reply/delete/'+replyNum+'/';
+
+    location.replace(full_url);
 }
 
 
@@ -428,7 +470,6 @@ const visitCount = async function(url,post) {
     try {
         const full_url = url+'visit';
         let res = await axios.get(full_url);
-        console.log("res.data : ",res.data);
         localStorage.setItem(post, 'true');
     }
     catch (err){
@@ -458,9 +499,8 @@ window.addEventListener('DOMContentLoaded', function()
         //check visit history and update
         let post = location.pathname.split('/').filter(Boolean).pop();
         const visitState = localStorage.getItem(post);
-        console.log('visitState : ',visitState);
+
         if (visitState == null){
-            console.log('visitState == null : ');
             visitCount(location.href, post);
         }
     }

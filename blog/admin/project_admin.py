@@ -1,7 +1,7 @@
 from django.contrib import admin
-from blog.models.boards import ProjectPost
+from blog.models.blog import ProjectPost
 from django_summernote.admin import SummernoteModelAdmin
-from blog.models.reply import ProjectPostReply
+from blog.models.blog_reply import ProjectPostReply
 
 
 class ProjectPostAdmin(SummernoteModelAdmin):

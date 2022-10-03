@@ -108,7 +108,7 @@
                             <div class="nav-prev">
                               <a href="{% url 'blog:opensource_detail' pre_board.pk %}">
                                 <span><i class="lni lni-arrow-left"></i> Older</span>
-                                {{pre_board.title}} <br>{{pre_board|striptags|truncatechars:140 }}
+                                {{pre_board.title}} <br>{{pre_board|striptags|truncatechars:80 }}
                               </a>
                             </div>
                           </div>
@@ -118,7 +118,7 @@
                             <div class="nav-next">
                               <a href="{% url 'blog:opensource_detail' next_board.pk %}">
                                 <span>Newer <i class="lni lni-arrow-right"></i></span>
-                                {{next_board.title}} <br>{{next_board|striptags|truncatechars:140 }}
+                                {{next_board.title}} <br>{{next_board|striptags|truncatechars:80 }}
                               </a>
                             </div>
                           </div>

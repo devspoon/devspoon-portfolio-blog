@@ -1,7 +1,7 @@
 from django.contrib import admin
 from mptt.admin import DraggableMPTTAdmin    # 관리자페이지에서 카테고리를 트리형식으로
 from blog.models.default import MainMenu, SiteInfo, WorldSocialAccount, LocalSocialAccount
-from blog.models.boards import Tag
+from blog.models.blog import Tag
 
 class SiteInfoAdmin(admin.ModelAdmin):
     list_display = [field.name for field in SiteInfo._meta.get_fields()]

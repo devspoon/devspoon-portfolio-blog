@@ -13,11 +13,10 @@ from django.db.models import F
 from django.db import transaction
 from isort import file
 
-from ...models.boards import OpenSourcePost, Tag
+from ...models.blog import OpenSourcePost, Tag
 from .opensource_forms import OpenSourceForm
 
 from django.http import JsonResponse
-
 
 logger = logging.getLogger(__name__)
 
@@ -72,15 +71,7 @@ class OpenSourceCreateView(LoginRequiredMixin, CreateView):
         data.author = self.request.user
         data.save()
 
-        tags= form.cleaned_data['tags'].split(',')
-        tags= list(set(tags))
-        for tag in tags:
-            if not tag :
-                continue
-            else:
-                tag = tag.strip()
-                tag_, created = Tag.objects.get_or_create(tag = tag)
-                data.tag_set.add(tag_)
+        data.tag_save(form.cleaned_data['tags'])
 
         return super().form_valid(form)
 
@@ -101,15 +92,9 @@ class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
             raise PermissionDenied()
         data = form.save(commit=False)
         data.save()
-        tags= form.cleaned_data['tags'].split(',')
-        tags= list(set(tags))
-        for tag in tags:
-            if not tag :
-                continue
-            else:
-                tag = tag.strip()
-                tag_, created = Tag.objects.get_or_create(tag = tag)
-                data.tag_set.add(tag_)
+
+        data.tag_save(form.cleaned_data['tags'])
+
 
         return super().form_valid(form)
 

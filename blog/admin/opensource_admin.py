@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from blog.models.boards import OpenSourcePost
-from blog.models.reply import OpenSourcePostReply
+from blog.models.blog import OpenSourcePost
+from blog.models.blog_reply import OpenSourcePostReply
 from django_summernote.admin import SummernoteModelAdmin
 
 

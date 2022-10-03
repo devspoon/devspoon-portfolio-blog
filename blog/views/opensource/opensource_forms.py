@@ -1,7 +1,11 @@
+import logging
+
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from blog.models.boards import OpenSourcePost
+from blog.models.blog import OpenSourcePost
 from django_summernote.widgets import SummernoteWidget
+
+logger = logging.getLogger(__name__)
 
 
 class OpenSourceForm(forms.ModelForm):

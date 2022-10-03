@@ -10,7 +10,7 @@ from django.db.models import F
 from django.db import transaction
 
 from django.db import models
-from .boards import ProjectPost, OnlineStudyPost, BlogPost, OpenSourcePost, BooksPost
+from .blog import ProjectPost, OnlineStudyPost, BlogPost, OpenSourcePost, BooksPost
 
 class Reply(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -83,10 +83,8 @@ def auto_delete_file_on_delete_for_blog(sender, instance=None, **kwargs):
     list_of_models = ('ProjectPostReply', 'OnlineStudyPostReply', 'BlogPostReply', 'OpenSourcePostReply', 'BooksPostReply')
     if sender.__name__ in list_of_models: # this is the dynamic part you want
 
-        post = getattr(instance, 'post')
-
         with transaction.atomic():
-            post=OpenSourcePost.objects.select_for_update().get(pk=post.pk)
+            post = sender.objects.get(pk=instance.pk).select_for_update().post
 
             if post.reply_count > 0 :
                 post.reply_count = F('reply_count') - 1

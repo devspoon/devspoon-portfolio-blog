@@ -63,12 +63,16 @@ class Post(models.Model):
     last_group_num = models.IntegerField(default=0, verbose_name=_('Reply last group id'))
     visit_count = models.PositiveIntegerField(default=0, verbose_name=_('Visit Count'))
 
+    is_deleted = models.BooleanField(default=False, verbose_name=_('Deleted state'))
+    is_hidden = models.BooleanField(default=False, verbose_name=_('Hidden state'))
+
     class Meta:
         abstract = True
 
-    def tag_save(self):
-        tags = re.findall(r'#(\w+)\b', self.content)
-
+    def tag_save(self,content):
+        tags = re.findall(r'#(\w+)\b', content)
+        tags= content.split(',')
+        tags= list(set(tags))
         if not tags:
             return
 

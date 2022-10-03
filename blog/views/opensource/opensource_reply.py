@@ -14,13 +14,15 @@ from django.utils.translation import gettext_lazy as _
 
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
-from ...models.reply import OpenSourcePostReply
-from ...models.boards import OpenSourcePost
+from ...models.blog_reply import OpenSourcePostReply
+from ...models.blog import OpenSourcePost
 from django.db.models import F
 from django.db import transaction
 
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+
+logger = logging.getLogger(__name__)
 
 
 def make_list_by_paginator(paginator, pages):
@@ -58,6 +60,8 @@ class OpenSourceReplyListView(View):
         )
 
         results = pagination_info + replies
+
+        print("results : ",results)
 
         return JsonResponse(results, safe=False)
 
@@ -107,7 +111,7 @@ class OpenSourceReplyUpdateJsonView(LoginRequiredMixin,View):
         reply = get_object_or_404(OpenSourcePostReply,pk=reply_pk)
         if self.request.user != reply.author:
            raise PermissionDenied()
-       
+
         if comment is None :
             message = "Reply note updated"
         else :

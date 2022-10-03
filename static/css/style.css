@@ -2240,29 +2240,29 @@ hero area css
 
 .card-box .card-content .project-info {
   border-top: 1px dotted rgba(124, 134, 154, 0.25);
-  display: flex;
-  flex-wrap: wrap;
-  padding-top: 20px;  
-  text-align: center;  
+  /* display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap; */
+  padding-top: 20px;
+  /* text-align: center; */
 }
 
-.card-box .card-content .project-info li {
-  width: 50%;
-  margin-bottom: 15px;  
+.card-box .card-content .project-info div {
+  margin-bottom: 15px;
 }
 
-.card-box .card-content .project-info li i {
+.card-box .card-content .project-info div i {
     font-size: 20px;
     color: #FF6B6B;
   }
-
+/* 
 .card-box .card-content .project-info li a {
   color: #7C869A;
 }
 
 .card-box .card-content .project-info li a:hover {
   color: #FF6B6B;
-}
+} */
 
 .card-box .card-content .product-bottom {
   border-top: 1px dotted rgba(124, 134, 154, 0.25);

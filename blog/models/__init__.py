@@ -1,3 +1,6 @@
-from .boards import  ProjectPost, OnlineStudyPost, BlogPost, OpenSourcePost, BooksPost
-from .reply import ProjectPostReply, OnlineStudyPostReply, BlogPostReply, OpenSourcePostReply, BooksPostReply
+from .blog import  ProjectPost, OnlineStudyPost, BlogPost, OpenSourcePost, BooksPost
+from .blog_reply import ProjectPostReply, OnlineStudyPostReply, BlogPostReply, OpenSourcePostReply, BooksPostReply
 from .like import ProjectLike, OnlineStudyLike, BlogLike, OpenSourceLike, BooksLike
+from .blog import *
+from .like import *
+from .blog_reply import *

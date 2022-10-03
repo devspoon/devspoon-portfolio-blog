@@ -15,7 +15,6 @@
                     <div class="bread-crumbs pb-1">
                         <a href="{% url 'home:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active navi-blog">board navi</span>
                     </div>
-                    <a href="{% url 'blog:opensource_create' %}"class="btn btn-outline-success mt-2">write</a>
                 </div>
             </div>
         </div>
@@ -27,50 +26,47 @@
     <section class="blog-grid-area pb-1">
         <div class="container">
             <div class="row ">
-
-                {% for item in board %}
-                <div class="col-xl-4 col-lg-6 col-md-6">
-                <!--== Start Blog Post Item ==-->
-                    <div class="card-box">
-                        <div class="card-img">
-                            <a href="{% url 'blog:opensource_detail' item.pk %}">
-                                <img src="{{item.title_image}}">
-                            </a>
-                            <div class="product-action">
-                                <a href="{{item.repository}}"  class="share" title="Repository"><i class="lni lni-world"></i></a>
+                <div class="col-10 m-auto">
+                    <table class="table table-hover board-table">
+                        <thead>
+                          <tr>
+                            <th width="10%" class="th-number" scope="col">Number</th>
+                            <th width="70%" class="th-title" scope="col">Title</th>
+                            <th width="10%" class="th-date" scope="col">Date</th>
+                            <th width="10%" class="th-visiter" scope="col">Visiter</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td width="10%" class="th-number" scope="row">1</td>
+                            <td width="70%" class="th-title" >{{pre_board|striptags|truncatechars:80}}</td>
+                            <td width="10%" class="th-date" >{{board.created_at|date:'Y-m-d H:i'}}</td>
+                            <td width="10%" class="th-visiter" ></td>
+                          </tr>
+                          {% comment %} <tr>
+                            <td scope="row">2</td>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                          </tr> {% endcomment %}
+                        </tbody>
+                      </table>
+                      <div class="board-button mt-4">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-end">
+                                    <a href="{% url 'home:index'%}"><button type="button" class="btn btn-outline-primary btn-sm me-3">Write</button></a>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="card-content">
-                            <h3 class="name"><i class="lni lni-github"></i> <a href="{% url 'blog:opensource_detail' item.pk %}">{{item.title}}</a></h3>
-                            <span class="update">{{board.content|safe|truncatechars:80}}</span>
-                            <ul class="project-info">
-                                <li>
-                                    <i class="lni lni-calendar"></i> {{item.created_at|date:'Y-m-d H:i'}}
-                                </li>
-                                <li>
-                                    <i class="lni lni-bookmark"></i> {{item.dev_lang}}
-                                </li>
-                                <li>
-                                    <i class="lni lni-layers"></i> {{item.branch}}
-                                </li>
-                                <li>
-                                    <i class="lni lni-user"></i> {{item.role}}
-                                </li>
-                                <li>
-                                    <i class="lni lni-heart"></i> {{item.like_count}}
-                                </li>
-                                <li>
-                                    <i class="lni lni-comments-reply"></i> {{item.reply_count}}
-                                </li>
-                            </ul>
-                        </div>
                     </div>
-                <!--== End Blog Post Item ==-->
                 </div>
+
+                
+                {% for item in board %}
                 {% endfor %}
 
-                {% include "base/pagenation.html" %}
+                {% comment %} {% include "base/pagenation.html" %} {% endcomment %}
             </div>
         </div>
     </section>

@@ -1,7 +1,7 @@
 from django.contrib import admin
-from blog.models.boards import OnlineStudyPost
+from blog.models.blog import OnlineStudyPost
 from django_summernote.admin import SummernoteModelAdmin
-from blog.models.reply import OnlineStudyPostReply
+from blog.models.blog_reply import OnlineStudyPostReply
 
 
 class OnlineStudyPostAdmin(SummernoteModelAdmin):

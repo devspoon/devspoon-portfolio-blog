@@ -26,7 +26,7 @@ opensource_patterns = [
     path('detail/<int:pk>/reply/json/',OpenSourceReplyListView.as_view(),name='opensource_reply_list'),
     path('detail/<int:pk>/reply/json/create/',OpenSourceReplyCreateView.as_view(),name='opensource_reply_create'),
     path('detail/<int:pk>/reply/json/update/<int:reply_pk>/',OpenSourceReplyUpdateJsonView.as_view(),name='opensource_reply_update'),
-    path('detail/<int:pk>/reply/json/delete/<int:reply_pk>/',OpenSourceReplyDeleteView.as_view(),name='opensource_reply_delete'),
+    path('detail/<int:pk>/reply/delete/<int:reply_pk>/',OpenSourceReplyDeleteView.as_view(),name='opensource_reply_delete'),
     path('detail/<int:pk>/visit/',OpenSourceVisitJsonView.as_view(),name='opensource_visit')
 ]
 portfolio_patterns = []

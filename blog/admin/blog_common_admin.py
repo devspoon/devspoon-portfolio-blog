@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blog.models.boards import Tag
+from blog.models.blog import Tag
 
 
 class TagAdmin(admin.ModelAdmin):
