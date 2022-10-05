@@ -1,5 +1,4 @@
 {% extends "base/base.html" %}
-{% comment %} {% load search_tags %} {% endcomment %}
 {% load static %}
 {% block title %}title{% endblock %}
 
@@ -30,43 +29,40 @@
                     <table class="table table-hover board-table">
                         <thead>
                           <tr>
-                            <th width="10%" class="th-number" scope="col">Number</th>
-                            <th width="70%" class="th-title" scope="col">Title</th>
-                            <th width="10%" class="th-date" scope="col">Date</th>
-                            <th width="10%" class="th-visiter" scope="col">Visiter</th>
+                            <th width="5%" class="th-number text-center" scope="col">Number</th>
+                            <th width="75%" class="th-title" scope="col">Title</th>
+                            <th width="15%" class="th-date text-center" scope="col">Date</th>
+                            <th width="5%" class="th-visiter text-center" scope="col">Visiter</th>
                           </tr>
                         </thead>
+                        {% for item in board %}
                         <tbody>
                           <tr>
-                            <td width="10%" class="th-number" scope="row">1</td>
-                            <td width="70%" class="th-title" >{{pre_board|striptags|truncatechars:80}}</td>
-                            <td width="10%" class="th-date" >{{board.created_at|date:'Y-m-d H:i'}}</td>
-                            <td width="10%" class="th-visiter" ></td>
+                            <td width="5%" class="th-number text-center tb-row" scope="row"><a href="{% url 'board:notice_detail' item.pk %}">{{item.pk}}</a></td>
+                            <td width="75%" class="th-title tb-row" > <a href="{% url 'board:notice_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
+                            <td width="15%" class="th-date text-center tb-row" >{{item.updated_at|date:'Y/m/d H:i'}}</td>
+                            <td width="5%" class="th-visiter text-center tb-row" >{{item.visit_count}}</td>
                           </tr>
-                          {% comment %} <tr>
-                            <td scope="row">2</td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                          </tr> {% endcomment %}
                         </tbody>
+                        {% endfor %}
+
                       </table>
                       <div class="board-button mt-4">
                         <div class="row">
                             <div class="col-12">
                                 <div class="d-flex justify-content-end">
-                                    <a href="{% url 'home:index'%}"><button type="button" class="btn btn-outline-primary btn-sm me-3">Write</button></a>
+                                    <a href="javascript:void(0);" onclick="boardWrite('+replies[reply].pk+'); return false;"><button type="button" class="btn btn-outline-primary btn-sm me-3">Write</button></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                
+
                 {% for item in board %}
                 {% endfor %}
 
-                {% comment %} {% include "base/pagenation.html" %} {% endcomment %}
+                {% include "base/pagenation.html" %}
             </div>
         </div>
     </section>

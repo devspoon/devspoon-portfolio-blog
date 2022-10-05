@@ -23,7 +23,7 @@ class MainMenu(MPTTModel):
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True, on_delete=models.CASCADE, verbose_name=_('Parent'))
     menu_name = models.CharField(max_length=255, blank=False, verbose_name=_('Menu Name'))
     menu_icon = models.CharField(max_length=100, blank=True, verbose_name=_('Menu Icon'))
-    menu_path = models.CharField(max_length=255, blank=False, verbose_name=_('Menu Path'))
+    menu_path = models.CharField(max_length=255, blank=True, verbose_name=_('Menu Path'))
     menu_type = models.CharField(max_length=15, choices = MenuType.choices, default=MenuType.MAIN_PAGE, verbose_name=_('Menu Type'))
     # menu_slug = models.SlugField(blank=True, verbose_name=_('Menu Slug'))
     menu_link = models.URLField(blank=True, verbose_name=_('Menu Link'))

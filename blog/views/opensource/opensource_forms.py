@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class OpenSourceForm(forms.ModelForm):
-    
+
     tags = forms.CharField(label='tags',help_text=_('Separate tags using ","'),required=False)
 
     def __init__(self, *args, **kwargs):

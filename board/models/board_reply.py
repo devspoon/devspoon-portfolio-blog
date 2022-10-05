@@ -11,7 +11,7 @@ from django.db import transaction
 
 from django.db import models
 
-class Reply(models.Model):
+class BoardReply(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     comment = models.TextField(default='', blank=False, verbose_name=_('Comment'))
     depth = models.SmallIntegerField(default=0, verbose_name=_('Reply depth'))
@@ -27,7 +27,7 @@ class Reply(models.Model):
         return self.comment
 
 
-class NoticeReply(Reply):
+class NoticeReply(BoardReply):
     board = models.ForeignKey('board.Notice', on_delete=models.CASCADE)
 
     class Meta:
@@ -37,7 +37,7 @@ class NoticeReply(Reply):
         ordering = [('group'),]
 
 
-class VisiterReply(Reply):
+class VisiterReply(BoardReply):
     board = models.ForeignKey('board.Visiter', on_delete=models.CASCADE)
 
     class Meta:
@@ -47,7 +47,7 @@ class VisiterReply(Reply):
         ordering = [('group'),]
 
 
-class ReactivationReply(Reply):
+class ReactivationReply(BoardReply):
     board = models.ForeignKey('board.Reactivation', on_delete=models.CASCADE)
 
     class Meta:
@@ -60,14 +60,12 @@ class ReactivationReply(Reply):
 
 @receiver(post_delete)
 def auto_delete_file_on_delete_for_board(sender, instance=None, **kwargs):
-    list_of_models = ('Notice', 'Visiter', 'Reactivation')
+    list_of_models = ('BoardReply', 'VisiterReply', 'ReactivationReply')
     if sender.__name__ in list_of_models: # this is the dynamic part you want
 
-        board = getattr(instance, 'board')
-
         with transaction.atomic():
-            board=OpenSourcePost.objects.select_for_update().get(pk=board.pk)
+            post = sender.objects.get(pk=instance.pk).select_for_update().post
 
-            if board.reply_count > 0 :
-                board.reply_count = F('reply_count') - 1
-                board.save()
+            if post.reply_count > 0 :
+                post.reply_count = F('reply_count') - 1
+                post.save()

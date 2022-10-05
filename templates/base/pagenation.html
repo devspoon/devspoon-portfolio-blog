@@ -11,14 +11,12 @@
                     <ion-icon name="chevron-back-outline"></ion-icon>
                 </a>
             </li>
-            <li>
             {% else %}
             <li>
                 <a class="page-number prev" href="#">
                     <ion-icon name="chevron-back-outline"></ion-icon>
                 </a>
             </li>
-            <li>
             {% endif %}
 
             {% for page in page_obj|slice_visible_pages %}

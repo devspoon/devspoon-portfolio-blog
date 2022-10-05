@@ -30,7 +30,7 @@ class Notice(Board):
     priority = models.SmallIntegerField(default=0, verbose_name=_('Priority')) # it can made to access other board
     sorting_sequence = models.SmallIntegerField(default=0, verbose_name=_('Sorting sequence')) # Set the print order on each board
     class Meta:
-        db_table = 'board_notice'
+        db_table = 'notice_board'
         verbose_name = _('notice')
         verbose_name_plural = _('notice')
         ordering = ['-created_at']
@@ -38,7 +38,7 @@ class Notice(Board):
 
 class Visiter(Board):
     class Meta:
-        db_table = 'board_visiter'
+        db_table = 'visiter_board'
         verbose_name = _('visiter')
         verbose_name_plural = _('visiter')
         ordering = ['-created_at']
@@ -46,7 +46,7 @@ class Visiter(Board):
 
 class Reactivation(Board):
     class Meta:
-        db_table = 'board_reactuvation'
+        db_table = 'reactuvation_board'
         verbose_name = _('reactivation')
         verbose_name_plural = _('reactivation')
         ordering = ['-created_at']

@@ -1,7 +1,7 @@
 from django.urls import path, include
 
-from blog.views.opensource.opensource_board import OpenSourceListView, OpenSourceDetailView, OpenSourceCreateView, OpenSourceUpdateView, OpenSourceDeleteView, OpenSourceLikeJsonView, OpenSourceVisitJsonView
-from blog.views.opensource.opensource_reply import OpenSourceReplyCreateView, OpenSourceReplyUpdateJsonView, OpenSourceReplyDeleteView,OpenSourceReplyListView
+from blog.views.opensource.opensource_blog import OpenSourceListView, OpenSourceDetailView, OpenSourceCreateView, OpenSourceUpdateView, OpenSourceDeleteView, OpenSourceLikeJsonView, OpenSourceVisitJsonView
+from blog.views.opensource.opensource_reply import OpenSourceReplyCreateJsonView, OpenSourceReplyUpdateJsonView, OpenSourceReplyDeleteView,OpenSourceReplyListJsonView
 
 app_name = "blog"
 
@@ -22,12 +22,15 @@ opensource_patterns = [
     path('update/<int:pk>/', OpenSourceUpdateView.as_view(), name='opensource_update'),
     path('delete/<int:pk>/', OpenSourceDeleteView.as_view(), name='opensource_delete'),
     path('like/json/<int:pk>/', OpenSourceLikeJsonView.as_view(),name='opensource_like'),
+
     path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='opensource_detail'),
-    path('detail/<int:pk>/reply/json/',OpenSourceReplyListView.as_view(),name='opensource_reply_list'),
-    path('detail/<int:pk>/reply/json/create/',OpenSourceReplyCreateView.as_view(),name='opensource_reply_create'),
+
+    path('detail/<int:pk>/reply/json/',OpenSourceReplyListJsonView.as_view(),name='opensource_reply_list'),
+    path('detail/<int:pk>/reply/json/create/',OpenSourceReplyCreateJsonView.as_view(),name='opensource_reply_create'),
     path('detail/<int:pk>/reply/json/update/<int:reply_pk>/',OpenSourceReplyUpdateJsonView.as_view(),name='opensource_reply_update'),
     path('detail/<int:pk>/reply/delete/<int:reply_pk>/',OpenSourceReplyDeleteView.as_view(),name='opensource_reply_delete'),
-    path('detail/<int:pk>/visit/',OpenSourceVisitJsonView.as_view(),name='opensource_visit')
+
+    path('detail/<int:pk>/visit/json/',OpenSourceVisitJsonView.as_view(),name='opensource_visit'),
 ]
 portfolio_patterns = []
 project_patterns = []

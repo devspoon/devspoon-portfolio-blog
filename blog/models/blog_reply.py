@@ -12,7 +12,7 @@ from django.db import transaction
 from django.db import models
 from .blog import ProjectPost, OnlineStudyPost, BlogPost, OpenSourcePost, BooksPost
 
-class Reply(models.Model):
+class BlogReply(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     comment = models.TextField(default='', blank=False, verbose_name=_('Comment'))
     depth = models.SmallIntegerField(default=0, verbose_name=_('Reply depth'))
@@ -28,7 +28,7 @@ class Reply(models.Model):
         return self.comment
 
 
-class ProjectPostReply(Reply):
+class ProjectPostReply(BlogReply):
     post = models.ForeignKey('blog.ProjectPost', on_delete=models.CASCADE)
 
     class Meta:
@@ -38,7 +38,7 @@ class ProjectPostReply(Reply):
         ordering = [('group'),]
 
 
-class OnlineStudyPostReply(Reply):
+class OnlineStudyPostReply(BlogReply):
     post = models.ForeignKey('blog.OnlineStudyPost', on_delete=models.CASCADE)
 
     class Meta:
@@ -48,7 +48,7 @@ class OnlineStudyPostReply(Reply):
         ordering = [('group'),]
 
 
-class BlogPostReply(Reply):
+class BlogPostReply(BlogReply):
     post = models.ForeignKey('blog.BlogPost', on_delete=models.CASCADE)
 
     class Meta:
@@ -58,7 +58,7 @@ class BlogPostReply(Reply):
         ordering = [('group'),]
 
 
-class OpenSourcePostReply(Reply):
+class OpenSourcePostReply(BlogReply):
     post = models.ForeignKey('blog.OpenSourcePost', on_delete=models.CASCADE)
 
     class Meta:
@@ -68,7 +68,7 @@ class OpenSourcePostReply(Reply):
         ordering = [('group'),]
 
 
-class BooksPostReply(Reply):
+class BooksPostReply(BlogReply):
     post = models.ForeignKey('blog.BooksPost', on_delete=models.CASCADE)
 
     class Meta:

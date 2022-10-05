@@ -1,0 +1,61 @@
+{% extends "base/base.html" %}
+{% comment %} {% load search_tags %} {% endcomment %}
+{% load static %}
+{% load public_tags %}
+
+{% block title %}opensource detail{% endblock %}
+
+{% block content %}
+
+	<!--====== Blog Detail PART START ======-->
+    <section class="blog-details-area">
+        <div class="container">
+          <div class="row">
+            <div class="col-10 m-auto text-center">
+                <h2 class="title">{{board.title}}</h2>
+                <div class="meta">
+                    By
+                    <a class="author" href="#" onclick="return false;">{{board.author}}</a>
+                    <a href="#" onclick="return false;">{{board.created_at|date:'Y-m-d H:i'}}</a>
+                </div>
+            </div>
+
+                <div class="col-10 m-auto">
+                    <div class="post-details-content">
+                        <div class="post-details-body">
+
+                            <div class="content form-control">
+                                {{board.content|safe}}
+                            </div>
+
+                            <div class="blog-button">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-end">
+                                            <a href="{% url 'blog:opensource_update' board.pk%}"><button type="button" class="btn btn-outline-primary  me-3">Edit</button></a>
+                                            <a href="{% url 'blog:opensource_delete' board.pk%}"><button type="button" class="btn btn-outline-danger ">Delete</button></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- blog history navigation end -->
+
+                            <!-- comment list start -->
+                            {% include "base/reply.html" %}
+                            <!-- reply list end -->
+
+                            <!-- comment replies pagination start -->
+                            {% include "base/replies_pagination.html" %}
+                            <!-- comment replies pagination start -->
+
+                        </div>
+                    </div>
+                </div>
+
+          </div>
+        </div>
+      </section>
+	<!--====== Blog Detail PART END ======-->
+
+	{% endblock %}

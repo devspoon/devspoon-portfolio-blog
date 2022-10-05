@@ -14,8 +14,8 @@ from django.utils.translation import gettext_lazy as _
 
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
-from ...models.blog_reply import OpenSourcePostReply
-from ...models.blog import OpenSourcePost
+from board.models.board_reply import NoticeReply
+from board.models.board import Notice
 from django.db.models import F
 from django.db import transaction
 
@@ -32,12 +32,12 @@ def make_list_by_paginator(paginator, pages):
 
     return [{'number':number, 'num_pages':num_pages}]
 
-class OpenSourceReplyListJsonView(View):
+class NoticeReplyListJsonView(View):
 
-    the_number_of_replies = 10
+    the_number_of_replies = 3
 
     def get(self, request, pk):
-        post = OpenSourcePostReply.objects.filter(post=pk).select_related('author')
+        post = NoticeReply.objects.filter(board=pk).select_related('author')
         paginator = Paginator(post,self.the_number_of_replies)
         page = request.GET.get('page', 1)
 
@@ -53,7 +53,7 @@ class OpenSourceReplyListJsonView(View):
                 "depth": context.depth,
                 "group": context.group,
                 "parent": str(context.parent_id),
-                "post": str(context.post.pk),
+                "post": str(context.board.pk),
                 "created_at":context.created_at.strftime("%Y-%m-%d %I:%M:%S %p"),
                 "thumbnail": str(context.author.photo_thumbnail.url),
             }, pages.object_list)
@@ -64,12 +64,12 @@ class OpenSourceReplyListJsonView(View):
         return JsonResponse(results, safe=False)
 
 
-class OpenSourceReplyCreateJsonView(LoginRequiredMixin, View):
+class NoticeReplyCreateJsonView(LoginRequiredMixin, View):
 
     login_url = reverse_lazy('users:login')
 
     def get(self, request, *args, **kwargs):
-        return redirect('blog:opensource_detail', kwargs.get('pk'))
+        return redirect('board:notice_detail', kwargs.get('pk'))
 
     def post(self, request, *args, **kwargs):
         author = self.request.user
@@ -78,37 +78,37 @@ class OpenSourceReplyCreateJsonView(LoginRequiredMixin, View):
         parent_pk = self.request.POST.get('parent')
 
         if not comment :
-            return redirect('blog:opensource_detail', kwargs.get('pk'))
+            return redirect('board:notice_detail', kwargs.get('pk'))
 
         if parent_pk :
-            parent = OpenSourcePostReply.objects.get(pk=parent_pk)
+            parent = NoticeReply.objects.get(pk=parent_pk)
         else :
             parent = None
 
         if parent :
             group = parent.group
-            post = get_object_or_404(OpenSourcePost,pk=kwargs.get("pk"))
+            post = get_object_or_404(Notice,pk=kwargs.get("pk"))
         else :
             with transaction.atomic():
-                OpenSourcePost.objects.select_for_update().filter(pk=kwargs.get("pk")).update(last_group_num=F('last_group_num') + 1)
-                post = get_object_or_404(OpenSourcePost,pk=kwargs.get("pk"))
+                Notice.objects.select_for_update().filter(pk=kwargs.get("pk")).update(last_group_num=F('last_group_num') + 1)
+                post = get_object_or_404(Notice,pk=kwargs.get("pk"))
             group=post.last_group_num
 
         with transaction.atomic():
-            OpenSourcePostReply.objects.create(author=author, comment=comment, depth=depth, group=group,  parent=parent, post=post)
-            OpenSourcePost.objects.select_for_update().filter(pk=kwargs.get("pk")).update(reply_count=F('reply_count') + 1)
+            NoticeReply.objects.create(author=author, comment=comment, depth=depth, group=group,  parent=parent, board=post)
+            Notice.objects.select_for_update().filter(pk=kwargs.get("pk")).update(reply_count=F('reply_count') + 1)
 
-        return redirect('blog:opensource_detail', kwargs.get('pk'))
+        return redirect('board:notice_detail', kwargs.get('pk'))
 
 
-class OpenSourceReplyUpdateJsonView(LoginRequiredMixin,View):
+class NoticeReplyUpdateJsonView(LoginRequiredMixin,View):
     def post(self, request, pk, reply_pk):
         content = json.loads(request.body.decode("utf-8"))
         comment = content["comment"]
 
-        reply = get_object_or_404(OpenSourcePostReply,pk=reply_pk)
+        reply = get_object_or_404(NoticeReply,pk=reply_pk)
         if self.request.user != reply.author:
-           raise PermissionDenied()
+            raise PermissionDenied()
 
         if comment is None :
             message = "Reply note updated"
@@ -123,9 +123,9 @@ class OpenSourceReplyUpdateJsonView(LoginRequiredMixin,View):
         return JsonResponse(context, safe=True)
 
 
-class OpenSourceReplyDeleteView(LoginRequiredMixin, DeleteView):
+class NoticeReplyDeleteView(LoginRequiredMixin, DeleteView):
 
-    model = OpenSourcePostReply
+    model = NoticeReply
     pk_url_kwarg = 'reply_pk'
     login_url = reverse_lazy('users:login')
 
@@ -138,8 +138,8 @@ class OpenSourceReplyDeleteView(LoginRequiredMixin, DeleteView):
         if self.request.user != self.object.author:
            raise PermissionDenied()
 
-        self.post_pk = self.object.post.pk
+        self.post_pk = self.object.board.pk
         return super().form_valid(None)
 
     def get_success_url(self):
-        return reverse_lazy('blog:opensource_detail', kwargs={'pk': self.post_pk})
+        return reverse_lazy('board:notice_detail', kwargs={'pk': self.post_pk})

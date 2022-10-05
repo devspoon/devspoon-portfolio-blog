@@ -9,7 +9,7 @@ from django.http import Http404
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from django.db.models import F
+from django.db.models import F, Q
 from django.db import transaction
 from isort import file
 
@@ -23,18 +23,18 @@ logger = logging.getLogger(__name__)
 
 class OpenSourceListView(ListView):
     model = OpenSourcePost
-    template_name = 'opensource/opensource_list.html'
+    template_name = 'blog/opensource/opensource_list.html'
     paginate_by = 2
     paginate_orphans = 1 # if last page has 1 item, it will add in last page.
     context_object_name = 'board'
 
-    # def get_queryset(self):
-    #     return Review.objects.filter(user=self.request.user).all()
+    def get_queryset(self):
+        return OpenSourcePost.objects.filter(Q(is_hidden=False) and Q(is_deleted=False))
 
 
 class OpenSourceDetailView(DetailView):
     model = OpenSourcePost
-    template_name = 'opensource/opensource_detail.html'
+    template_name = 'blog/opensource/opensource_detail.html'
     context_object_name = 'board'
 
 
@@ -61,8 +61,8 @@ class OpenSourceDetailView(DetailView):
 
 class OpenSourceCreateView(LoginRequiredMixin, CreateView):
     model = OpenSourcePost
-    template_name = 'opensource/opensource_edit.html'
-    success_url = reverse_lazy('home:index')
+    template_name = 'blog/opensource/opensource_edit.html'
+    success_url = reverse_lazy('blog:opensource_list')
     form_class = OpenSourceForm
     login_url = reverse_lazy('users:login')
 
@@ -80,7 +80,7 @@ class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
     model = OpenSourcePost
     pk_url_kwarg = 'pk'
     form_class = OpenSourceForm
-    template_name = 'opensource/opensource_update.html'
+    template_name = 'blog/opensource/opensource_update.html'
     login_url = reverse_lazy('users:login')
 
     def get_success_url(self):
@@ -143,14 +143,11 @@ class OpenSourceLikeJsonView(LoginRequiredMixin, View):
 class OpenSourceVisitJsonView(View):
 
     def get(self, request, pk):
-        post = get_object_or_404(OpenSourcePost, pk=pk)
-        print('post 1 : ', post.visit_count)
+
         with transaction.atomic():
             OpenSourcePost.objects.filter(pk=pk).update(visit_count=F('visit_count') + 1)
             message = "visit count updated"
 
-        post = get_object_or_404(OpenSourcePost, pk=pk)
-        print('post 2 : ', post.visit_count)
         context = {'message': message}
 
         return JsonResponse(context, safe=True)

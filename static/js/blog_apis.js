@@ -217,7 +217,7 @@ function buildReplyStack(replies,url){
         //update, delete button
         snippet +=  '<div class="d-flex justify-content-end"> \n\
                         <a class="btn btn-outline-primary btn-sm mx-3 " href="javascript:void(0);" onclick="updateReplyBox('+replies[reply].pk+'); return false;">Update</a> \n\
-                        <a class="btn btn-outline-secondary btn-sm mx-3" hhref="javascript:void(0);" onclick="deleteReplyBox('+replies[reply].pk+'); return false;">Delete</a> \n\
+                        <a class="btn btn-outline-secondary btn-sm mx-3" href="javascript:void(0);" onclick="deleteReplyBox('+replies[reply].pk+'); return false;">Delete</a> \n\
                     </div>\n';
 
         //reply button
@@ -259,6 +259,10 @@ function createReply()
 {
     if (create_state == true)
     {
+        const form_action = document.querySelector('#reply-box-form');
+        console.log('form_action : ',form_action);
+        console.log('location : ',location.href+'reply/json/create/');
+        form_action.setAttribute('action',location.href+'reply/json/create/');
         create_state = false;
         document.querySelector('#reply-box-form').submit();
         return false;
@@ -314,7 +318,7 @@ function updateReplyBox(replyNum)
 
     let comment=targetNode.querySelector("p").innerText;
 
-    reply_input_box = document.getElementById("comment");
+    const reply_input_box = document.getElementById("comment");
     reply_input_box.textContent = comment;
 }
 
@@ -468,7 +472,7 @@ window.addEventListener
 
 const visitCount = async function(url,post) {
     try {
-        const full_url = url+'visit';
+        const full_url = url+'visit/json';
         let res = await axios.get(full_url);
         localStorage.setItem(post, 'true');
     }

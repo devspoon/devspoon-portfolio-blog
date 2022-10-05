@@ -50,13 +50,24 @@ function newReplyBox(replyNum,depth)
 
     parentInput.setAttribute("value",replyNum);
 
-    if ( 1 < depth) {
-        replyInputBox = document.getElementById("comment");
-        replyInputBox.textContent= "@"+author.textContent + " ";
 
+    if (1 < depth) {
+        const replyInputBox = document.getElementById("comment");
+        replyInputBox.textContent= "@"+author.textContent + " ";
     }
     else {
-        replyInputBox = document.getElementById("comment");
+        const replyInputBox = document.getElementById("comment");
         replyInputBox.textContent= "";
     }
+}
+
+/*=====================================
+board move a new page
+======================================= */
+
+function boardWrite()
+{
+    const full_url = location.href + 'write';
+
+    location.href=full_url;
 }
