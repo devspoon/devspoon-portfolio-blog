@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 class NoticeListView(ListView):
     model = Notice
     template_name = 'board/board_list.html'
-    paginate_by = 3
+    paginate_by = 10
     paginate_orphans = 1 # if last page has 1 item, it will add in last page.
     context_object_name = 'board'
 
@@ -39,6 +39,8 @@ class NoticeDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        context['user_auth'] = self.get_object().author == self.request.user
 
         return context
 
@@ -87,7 +89,7 @@ class NoticeDeleteView(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         _object = super().get_object()
         if self.request.user != _object.author:
-           raise PermissionDenied()
+            raise PermissionDenied()
 
         return super().form_valid(None)
 

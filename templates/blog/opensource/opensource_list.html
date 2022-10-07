@@ -15,7 +15,10 @@
                     <div class="bread-crumbs pb-1">
                         <a href="{% url 'home:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active navi-blog">blog navi</span>
                     </div>
+                    {% if request.user.is_staff %}
                     <a href="{% url 'blog:opensource_create' %}"class="btn btn-outline-success mt-2">write</a>
+                    {% endif %}
+
                 </div>
             </div>
         </div>

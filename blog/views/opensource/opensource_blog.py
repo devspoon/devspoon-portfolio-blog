@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 class OpenSourceListView(ListView):
     model = OpenSourcePost
     template_name = 'blog/opensource/opensource_list.html'
-    paginate_by = 2
+    paginate_by = 10
     paginate_orphans = 1 # if last page has 1 item, it will add in last page.
     context_object_name = 'board'
 
@@ -55,6 +55,8 @@ class OpenSourceDetailView(DetailView):
             context['next_board'] = next_temp_queryset
 
         context['like_state'] = OpenSourcePost.objects.filter(pk=self.kwargs.get('pk')).first().like_user_set.filter(pk=self.request.user.pk).exists()
+
+        context['user_auth'] = self.get_object().author == self.request.user
 
         return context
 

@@ -27,7 +27,7 @@
                             <div class="content form-control">
                                 {{board.content|safe}}
                             </div>
-
+                            {% if user_auth %}
                             <div class="blog-button">
                                 <div class="row">
                                     <div class="col-12">
@@ -38,7 +38,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            {% endif %}
                             <!-- blog history navigation end -->
 
                             <!-- comment list start -->

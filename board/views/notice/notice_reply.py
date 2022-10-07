@@ -34,7 +34,7 @@ def make_list_by_paginator(paginator, pages):
 
 class NoticeReplyListJsonView(View):
 
-    the_number_of_replies = 3
+    the_number_of_replies = 10
 
     def get(self, request, pk):
         post = NoticeReply.objects.filter(board=pk).select_related('author')
@@ -136,7 +136,7 @@ class NoticeReplyDeleteView(LoginRequiredMixin, DeleteView):
         self.object = super().get_object()
 
         if self.request.user != self.object.author:
-           raise PermissionDenied()
+            raise PermissionDenied()
 
         self.post_pk = self.object.board.pk
         return super().form_valid(None)

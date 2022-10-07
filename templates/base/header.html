@@ -22,11 +22,11 @@
                                         <a class="page-scroll" data-toggle="collapse" data-target="#{{node.pk}}" aria-controls="{{node.pk}}"
                                             aria-expanded="false" aria-label="Toggle navigation"
                                             {% if node.menu_path %}
-                                            href="{% url node.menu_path %}
+                                            href="{% url node.menu_path %}"
                                             {% elif node.menu_link  %}
-                                                href="{{node.menu_link}}
+                                                href="{{node.menu_link}}"
                                             {% endif %}
-                                            ">{{node.menu_name}}
+                                            >{{node.menu_name}}
                                             <div class="sub-nav-toggler">
                                                 <span></span>
                                             </div>

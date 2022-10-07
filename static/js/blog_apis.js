@@ -12,7 +12,6 @@ let create_state = true;
 let update_state = true;
 let delete_state = true;
 
-
 function range(start,end) {
     let array = [];
 
@@ -215,10 +214,13 @@ function buildReplyStack(replies,url){
         snippet += '<p>'+replies[reply].comment+'</p>\n';
 
         //update, delete button
-        snippet +=  '<div class="d-flex justify-content-end"> \n\
-                        <a class="btn btn-outline-primary btn-sm mx-3 " href="javascript:void(0);" onclick="updateReplyBox('+replies[reply].pk+'); return false;">Update</a> \n\
-                        <a class="btn btn-outline-secondary btn-sm mx-3" href="javascript:void(0);" onclick="deleteReplyBox('+replies[reply].pk+'); return false;">Delete</a> \n\
-                    </div>\n';
+        if (replies[reply].user_auth)
+        {
+            snippet +=  '<div class="d-flex justify-content-end"> \n\
+                            <a class="btn btn-outline-primary btn-sm mx-3 " href="javascript:void(0);" onclick="updateReplyBox('+replies[reply].pk+'); return false;">Update</a> \n\
+                            <a class="btn btn-outline-secondary btn-sm mx-3" href="javascript:void(0);" onclick="deleteReplyBox('+replies[reply].pk+'); return false;">Delete</a> \n\
+                        </div>\n';
+        }
 
         //reply button
         snippet +=  '<div class="d-flex justify-content-end mt-3"> \n\
@@ -260,8 +262,6 @@ function createReply()
     if (create_state == true)
     {
         const form_action = document.querySelector('#reply-box-form');
-        console.log('form_action : ',form_action);
-        console.log('location : ',location.href+'reply/json/create/');
         form_action.setAttribute('action',location.href+'reply/json/create/');
         create_state = false;
         document.querySelector('#reply-box-form').submit();
