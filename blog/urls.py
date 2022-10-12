@@ -5,17 +5,20 @@ from blog.views.opensource.opensource_reply import OpenSourceReplyCreateJsonView
 
 app_name = "blog"
 
-search_patterns = []
+error_patterns = []
 
 blog_patterns = [
     # path('', video_views.swipe),
     # path('show/', video_views.show, name='show'),
     # path('detail/<int:pk>', video_views.detail, name='detail'),
     # path('like/', video_views.like, name='like'),
+    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='blog_detail'),
 ]
 
-books_patterns = []
-error_patterns = []
+books_patterns = [
+    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='books_detail'),
+]
+
 opensource_patterns = [
     path('', OpenSourceListView.as_view(),name='opensource_list'),
     path('create/', OpenSourceCreateView.as_view(), name='opensource_create'),
@@ -32,13 +35,24 @@ opensource_patterns = [
 
     path('detail/<int:pk>/visit/json/',OpenSourceVisitJsonView.as_view(),name='opensource_visit'),
 ]
-portfolio_patterns = []
-project_patterns = []
-study_patterns = []
-online_patterns = []
+
+portfolio_patterns = [
+    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='portfolio_detail'),
+]
+
+project_patterns = [
+    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='project_detail'),
+]
+
+study_patterns = [
+    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='study_detail'),
+]
+
+online_patterns = [
+    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='online_detail'),
+]
 
 urlpatterns = [
-    path('search/', include(search_patterns)),
     path('blog/', include(blog_patterns)),
     path('books/', include(books_patterns)),
     path('error/', include(error_patterns)),

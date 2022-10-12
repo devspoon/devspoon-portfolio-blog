@@ -47,7 +47,7 @@ class RegisterView(VerifyEmailMixin, FormView):
     verify_email_template_name1 = '/email/registration_verification.html'
     verify_email_template_name2 = '/email/verification.html'
     token_gen_type = 1
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['policy_pages'] = PolicyPages.objects.all()
@@ -64,6 +64,10 @@ class RegisterView(VerifyEmailMixin, FormView):
             user = User.objects.create_user(email=email, password=password, username=username, nickname=nickname, profile_image=profile_image, is_site_register=True)
         else:
             user = User.objects.create_user(email=email, password=password, username=username, nickname=nickname, is_site_register=True)
+
+        if not user:
+            messages.error()(self.request,"This user is already registered")
+            return redirect(reverse('users:register'))
 
         result = self.send_verification_email_management(self.verify_email_template_name1, settings.DEFAULT_FROM_EMAIL ,user, self.token_gen_type)
 
@@ -93,7 +97,7 @@ class ResendVerificationEmailView(VerifyEmailMixin, FormView):
 
     def form_valid(self, form):
         email = form.cleaned_data['email']
-        user = User.objects.get(email=email, is_site_register=True)
+        user = User.user_objects.get_users(email=email, is_site_register=True)
 
         result = self.send_verification_email_management(self.verify_email_template_name1, settings.DEFAULT_FROM_EMAIL ,user, self.token_gen_type)
 
@@ -122,11 +126,11 @@ class LoginView(AnonymousRequiredMixin, FormView):
         # logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
-        user_temp = User.objects.get(email=email, is_site_register=True)
+        user_temp = User.user_objects.get_users(email=email, is_site_register=True)
         user = auth.authenticate(username=user_temp.username, password=password)
         if user:
-            auth.login(self.request, user)            
-            user= User.objects.get(username=user.username, is_site_register=True)
+            auth.login(self.request, user)
+            #user= User.user_objects.get_users(username=user.username, is_site_register=True)
             self.request.session['email']=user.email
             self.request.session['username']=user.username
             user.last_login_at = timezone.now()
@@ -195,7 +199,7 @@ class ForgetPasswordView(VerifyEmailMixin, FormView):
 
     def form_valid(self, form):
         email = form.cleaned_data['email']
-        user = User.objects.get(email=email, is_site_register=True)
+        user = User.user_objects.get_users(email=email, is_site_register=True)
 
         result = self.reset_password_management(self.reset_password_template_name, settings.DEFAULT_FROM_EMAIL ,user)
 
@@ -224,7 +228,7 @@ class UpdatePasswordView(FormView):
 
     def form_valid(self, form, **kwargs):
         password = form.cleaned_data['new_password']
-        users = User.objects.get(id=self.kwargs.get("userid"))
+        users = User.user_objects.get_users(id=self.kwargs.get("userid"))
 
         users.password = make_password(password)
         users.save()

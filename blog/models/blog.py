@@ -8,22 +8,48 @@ from bs4 import BeautifulSoup as Bs
 
 from django.dispatch import receiver
 from django.db.models.signals import pre_save, post_delete
+from django.urls import reverse
 
 from django.db import models
+from django.db.models import Q
 # from django.db.models.constraints import UniqueConstraint
 
 from utils.os.file_path_name_gen import date_upload_to_for_file
 
 logger = logging.getLogger(__name__)
 
-class Post(models.Model):
-    # class Category(models.TextChoices):
-    #     PROJECT = '0', _('Project')
-    #     ONLINE_STUDY = '1', _('Online Study')
-    #     BLOG = '2', _('Blog')
-    #     INTERESTING_OPEN_SOURCE = '3', _('Interesting Open Source')
-    #     BOOKS = '4', _('Books')
 
+class ActivateDataQuerySet(models.QuerySet):
+    def deleted_data(self):
+        return self.filter(is_deleted=True)
+
+    def hidden_data(self):
+        return self.filter(Q(is_deleted=False) & Q(is_hidden=True))
+
+    def deleted_hidden_data(self):
+        return self.filter(Q(is_deleted=True) & Q(is_hidden=True))
+
+    def data(self):
+        return self.filter(Q(is_deleted=False) & Q(is_hidden=False))
+
+class ActivateDataManager(models.Manager):
+    def get_queryset(self):
+        return ActivateDataQuerySet(self.model, using=self._db)
+
+    def get_deleted_data(self):
+        return self.get_queryset().deleted_data()
+
+    def get_hidden_data(self):
+        return self.get_queryset().hidden_data()
+
+    def get_deleted_hidden_user(self):
+        return self.get_queryset().deleted_hidden_data()
+
+    def get_data(self):
+        return self.get_queryset().data()
+
+
+class Post(models.Model):
     class Difficulty(models.TextChoices):
         BEGINNER = '0', _('Beginner')
         INTERMEDIATE = '1', _('Intermediate')
@@ -46,13 +72,13 @@ class Post(models.Model):
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_('Author'))
     title = models.CharField(max_length=200, blank=False, verbose_name=_('Title'))
-    # category = models.CharField(max_length=15, choices = Category.choices, default=Category.BLOG, verbose_name=_('Category'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
     title_image = models.ImageField(blank=True, verbose_name=_('title_image'))
     link1 = models.URLField(blank=True, verbose_name=_('Link1'))
     link2 = models.URLField(blank=True, verbose_name=_('Link2'))
     file1 = models.FileField(upload_to=date_upload_to_for_file, blank=True, verbose_name=_('file1'))
     file2 = models.FileField(upload_to=date_upload_to_for_file, blank=True, verbose_name=_('file2'))
+    table_name = models.CharField(max_length=30, blank=True, verbose_name=_('table_name'))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -66,8 +92,18 @@ class Post(models.Model):
     is_deleted = models.BooleanField(default=False, verbose_name=_('Deleted state'))
     is_hidden = models.BooleanField(default=False, verbose_name=_('Hidden state'))
 
+    objects = models.Manager()
+    activate_objects = ActivateDataManager()
+
     class Meta:
         abstract = True
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    def __table_name__(self):
+        return self.__name__
 
     def tag_save(self,content):
         tags = re.findall(r'#(\w+)\b', content)
@@ -79,9 +115,6 @@ class Post(models.Model):
         for t in tags:
             tag, tag_created = Tag.objects.get_or_create(tag=t)
             self.tag_set.add(tag)
-
-    def __str__(self):
-        return self.title
 
 
 class ProjectPost(Post):
@@ -102,6 +135,9 @@ class ProjectPost(Post):
         verbose_name_plural = _('project')
         ordering = ['-created_at']
 
+    def get_absolute_url(self):
+        return reverse('blog:opensource_detail', kwargs={'pk':self.pk} )
+
 
 class OnlineStudyPost(Post):
     dev_lang = models.CharField(max_length=20, blank=False, verbose_name=_('Development Language'))
@@ -118,6 +154,9 @@ class OnlineStudyPost(Post):
         verbose_name_plural = _('online study')
         ordering = ['-created_at']
 
+    def get_absolute_url(self):
+        return reverse('blog:opensource_detail', kwargs={'pk':self.pk} )
+
 
 class BlogPost(Post):
     like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
@@ -130,6 +169,9 @@ class BlogPost(Post):
         verbose_name = _('blog post')
         verbose_name_plural = _('blog post')
         ordering = ['-created_at']
+
+    def get_absolute_url(self):
+        return reverse('blog:opensource_detail', kwargs={'pk':self.pk} )
 
 
 class OpenSourcePost(Post):
@@ -150,6 +192,9 @@ class OpenSourcePost(Post):
         verbose_name_plural = _('open source post')
         ordering = ['-created_at']
 
+    def get_absolute_url(self):
+        return reverse('blog:opensource_detail', kwargs={'pk':self.pk} )
+
 
 class BooksPost(Post):
 
@@ -166,6 +211,9 @@ class BooksPost(Post):
         verbose_name = _('books post')
         verbose_name_plural = _('books post')
         ordering = ['-created_at']
+
+    def get_absolute_url(self):
+        return reverse('blog:opensource_detail', kwargs={'pk':self.pk} )
 
 
 class Tag(models.Model):

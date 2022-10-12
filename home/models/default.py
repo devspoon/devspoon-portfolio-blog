@@ -62,9 +62,6 @@ class MainMenu(MPTTModel):
     def __str__(self):
         return "%s " % (self.menu_name)
 
-    def get_absolute_url(self):
-        ...
-        #return reverse('blog:category', kwargs={'slug': self.slug, 'id': self.id})
 
 # footer info
 class SiteInfo(models.Model):

@@ -55,6 +55,7 @@ class NoticeCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         data = form.save(commit=False)
         data.author = self.request.user
+        data.table_name = self.model.__name__
         data.save()
 
         return super().form_valid(form)

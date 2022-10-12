@@ -99,10 +99,13 @@
                             </div>
                         </div>
                     </nav> <!-- navbar -->
-                    <div class="input-group justify-content-center mt-2">
-                        <input type="search" class="form-control rounded" placeholder="Search..." aria-label="Search" aria-describedby="search-addon" />
-                        <button type="button" class="btn btn-outline-primary search-btn">search</button>
-                    </div>
+                        <form action="{% url 'home:search_queryset' %}" method="get" id="search_form">
+                            {% csrf_token %}
+                            <div class="input-group justify-content-center mt-2">
+                                <input type="search" class="form-control rounded" name="keyword" placeholder="Search..." aria-label="Search" aria-describedby="search-addon" />
+                                <button type="submit" form="search_form" class="btn btn-outline-primary search-btn">search</button>
+                            </div>
+                        </form>
                 </div>
             </div> <!-- row -->
         </div> <!-- container -->

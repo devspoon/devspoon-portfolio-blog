@@ -1,7 +1,7 @@
 from django.contrib import admin
 from board.models.board import Notice
 from django_summernote.admin import SummernoteModelAdmin
-#from blog.models.blog_reply import BlogPostReply
+from board.models.board_reply import NoticeReply
 
 class NoticeBoardAdmin(SummernoteModelAdmin):
     list_display = ['id','author','title']
@@ -9,10 +9,10 @@ class NoticeBoardAdmin(SummernoteModelAdmin):
     summernote_fields = ('content',)
 
 
-# @admin.register(BlogPostReply)
-# class BlogPostReplyAdmin(admin.ModelAdmin):
-#     list_display = ['id','author','post']
-#     list_display_links = ['id', 'author']
+@admin.register(NoticeReply)
+class NoticeReplyAdmin(admin.ModelAdmin):
+    list_display = ['id','author','board']
+    list_display_links = ['id', 'author']
 
 
 admin.site.register(Notice, NoticeBoardAdmin)

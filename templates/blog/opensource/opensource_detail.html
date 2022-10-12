@@ -48,7 +48,9 @@
                         <div class="tags mb-3">
                             <label for = "tags">tags</label>
                                 <span id = "tags" class = "form-control">
-                                    {{board.tag_set.all | join:", "}}
+                                    {% for tag in board.tag_set.all%}
+                                        <a href="{% url 'home:search_queryset' %}?tag={{tag}}">{{tag}}</a>,
+                                    {% endfor %}
                                 </span>
                         </div>
                         {% if user_auth %}

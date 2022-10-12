@@ -45,10 +45,10 @@ class UserCustomManager(models.Manager):
     def get_queryset(self):
         return UserCustomQuerySet(self.model, using=self._db)
 
-    def deleted_users(self):
-        return self.get_queryset().deleted_user()
+    def get_deleted_users(self):
+        return self.get_queryset().deleted_users()
 
-    def users(self):
+    def get_users(self):
         return self.get_queryset().users()
 
 class User(AbstractUser):
@@ -83,7 +83,7 @@ class User(AbstractUser):
     dormant_account_at = models.DateTimeField(blank=True, null=True, verbose_name=_('Dormant Account Time'))
     deleted_at = models.DateTimeField(blank=True, null=True, verbose_name=_('Deleted Time'))
 
-    object = models.Manager()
+    objects = models.Manager()
     user_objects = UserCustomManager()
 
     # USERNAME_FIELD은 user model에서 사용할 고유 식별자, 기본은 id

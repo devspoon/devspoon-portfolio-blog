@@ -20,18 +20,20 @@ notice_patterns = [
     path('detail/<int:pk>/visit/json/',NoticeVisitJsonView.as_view(),name='notice_visit'),
 ]
 
-# visiter_patterns = [
-#     path('visiter/', VisiterListView.as_view(), name='visiter'),
-# ]
+visiter_patterns = [
+    path('visiter/', NoticeListView.as_view(), name='visiter'),
+    path('detail/<int:pk>/', NoticeListView.as_view(), name='visiter_detail'),
+]
 
-# reactivation_patterns = [
-#     path('reactivation/', VisiterListView.as_view(), name='reactivation'),
-# ]
+reactivation_patterns = [
+    path('reactivation/', NoticeListView.as_view(), name='reactivation'),
+    path('detail/<int:pk>/', NoticeListView.as_view(), name='reactivation_detail'),
+]
 
 urlpatterns = [
     path('notice/', include(notice_patterns)),
-    # path('visiter/', include(visiter_patterns)),
-    # path('reactivation/', include(reactivation_patterns)),
+    path('visiter/', include(visiter_patterns)),
+    path('reactivation/', include(reactivation_patterns)),
 ]
 
 

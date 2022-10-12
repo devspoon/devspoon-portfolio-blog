@@ -71,6 +71,7 @@ class OpenSourceCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         data = form.save(commit=False)
         data.author = self.request.user
+        data.table_name = self.model.__name__
         data.save()
 
         data.tag_save(form.cleaned_data['tags'])
