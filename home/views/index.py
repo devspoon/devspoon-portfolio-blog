@@ -24,7 +24,7 @@ class IndexView(TemplateView):
 
 class SearchView(TemplateView, Search):
     template_name = 'base/search_result_board_list.html'
-    paginate_by = 10
+    paginate_by = 2
 
     def get_context_data(self, **kwargs):
         page_number = self.request.GET.get('page', '1')

@@ -28,7 +28,7 @@ class NoticeListView(ListView):
     context_object_name = 'board'
 
     def get_queryset(self):
-        return Notice.objects.filter(Q(is_hidden=False) and Q(is_deleted=False))
+        return Notice.activate_objects.get_data()
 
 
 class NoticeDetailView(DetailView):

@@ -64,7 +64,7 @@
                             {% if item.table_name == 'BooksPost'%}
                             <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:books_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
                             {% endif  %}
-                            <td width="15%" class="th-date text-center tb-row" >{{item.updated_at|date:'Y/m/d H:i'}}</td>
+                            <td width="15%" class="th-date text-center tb-row" >{{item.created_at|date:'Y/m/d H:i'}}</td>
                             <td width="5%" class="th-author text-center tb-row" >{{item.author__username}}</td>
                             <td width="5%" class="th-visiter text-center tb-row" >{{item.visit_count}}</td>
                           </tr>
