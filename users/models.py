@@ -21,6 +21,7 @@ from allauth.socialaccount.models import SocialAccount
 from allauth.exceptions import ImmediateHttpResponse
 
 from django.db import models
+from django.contrib.auth.models import UserManager
 from django.db.models import F
 from django.contrib.auth.models import AbstractUser
 from allauth.account.models import EmailAddress
@@ -83,7 +84,7 @@ class User(AbstractUser):
     dormant_account_at = models.DateTimeField(blank=True, null=True, verbose_name=_('Dormant Account Time'))
     deleted_at = models.DateTimeField(blank=True, null=True, verbose_name=_('Deleted Time'))
 
-    objects = models.Manager()
+    objects = UserManager()
     user_objects = UserCustomManager()
 
     # USERNAME_FIELD은 user model에서 사용할 고유 식별자, 기본은 id

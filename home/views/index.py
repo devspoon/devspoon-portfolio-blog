@@ -1,6 +1,6 @@
 import logging
 from django.views.generic import TemplateView, View
-from home.service.search import Search
+from home.views.service.search import Search
 from django.http import Http404
 
 logger = logging.getLogger(__name__)

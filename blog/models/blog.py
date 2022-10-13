@@ -221,6 +221,9 @@ class Tag(models.Model):
 
     class Meta:
         db_table = 'tag'
+        verbose_name = _('tag')
+        verbose_name_plural = _('tags')
+
     def __str__(self):
         return self.tag
 

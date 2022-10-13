@@ -45,7 +45,7 @@ class MainMenu(MPTTModel):
         db_table = 'main_menu'
         verbose_name = _('main menu')
         verbose_name_plural = _('main menu')
-        app_label = "blog"
+        app_label = "home"
 
     # def get_slug_list(self):
     #     try:
@@ -87,7 +87,7 @@ class SiteInfo(models.Model):
         db_table = 'site_info'
         verbose_name = _('site info')
         verbose_name_plural = _('site info')
-        app_label = "blog"
+        app_label = "home"
 
     def __str__(self):
         return "%s" % (self.phone_number)
@@ -117,7 +117,7 @@ class WorldSocialAccount(models.Model):
         db_table = 'world_social_account'
         verbose_name = _('world social account')
         verbose_name_plural = _('world social accounts')
-        app_label = "blog"
+        app_label = "home"
 
     def __str__(self):
         return "%s" % (self.id)
@@ -134,7 +134,7 @@ class LocalSocialAccount(models.Model):
         db_table = 'local_social_account'
         verbose_name = _('local social account')
         verbose_name_plural = _('local social account')
-        app_label = "blog"
+        app_label = "home"
 
     def __str__(self):
         return "%s" % (self.id)

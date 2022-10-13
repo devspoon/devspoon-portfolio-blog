@@ -18,6 +18,8 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+error_patterns = []
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('oauth/', include('allauth.urls')),
@@ -26,6 +28,7 @@ urlpatterns = [
     path('blog/', include('blog.urls')),
     path('', include('home.urls')),
     path('board/', include('board.urls')),
+    path('error/', include(error_patterns)),
 ]
 
 if settings.DEBUG:

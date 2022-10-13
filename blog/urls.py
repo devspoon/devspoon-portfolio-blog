@@ -1,22 +1,57 @@
 from django.urls import path, include
 
+from blog.views.blog.blog_blog import BlogListView, BlogDetailView, BlogCreateView, BlogUpdateView, BlogDeleteView, BlogLikeJsonView, BlogVisitJsonView
+from blog.views.blog.blog_reply import BlogReplyCreateJsonView, BlogReplyUpdateJsonView, BlogReplyDeleteView,BlogReplyListJsonView
+
+from blog.views.books.books_blog import BooksListView, BooksDetailView, BooksCreateView, BooksUpdateView, BooksDeleteView, BooksLikeJsonView, BooksVisitJsonView
+from blog.views.books.books_reply import BooksReplyCreateJsonView, BooksReplyUpdateJsonView, BooksReplyDeleteView,BooksReplyListJsonView
+
 from blog.views.opensource.opensource_blog import OpenSourceListView, OpenSourceDetailView, OpenSourceCreateView, OpenSourceUpdateView, OpenSourceDeleteView, OpenSourceLikeJsonView, OpenSourceVisitJsonView
 from blog.views.opensource.opensource_reply import OpenSourceReplyCreateJsonView, OpenSourceReplyUpdateJsonView, OpenSourceReplyDeleteView,OpenSourceReplyListJsonView
 
+from blog.views.project.project_blog import ProjectListView, ProjectDetailView, ProjectCreateView, ProjectUpdateView, ProjectDeleteView, ProjectLikeJsonView, ProjectVisitJsonView
+from blog.views.project.project_reply import ProjectReplyCreateJsonView, ProjectReplyUpdateJsonView, ProjectReplyDeleteView,ProjectReplyListJsonView
+
+from blog.views.online_study.online_study_blog import OnlineStudyListView, OnlineStudyDetailView, OnlineStudyCreateView, OnlineStudyUpdateView, OnlineStudyDeleteView, OnlineStudyLikeJsonView, OnlineStudyVisitJsonView
+from blog.views.online_study.online_study_reply import OnlineStudyReplyCreateJsonView, OnlineStudyReplyUpdateJsonView, OnlineStudyReplyDeleteView, OnlineStudyReplyListJsonView
+
+
 app_name = "blog"
 
-error_patterns = []
+
 
 blog_patterns = [
-    # path('', video_views.swipe),
-    # path('show/', video_views.show, name='show'),
-    # path('detail/<int:pk>', video_views.detail, name='detail'),
-    # path('like/', video_views.like, name='like'),
-    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='blog_detail'),
+    path('', BlogListView.as_view(),name='blog_list'),
+    path('create/', BlogCreateView.as_view(), name='blog_create'),
+    path('update/<int:pk>/', BlogUpdateView.as_view(), name='blog_update'),
+    path('delete/<int:pk>/', BlogDeleteView.as_view(), name='blog_delete'),
+    path('like/json/<int:pk>/', BlogLikeJsonView.as_view(),name='blog_like'),
+
+    path('detail/<int:pk>/', BlogDetailView.as_view(), name='blog_detail'),
+
+    path('detail/<int:pk>/reply/json/',BlogReplyListJsonView.as_view(),name='blog_reply_list'),
+    path('detail/<int:pk>/reply/json/create/',BlogReplyCreateJsonView.as_view(),name='blog_reply_create'),
+    path('detail/<int:pk>/reply/json/update/<int:reply_pk>/',BlogReplyUpdateJsonView.as_view(),name='blog_reply_update'),
+    path('detail/<int:pk>/reply/delete/<int:reply_pk>/',BlogReplyDeleteView.as_view(),name='blog_reply_delete'),
+
+    path('detail/<int:pk>/visit/json/',BlogVisitJsonView.as_view(),name='blog_visit'),
 ]
 
 books_patterns = [
-    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='books_detail'),
+    path('', BooksListView.as_view(),name='books_list'),
+    path('create/', BooksCreateView.as_view(), name='books_create'),
+    path('update/<int:pk>/', BooksUpdateView.as_view(), name='books_update'),
+    path('delete/<int:pk>/', BooksDeleteView.as_view(), name='books_delete'),
+    path('like/json/<int:pk>/', BooksLikeJsonView.as_view(),name='books_like'),
+
+    path('detail/<int:pk>/', BooksDetailView.as_view(), name='books_detail'),
+
+    path('detail/<int:pk>/reply/json/',BooksReplyListJsonView.as_view(),name='books_reply_list'),
+    path('detail/<int:pk>/reply/json/create/',BooksReplyCreateJsonView.as_view(),name='books_reply_create'),
+    path('detail/<int:pk>/reply/json/update/<int:reply_pk>/',BooksReplyUpdateJsonView.as_view(),name='books_reply_update'),
+    path('detail/<int:pk>/reply/delete/<int:reply_pk>/',BooksReplyDeleteView.as_view(),name='books_reply_delete'),
+
+    path('detail/<int:pk>/visit/json/',BooksVisitJsonView.as_view(),name='books_visit'),
 ]
 
 opensource_patterns = [
@@ -36,29 +71,44 @@ opensource_patterns = [
     path('detail/<int:pk>/visit/json/',OpenSourceVisitJsonView.as_view(),name='opensource_visit'),
 ]
 
-portfolio_patterns = [
-    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='portfolio_detail'),
-]
-
 project_patterns = [
-    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='project_detail'),
+    path('', ProjectListView.as_view(),name='project_list'),
+    path('create/', ProjectCreateView.as_view(), name='project_create'),
+    path('update/<int:pk>/', ProjectUpdateView.as_view(), name='project_update'),
+    path('delete/<int:pk>/', ProjectDeleteView.as_view(), name='project_delete'),
+    path('like/json/<int:pk>/', ProjectLikeJsonView.as_view(),name='project_like'),
+
+    path('detail/<int:pk>/', ProjectDetailView.as_view(), name='project_detail'),
+
+    path('detail/<int:pk>/reply/json/',ProjectReplyListJsonView.as_view(),name='project_reply_list'),
+    path('detail/<int:pk>/reply/json/create/',ProjectReplyCreateJsonView.as_view(),name='project_reply_create'),
+    path('detail/<int:pk>/reply/json/update/<int:reply_pk>/',ProjectReplyUpdateJsonView.as_view(),name='project_reply_update'),
+    path('detail/<int:pk>/reply/delete/<int:reply_pk>/',ProjectReplyDeleteView.as_view(),name='project_reply_delete'),
+
+    path('detail/<int:pk>/visit/json/',ProjectVisitJsonView.as_view(),name='project_visit'),
 ]
 
-study_patterns = [
-    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='study_detail'),
-]
+online_study_patterns = [
+    path('', OnlineStudyListView.as_view(),name='online_study_list'),
+    path('create/', OnlineStudyCreateView.as_view(), name='online_study_create'),
+    path('update/<int:pk>/', OnlineStudyUpdateView.as_view(), name='online_study_update'),
+    path('delete/<int:pk>/', OnlineStudyDeleteView.as_view(), name='online_study_delete'),
+    path('like/json/<int:pk>/', OnlineStudyLikeJsonView.as_view(),name='online_study_like'),
 
-online_patterns = [
-    path('detail/<int:pk>/', OpenSourceDetailView.as_view(), name='online_detail'),
+    path('detail/<int:pk>/', OnlineStudyDetailView.as_view(), name='online_study_detail'),
+
+    path('detail/<int:pk>/reply/json/',OnlineStudyReplyListJsonView.as_view(),name='online_study_reply_list'),
+    path('detail/<int:pk>/reply/json/create/',OnlineStudyReplyCreateJsonView.as_view(),name='online_study_reply_create'),
+    path('detail/<int:pk>/reply/json/update/<int:reply_pk>/',OnlineStudyReplyUpdateJsonView.as_view(),name='online_study_reply_update'),
+    path('detail/<int:pk>/reply/delete/<int:reply_pk>/',OnlineStudyReplyDeleteView.as_view(),name='online_study_reply_delete'),
+
+    path('detail/<int:pk>/visit/json/',OnlineStudyVisitJsonView.as_view(),name='online_study_visit'),
 ]
 
 urlpatterns = [
     path('blog/', include(blog_patterns)),
     path('books/', include(books_patterns)),
-    path('error/', include(error_patterns)),
     path('opensource/', include(opensource_patterns)),
-    path('portfolio/', include(portfolio_patterns)),
     path('project/', include(project_patterns)),
-    path('study/', include(study_patterns)),
-    path('online/', include(online_patterns)),
+    path('online/', include(online_study_patterns)),
 ]
