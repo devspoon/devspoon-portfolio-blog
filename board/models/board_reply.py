@@ -58,7 +58,6 @@ class ReactivationReply(BoardReply):
         ordering = [('group'),]
 
 
-
 @receiver(post_delete)
 def auto_delete_file_on_delete_for_board(sender, instance=None, **kwargs):
     list_of_models = ('BoardReply', 'VisiterReply', 'ReactivationReply')

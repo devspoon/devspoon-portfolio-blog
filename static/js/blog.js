@@ -8,7 +8,8 @@ window.addEventListener
 window.addEventListener('DOMContentLoaded', function()
 {
     const navi = document.querySelector('.navi-blog');
-
+    const list_write = document.querySelector('#blog-list-write');
+    const list_detail = document.querySelectorAll('#blog-detail-link');
     if (navi != null) // This web page is a blog.
     {
         const pageTitle = document.querySelector('.title'); //class
@@ -18,6 +19,12 @@ window.addEventListener('DOMContentLoaded', function()
         navi.innerText=pathName[2];
         title.innerText=pathName[2];
     }
+
+    // if (list_write != null) // This web page is a blog list.
+    // {
+    //     let post_num = window.location.href+"create/"
+    //     list_write.setAttribute('href',post_num);
+    // }
 
 });
 

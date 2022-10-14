@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 class BlogListView(ListView):
     model = BlogPost
-    template_name = 'blog/blog/blog_list.html'
+    template_name = 'blog/blog_list.html'
     paginate_by = 10
     paginate_orphans = 1 # if last page has 1 item, it will add in last page.
     context_object_name = 'board'

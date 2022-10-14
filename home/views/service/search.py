@@ -110,6 +110,8 @@ class Search:
             'board': pages.object_list,
             'keyword': keyword,
         }
+        
+        print('result : ',result)
 
         #cache.set(cache_key, result, 60)
 

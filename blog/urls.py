@@ -18,8 +18,6 @@ from blog.views.online_study.online_study_reply import OnlineStudyReplyCreateJso
 
 app_name = "blog"
 
-
-
 blog_patterns = [
     path('', BlogListView.as_view(),name='blog_list'),
     path('create/', BlogCreateView.as_view(), name='blog_create'),
@@ -110,5 +108,5 @@ urlpatterns = [
     path('books/', include(books_patterns)),
     path('opensource/', include(opensource_patterns)),
     path('project/', include(project_patterns)),
-    path('online/', include(online_study_patterns)),
+    path('onlinestudy/', include(online_study_patterns)),
 ]

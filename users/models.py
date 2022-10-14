@@ -202,9 +202,9 @@ class UserProfile(models.Model):
     email_notifications = models.BooleanField(blank=True, default=False)
 
     class Meta:
-            db_table = 'user_profile'
-            verbose_name = _('user profile')
-            verbose_name_plural = _('user profile')
+        db_table = 'user_profile'
+        verbose_name = _('user profile')
+        verbose_name_plural = _('user profile')
 
     def __str__(self):
         return "%s" % (self.user)

@@ -50,7 +50,7 @@
                             <td width="65%" class="th-title tb-row" > <a href="{% url 'board:reactivation_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
                             {% endif  %}
                             {% if item.table_name == 'ProjectPost'%}
-                            <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:portfolio_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
+                            <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:project_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
                             {% endif  %}
                             {% if item.table_name == 'OnlineStudyPost'%}
                             <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:online_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
