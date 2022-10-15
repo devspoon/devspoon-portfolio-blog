@@ -97,7 +97,7 @@ class ResendVerificationEmailView(VerifyEmailMixin, FormView):
 
     def form_valid(self, form):
         email = form.cleaned_data['email']
-        user = User.user_objects.get_users(email=email, is_site_register=True)
+        user = User.user_objects.get_users().get(email=email, is_site_register=True)
 
         result = self.send_verification_email_management(self.verify_email_template_name1, settings.DEFAULT_FROM_EMAIL ,user, self.token_gen_type)
 
@@ -126,11 +126,11 @@ class LoginView(AnonymousRequiredMixin, FormView):
         # logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
-        user_temp = User.user_objects.get_users(email=email, is_site_register=True)
+        user_temp = User.user_objects.get_users().get(email=email, is_site_register=True)
         user = auth.authenticate(username=user_temp.username, password=password)
         if user:
             auth.login(self.request, user)
-            #user= User.user_objects.get_users(username=user.username, is_site_register=True)
+            #user= User.user_objects.get_users().get(username=user.username, is_site_register=True)
             self.request.session['email']=user.email
             self.request.session['username']=user.username
             user.last_login_at = timezone.now()
@@ -199,7 +199,7 @@ class ForgetPasswordView(VerifyEmailMixin, FormView):
 
     def form_valid(self, form):
         email = form.cleaned_data['email']
-        user = User.user_objects.get_users(email=email, is_site_register=True)
+        user = User.user_objects.get_users().get(email=email, is_site_register=True)
 
         result = self.reset_password_management(self.reset_password_template_name, settings.DEFAULT_FROM_EMAIL ,user)
 
@@ -228,7 +228,7 @@ class UpdatePasswordView(FormView):
 
     def form_valid(self, form, **kwargs):
         password = form.cleaned_data['new_password']
-        users = User.user_objects.get_users(id=self.kwargs.get("userid"))
+        users = User.user_objects.get_users().get(id=self.kwargs.get("userid"))
 
         users.password = make_password(password)
         users.save()

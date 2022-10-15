@@ -34,10 +34,9 @@ if (likeToggler != null){
         const likeTogglerDiv = document.querySelector(".like-btn");
         const likeCount = document.querySelector(".like_count");
 
-        const url = window.location.origin + '/opensource/like/json/';
-        let post_num = window.location.href.split('/');
-        post_num = post_num[post_num.length - 2];
-        const full_url = url + post_num + '/';
+        //const url = window.location.origin + '/opensource/like/json/';
+        let url = location.pathname.split('/');
+        const full_url = location.origin+'/'+url[1]+'/'+url[2]+'/like/json/'+url[4]+'/'
 
         try {
             let res = await axios.get(full_url);
@@ -470,11 +469,11 @@ function buildPagination(pagination) {
 window.addEventListener
 ======================================= */
 
-const visitCount = async function(url,post) {
+const visitCount = async function(url,visit_key) {
     try {
         const full_url = url+'visit/json';
         let res = await axios.get(full_url);
-        localStorage.setItem(post, 'true');
+        localStorage.setItem(visit_key, 'true');
     }
     catch (err){
         console.log('visit count error : ' ,err);
@@ -501,11 +500,12 @@ window.addEventListener('DOMContentLoaded', function()
         }
 
         //check visit history and update
-        let post = location.pathname.split('/').filter(Boolean).pop();
-        const visitState = localStorage.getItem(post);
+        let url = location.pathname.split('/')
+        let visit_key = url[1]+'-'+url[2]+'-'+url[3]+'-'+url[4]
+        const visitState = localStorage.getItem(visit_key);
 
         if (visitState == null){
-            visitCount(location.href, post);
+            visitCount(location.href, visit_key);
         }
     }
 });

@@ -8,8 +8,9 @@ window.addEventListener
 window.addEventListener('DOMContentLoaded', function()
 {
     const navi = document.querySelector('.navi-blog');
-    const list_write = document.querySelector('#blog-list-write');
-    const list_detail = document.querySelectorAll('#blog-detail-link');
+    const detail_button_group = document.querySelector('#detail-button-group');
+    const detail_nav_group = document.querySelector('#navigation-group');
+
     if (navi != null) // This web page is a blog.
     {
         const pageTitle = document.querySelector('.title'); //class
@@ -20,11 +21,39 @@ window.addEventListener('DOMContentLoaded', function()
         title.innerText=pathName[2];
     }
 
-    // if (list_write != null) // This web page is a blog list.
-    // {
-    //     let post_num = window.location.href+"create/"
-    //     list_write.setAttribute('href',post_num);
-    // }
+    if (detail_button_group != null) // This web page is a blog.
+    {
+        const update_ = document.querySelector('#update-button');
+        const delete_ = document.querySelector('#delete-button');
+        const pk = update_.getAttribute('href');
+        let url = location.pathname.split('/');
+        const update_url = location.origin+'/'+url[1]+'/'+url[2]+'/update/'+pk+'/'
+        const delete_url = location.origin+'/'+url[1]+'/'+url[2]+'/delete/'+pk+'/'
+        update_.setAttribute('href',update_url);
+        delete_.setAttribute('href',delete_url);
+    }
+
+    if (detail_nav_group != null) // This web page is a blog.
+    {
+        const left = document.querySelector('#nav-left');
+        const right = document.querySelector('#nav-right');
+        let url = location.pathname.split('/');
+
+        if (left != null) // This web page is a blog.
+        {
+            const pk = left.getAttribute('href');
+            const left_url = location.origin+'/'+url[1]+'/'+url[2]+'/detail/'+(parseInt(pk)-1)+'/'
+            left.setAttribute('href',left_url);
+        }
+
+        if (right != null) // This web page is a blog.
+        {
+            const pk = right.getAttribute('href');
+            const right_url = location.origin+'/'+url[1]+'/'+url[2]+'/detail/'+(parseInt(pk)+1)+'/'
+            right.setAttribute('href',right_url);
+        }
+
+    }
 
 });
 

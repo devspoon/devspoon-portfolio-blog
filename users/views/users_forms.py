@@ -45,6 +45,23 @@ class LoginForm(forms.Form):
                                widget=forms.PasswordInput,
                                help_text=_('Enter password'), required=True)
 
+    def clean(self):
+        cleaned_data = super(LoginForm, self).clean()
+        email = cleaned_data.get('email')
+        password = cleaned_data.get('password')
+
+        if not email  :
+            raise forms.ValidationError({
+                'email': ["email must not be null or empty"]
+            })
+
+        if not password  :
+            raise forms.ValidationError({
+                'password': ["Password must not be null or empty"]
+            })
+
+        return cleaned_data
+
 
 class ResetPasswordForm(forms.Form):
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'autofocus': True}), validators=(forms.EmailField.default_validators + [ResetPasswordEmailValidator()]), help_text=_('Enter email address'), required=True)

@@ -121,6 +121,8 @@ class BlogDeleteView(LoginRequiredMixin, DeleteView):
 class BlogLikeJsonView(LoginRequiredMixin, View):
     def get(self, request, pk):
         post = get_object_or_404(BlogPost, pk=pk)
+        
+        print("BlogLikeJsonView !!!!!")
 
         with transaction.atomic():
             post_like = post.like_user_set.select_for_update().filter(pk=self.request.user.pk)

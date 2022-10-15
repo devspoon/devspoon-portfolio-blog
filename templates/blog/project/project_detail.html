@@ -3,7 +3,7 @@
 {% load static %}
 {% load public_tags %}
 
-{% block title %}opensource detail{% endblock %}
+{% block title %}project detail{% endblock %}
 
 {% block content %}
 
@@ -25,6 +25,10 @@
                     <a href="#" onclick="return false;">{{board.branch}}</a>
                 </div>
                 <div>
+                    Version
+                    <a href="#" onclick="return false;">{{board.version}}</a>
+                </div>
+                <div>
                     Roles
                     <a href="#" onclick="return false;">{{board.role}}</a>
                 </div>
@@ -34,7 +38,6 @@
                 By
                 <a class="author" href="#" onclick="return false;">{{board.author}}</a>
                 <a href="#" onclick="return false;">{{board.created_at|date:'Y-m-d H:i'}}</a>
-                <a class="category" href="#" onclick="return false;"><span>Difficulty</span>{{board.get_difficulty_level_display}}</a>
               </div>
             </div>
 
@@ -57,9 +60,9 @@
                         <div class="blog-button">
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="d-flex justify-content-end">
-                                        <a href="{% url 'blog:opensource_update' board.pk%}"><button type="button" class="btn btn-outline-primary me-3">Edit</button></a>
-                                        <a href="{% url 'blog:opensource_delete' board.pk%}"><button type="button" class="btn btn-outline-danger ">Delete</button></a>
+                                    <div class="d-flex justify-content-end" id="detail-button-group">
+                                        <a href="{{board.id}}" id="update-button"><button type="button" class="btn btn-outline-primary  me-3">Edit</button></a>
+                                        <a href="{{board.id}}" id="delete-button"><button type="button" class="btn btn-outline-danger ">Delete</button></a>
                                     </div>
                                 </div>
                             </div>
@@ -103,12 +106,12 @@
                                     </div>
                                 </div>
                         </div>
-                        <div class="blog-history-navigation">
+                        <div class="blog-history-navigation" id="navigation-group">
                             <div class="row">
                             {% if pre_board %}
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="nav-prev">
-                                <a href="{% url 'blog:opensource_detail' pre_board.pk %}">
+                                <a href="{{board.id}}" id="nav-left">
                                     <span><i class="lni lni-arrow-left"></i> Older</span>
                                     {{pre_board.title}} <br>{{pre_board|striptags|truncatechars:80 }}
                                 </a>
@@ -118,7 +121,7 @@
                             {% if next_board %}
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="nav-next">
-                                <a href="{% url 'blog:opensource_detail' next_board.pk %}">
+                                <a href="{{board.id}}" id="nav-right">
                                     <span>Newer <i class="lni lni-arrow-right"></i></span>
                                     {{next_board.title}} <br>{{next_board|striptags|truncatechars:80 }}
                                 </a>

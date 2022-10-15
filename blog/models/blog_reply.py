@@ -83,8 +83,10 @@ def auto_delete_file_on_delete_for_blog(sender, instance=None, **kwargs):
     list_of_models = ('ProjectPostReply', 'OnlineStudyPostReply', 'BlogPostReply', 'OpenSourcePostReply', 'BooksPostReply')
     if sender.__name__ in list_of_models: # this is the dynamic part you want
 
+        print("sender.__name__ : !!!!!!!!!! ",sender.__name__)
+
         with transaction.atomic():
-            post = sender.objects.get(pk=instance.pk).select_for_update().post
+            post = sender.objects.get(pk=instance.pk).post
 
             if post.reply_count > 0 :
                 post.reply_count = F('reply_count') - 1
