@@ -74,7 +74,7 @@ class OpenSourceCreateView(LoginRequiredMixin, CreateView):
         data.table_name = self.model.__name__
         data.save()
 
-        data.tag_save(form.cleaned_data['tags'])
+        data.tag_save(form.cleaned_data['tag_set'])
 
         return super().form_valid(form)
 
@@ -87,7 +87,7 @@ class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('users:login')
 
     def get_success_url(self):
-        return reverse_lazy('blog:opensource_update', kwargs={'pk': self.object.pk})
+        return reverse_lazy('blog:opensource_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
         review = self.get_object()
@@ -96,7 +96,7 @@ class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
         data = form.save(commit=False)
         data.save()
 
-        data.tag_save(form.cleaned_data['tags'])
+        data.tag_save(form.cleaned_data['tag_set'])
 
 
         return super().form_valid(form)

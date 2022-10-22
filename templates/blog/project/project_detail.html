@@ -51,9 +51,11 @@
                         <div class="tags mb-3">
                             <label for = "tags">tags</label>
                                 <span id = "tags" class = "form-control">
-                                    {% for tag in board.tag_set.all %}
-                                        <a href="{% url 'home:search_queryset' %}?tag={{tag}}">{{tag}}</a>,
-                                    {% endfor %}
+                                    {% if board.tag_set.all is not None %}
+                                        {% for tag in board.tag_set.all %}
+                                            <a href="{% url 'home:search_queryset' %}?tag={{tag}}">{{tag}}</a>,
+                                        {% endfor %}
+                                    {% endif %}
                                 </span>
                         </div>
                         {% if user_auth %}

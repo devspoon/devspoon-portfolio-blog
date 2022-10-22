@@ -106,13 +106,19 @@ class Post(models.Model):
         return self.__name__
 
     def tag_save(self,content):
-        tags = re.findall(r'#(\w+)\b', content)
+        tags = re.findall(r'#([a-zA-Z\dㄱ-힣]+)', content)
         tags= content.split(',')
         tags= list(set(tags))
+
         if not tags:
             return
 
+        self.tag_set.clear()
+
         for t in tags:
+            if not t:
+                continue
+
             tag, tag_created = Tag.objects.get_or_create(tag=t)
             self.tag_set.add(tag)
 

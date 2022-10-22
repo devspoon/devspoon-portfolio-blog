@@ -74,7 +74,7 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
         data.table_name = self.model.__name__
         data.save()
 
-        data.tag_save(form.cleaned_data['tags'])
+        data.tag_save(form.cleaned_data['tag_set'])
 
         return super().form_valid(form)
 
@@ -87,7 +87,7 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('users:login')
 
     def get_success_url(self):
-        return reverse_lazy('blog:blog_update', kwargs={'pk': self.object.pk})
+        return reverse_lazy('blog:blog_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
         review = self.get_object()
@@ -96,8 +96,7 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
         data = form.save(commit=False)
         data.save()
 
-        data.tag_save(form.cleaned_data['tags'])
-
+        data.tag_save(form.cleaned_data['tag_set'])
 
         return super().form_valid(form)
 
@@ -121,7 +120,7 @@ class BlogDeleteView(LoginRequiredMixin, DeleteView):
 class BlogLikeJsonView(LoginRequiredMixin, View):
     def get(self, request, pk):
         post = get_object_or_404(BlogPost, pk=pk)
-        
+
         print("BlogLikeJsonView !!!!!")
 
         with transaction.atomic():

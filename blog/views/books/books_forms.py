@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class BooksForm(forms.ModelForm):
 
-    tags = forms.CharField(label='tags',help_text=_('Separate tags using ","'),required=False)
+    tag_set = forms.CharField(label='tags', help_text=_('Separate tags using ","'), required=False, initial="")
 
     def __init__(self, *args, **kwargs):
         super(BooksForm, self).__init__(*args, **kwargs)
@@ -27,7 +27,7 @@ class BooksForm(forms.ModelForm):
     class Meta:
         model = BooksPost
         fields = ["title", "dev_lang", "branch","difficulty_level", "content", "link1", "link2", "file1", "file2"]
-        # fields = "__all__"
+
         labels = {
             "link1": "link1",
             "link2": "link2",
@@ -37,8 +37,9 @@ class BooksForm(forms.ModelForm):
             "branch": "branch",
             "difficulty_level": "difficulty_level",
             "file1": "file1",
-            "file2": "file2"
+            "file2": "file2",
         }
+
         widgets = {
-            'content': SummernoteWidget()
+            'content': SummernoteWidget(),
         }

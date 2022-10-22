@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class OnlineStudyForm(forms.ModelForm):
 
-    tags = forms.CharField(label='tags',help_text=_('Separate tags using ","'),required=False)
+    tag_set = forms.CharField(label='tags', help_text=_('Separate tags using ","'), required=False, initial="")
 
     def __init__(self, *args, **kwargs):
         super(OnlineStudyForm, self).__init__(*args, **kwargs)

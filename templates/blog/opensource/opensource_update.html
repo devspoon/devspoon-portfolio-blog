@@ -42,7 +42,12 @@
                                     {% else %}
                                         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                                     {% endif %}
-                                    <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" value="{{ field.value}}"/>
+
+                                    {% if field.name == 'tag_set' %}
+                                        <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" value="{{field.value | join:', '}}"/>
+                                    {% else %}
+                                        <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" value="{{ field.value}}"/>
+                                    {% endif %}
                                 {% endif %}
                             </div>
 
