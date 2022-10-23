@@ -48,7 +48,7 @@ class NoticeDetailView(DetailView):
 class NoticeCreateView(LoginRequiredMixin, CreateView):
     model = Notice
     template_name = 'board/notice/notice_edit.html'
-    success_url = reverse_lazy('board:notice')
+    success_url = reverse_lazy('board:notice_list')
     form_class = NoticeForm
     login_url = reverse_lazy('users:login')
 
@@ -81,15 +81,15 @@ class NoticeUpdateView(LoginRequiredMixin, UpdateView):
 class NoticeDeleteView(LoginRequiredMixin, DeleteView):
     model = Notice
     pk_url_kwarg = 'pk'
-    success_url = reverse_lazy('board:notice')
+    success_url = reverse_lazy('board:notice_list')
     login_url = reverse_lazy('users:login')
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        _object = super().get_object()
-        if self.request.user != _object.author:
+        self.object = super().get_object()
+        if self.request.user != self.object.author:
             raise PermissionDenied()
 
         return super().form_valid(None)

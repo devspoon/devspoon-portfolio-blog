@@ -1,33 +1,46 @@
 {% extends "base/base.html" %}
 {% load static %}
 
-{% load socialaccount %}
-
-{% block title %}login{% endblock %}
+{% block title %}visiter edit{% endblock %}
 
 {% block content %}
-{% providers_media_js %}
 
-	<!--====== LOGIN PART START ======-->
+	<!--====== REGISTER PART START ======-->
     <section class="login first grey">
         <div class="container">
-            <div class="box-wrapper col col-lg-6">
+            <div class="box-wrapper col col-lg-10 mt-4">
                 <div class="box box-border">
                     <div class="box-body">
-                        <h4>Login</h4>
+                        <h4>Visiter</h4>
                         {% for message in messages %}
                             <div class="alert {{ message.tags }} alert-auto-dismissible alert-dismissible notification-container text-center" role="alert">
                                 {{ message }}
                             </div>
                         {% endfor %}
-
                         <form enctype="multipart/form-data" method="post">
                             {% csrf_token %}
                             {% for field in form %}
+                            {% if field.name == 'content' %}
                             <div class="form-group">
-                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" />
+                            {{ field | safe }}
                             </div>
+                            {% else %}
+                            <div class="form-group">
+                                {% if field.field.widget.input_type == 'select' %}
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                <select class="form-select mb-3" name="{{ field.name }}" id="{{ field.id_for_label }}">
+                                    {% for item in field %}
+                                    {{ item }}
+                                    {% comment %} {{ field }} {% endcomment %}
+                                    {% endfor %}
+                                </select>
+                                {% else %}
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" value="{{ field.initial}}"/>
+                                {% endif %}
+                            </div>
+
+                            {% endif %}
                             {% if field.errors %}
                             <ol class="validation_error">
                                 {% for error in field.errors %}
@@ -37,26 +50,18 @@
                             {% endif %}
                             {% endfor %}
                             <div class="form-group text-right">
-                                <button class="btn btn-primary col-12">Login</button>
+                                <button class="btn btn-primary col-12">Write</button>
                             </div>
                             <div class="form-group text-center pt-10">
-                                <span class="text-muted">Don't you have an account?</span> <a href="{% url 'users:register' %}">Create one</a>
+                                <a href="{% url 'users:login' %}">Cancle</a>
                             </div>
-                            <div class="form-group text-center pt-10">
-                                <span class="text-muted">Forgot your password?</span> <a href="{% url 'users:forget_password' %}">Reset Password</a>
-                            </div>
-                            <div class="title-line">
-                                or
-                            </div>
-                             <a href="{% provider_login_url 'google' %}" class="btn btn-social col-12 google"><i class="ion-social-facebook"></i> Login with google</a>
-                             <a href="{% provider_login_url 'kakao' %}" class="btn btn-social col-12 kakao mt-1"><i class="ion-social-facebook"></i> Login with kakaotalk</a>
-                             <a href="{% provider_login_url 'naver' %}" class="btn btn-social col-12 naver mt-1"><i class="ion-social-facebook"></i> Login with naver</a>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-	<!--====== LOGIN PART END ======-->
+
+	<!--====== REGISTER PART END ======-->
 
 {% endblock %}

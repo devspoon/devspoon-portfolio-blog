@@ -1,11 +1,15 @@
 from django.urls import path, include
 from .views.notice.notice_board import NoticeListView, NoticeCreateView, NoticeUpdateView, NoticeDeleteView, NoticeDetailView, NoticeVisitJsonView
+from .views.reactivation.reactivation_board import ReactivationListView, ReactivationCreateView, ReactivationUpdateView, ReactivationDeleteView, ReactivationDetailView, ReactivationVisitJsonView
+from .views.visiter.visiter_board import VisiterListView, VisiterCreateView, VisiterUpdateView, VisiterDeleteView, VisiterDetailView, VisiterVisitJsonView
 from .views.notice.notice_reply import NoticeReplyListJsonView, NoticeReplyCreateJsonView, NoticeReplyUpdateJsonView, NoticeReplyDeleteView
+from .views.reactivation.reactivation_reply import ReactivationReplyListJsonView, ReactivationReplyCreateJsonView, ReactivationReplyUpdateJsonView, ReactivationReplyDeleteView
+from .views.visiter.visiter_reply import VisiterReplyListJsonView, VisiterReplyCreateJsonView, VisiterReplyUpdateJsonView, VisiterReplyDeleteView
 
 app_name = "board"
 
 notice_patterns = [
-    path('', NoticeListView.as_view(), name='notice'),
+    path('', NoticeListView.as_view(), name='notice_list'),
     path('write/', NoticeCreateView.as_view(), name='notice_write'),
     path('update/<int:pk>/', NoticeUpdateView.as_view(), name='notice_update'),
     path('delete/<int:pk>/', NoticeDeleteView.as_view(), name='notice_delete'),
@@ -20,20 +24,43 @@ notice_patterns = [
     path('detail/<int:pk>/visit/json/',NoticeVisitJsonView.as_view(),name='notice_visit'),
 ]
 
-visiter_patterns = [
-    path('visiter/', NoticeListView.as_view(), name='visiter'),
-    path('detail/<int:pk>/', NoticeListView.as_view(), name='visiter_detail'),
+reactivation_patterns = [
+    path('', ReactivationListView.as_view(), name='reactivation_list'),
+    path('write/', ReactivationCreateView.as_view(), name='reactivation_write'),
+    path('update/<int:pk>/', ReactivationUpdateView.as_view(), name='reactivation_update'),
+    path('delete/<int:pk>/', ReactivationDeleteView.as_view(), name='reactivation_delete'),
+
+    path('detail/<int:pk>/', ReactivationDetailView.as_view(), name='reactivation_detail'),
+
+    path('detail/<int:pk>/reply/json/',ReactivationReplyListJsonView.as_view(),name='reactivation_reply_list'),
+    path('detail/<int:pk>/reply/json/create/',ReactivationReplyCreateJsonView.as_view(),name='reactivation_reply_create'),
+    path('detail/<int:pk>/reply/json/update/<int:reply_pk>/',ReactivationReplyUpdateJsonView.as_view(),name='reactivation_reply_update'),
+    path('detail/<int:pk>/reply/delete/<int:reply_pk>/',ReactivationReplyDeleteView.as_view(),name='reactivation_reply_delete'),
+
+    path('detail/<int:pk>/visit/json/',ReactivationVisitJsonView.as_view(),name='reactivation_visit'),
 ]
 
-reactivation_patterns = [
-    path('reactivation/', NoticeListView.as_view(), name='reactivation'),
-    path('detail/<int:pk>/', NoticeListView.as_view(), name='reactivation_detail'),
+visiter_patterns = [
+    path('', VisiterListView.as_view(), name='visiter_list'),
+    path('write/', VisiterCreateView.as_view(), name='visiter_write'),
+    path('update/<int:pk>/', VisiterUpdateView.as_view(), name='visiter_update'),
+    path('delete/<int:pk>/', VisiterDeleteView.as_view(), name='visiter_delete'),
+
+    path('detail/<int:pk>/', VisiterDetailView.as_view(), name='visiter_detail'),
+
+    path('detail/<int:pk>/reply/json/',VisiterReplyListJsonView.as_view(),name='visiter_reply_list'),
+    path('detail/<int:pk>/reply/json/create/',VisiterReplyCreateJsonView.as_view(),name='visiter_reply_create'),
+    path('detail/<int:pk>/reply/json/update/<int:reply_pk>/',VisiterReplyUpdateJsonView.as_view(),name='visiter_reply_update'),
+    path('detail/<int:pk>/reply/delete/<int:reply_pk>/',VisiterReplyDeleteView.as_view(),name='visiter_reply_delete'),
+
+    path('detail/<int:pk>/visit/json/',VisiterVisitJsonView.as_view(),name='visiter_visit'),
 ]
+
 
 urlpatterns = [
     path('notice/', include(notice_patterns)),
-    path('visiter/', include(visiter_patterns)),
     path('reactivation/', include(reactivation_patterns)),
+    path('visiter/', include(visiter_patterns)),
 ]
 
 

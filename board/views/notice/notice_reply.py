@@ -56,6 +56,7 @@ class NoticeReplyListJsonView(View):
                 "post": str(context.board.pk),
                 "created_at":context.created_at.strftime("%Y-%m-%d %I:%M:%S %p"),
                 "thumbnail": str(context.author.photo_thumbnail.url),
+                "user_auth": str(context.author) == str(request.user.username)
             }, pages.object_list)
         )
 

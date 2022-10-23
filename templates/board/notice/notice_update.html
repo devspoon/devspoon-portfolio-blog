@@ -1,9 +1,8 @@
 {% extends "base/base.html" %}
-{% comment %} {% load search_tags %} {% endcomment %}
 {% load static %}
 {% load public_tags %}
 
-{% block title %}Notice{% endblock %}
+{% block title %}notice{% endblock %}
 
 {% block content %}
 
@@ -13,7 +12,7 @@
             <div class="box-wrapper col col-lg-10 mt-4">
                 <div class="box box-border">
                     <div class="box-body">
-                        <h4>OpenSource</h4>
+                        <h4>Notice</h4>
                         {% for message in messages %}
                             <div class="alert {{ message.tags }} alert-auto-dismissible alert-dismissible notification-container text-center" role="alert">
                                 {{ message }}

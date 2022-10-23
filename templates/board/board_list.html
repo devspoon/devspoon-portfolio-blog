@@ -40,7 +40,7 @@
                         <tbody>
                           <tr>
                             <td width="5%" class="th-number text-center tb-row" scope="row"><a href="{% url 'board:notice_detail' item.pk %}">{{item.pk}}</a></td>
-                            <td width="75%" class="th-title tb-row" > <a href="{% url 'board:notice_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
+                            <td width="75%" class="th-title tb-row" > <a href="{{item.pk}}" id="th-title">{{item.title|striptags|truncatechars:80}}</a></td>
                             <td width="15%" class="th-date text-center tb-row" >{{item.created_at|date:'Y/m/d H:i'}}</td>
                             <td width="5%" class="th-author text-center tb-row" >{{item.author}}</td>
                             <td width="5%" class="th-visiter text-center tb-row" >{{item.visit_count}}</td>

@@ -60,12 +60,12 @@ class ReactivationReply(BoardReply):
 
 @receiver(post_delete)
 def auto_delete_file_on_delete_for_board(sender, instance=None, **kwargs):
-    list_of_models = ('BoardReply', 'VisiterReply', 'ReactivationReply')
+    list_of_models = ('NoticeReply', 'VisiterReply', 'ReactivationReply')
     if sender.__name__ in list_of_models: # this is the dynamic part you want
 
         with transaction.atomic():
-            post = sender.objects.get(pk=instance.pk).select_for_update().post
+            board = sender.objects.get(pk=instance.pk).board
 
-            if post.reply_count > 0 :
-                post.reply_count = F('reply_count') - 1
-                post.save()
+            if board.reply_count > 0 :
+                board.reply_count = F('reply_count') - 1
+                board.save()
