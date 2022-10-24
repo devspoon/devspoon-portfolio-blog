@@ -4,19 +4,25 @@
 This project that supports the development of personal homepages for portfolios and blogs. based on django that uses class views with separated views, models, admin can help you with advanced learning and practice of django.
 
 # Navigation
-1. Features
-2. Considerations
-3. Development skills to get started(#development-skills-to-get-started)
-4. Project understanding(#Project-understandin)
-5. Prerequisites(#prerequisites)
-6. Installing(#installing)
-7. Running the tests(#running-the-tests)
-8. Deployment(#deployment)
-9. Third party library(#third-party-library)
-10. Contributing(#contributing)
-11. Versioning(#versioning)
-12. Authors(#authors)
-13. License(#license)
+- [devspoons-portfolio-blog](#devspoons-portfolio-blog)
+- [Navigation](#navigation)
+- [Features](#features)
+- [Considerations](#considerations)
+- [Development skills to get started](#development-skills-to-get-started)
+- [Project understanding](#project-understanding)
+  - [Home](#home)
+  - [User](#user)
+  - [Blog](#blog)
+  - [Board](#board)
+- [Prerequisites](#prerequisites)
+- [Installing](#installing)
+- [Running the tests](#running-the-tests)
+- [Deployment](#deployment)
+- [Third party library](#third-party-library)
+- [Contributing](#contributing)
+- [Versioning](#versioning)
+- [Authors](#authors)
+- [License](#license)
 # Features
 # Considerations
 # Development skills to get started
