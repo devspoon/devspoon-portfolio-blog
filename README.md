@@ -15,6 +15,8 @@ This project that supports the development of personal homepages for portfolios 
 9. Versioning(#versioning)
 10. Authors(#authors)
 11. License(#license)
+# Features
+# Considerations
 # Development skills to get started
 
 # Project understanding
