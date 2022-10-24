@@ -37,10 +37,10 @@ This project that supports the development of personal homepages for portfolios 
 # Third party library
 
 # Contributing
-Please read [CONTRIBUTING.md]() for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/devspoon/devspoon-portfolio-blog/blob/main/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 # Versioning
 We use [SemVer](https://semver.org/ "SemVer") for versioning. For the versions available, see the [tags on this repository](https://semver.org/ "repository tag").
 # Authors
 - Lim DoHyun - Owner
 # License
-This project is licensed under the MIT License - see the [LICENSE]() file for details
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/devspoon/devspoon-portfolio-blog/blob/main/LICENSE) file for details
