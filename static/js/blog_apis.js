@@ -177,7 +177,7 @@ function setReplyLocation(replies,reply_key,snippet){
 }
 
 
-function buildReplyStack(replies,url){
+function buildReplyStack(replies){
 
     //for (let reply in replies) {
     for (let reply = 1; reply < replies.length ; reply++)    {
@@ -242,7 +242,7 @@ const replyList = async function(url,page=1) {
     try {
         const full_url = url+'reply/json/?page='+page;
         let res = await axios.get(full_url);
-        buildReplyStack(res.data,full_url);
+        buildReplyStack(res.data);
         buildPagination(res.data);
     }
     catch (err){
