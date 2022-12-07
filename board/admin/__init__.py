@@ -1,3 +1,3 @@
-from .notice_admin import *
-from .reactivation_admin import *
-from .visiter_admin import *
+from .board_notice_admin import *
+from .board_reactivation_admin import *
+from .board_visiter_admin import *
