@@ -19,14 +19,14 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from users.admin import user_admin_site
-from blog.admin.blog_common_admin import blog_admin_site
-from board.admin.board_common_admin import board_admin_site
+from blog.admin.common_admin import blog_admin_site
+from board.admin.common_admin import board_admin_site
 
 error_patterns = []
 
 admin_patterns = [
     #path('admin/', admin.site.urls),
-    path('user/', user_admin_site.urls),
+    path('users/', user_admin_site.urls),
     path('blog/', blog_admin_site.urls),
     path('board/', board_admin_site.urls),
 ]

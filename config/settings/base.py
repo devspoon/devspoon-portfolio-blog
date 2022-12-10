@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "mptt",
     "anymail",
     'imagekit',
+    'rangefilter',
 ]
 
 MIDDLEWARE = [

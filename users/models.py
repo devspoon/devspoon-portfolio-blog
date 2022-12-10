@@ -72,7 +72,6 @@ class User(AbstractUser):
         options={"quality": 100},  # 저장 옵션
     )
 
-
     is_privacy_policy = models.BooleanField(blank=True, default=True, verbose_name=_('Privacy Policy'))
     is_terms_of_service = models.BooleanField(blank=True, default=True, verbose_name=_('Terms of Service'))
     is_mobile_authentication = models.BooleanField(blank=True, default=False, verbose_name=_('Mobile Athentication'))

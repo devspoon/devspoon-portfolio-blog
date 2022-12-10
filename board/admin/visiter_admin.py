@@ -1,14 +1,12 @@
 from django.contrib import admin
+from board.models.board import Visiter
 from django_summernote.admin import SummernoteModelAdmin
-from blog.models.blog import BlogPost, Tag
-from blog.models.blog_reply import BlogPostReply
-from blog.admin.common_admin import blog_admin_site
+from board.models.board_reply import VisiterReply
+from board.admin.common_admin import board_admin_site
 from mixins.admin.admin_common_mixin import AdminCommonMixin
 from rangefilter.filters import DateRangeFilter, DateTimeRangeFilter
-from django import forms
 
-
-class BlogPostAdmin(SummernoteModelAdmin, AdminCommonMixin):
+class VisiterBoardAdmin(SummernoteModelAdmin, AdminCommonMixin):
     list_per_page = 20
 
     list_display = ['id','author','title','is_deleted','is_hidden']
@@ -18,20 +16,17 @@ class BlogPostAdmin(SummernoteModelAdmin, AdminCommonMixin):
     search_fields = ('author__username', 'title','content')
     summernote_fields = ('content',)
     actions = ["set_delete","set_activate","set_hidden","set_visible"]
-    raw_id_fields = ["tag_set"]
-    # prepopulated_fields = {"slug" : ["title"]}
 
 
-
-class BlogPostReplyAdmin(admin.ModelAdmin, AdminCommonMixin):
+class VisiterReplyAdmin(admin.ModelAdmin, AdminCommonMixin):
     list_per_page = 20
 
-    list_display = ['id','author','post']
+    list_display = ['id','author','board']
     list_display_links = ['id', 'author']
     list_filter = ("author", ('created_at', DateRangeFilter))
     search_fields = ('author__username', 'comment')
     actions = ["set_delete","set_activate","set_hidden","set_visible"]
 
 
-blog_admin_site.register(BlogPost, BlogPostAdmin)
-blog_admin_site.register(BlogPostReply, BlogPostReplyAdmin)
+board_admin_site.register(Visiter, VisiterBoardAdmin)
+board_admin_site.register(VisiterReply, VisiterReplyAdmin)
