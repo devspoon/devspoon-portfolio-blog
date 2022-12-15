@@ -275,6 +275,51 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
             user.nickname = nickname
 
         return user
+    
+
+# Overseas SNS, Portfolio personal page url
+class WorldSocialAccount(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='world_social_account', verbose_name=_('User'))
+    twitter = models.URLField(blank=True, verbose_name=_('twitter'))
+    facebook = models.URLField(blank=True, verbose_name=_('facebook'))
+    instragram = models.URLField(blank=True, verbose_name=_('instragram'))
+    youtube = models.URLField(blank=True, verbose_name=_('youtube'))
+    pinterest = models.URLField(blank=True, verbose_name=_('pinterest'))
+    linkedin = models.URLField(blank=True, verbose_name=_('linkedin'))
+    xing = models.URLField(blank=True, verbose_name=_('xing'))
+    meetup = models.URLField(blank=True, verbose_name=_('meetup'))
+    opportunity = models.URLField(blank=True, verbose_name=_('opportunity'))
+    connect = models.URLField(blank=True, verbose_name=_('connect'))
+    upwork = models.URLField(blank=True, verbose_name=_('upwork'))
+    freelancer = models.URLField(blank=True, verbose_name=_('freelancer'))
+    indeed = models.URLField(blank=True, verbose_name=_('indeed'))
+    monster = models.URLField(blank=True, verbose_name=_('monster'))
+    angel = models.URLField(blank=True, verbose_name=_('angel'))
+    peoplenjob = models.URLField(blank=True, verbose_name=_('peoplenjob'))
+
+    class Meta:
+        db_table = 'world_social_account'
+        verbose_name = _('world social account')
+        verbose_name_plural = _('world social accounts')
+
+    def __str__(self):
+        return "%s" % (self.user__username)
+
+
+# Local SNS, Portfolio personal page url
+class LocalSocialAccount(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='local_social_account', verbose_name=_('User'))
+    wanted = models.URLField(blank=True, verbose_name=_('wanted'))
+    rocketpunch = models.URLField(blank=True, verbose_name=_('rocketpunch'))
+    remember = models.URLField(blank=True, verbose_name=_('remember'))
+    monster = models.URLField(blank=True, verbose_name=_('monster'))
+    class Meta:
+        db_table = 'local_social_account'
+        verbose_name = _('local social account')
+        verbose_name_plural = _('local social account')
+
+    def __str__(self):
+        return "%s" % (self.user__username)
 
 
 @receiver(post_save, sender=User)

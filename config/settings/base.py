@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'users',
     'blog',
     'board',
+    'portfolio',
 
     "mptt",
     "anymail",

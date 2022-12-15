@@ -21,14 +21,18 @@ from django.conf import settings
 from users.admin import user_admin_site
 from blog.admin.common_admin import blog_admin_site
 from board.admin.common_admin import board_admin_site
+from home.admin.default_admin import home_admin_site
+from portfolio.admin import portfolio_admin_site
 
 error_patterns = []
 
 admin_patterns = [
     #path('admin/', admin.site.urls),
+    path('home/', home_admin_site.urls),
     path('users/', user_admin_site.urls),
     path('blog/', blog_admin_site.urls),
     path('board/', board_admin_site.urls),
+    path('portfolio/', portfolio_admin_site.urls),
 ]
 
 urlpatterns = [
@@ -39,6 +43,7 @@ urlpatterns = [
     path('blog/', include('blog.urls')),
     path('', include('home.urls')),
     path('board/', include('board.urls')),
+    path('portfolio/', include('portfolio.urls')),
     path('error/', include(error_patterns)),
 ]
 

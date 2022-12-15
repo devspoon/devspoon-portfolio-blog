@@ -1,1 +1,1 @@
-from .default import MainMenu, SiteInfo, WorldSocialAccount, LocalSocialAccount
+from .default import MainMenu, SiteInfo

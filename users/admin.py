@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.urls import path
 
 from .views.admin_email_login_forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import User, UserProfile, SendingEmailMonitor, PolicyPages
+from .models import User, UserVerification, UserProfile, SendingEmailMonitor, PolicyPages, WorldSocialAccount, LocalSocialAccount
 
 class NickNameFilter(SimpleListFilter):
     title = 'Nick Name Filter'
@@ -67,8 +67,11 @@ class UserAdminSite(AdminSite):
         ordering = {
             "Users": 1,
             "User profile": 2,
-            "Sending email monitor": 3,
-            "Policy pages": 4
+            "User email verification" : 3,
+            "Sending email monitor": 4,
+            "Policy pages": 5,
+            "World social accounts": 6,
+            "Local social account": 7
         }
         app_dict = self._build_app_dict(request)
         # a.sort(key=lambda x: b.index(x[0]))
@@ -129,7 +132,7 @@ class CustomUserAdmin(UserAdmin, ExportCsvMixin):
             csv_data = file_data.split("\n")
 
             for index, value in enumerate(csv_data):
-                if index is 0 :
+                if index == 0 :
                     continue
                 data = value.split(",")
                 if len(data) <= 1:
@@ -193,6 +196,12 @@ class CustomUserAdmin(UserAdmin, ExportCsvMixin):
         queryset.update(is_dormant_account=False)
 
 
+class UserVerificationAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'verified', 'created_at']
+    list_display_links = ['id', 'user', 'verified']
+    list_per_page = 20
+
+
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "nickname", "point", "email_notifications")
     list_display_links = ['id', 'user', 'nickname']
@@ -209,8 +218,22 @@ class PagesAdmin(admin.ModelAdmin):
     list_display = ("id", "title")
     list_display_links = ['id', 'title']
     list_per_page = 20
+    
+
+class WorldSocialAccountAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in WorldSocialAccount._meta.get_fields()]
+    list_display_links = ['user']
+
+
+class LocalSocialAccountAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in LocalSocialAccount._meta.get_fields()]
+    list_display_links = ['user']
+
 
 user_admin_site.register(User, CustomUserAdmin)
+user_admin_site.register(UserVerification, UserVerificationAdmin)
 user_admin_site.register(UserProfile, UserProfileAdmin)
 user_admin_site.register(SendingEmailMonitor, SendingEmailMonitorAdmin)
 user_admin_site.register(PolicyPages, PagesAdmin)
+user_admin_site.register(WorldSocialAccount, WorldSocialAccountAdmin)
+user_admin_site.register(LocalSocialAccount, LocalSocialAccountAdmin)

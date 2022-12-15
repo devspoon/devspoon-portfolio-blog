@@ -1,0 +1,702 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}blog{% endblock %}
+{% block content %}
+	<!--====== About Me PART START ======-->
+    <section class="about-me section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-sm-12">
+                    <div class="about-left about-box">
+                        <div class="section-title align-left">
+                            <h3>WHO <strong>AM I</strong>?</h3>
+                            <!-- <span class="wow fadeInDown" data-wow-delay=".2s">who</span>
+                            <h2 class="wow fadeInUp" data-wow-delay=".4s">Websites that tell your brand's story</h2> -->
+                            <p class="wow fadeInUp" data-wow-delay=".6s">저는 <strong>스타트업 대표</strong>였던, <strong>현직 개발자</strong>입니다.<br>
+                                다수의 사업 계획, 팀 빌딩 경험이 있는 <strong>Full Stack 개발자</strong> 입니다.<br>
+                                <strong>브랜드 마케팅 사업</strong>을 통해 다양한 파트너와 작업한 경험을 가지고 있습니다.<br></p>
+                            <a href="#" class="btn btn-outline-danger" download>DOWNLOAD MY CV</a>
+                        </div>
+                        <div class="about-tab wow fadeInUp" data-wow-delay=".4s">
+                            <!-- Nav Tab  -->
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                
+                                <li class="nav-item" role="presentation"><a class="nav-link active" id="front-end-tab" data-bs-toggle="tab" data-bs-target="#front-end" 
+                                        role="tab" aria-controls="home" aria-selected="false">Front-end</a></li>                                        
+                                <li class="nav-item" role="presentation"><a class="nav-link" id="back-end-tab" data-bs-toggle="tab" data-bs-target="#back-end" 
+                                        role="tab" aria-controls="profile" aria-selected="false">Back-end</a></li>
+                                <li class="nav-item" role="presentation"><a class="nav-link" id="marketing-tab" data-bs-toggle="tab" data-bs-target="#marketing" 
+                                        role="tab" aria-controls="home" aria-selected="true">Marketing</a></li>                                        
+                                <li class="nav-item" role="presentation"><a class="nav-link" id="startup-tab" data-bs-toggle="tab" data-bs-target="#startup"
+                                        role="tab" aria-controls="contact" aria-selected="false">Startup</a></li>
+                            </ul>
+                            <!--/ End Nav Tab -->
+                            <div class="tab-content" id="myTabContent">
+                             
+                                <!-- Tab 0 -->
+                                <div class="tab-pane fade show " id="front-end" role="tabpanel" aria-labelledby="front-end-tab">
+                                    <div class="tab-content">
+                                        <p>다수의 Web Site를 기획한 경험이 있고 쇼핑몰을 기획하고 개발한 경험이 있습니다.</p>
+                                        <ul>
+                                            <li><i class="lni lni-checkmark-circle"></i> HTML</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> CSS</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> Bootstrap5</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> Javascript</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> Vue</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> SCSS</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> Figma</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- End Tab 0 -->
+                                <!-- Tab 1 -->
+                                <div class="tab-pane fade" id="back-end" role="tabpanel" aria-labelledby="back-end-tab">
+                                    <div class="tab-content">
+                                        <p>C 기반의 RTSP/RTCP/RTP의 대규모 스트리밍 서비스를 개발한 경험이 있습니다.
+                                            PHP 기반의 비즈니스, 쇼핑몰 사이트를 개발한 경험이 있습니다.
+                                            Docker 기반의 Replication 시스템을 구축한 경험이 있습니다.
+                                            Django 기반의 스타트업 솔루션을 개발한 경험이 있습니다. 
+                                        </p>
+                                        <ul>
+                                            <li><i class="lni lni-checkmark-circle"></i> C</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> PHP</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> Python/Django</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> Redis</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> Mysql</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> Docker/Compose/Docker-Swarm</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> Slack API/Sentry/Prometheus</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> distribute with AWS/OCI</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- End Tab 1 -->
+                                <!-- Tab 2 -->
+                                <div class="tab-pane fade show active" id="marketing" role="tabpanel" aria-labelledby="marketing-tab">
+                                    <div class="tab-content">
+                                        <p>브랜드 온라인 마케팅 대표로 다수의 파트너와 작업한 경험이 있습니다.
+
+                                        </p>
+                                        <ul>
+                                            <li><i class="lni lni-checkmark-circle"></i> Commitment to excelence</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> Clients are our partners</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> Fun is an absolute must</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--/ End Tab 2 -->
+                                <!-- Tab 3 -->
+                                <div class="tab-pane fade" id="startup" role="tabpanel" aria-labelledby="startup-tab">
+                                    <div class="tab-content">
+                                        <p>Duis aute irure dolor in reprehenderit in voluptate
+                                            velit esse cillum dolore eu fugiat nulla .Nemo en
+                                            ipsam voluptatem quia voluptas sit asper.</p>
+                                        <ul>
+                                            <li><i class="lni lni-checkmark-circle"></i> Commitment to excelence</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> Clients are our partners</li>
+                                            <li><i class="lni lni-checkmark-circle"></i> Fun is an absolute must</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--/ End Tab 3 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="about-right about-box wow fadeInRight" data-wow-delay=".4s">
+                        <img src="assets/images/about/about-img.png" alt="#">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+	<!--====== About Me PART END ======-->
+
+    <!--====== Experiences PART START ======-->
+    <section class="experience timeline_area section_padding_130">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
+                    <div class="text-center section-title mb-60">
+                        <h1>Work Experience</h1>
+                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt dolore magna.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <!-- Timeline Area-->
+                    <div class="apland-timeline-area">
+                        <!-- Single Timeline Content-->
+                        <div class="single-timeline-area">
+                            <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                                <p>Near Future</p>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                        <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
+                                        <div class="timeline-text">
+                                            <h6>Updated 5.0</h6>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
+                                        <div class="timeline-icon"><i class="fa fa-archive" aria-hidden="true"></i></div>
+                                        <div class="timeline-text">
+                                            <h6>Fixed bug</h6>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
+                                        <div class="timeline-icon"><i class="fa fa-address-book" aria-hidden="true"></i></div>
+                                        <div class="timeline-text">
+                                            <h6>Reach 1k Users</h6>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Single Timeline Content-->
+                        <div class="single-timeline-area">
+                            <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                                <p>2020</p>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                        <div class="timeline-icon"><i class="fa fa-briefcase" aria-hidden="true"></i></div>
+                                        <div class="timeline-text">
+                                            <h6>Updated 4.4.0</h6>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
+                                        <div class="timeline-icon"><i class="fa fa-desktop" aria-hidden="true"></i></div>
+                                        <div class="timeline-text">
+                                            <h6>Fixed bug</h6>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Single Timeline Content-->
+                        <div class="single-timeline-area">
+                            <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                                <p>2019</p>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                        <div class="timeline-icon"><i class="fa fa-id-card" aria-hidden="true"></i></div>
+                                        <div class="timeline-text">
+                                            <h6>Updated 4.0</h6>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
+                                        <div class="timeline-icon"><i class="fa fa-desktop" aria-hidden="true"></i></div>
+                                        <div class="timeline-text">
+                                            <h6>Fixed bug</h6>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
+                                        <div class="timeline-icon"><i class="fa fa-picture-o" aria-hidden="true"></i></div>
+                                        <div class="timeline-text">
+                                            <h6>Reach 500 Users</h6>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--====== Experiences PART END ======-->
+
+    <!--====== Educations PART START ======-->
+    <section class="educations section">
+        <div class="container">
+            <div class="row">
+                <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
+                    <div class="text-center section-title mb-60">
+                        <h1>Education & Study</h1>
+                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt dolore magna.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="educations-info-wrapper">
+                            <h3><strong>EDU</strong>CATION</h3>
+                            
+                            <!-- About Info Item Start -->
+                            <div class="educations-info-item row">                            
+                                    <div class="col-4">
+                                        <p>2005-2007</p>
+                                        <h6><strong>NY UNIVERSITY</strong></h6>
+                                    </div>
+                                    
+                                    <div class="col-8 educations-info-border">
+                                        <h4><strong>GRAPHIC</strong> DESIGN</h4>
+                                        
+                                        <p>Poin dui orci, pretium eget fringilla sit amet, luctus a nisl. Praesent tristique scelerisque sapien at aliquet.</p>
+                                    </div>                            
+                            </div>
+                            <!-- About Info Item End -->                                              
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="educations-info-wrapper">
+                            <h3><strong>SKILL</strong>-Books</h3>
+                            
+                            <!-- About Info Item Start -->
+                            <div class="educations-info-item row">                                                        
+                                    <div class="col-4">
+                                        <p>2007-2010</p>
+                                        <h5><strong>ENTER AD</strong></h5>
+                                    </div>
+                                    
+                                    <div class="col-8 educations-info-border">
+                                        <h4><strong>GRAPHIC</strong> DESIGNER</h4>
+                                        
+                                        <p>Poin dui orci, pretium eget fringilla sit amet, luctus a nisl. Praesent tristique scelerisque sapien at aliquet.</p>
+                                    </div>                            
+                            </div>
+                            <!-- About Info Item End --> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--====== Educations PART END ======-->
+    
+    <!--====== Interesting PART START ======-->
+    <section class="interesting section">
+        <div class="container">
+            <div class="row">
+                <!-- Section Title Start -->
+                <div class="section--title">
+                    <h2><strong>WHAT I AM INTERESTED IN</strong></h2>
+                </div>
+                <!-- Section Title End -->
+                
+                <div class="row row-eq-height">
+                    <!-- Service Item Start -->
+                    <div class="col-md-4 col-sm-6 service--item">
+                        <div class="service--icon">
+                            <i class="lni lni-cloud-network"></i>
+                        </div>
+                        
+                        <div class="service--content">
+                            <h2>WEB <strong>DESIGN</strong> &amp; <strong>UI</strong></h2>
+                            
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non vel, sint nisi possimus sunt veritatis totam velit.</p>
+                        </div>
+                    </div>
+                    <!-- Service Item End -->
+                    
+                    <!-- Service Item Start -->
+                    <div class="col-md-4 col-sm-6 service--item">
+                        <div class="service--icon">
+                            <i class="lni lni-python"></i>
+                        </div>
+                        
+                        <div class="service--content">
+                            <h2>USER <strong>FLOW</strong> &amp; <strong>WIREFRAMES</strong></h2>
+                            
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non vel, sint nisi possimus sunt veritatis totam velit.</p>
+                        </div>
+                    </div>
+                    <!-- Service Item End -->
+                    
+                    <!-- Service Item Start -->
+                    <div class="col-md-4 col-sm-6 service--item">
+                        <div class="service--icon">
+                            <i class="lni lni-aws"></i>
+                        </div>
+                        
+                        <div class="service--content">
+                            <h2>VISUAL <strong>DESIGN</strong></h2>
+                            
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non vel, sint nisi possimus sunt veritatis totam velit.</p>
+                        </div>
+                    </div>
+                    <!-- Service Item End -->
+                
+                    <!-- Service Item Start -->
+                    <div class="col-md-4 col-sm-6 service--item">
+                        <div class="service--icon">
+                            <i class="lni lni-database"></i>
+                        </div>
+                        
+                        <div class="service--content">
+                            <h2>MOBILE <strong>APP</strong> DESIGN</h2>
+                            
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non vel, sint nisi possimus sunt veritatis totam velit.</p>
+                        </div>
+                    </div>
+                    <!-- Service Item End -->
+                    
+                    <!-- Service Item Start -->
+                    <div class="col-md-4 col-sm-6 service--item">
+                        <div class="service--icon">
+                            <i class="lni lni-graph"></i>
+                        </div>
+                        
+                        <div class="service--content">
+                            <h2>LOGO <strong>DESIGN</strong></h2>
+                            
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non vel, sint nisi possimus sunt veritatis totam velit.</p>
+                        </div>
+                    </div>
+                    <!-- Service Item End -->
+                    
+                    <!-- Service Item Start -->
+                    <div class="col-md-4 col-sm-6 service--item">
+                        <div class="service--icon">
+                            <i class="lni lni-mobile"></i>
+                        </div>
+                        
+                        <div class="service--content">
+                            <h2>PRINT <strong>DESIGN</strong></h2>
+                            
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non vel, sint nisi possimus sunt veritatis totam velit.</p>
+                        </div>
+                    </div>
+                    <!-- Service Item End -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!--====== Interesting PART END ======-->
+
+    <!--====== Project PART START ======-->
+    <section class="latest-product-area py-5 pb-110">
+        <div class="container">
+            <div class="row">
+                <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
+                    <div class="text-center section-title mb-60">
+                        <h1>About Projects</h1>
+                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt dolore magna.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="row">
+                
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card-box">
+                        <div class="card-img">
+                            <a href="product-details.html">
+                                <img src="assets/images/product/l-product-1.jpg" alt="">
+                            </a>
+                            <div class="product-action">
+                                <a href="javascript:void(0)" class="share" title="site link"><i class="lni lni-world"></i></a>
+                            </div>
+                        </div>
+    
+                        <div class="card-content">
+                            <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
+                            <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
+                            <ul class="project-info">
+                                <li>
+                                    <i class="lni lni-calendar"></i> 20 June, 2023
+                                </li>
+                                <li>
+                                    <i class="lni lni-bookmark"></i> Django
+                                </li>
+                                <li>
+                                    <i class="lni lni-user"></i> Owner
+                                </li>
+                                <li>
+                                    <i class="lni lni-code"></i> Ver 1.2.5
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card-box">
+                        <div class="card-img">
+                            <a href="product-details.html">
+                                <img src="assets/images/product/l-product-2.jpg" alt="">
+                            </a>
+                            <div class="product-action">
+                                <a href="javascript:void(0)" class="share" title="site link"><i class="lni lni-world"></i></a>
+                            </div>
+                        </div>
+    
+                        <div class="card-content">
+                            <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
+                            <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
+                            <ul class="project-info">
+                                <li>
+                                    <i class="lni lni-calendar"></i> 20 June, 2023
+                                </li>
+                                <li>
+                                    <i class="lni lni-bookmark"></i> Django
+                                </li>
+                                <li>
+                                    <i class="lni lni-user"></i> Owner
+                                </li>
+                                <li>
+                                    <i class="lni lni-code"></i> Ver 1.2.5
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card-box">
+                        <div class="card-img">
+                            <a href="product-details.html">
+                                <img src="assets/images/product/l-product-3.jpg" alt="">
+                            </a>
+                            <div class="product-action">
+                                <a href="javascript:void(0)" class="share" title="site link"><i class="lni lni-world"></i></a>
+                            </div>
+                        </div>
+    
+                        <div class="card-content">
+                            <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
+                            <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
+                            <ul class="project-info">
+                                <li>
+                                    <i class="lni lni-calendar"></i> 20 June, 2023
+                                </li>
+                                <li>
+                                    <i class="lni lni-bookmark"></i> Django
+                                </li>
+                                <li>
+                                    <i class="lni lni-user"></i> Owner
+                                </li>
+                                <li>
+                                    <i class="lni lni-code"></i> Ver 1.2.5
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card-box">
+                        <div class="card-img">
+                            <a href="product-details.html">
+                                <img src="assets/images/product/l-product-4.jpg" alt="">
+                            </a>
+                            <div class="product-action">
+                                <a href="javascript:void(0)" class="share" title="site link"><i class="lni lni-world"></i></a>
+                            </div>
+                        </div>
+    
+                        <div class="card-content">
+                            <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
+                            <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
+                            <ul class="project-info">
+                                <li>
+                                    <i class="lni lni-calendar"></i> 20 June, 2023
+                                </li>
+                                <li>
+                                    <i class="lni lni-bookmark"></i> Django
+                                </li>
+                                <li>
+                                    <i class="lni lni-user"></i> Owner
+                                </li>
+                                <li>
+                                    <i class="lni lni-code"></i> Ver 1.2.5
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card-box">
+                        <div class="card-img">
+                            <a href="product-details.html">
+                                <img src="assets/images/product/l-product-5.jpg" alt="">
+                            </a>
+                            <div class="product-action">
+                                <a href="javascript:void(0)" class="share" title="site link"><i class="lni lni-world"></i></a>
+                            </div>
+                        </div>
+    
+                        <div class="card-content">
+                            <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
+                            <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
+                            <ul class="project-info">
+                                <li>
+                                    <i class="lni lni-calendar"></i> 20 June, 2023
+                                </li>
+                                <li>
+                                    <i class="lni lni-bookmark"></i> Django
+                                </li>
+                                <li>
+                                    <i class="lni lni-user"></i> Owner
+                                </li>
+                                <li>
+                                    <i class="lni lni-code"></i> Ver 1.2.5
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card-box">
+                        <div class="card-img">
+                            <a href="product-details.html">
+                                <img src="assets/images/product/l-product-6.jpg" alt="">
+                            </a>
+                            <div class="product-action">
+                                <a href="javascript:void(0)" class="share" title="site link"><i class="lni lni-world"></i></a>
+                            </div>
+                        </div>
+    
+                        <div class="card-content">
+                            <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
+                            <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
+                            <ul class="project-info">
+                                <li>
+                                    <i class="lni lni-calendar"></i> 20 June, 2023
+                                </li>
+                                <li>
+                                    <i class="lni lni-bookmark"></i> Django
+                                </li>
+                                <li>
+                                    <i class="lni lni-user"></i> Owner
+                                </li>
+                                <li>
+                                    <i class="lni lni-code"></i> Ver 1.2.5
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    </section>
+    <!--====== Project PART END ======-->
+
+    <!--====== Contact PART START ======-->
+    <section class="contact py-5 pb-110">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-7">
+              <div class="contact-form-wrapper">
+                <form action="assets/php/contact.php" method="POST">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="single-input">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" class="form-input" placeholder="Name">
+                        <i class="lni lni-user"></i>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="single-input">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="Email">
+                        <i class="lni lni-envelope"></i>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="single-input">
+                        <label for="number">Number</label>
+                        <input type="text" id="number" name="number" class="form-input" placeholder="Number">
+                        <i class="lni lni-phone"></i>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="single-input">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-input" placeholder="Subject">
+                        <i class="lni lni-text-format"></i>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="single-input">
+                        <label for="message">Message</label>
+                        <textarea name="message" id="message" class="form-input" placeholder="Message" rows="6"></textarea>
+                        <i class="lni lni-comments-alt"></i>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="form-button">
+                        <button type="submit" class="btn btn-primary btn-lg col-12">Submit <i class="lni lni-telegram-original"></i> </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+  
+            </div>
+  
+            <div class="col-lg-5 order-first order-lg-last">
+              <div class="left-wrapper">
+                <div class="section-title mb-40">
+                  <h3 class="mb-15">Get in touch</h3>
+                  <p>Stop wasting time and money designing and managing a website that doesn’t get results. Happiness guaranteed!</p>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12 col-md-6">
+                    <div class="single-item">
+                      <div class="icon">
+                        <i class="lni lni-phone"></i>
+                      </div>
+                      <div class="text">
+                        <p>0045939863784</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-12 col-md-6">
+                    <div class="single-item">
+                      <div class="icon">
+                        <i class="lni lni-envelope"></i>
+                      </div>
+                      <div class="text">
+                        <p>yourmail@gmail.com</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-12 col-md-6">
+                    <div class="single-item">
+                      <div class="icon">
+                        <i class="lni lni-map-marker"></i>
+                      </div>
+                      <div class="text">
+                        <p>John's House, 13/5 Road, Sidny United State Of America</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    <!--====== Contact PART END ======-->
+
+	{% endblock %}

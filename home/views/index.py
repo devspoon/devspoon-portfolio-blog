@@ -19,8 +19,7 @@ class IndexView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         return context
-
-
+    
 
 class SearchView(TemplateView, Search):
     template_name = 'base/search_result_board_list.html'
