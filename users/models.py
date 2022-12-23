@@ -101,6 +101,9 @@ class User(AbstractUser):
         constraints = [
             models.UniqueConstraint(fields=['email', 'nickname'], name='unique fields of constraint'),
         ]
+        indexes = [
+            models.Index(fields=['username',], name='index username'),
+        ]
 
     def __str__(self):
         # return "%s - %s" % (
@@ -196,8 +199,8 @@ class UserProfile(models.Model):
         User,
         on_delete=models.CASCADE, related_name='user_profile', verbose_name=_('User')
     )
-    nickname = models.CharField(null=False, max_length=30)
-    point = models.IntegerField()
+    nickname = models.CharField(blank=True, unique=True, max_length=30)
+    point = models.IntegerField(blank=True, default=0)
     email_notifications = models.BooleanField(blank=True, default=False)
 
     class Meta:
@@ -210,7 +213,7 @@ class UserProfile(models.Model):
 
 
 class SendingEmailMonitor(models.Model):
-    vendor = models.CharField( max_length=20, blank=False, verbose_name=_('Vendor Name'))
+    vendor = models.CharField( max_length=20, blank=False,unique=True, verbose_name=_('Vendor Name'))
     sending_success_cnt = models.IntegerField( blank=True, default=0, verbose_name=_('Sending Success Count'))
     sending_failed_cnt = models.IntegerField( blank=True, default=0, verbose_name=_('Sending Failed Count'))
     sending_total_cnt = models.IntegerField( blank=False, default=0, verbose_name=_('Sending Total Count'))

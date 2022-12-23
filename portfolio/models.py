@@ -5,15 +5,23 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from blog.models.blog import ProjectPost
 
-from utils.os.file_path_name_gen import date_upload_to_for_file
+from utils.os.file_path_name_gen import date_upload_to_for_file, date_upload_to_for_image
 
 # Create your models here.
 logger = logging.getLogger(__name__)
 
     
 class Portfolio(models.Model):
-    portfolio_cv_file = models.FileField(blank=False, upload_to=date_upload_to_for_file,  verbose_name=_('User Profile Image'))
-    language = models.CharField(max_length=50, blank=False, verbose_name=_('Language'))
+    class Languages(models.TextChoices):
+        KOREAN = '0', _('ko')
+        ENGLISH = '1', _('en')
+        
+    portfolio_cv_file = models.FileField(blank=True, upload_to=date_upload_to_for_file,  verbose_name=_('Portfolio CV File'))
+    portfolio_image1 = models.ImageField(blank=True, upload_to=date_upload_to_for_image, default='default/no_img.png', verbose_name=_('Portfolio Image1'))
+    portfolio_image2 = models.ImageField(blank=True, upload_to=date_upload_to_for_image, default='default/no_img.png', verbose_name=_('Portfolio Image2'))
+    portfolio_image3 = models.ImageField(blank=True, upload_to=date_upload_to_for_image, default='default/no_img.png', verbose_name=_('Portfolio Image3'))
+    language = models.CharField(blank=False, max_length=15, choices = Languages.choices, default=Languages.KOREAN, verbose_name=_('Language'))
+    summary = models.TextField(blank=True, verbose_name=_('Summary'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
     
     class Meta:
@@ -38,12 +46,18 @@ class PersonalInfo(models.Model):
     office_facebook = models.URLField(blank=True, verbose_name=_('Office Facebook'))
     office_instragram = models.URLField(blank=True, verbose_name=_('Office Instragram'))
     office_youtube = models.URLField(blank=True, verbose_name=_('Office Youtube'))
+    get_in_touch = models.BooleanField(default=True, verbose_name=_('Get In Touch'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
 
     class Meta:
         db_table = 'personal_info'
         verbose_name = _('personal info')
         verbose_name_plural = _('personal info')
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name","phone_number","office_email"],
+                name="unique personalinfo",
+        )]
 
     def __str__(self):
         return "%s" % (self.name)
@@ -58,7 +72,7 @@ class ProfileSummary(models.Model):
         
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name='portfolio', verbose_name=_('Portfolio'))
     position = models.CharField(blank=False, max_length=15, choices = Position.choices, default=Position.BACK_END, verbose_name=_('Position'))
-    content = models.CharField(blank=False, max_length=300,  verbose_name=_('Content'))
+    content = models.TextField(blank=False, verbose_name=_('Content'))
     skill = models.CharField(blank=False, max_length=50, verbose_name=_('Skill'),help_text='Insert skill using comma(,)')
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
     
@@ -80,11 +94,11 @@ class WorkExperience(models.Model):
         MARKETER = '4', _('Marketer')
         
     project_start_date = models.DateTimeField(null=False, verbose_name=_('Project Start Date'))
-    project_end_date = models.DateTimeField(null=False, verbose_name=_('Project End Date'))
+    project_end_date = models.DateTimeField(blank=True, null=True, verbose_name=_('Project End Date'))
     sort_num = models.IntegerField(blank=False, default=0, verbose_name=_('Sort Number'))
     title = models.CharField(blank=False, max_length=50, verbose_name=_('Title'))
     role = models.CharField(blank=False, max_length=15, choices = Role.choices, default=Role.PROJECT_MANAGER, verbose_name=_('Role'))
-    summary = models.CharField(blank=False, max_length=300, verbose_name=_('Summary'))
+    summary = models.TextField(blank=False, verbose_name=_('Summary'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
     
@@ -98,12 +112,18 @@ class WorkExperience(models.Model):
     
     
 class EducationStudy(models.Model):
+    class TYPE(models.TextChoices):
+        EDUCATION = '0', _('Education')
+        STUDY = '1', _('Study')
+        
     study_start_date = models.DateTimeField(null=False, verbose_name=_('Study Start Date'))
-    study_end_date = models.DateTimeField(null=False, verbose_name=_('Study End Date'))
+    study_end_date = models.DateTimeField(blank=True, null=True, verbose_name=_('Study End Date'))
     sort_num = models.IntegerField(blank=False, default=0, verbose_name=_('Sort Number'))
+    role = models.CharField(blank=False, max_length=15, choices = TYPE.choices, default=TYPE.STUDY, verbose_name=_('Type'))
     title = models.CharField(blank=False, max_length=50, verbose_name=_('Title'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
-    study_link = models.URLField(blank=True, verbose_name=_('Study Link'))
+    site_name = models.CharField(blank=True, max_length=50, verbose_name=_('Site Name'))
+    site_link = models.URLField(blank=True, verbose_name=_('Site Link'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
     
     class Meta:
@@ -117,7 +137,7 @@ class EducationStudy(models.Model):
     
 class InterestedIn(models.Model):
     icon = models.CharField(blank=False, max_length=50, verbose_name=_('Icon'))
-    title = models.CharField(blank=False, max_length=50, verbose_name=_('Title'))
+    title = models.CharField(blank=False, max_length=300, verbose_name=_('Title'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
     
@@ -131,7 +151,7 @@ class InterestedIn(models.Model):
     
     
 class AboutProjects(models.Model):
-    projectPost = models.ForeignKey(ProjectPost, null=True, on_delete=models.CASCADE, related_name='projectpost', verbose_name=_('Project Post'))
+    projectpost = models.ForeignKey(ProjectPost, null=True, on_delete=models.CASCADE, related_name='projectpost', verbose_name=_('Project Post'))
     sort_num = models.IntegerField(blank=False, default=0, verbose_name=_('Sort Number'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
     

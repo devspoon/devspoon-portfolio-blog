@@ -13,13 +13,14 @@ class BlogPostAdmin(SummernoteModelAdmin, AdminCommonMixin):
 
     list_display = ['id','author','title','is_deleted','is_hidden']
     list_display_links = ['id', 'author','title']
-    list_filter = ("author", ('created_at', DateRangeFilter), 'is_deleted', 'is_hidden')
+    list_filter = ('author', ('created_at', DateRangeFilter), 'is_deleted', 'is_hidden')
     list_editable = ('is_deleted','is_hidden')
     search_fields = ('author__username', 'title','content')
     summernote_fields = ('content',)
-    actions = ["set_delete","set_activate","set_hidden","set_visible"]
-    raw_id_fields = ["tag_set"]
-    # prepopulated_fields = {"slug" : ["title"]}
+    actions = ['set_delete','set_activate','set_hidden','set_visible']
+    filter_horizontal = ('tag_set',)
+    date_hierarchy = 'created_at'
+    # prepopulated_fields = {'slug' : ['title']}
 
 
 
@@ -28,9 +29,9 @@ class BlogPostReplyAdmin(admin.ModelAdmin, AdminCommonMixin):
 
     list_display = ['id','author','post']
     list_display_links = ['id', 'author']
-    list_filter = ("author", ('created_at', DateRangeFilter))
+    list_filter = ('author', ('created_at', DateRangeFilter))
     search_fields = ('author__username', 'comment')
-    actions = ["set_delete","set_activate","set_hidden","set_visible"]
+    actions = ['set_delete','set_activate','set_hidden','set_visible']
 
 
 blog_admin_site.register(BlogPost, BlogPostAdmin)

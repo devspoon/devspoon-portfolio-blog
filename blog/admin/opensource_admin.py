@@ -18,7 +18,9 @@ class OpenSourcePostAdmin(SummernoteModelAdmin, AdminCommonMixin):
     search_fields = ('author__username', 'title','content')
     summernote_fields = ('content',)
     actions = ["set_delete","set_activate","set_hidden","set_visible"]
-
+    filter_horizontal = ('tag_set',)
+    date_hierarchy = 'created_at'
+    
 
 class OpenSourcePostReplyAdmin(admin.ModelAdmin, AdminCommonMixin):
     list_per_page = 20

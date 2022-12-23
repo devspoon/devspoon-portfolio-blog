@@ -55,23 +55,23 @@ class CsvImportForm(forms.Form):
     csv_file = forms.FileField()
 
 class UserAdminSite(AdminSite):
-    site_header = "User Admin"
-    site_title = "User Admin Portal"
-    index_title = "Welcome to User Admin Portal"
+    site_header = 'User Admin'
+    site_title = 'User Admin Portal'
+    index_title = 'Welcome to User Admin Portal'
 
     def get_app_list(self, request):
-        """
+        '''
         Return a sorted list of all the installed apps that have been
         registered in this site.
-        """
+        '''
         ordering = {
-            "Users": 1,
-            "User profile": 2,
-            "User email verification" : 3,
-            "Sending email monitor": 4,
-            "Policy pages": 5,
-            "World social accounts": 6,
-            "Local social account": 7
+            'Users': 1,
+            'User profile': 2,
+            'User email verification' : 3,
+            'Sending email monitor': 4,
+            'Policy pages': 5,
+            'World social accounts': 6,
+            'Local social account': 7
         }
         app_dict = self._build_app_dict(request)
         # a.sort(key=lambda x: b.index(x[0]))
@@ -90,7 +90,7 @@ class UserProfileInline(admin.TabularInline):
     model = UserProfile # OneT
 
 class CustomUserAdmin(UserAdmin, ExportCsvMixin):
-    change_list_template = "admin/users_changelist.html"
+    change_list_template = 'admin/users_changelist.html'
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = User
@@ -109,9 +109,9 @@ class CustomUserAdmin(UserAdmin, ExportCsvMixin):
     list_filter = (
         ('updated_at', DateRangeFilter),('dormant_account_at', DateRangeFilter),('deleted_at', DateRangeFilter),NickNameFilter, 'is_dormant_account', 'is_deleted','is_site_register'
     )
-    actions = ["set_delete","set_activate","set_dormant_account","set_activated_account","dormant_account_at","export_as_csv"]
-    readonly_fields = ["is_mobile_authentication","is_site_register"]
-    inlines = [UserProfileInline]
+    actions = ['set_delete','set_activate','set_dormant_account','set_activated_account','dormant_account_at','export_as_csv']
+    readonly_fields = ['is_mobile_authentication','is_site_register']
+    #inlines = [UserProfileInline] user's signal handle this
 
     def get_urls(self):
         urls = super().get_urls()
@@ -121,25 +121,25 @@ class CustomUserAdmin(UserAdmin, ExportCsvMixin):
         return my_urls + urls
 
     def import_csv(self, request):
-        if request.method == "POST":
-            csv_file = request.FILES["csv_file"]
+        if request.method == 'POST':
+            csv_file = request.FILES['csv_file']
 
             if not csv_file.name.endswith('.csv'):
                 messages.warning(request, 'The wrong file type was uploaded')
                 return HttpResponseRedirect(request.path_info)
 
-            file_data = csv_file.read().decode("utf-8")
-            csv_data = file_data.split("\n")
+            file_data = csv_file.read().decode('utf-8')
+            csv_data = file_data.split('\n')
 
             for index, value in enumerate(csv_data):
                 if index == 0 :
                     continue
-                data = value.split(",")
+                data = value.split(',')
                 if len(data) <= 1:
                     break
                 fields = []
                 for i in data:
-                    temp = i.replace("TRUE","True").replace("FALSE","False")
+                    temp = i.replace('TRUE','True').replace('FALSE','False')
                     fields.append(temp)
                 try:
                     created = User.objects.update_or_create(
@@ -173,9 +173,9 @@ class CustomUserAdmin(UserAdmin, ExportCsvMixin):
             return HttpResponseRedirect(url)
 
         form = CsvImportForm()
-        payload = {"form": form}
+        payload = {'form': form}
         return render(
-            request, "admin/import_csv_form.html", payload
+            request, 'admin/import_csv_form.html', payload
         )
 
     def profile_thumbnail(self, obj):
@@ -203,7 +203,7 @@ class UserVerificationAdmin(admin.ModelAdmin):
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "nickname", "point", "email_notifications")
+    list_display = ('id', 'user', 'nickname', 'point', 'email_notifications')
     list_display_links = ['id', 'user', 'nickname']
     list_per_page = 20
 
@@ -215,7 +215,7 @@ class SendingEmailMonitorAdmin(admin.ModelAdmin):
 
 
 class PagesAdmin(admin.ModelAdmin):
-    list_display = ("id", "title")
+    list_display = ('id', 'title')
     list_display_links = ['id', 'title']
     list_per_page = 20
     
