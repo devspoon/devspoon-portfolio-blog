@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
 from django.utils.safestring import mark_safe
-from portfolio.models import Portfolio, PersonalInfo, ProfileSummary, WorkExperience, EducationStudy, InterestedIn, AboutProjects
+from portfolio.models import Portfolio, PersonalInfo, PortfolioSummary, WorkExperience, EducationStudy, InterestedIn, AboutProjects
 from blog.models.blog import ProjectPost
 
 # Register your models here.
@@ -14,7 +14,7 @@ portfolio_admin_site = PortfolioAdminSite(name='portfolio_admin')
 
 
 class ProfileSummaryInline(admin.TabularInline):
-    model = ProfileSummary
+    model = PortfolioSummary
 
 class PortfolioAdmin(admin.ModelAdmin):
     list_display = ['id','portfolio_image_1', 'portfolio_image_2', 'portfolio_image_3','language','created_at']
@@ -45,8 +45,9 @@ class PersonalInfoAdmin(admin.ModelAdmin):
 
     
 class ProfileSummaryAdmin(admin.ModelAdmin):
-    list_display = ['id','position','skill','created_at']
+    list_display = ['id','position','sort_num','skill','created_at']
     list_display_links = ['id', 'position','skill']
+    list_editable = ('sort_num',)
     
     
 class WorkExperienceAdmin(admin.ModelAdmin):
@@ -81,7 +82,7 @@ class ProjectPostHiddenAdmin(admin.ModelAdmin):
 
 portfolio_admin_site.register(Portfolio, PortfolioAdmin)
 portfolio_admin_site.register(PersonalInfo, PersonalInfoAdmin)
-portfolio_admin_site.register(ProfileSummary, ProfileSummaryAdmin)
+portfolio_admin_site.register(PortfolioSummary, ProfileSummaryAdmin)
 portfolio_admin_site.register(WorkExperience, WorkExperienceAdmin)
 portfolio_admin_site.register(EducationStudy, EducationStudyAdmin)
 portfolio_admin_site.register(InterestedIn, InterestedInAdmin)

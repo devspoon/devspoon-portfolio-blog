@@ -63,23 +63,25 @@ class PersonalInfo(models.Model):
         return "%s" % (self.name)
     
     
-class ProfileSummary(models.Model):
+class PortfolioSummary(models.Model):
     class Position(models.TextChoices):
-        FRONT_END = '0', _('Front End')
-        BACK_END = '1', _('Back End')
+        FRONT_END = '0', _('Front-End')
+        BACK_END = '1', _('Back-End')
         MARKETING = '2', _('Marketing')
         STARTUP = '3', _('Startup')
         
-    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name='portfolio', verbose_name=_('Portfolio'))
+    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name='portfolio_summary', verbose_name=_('Portfolio'))
+    sort_num = models.IntegerField(blank=False, default=0, verbose_name=_('Sort Number'))
     position = models.CharField(blank=False, max_length=15, choices = Position.choices, default=Position.BACK_END, verbose_name=_('Position'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
-    skill = models.CharField(blank=False, max_length=50, verbose_name=_('Skill'),help_text='Insert skill using comma(,)')
+    skill = models.CharField(blank=False, max_length=300, verbose_name=_('Skill'),help_text='Insert skill using comma(,)')
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
     
     class Meta:
-        db_table = 'profile_summary'
-        verbose_name = _('profile summary')
-        verbose_name_plural = _('profile summary')
+        db_table = 'portfolio_summary'
+        verbose_name = _('portfolio summary')
+        verbose_name_plural = _('portfolio summary')
+        ordering = [('sort_num'),]
 
     def __str__(self):
         return "%s" % (self.position)
@@ -93,6 +95,17 @@ class WorkExperience(models.Model):
         PROJECT_ASSITANT = '3', _('Project Assitant')
         MARKETER = '4', _('Marketer')
         
+    class Color(models.TextChoices):
+        PINK = '0', _('Pink')
+        RED = '1', _('Red')
+        ORANGE = '2', _('Orange')
+        YELLOW = '3', _('Yellow')
+        BLUE = '4', _('Blue')
+        SKYBLUE = '5', _('Skyblue')
+        GREEN = '6', _('Green')
+        GRAY = '7', _('Gray')
+        
+        
     project_start_date = models.DateTimeField(null=False, verbose_name=_('Project Start Date'))
     project_end_date = models.DateTimeField(blank=True, null=True, verbose_name=_('Project End Date'))
     sort_num = models.IntegerField(blank=False, default=0, verbose_name=_('Sort Number'))
@@ -100,12 +113,14 @@ class WorkExperience(models.Model):
     role = models.CharField(blank=False, max_length=15, choices = Role.choices, default=Role.PROJECT_MANAGER, verbose_name=_('Role'))
     summary = models.TextField(blank=False, verbose_name=_('Summary'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
+    color = models.CharField(blank=False, max_length=15, choices = Color.choices, default=Color.PINK, verbose_name=_('Color'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
     
     class Meta:
         db_table = 'work_experience'
         verbose_name = _('work experience')
         verbose_name_plural = _('work experience')
+        ordering = [('sort_num'),]
 
     def __str__(self):
         return "%s" % (self.title)
@@ -119,17 +134,18 @@ class EducationStudy(models.Model):
     study_start_date = models.DateTimeField(null=False, verbose_name=_('Study Start Date'))
     study_end_date = models.DateTimeField(blank=True, null=True, verbose_name=_('Study End Date'))
     sort_num = models.IntegerField(blank=False, default=0, verbose_name=_('Sort Number'))
-    role = models.CharField(blank=False, max_length=15, choices = TYPE.choices, default=TYPE.STUDY, verbose_name=_('Type'))
+    type = models.CharField(blank=False, max_length=15, choices = TYPE.choices, default=TYPE.STUDY, verbose_name=_('Type'))
     title = models.CharField(blank=False, max_length=50, verbose_name=_('Title'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
     site_name = models.CharField(blank=True, max_length=50, verbose_name=_('Site Name'))
-    site_link = models.URLField(blank=True, verbose_name=_('Site Link'))
+    class_link = models.URLField(blank=True, verbose_name=_('Site Link'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
     
     class Meta:
         db_table = 'education_study'
         verbose_name = _('education study')
         verbose_name_plural = _('education study')
+        ordering = [('sort_num'),]
 
     def __str__(self):
         return "%s" % (self.title)
@@ -151,7 +167,7 @@ class InterestedIn(models.Model):
     
     
 class AboutProjects(models.Model):
-    projectpost = models.ForeignKey(ProjectPost, null=True, on_delete=models.CASCADE, related_name='projectpost', verbose_name=_('Project Post'))
+    projectpost = models.OneToOneField(ProjectPost, null=True, on_delete=models.CASCADE, related_name='about_project', verbose_name=_('Project Post'))
     sort_num = models.IntegerField(blank=False, default=0, verbose_name=_('Sort Number'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
     
@@ -159,6 +175,7 @@ class AboutProjects(models.Model):
         db_table = 'about_projects'
         verbose_name = _('about projects')
         verbose_name_plural = _('about projects')
+        ordering = [('sort_num'),]
 
     def __str__(self):
         return "%s" % (self.pk)
