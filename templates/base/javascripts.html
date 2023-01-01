@@ -34,8 +34,17 @@
 <!--====== MAIN JS ======-->
 <script src="{% static 'js/main.js' %}"></script>
 
-<!--====== API JS ======-->
+{% if 'portfolio' in request.path %}
+
+<!--====== BLOG JS ======-->
+<script src="{% static 'js/portfolio.js' %}"></script>
+
+{% else %}
+
+<!--====== BLOG JS ======-->
+<script src="{% static 'js/blog.js' %}"></script>
+
+<!--====== BLOG API JS ======-->
 <script src="{% static 'js/blog_apis.js' %}"></script>
 
-<!--====== API JS ======-->
-<script src="{% static 'js/blog.js' %}"></script>
+{% endif %}

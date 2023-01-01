@@ -51,7 +51,7 @@ class ProfileSummaryAdmin(admin.ModelAdmin):
     
     
 class WorkExperienceAdmin(admin.ModelAdmin):
-    list_display = ['id','title','role','sort_num','created_at']
+    list_display = ['id','title','role','sort_num','project_start_date']
     list_display_links = ['id','title','role']
     list_editable = ('sort_num',)
     

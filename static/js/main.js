@@ -134,7 +134,6 @@ var wow = new WOW({
 wow.init();
 
 
-
 //========= glightbox
     /*const myGallery = GLightbox({
         'href': 'assets/video/Free App Landing Page Template - AppLand.mp4',

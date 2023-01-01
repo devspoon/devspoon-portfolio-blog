@@ -2,7 +2,7 @@
 {% load static %}
 {% load i18n %}
 {% load portfolio_base_tag %}
-{% block title %}blog{% endblock %}
+{% block title %}portfolio{% endblock %}
 {% block content %}
 	<!--====== About Me PART START ======-->
     <section class="about-me section">
@@ -75,41 +75,27 @@
                 <div class="col-12">
                     <!-- Timeline Area-->
                     <div class="apland-timeline-area">
-                        <!-- Single Timeline Content-->
-                        <div class="single-timeline-area">
-                            <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
-                                <p>Near Future</p>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-md-6 col-lg-4">
-                                    <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
-                                        <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
-                                        <div class="timeline-text">
-                                            <h6>Updated 5.0</h6>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                        </div>
-                                    </div>
+                     
+                            <!-- Single Timeline Content-->
+                            <div class="single-timeline-area">
+                                <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                                    <p>Near Future</p>
                                 </div>
-                                <div class="col-12 col-md-6 col-lg-4">
-                                    <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
-                                        <div class="timeline-icon"><i class="fa fa-archive" aria-hidden="true"></i></div>
-                                        <div class="timeline-text">
-                                            <h6>Fixed bug</h6>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                <div class="row">
+                                    
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
+                                            <div class="timeline-text">
+                                                <h6>Updated 5.0</h6>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-4">
-                                    <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
-                                        <div class="timeline-icon"><i class="fa fa-address-book" aria-hidden="true"></i></div>
-                                        <div class="timeline-text">
-                                            <h6>Reach 1k Users</h6>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
-                        </div>
+ 
                     </div>
                 </div>
             </div>
@@ -232,31 +218,64 @@
                 <div class="col-xl-4 col-lg-6 col-md-6">
                     <div class="card-box">
                         <div class="card-img">
-                            <a href="product-details.html">
-                                <img src="assets/images/product/l-product-1.jpg" alt="">
+                            <a href="{% url 'blog:opensource_detail' item.projectpost %}">
+                                <img src="{{item.projectpost.title_image}}">
                             </a>
                             <div class="product-action">
-                                <a href="javascript:void(0)" class="share" title="site link"><i class="lni lni-world"></i></a>
+                                <a href="{{item.projectpost.repository}}"  class="share" title="Repository"><i class="lni lni-world"></i></a>
                             </div>
                         </div>
     
                         <div class="card-content">
-                            <h3 class="name"><i class="lni lni-github"></i> <a href="product-details.html">Apple iPhone x</a></h3>
-                            <span class="update">Lorem ipsum dolor sit amet, consectetur cora adipiscing elit. Quisque vel...</span>
-                            <ul class="project-info">
-                                <li>
-                                    <i class="lni lni-calendar"></i> 20 June, 2023
-                                </li>
-                                <li>
-                                    <i class="lni lni-bookmark"></i> Django
-                                </li>
-                                <li>
-                                    <i class="lni lni-user"></i> Owner
-                                </li>
-                                <li>
-                                    <i class="lni lni-code"></i> Ver 1.2.5
-                                </li>
-                            </ul>
+                            <h3 class="name"><i class="lni lni-github"></i> <a href="{% url 'blog:opensource_detail' item.projectpost %}" >{{item.projectpost.title}}</a></h3>
+                            <span class="update">{{item.projectpost.content|safe|truncatechars:80}}</span>
+                            <div class="project-info row justify-content-center ">
+                                <div class="col-6" >
+                                    <i class="lni lni-calendar"></i> {{item.projectpost.created_at|date:'Y-m-d H:i'}}
+                                </div>
+                                {% if item.projectpost.dev_lang %}
+                                <div class="col-6" >
+                                    <i class="lni lni-bookmark"></i> {{item.projectpost.dev_lang}}
+                                </div>
+                                {% endif %}
+                                
+                                {% if item.projectpost.branch %}
+                                <div class="col-6" >
+                                    <i class="lni lni-layers"></i> {{item.projectpost.get_branch_display}}
+                                </div>
+                                {% endif %}
+
+                                {% if item.projectpost.role %}
+                                <div class="col-6" >
+                                    <i class="lni lni-folder"></i> {{item.projectpost.get_role_display}}
+                                </div>
+                                {% endif %}
+
+                                {% if item.projectpost.version %}
+                                <div class="col-6" >
+                                    <i class="lni lni-tag"></i> {{item.projectpost.version}}
+                                </div>
+                                {% endif %}
+
+                                {% if item.projectpost.repository %}
+                                <div class="col-6" >
+                                    <i class="lni lni-tag"></i> <a ref='{{item.projectpost.repository}}'>Repository</a>
+                                </div>
+                                {% endif %}
+
+                                <div class="col-6" >
+                                    <i class="lni lni-heart"></i> {{item.projectpost.like_count}}
+                                </div>
+                                <div class="col-6" >
+                                    <i class="lni lni-comments-reply"></i> {{item.projectpost.reply_count}}
+                                </div>
+                                <div class="col-6" >
+                                    <i class="lni lni-user"></i> {{item.projectpost.visit_count}}
+                                </div>
+                                <div class="col-6" >
+                                    <i class="lni lni-pencil-alt"></i> {{item.projectpost.author}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -103,6 +103,10 @@ class BlogReplyCreateJsonView(LoginRequiredMixin, View):
 
 
 class BlogReplyUpdateJsonView(LoginRequiredMixin,View):
+    
+    def get(self, request, *args, **kwargs):
+        return redirect('blog:blog_reply_update', kwargs.get('reply_pk'))
+    
     def post(self, request, pk, reply_pk):
         content = json.loads(request.body.decode("utf-8"))
         comment = content["comment"]
