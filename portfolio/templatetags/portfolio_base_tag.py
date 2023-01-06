@@ -14,3 +14,8 @@ def split_string_using_comma(data):
 def update_variable(value):
     """Allows to update existing variable in template"""
     return value
+
+
+@register.simple_tag
+def get_verbose_name(object, fieldnm):
+  return object._meta.get_field(fieldnm).verbose_name

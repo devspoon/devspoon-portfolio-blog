@@ -10,12 +10,12 @@ from utils.os.file_path_name_gen import date_upload_to_for_file, date_upload_to_
 # Create your models here.
 logger = logging.getLogger(__name__)
 
-    
+
 class Portfolio(models.Model):
     class Languages(models.TextChoices):
         KOREAN = '0', _('ko')
         ENGLISH = '1', _('en')
-        
+
     portfolio_cv_file = models.FileField(blank=True, upload_to=date_upload_to_for_file,  verbose_name=_('Portfolio CV File'))
     portfolio_image1 = models.ImageField(blank=True, upload_to=date_upload_to_for_image, default='default/no_img.png', verbose_name=_('Portfolio Image1'))
     portfolio_image2 = models.ImageField(blank=True, upload_to=date_upload_to_for_image, default='default/no_img.png', verbose_name=_('Portfolio Image2'))
@@ -23,7 +23,7 @@ class Portfolio(models.Model):
     language = models.CharField(blank=False, max_length=15, choices = Languages.choices, default=Languages.KOREAN, verbose_name=_('Language'))
     summary = models.TextField(blank=True, verbose_name=_('Summary'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
-    
+
     class Meta:
         db_table = 'portfolio'
         verbose_name = _('portfolio')
@@ -61,22 +61,22 @@ class PersonalInfo(models.Model):
 
     def __str__(self):
         return "%s" % (self.name)
-    
-    
+
+
 class PortfolioSummary(models.Model):
     class Position(models.TextChoices):
         FRONT_END = '0', _('Front-End')
         BACK_END = '1', _('Back-End')
         MARKETING = '2', _('Marketing')
         STARTUP = '3', _('Startup')
-        
+
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name='portfolio_summary', verbose_name=_('Portfolio'))
     sort_num = models.IntegerField(blank=False, default=0, verbose_name=_('Sort Number'))
     position = models.CharField(blank=False, max_length=15, choices = Position.choices, default=Position.BACK_END, verbose_name=_('Position'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
     skill = models.CharField(blank=False, max_length=300, verbose_name=_('Skill'),help_text='Insert skill using comma(,)')
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
-    
+
     class Meta:
         db_table = 'portfolio_summary'
         verbose_name = _('portfolio summary')
@@ -85,8 +85,8 @@ class PortfolioSummary(models.Model):
 
     def __str__(self):
         return "%s" % (self.position)
-    
-    
+
+
 class WorkExperience(models.Model):
     class Role(models.TextChoices):
         STARTUP_CEO = '0', _('Startup CEO')
@@ -94,28 +94,28 @@ class WorkExperience(models.Model):
         PROJECT_LEADER = '2', _('Project Leader')
         PROJECT_ASSITANT = '3', _('Project Assitant')
         MARKETER = '4', _('Marketer')
-        
+
     class Color(models.TextChoices):
-        PINK = '0', _('Pink')
-        RED = '1', _('Red')
-        ORANGE = '2', _('Orange')
-        YELLOW = '3', _('Yellow')
-        BLUE = '4', _('Blue')
-        SKYBLUE = '5', _('Skyblue')
-        GREEN = '6', _('Green')
-        GRAY = '7', _('Gray')
-        
-        
+        PINK = '0', _('pink')
+        RED = '1', _('red')
+        ORANGE = '2', _('orange')
+        YELLOW = '3', _('yellow')
+        BLUE = '4', _('blue')
+        SKYBLUE = '5', _('skyblue')
+        GREEN = '6', _('green')
+        GRAY = '7', _('gray')
+
+
     project_start_date = models.DateTimeField(null=False, verbose_name=_('Project Start Date'))
     project_end_date = models.DateTimeField(blank=True, null=True, verbose_name=_('Project End Date'))
     sort_num = models.IntegerField(blank=False, default=0, verbose_name=_('Sort Number'))
-    title = models.CharField(blank=False, max_length=50, verbose_name=_('Title'))
+    title = models.CharField(blank=False, max_length=500, verbose_name=_('Title'))
     role = models.CharField(blank=False, max_length=15, choices = Role.choices, default=Role.PROJECT_MANAGER, verbose_name=_('Role'))
     summary = models.TextField(blank=False, verbose_name=_('Summary'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
     color = models.CharField(blank=False, max_length=15, choices = Color.choices, default=Color.PINK, verbose_name=_('Color'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
-    
+
     class Meta:
         db_table = 'work_experience'
         verbose_name = _('work experience')
@@ -124,13 +124,13 @@ class WorkExperience(models.Model):
 
     def __str__(self):
         return "%s" % (self.title)
-    
-    
+
+
 class EducationStudy(models.Model):
     class TYPE(models.TextChoices):
         EDUCATION = '0', _('Education')
         STUDY = '1', _('Study')
-        
+
     study_start_date = models.DateTimeField(null=False, verbose_name=_('Study Start Date'))
     study_end_date = models.DateTimeField(blank=True, null=True, verbose_name=_('Study End Date'))
     sort_num = models.IntegerField(blank=False, default=0, verbose_name=_('Sort Number'))
@@ -140,7 +140,7 @@ class EducationStudy(models.Model):
     site_name = models.CharField(blank=True, max_length=50, verbose_name=_('Site Name'))
     class_link = models.URLField(blank=True, verbose_name=_('Site Link'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
-    
+
     class Meta:
         db_table = 'education_study'
         verbose_name = _('education study')
@@ -149,14 +149,14 @@ class EducationStudy(models.Model):
 
     def __str__(self):
         return "%s" % (self.title)
-    
-    
+
+
 class InterestedIn(models.Model):
     icon = models.CharField(blank=False, max_length=50, verbose_name=_('Icon'))
     title = models.CharField(blank=False, max_length=300, verbose_name=_('Title'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
-    
+
     class Meta:
         db_table = 'interested_in'
         verbose_name = _('interested in')
@@ -164,13 +164,13 @@ class InterestedIn(models.Model):
 
     def __str__(self):
         return "%s" % (self.pk)
-    
-    
+
+
 class AboutProjects(models.Model):
     projectpost = models.OneToOneField(ProjectPost, null=True, on_delete=models.CASCADE, related_name='about_project', verbose_name=_('Project Post'))
     sort_num = models.IntegerField(blank=False, default=0, verbose_name=_('Sort Number'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
-    
+
     class Meta:
         db_table = 'about_projects'
         verbose_name = _('about projects')
@@ -179,5 +179,3 @@ class AboutProjects(models.Model):
 
     def __str__(self):
         return "%s" % (self.pk)
-    
-    

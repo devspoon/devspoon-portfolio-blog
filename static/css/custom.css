@@ -2344,7 +2344,7 @@ section.first button.btn {
     /* padding-top: 100px;
     padding-bottom: 100px;
     padding-left: 180px;     */
-    padding: 100px 0px;
+    padding: 100px 0px 30px;
     position: relative;
   }
 
@@ -2544,7 +2544,7 @@ section.first button.btn {
     transition-duration: 500ms;
     width: 30px;
     height: 30px;
-    background-color: #f1c40f;
+    /* background-color: #f1c40f; */
     -webkit-box-flex: 0;
     -ms-flex: 0 0 30px;
     flex: 0 0 30px;
@@ -2876,3 +2876,42 @@ section.first button.btn {
 .tb-row a {
     color: black;
   }
+
+
+/*===========================
+    20. portfolio css
+===========================*/
+/*===== portfolio common  =====*/
+
+/*===== portfolio work experience  =====*/
+.timeline-icon-pink {
+    background-color: #ff6680;
+}
+
+.timeline-icon-red {
+    background-color: #ff0000;
+}
+
+.timeline-icon-orange {
+    background-color: #ffa500;
+}
+
+.timeline-icon-yellow {
+    background-color: #ffff00;
+}
+
+.timeline-icon-blue {
+    background-color: #0000ff;
+}
+
+.timeline-icon-skyblue {
+    background-color: #87ceeb;
+}
+
+.timeline-icon-green {
+    background-color: #008000;
+}
+
+.timeline-icon-gray {
+    background-color: #808080;
+}

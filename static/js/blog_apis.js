@@ -74,7 +74,7 @@ function setReplyLocation(replies,reply_key,snippet){
     }
     else if (replies[reply_key].depth == 1)
     {
-        const parent_element = document.querySelector(".root-reply.root-"+replies[reply_key].parent);0
+        const parent_element = document.querySelector(".root-reply.root-"+replies[reply_key].parent);
         const nodes = document.querySelector(".fist-reply.parent-"+replies[reply_key].parent);
 
         if (nodes)

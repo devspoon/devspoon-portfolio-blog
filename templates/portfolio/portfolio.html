@@ -14,16 +14,17 @@
                             <h3>WHO <strong>AM I</strong>?</h3>
                             {{portfolio.summary|safe}}
                             <a href="{{portfolio.portfolio_cv_file.url}}" class="btn btn-outline-danger" download>DOWNLOAD MY CV</a>
+                            <!-- Button trigger modal -->
                         </div>
                         <div class="about-tab wow fadeInUp" data-wow-delay=".4s">
                             <!-- Nav Tab  -->
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 {% for item in portfolio_summary %}
                                     {% if item.sort_num == 1 %}
-                                    <li class="nav-item" role="presentation"><a class="nav-link active" id="{{item.get_position_display}}-tab" data-bs-toggle="tab" data-bs-target="#{{item.get_position_display}}" 
+                                    <li class="nav-item" role="presentation"><a class="nav-link active" id="{{item.get_position_display}}-tab" data-bs-toggle="tab" data-bs-target="#{{item.get_position_display}}"
                                         role="tab" aria-controls="{{item.get_position_display}}" aria-selected="false">{{item.get_position_display}}</a></li>
                                     {% else %}
-                                    <li class="nav-item" role="presentation"><a class="nav-link" id="{{item.get_position_display}}-tab" data-bs-toggle="tab" data-bs-target="#{{item.get_position_display}}" 
+                                    <li class="nav-item" role="presentation"><a class="nav-link" id="{{item.get_position_display}}-tab" data-bs-toggle="tab" data-bs-target="#{{item.get_position_display}}"
                                         role="tab" aria-controls="{{item.get_position_display}}" aria-selected="false">{{item.get_position_display}}</a></li>
                                     {% endif %}
                                 {% endfor %}
@@ -37,7 +38,7 @@
                                         <div class="tab-pane fade show " id="{{item.get_position_display}}" role="tabpanel" aria-labelledby="{{item.get_position_display}}-tab">
                                     {% endif %}
                                             <div class="tab-content">
-                                                {{item.content}}
+                                                {{item.content|safe}}
                                                 <ul>
                                                     {% for item in item.skill|split_comma %}
                                                         <li><i class="lni lni-checkmark-circle"></i> {{item}}</li>
@@ -51,9 +52,38 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-12">
-                    <div class="about-right about-box wow fadeInRight" data-wow-delay=".4s">
-                        <img src="assets/images/about/about-img.png" alt="#">
-                    </div>
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            {% if portfolio.portfolio_image1 %}
+                            <div class="carousel-item active">
+                                <img src="{{portfolio.portfolio_image1.url}}" class="d-block w-100" alt="{% get_verbose_name portfolio 'portfolio_image1' %}" />
+                            </div>
+                            {% endif %}
+                            {% if portfolio.portfolio_image2 %}
+                            <div class="carousel-item">
+                                <img src="{{portfolio.portfolio_image2.url}}" class="d-block w-100" alt="{% get_verbose_name portfolio 'portfolio_image2' %}" />
+                            </div>
+                            {% endif %}
+                            {% if portfolio.portfolio_image3 %}
+                            <div class="carousel-item">
+                                <img src="{{portfolio.portfolio_image3.url}}" class="d-block w-100" alt="{% get_verbose_name portfolio 'portfolio_image3' %}" />
+                            </div>
+                            {% endif %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Next</span>
+                        </button>
+                      </div>
                 </div>
             </div>
         </div>
@@ -75,27 +105,7 @@
                 <div class="col-12">
                     <!-- Timeline Area-->
                     <div class="apland-timeline-area">
-                     
-                            <!-- Single Timeline Content-->
-                            <div class="single-timeline-area">
-                                <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
-                                    <p>Near Future</p>
-                                </div>
-                                <div class="row">
-                                    
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
-                                            <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
-                                            <div class="timeline-text">
-                                                <h6>Updated 5.0</h6>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                </div>
-                            </div>
- 
                     </div>
                 </div>
             </div>
@@ -120,20 +130,20 @@
                             {% for item in study%}
                                 {% if item.type == '0' %}
                                     <!-- About Info Item Start -->
-                                    <div class="educations-info-item row">                  
+                                    <div class="educations-info-item row">
                                         <div class="col-4">
                                             <p>{{item.study_start_date|date:'Y-m-d'}}-{{item.study_end_date|date:'Y/m/d'}}</p>
                                             <h6><strong>{{item.site_name}}</strong></h6>
                                         </div>
-                                        
+
                                         <div class="col-8 educations-info-border">
                                             <a href='{{item.class_link}}'><h4>{{item.title}}</h4></a>
-                                            <p>{{item.content}}</p>
-                                        </div>                            
+                                            {{item.content|safe}}
+                                        </div>
                                     </div>
-                                    <!-- About Info Item End -->      
+                                    <!-- About Info Item End -->
                                 {% endif %}
-                            {% endfor %}                                      
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -142,16 +152,16 @@
                             {% for item in study%}
                                 {% if item.type == '1' %}
                                     <!-- About Info Item Start -->
-                                    <div class="educations-info-item row">                                                        
+                                    <div class="educations-info-item row">
                                         <div class="col-4">
                                             <p>{{item.study_start_date|date:'Y-m-d'}}-{{item.study_end_date|date:'Y/m/d'}}</p>
                                             <h6><strong>{{item.site_name}}</strong></h6>
                                         </div>
-                                        
+
                                         <div class="col-8 educations-info-border">
                                             <a href='{{item.class_link}}'><h4>{{item.title}}</h4></a>
                                             <p>{{item.content}}</p>
-                                        </div>                                                  
+                                        </div>
                                     </div>
                                     <!-- About Info Item End -->
                                 {% endif %}
@@ -163,7 +173,7 @@
         </div>
     </section>
     <!--====== Educations PART END ======-->
-    
+
     <!--====== Interesting PART START ======-->
     <section class="interesting section">
         <div class="container">
@@ -173,7 +183,7 @@
                     <h2><strong>WHAT I AM INTERESTED IN</strong></h2>
                 </div>
                 <!-- Section Title End -->
-                
+
                 <div class="row row-eq-height">
                     {% for item in interested %}
                         <!-- Service Item Start -->
@@ -182,17 +192,15 @@
                                 {% comment %} <i class="lni lni-cloud-network"></i> {% endcomment %}
                                 {{item.icon|safe}}
                             </div>
-                            
                             <div class="service--content">
                                 {{item.title|safe}}
-                                
-                                <p>{{item.content}}</p>
+                                <p>{{item.content|safe}}}</p>
                             </div>
                         </div>
                         <!-- Service Item End -->
                     {% endfor %}
-                    
-                    
+
+
                 </div>
             </div>
         </div>
@@ -212,7 +220,7 @@
                     </div>
                 </div>
             </div>
-    
+
             <div class="row">
                 {% for item in projects %}
                 <div class="col-xl-4 col-lg-6 col-md-6">
@@ -225,7 +233,7 @@
                                 <a href="{{item.projectpost.repository}}"  class="share" title="Repository"><i class="lni lni-world"></i></a>
                             </div>
                         </div>
-    
+
                         <div class="card-content">
                             <h3 class="name"><i class="lni lni-github"></i> <a href="{% url 'blog:opensource_detail' item.projectpost %}" >{{item.projectpost.title}}</a></h3>
                             <span class="update">{{item.projectpost.content|safe|truncatechars:80}}</span>
@@ -238,7 +246,7 @@
                                     <i class="lni lni-bookmark"></i> {{item.projectpost.dev_lang}}
                                 </div>
                                 {% endif %}
-                                
+
                                 {% if item.projectpost.branch %}
                                 <div class="col-6" >
                                     <i class="lni lni-layers"></i> {{item.projectpost.get_branch_display}}
@@ -336,9 +344,9 @@
                   </div>
                 </form>
               </div>
-  
+
             </div>
-  
+
             <div class="col-lg-5 order-first order-lg-last">
               <div class="left-wrapper">
                 <div class="section-title mb-40">

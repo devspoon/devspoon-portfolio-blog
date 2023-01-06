@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
+from django_summernote.admin import SummernoteModelAdmin
 from django.utils.safestring import mark_safe
 from portfolio.models import Portfolio, PersonalInfo, PortfolioSummary, WorkExperience, EducationStudy, InterestedIn, AboutProjects
 from blog.models.blog import ProjectPost
@@ -13,10 +14,11 @@ class PortfolioAdminSite(AdminSite):
 portfolio_admin_site = PortfolioAdminSite(name='portfolio_admin')
 
 
-class ProfileSummaryInline(admin.TabularInline):
+class ProfileSummaryInline(admin.TabularInline,):
     model = PortfolioSummary
 
-class PortfolioAdmin(admin.ModelAdmin):
+
+class PortfolioAdmin(SummernoteModelAdmin):
     list_display = ['id','portfolio_image_1', 'portfolio_image_2', 'portfolio_image_3','language','created_at']
     list_display_links = ['id', 'language', 'created_at']
     fieldsets = [
@@ -25,7 +27,8 @@ class PortfolioAdmin(admin.ModelAdmin):
     ]
     readonly_fields = ['portfolio_image_1', 'portfolio_image_2', 'portfolio_image_3', 'created_at']
     inlines = [ProfileSummaryInline]
-    
+    summernote_fields = ('summary',)
+
     def portfolio_image_1(self,obj):
         return mark_safe('<img src="{}" style="width:250px;height:150px;"/>'.format(obj.portfolio_image1.url))
 
@@ -38,35 +41,39 @@ class PortfolioAdmin(admin.ModelAdmin):
     portfolio_image_1.short_description = 'portfolio_image_preview_1'
     portfolio_image_2.short_description = 'portfolio_image_preview_2'
     portfolio_image_3.short_description = 'portfolio_image_preview_3'
-    
+
 class PersonalInfoAdmin(admin.ModelAdmin):
     list_display = ['id','name','created_at']
     list_display_links = ['id', 'name']
 
-    
-class ProfileSummaryAdmin(admin.ModelAdmin):
+
+class ProfileSummaryAdmin(SummernoteModelAdmin):
     list_display = ['id','position','sort_num','skill','created_at']
     list_display_links = ['id', 'position','skill']
     list_editable = ('sort_num',)
-    
-    
-class WorkExperienceAdmin(admin.ModelAdmin):
-    list_display = ['id','title','role','sort_num','project_start_date']
+    summernote_fields = ('content',)
+
+
+class WorkExperienceAdmin(SummernoteModelAdmin):
+    list_display = ['id','title','role','color','sort_num','project_start_date']
     list_display_links = ['id','title','role']
-    list_editable = ('sort_num',)
-    
-    
-class EducationStudyAdmin(admin.ModelAdmin):
+    list_editable = ('color','sort_num',)
+    summernote_fields = ('title','summary','content',)
+
+
+class EducationStudyAdmin(SummernoteModelAdmin):
     list_display = ['id','title','sort_num','created_at']
     list_display_links = ['id','title','created_at']
     list_editable = ('sort_num',)
-    
-    
-class InterestedInAdmin(admin.ModelAdmin):
+    summernote_fields = ('content',)
+
+
+class InterestedInAdmin(SummernoteModelAdmin):
     list_display = ['id','title','created_at']
     list_display_links = ['id', 'title']
-    
-        
+    summernote_fields = ('title','content',)
+
+
 class AboutProjectsAdmin(admin.ModelAdmin):
     list_display = ['id','projectpost','sort_num','created_at'] #[field.name for field in AboutProjects._meta.get_fields()]
     list_display_links = ['id', 'projectpost']
@@ -78,7 +85,7 @@ class AboutProjectsAdmin(admin.ModelAdmin):
 class ProjectPostHiddenAdmin(admin.ModelAdmin):
     def get_model_perms(self, request): #tric regist
         return {}
-    
+
 
 portfolio_admin_site.register(Portfolio, PortfolioAdmin)
 portfolio_admin_site.register(PersonalInfo, PersonalInfoAdmin)
