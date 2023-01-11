@@ -53,7 +53,7 @@ This project that supports the development of personal homepages for portfolios 
 ## User
 - User - AbstractUser
 - Email Verification : It sends a email which has verification link
-- Sending Email monitoring - model only : Supports gmail, mailgun, sendinblue, sendgrid.
+- Sending Email monitoring - model only : Supports mailgun, sendinblue, sendgrid.
 - User profile : when a user register website, is created automatically.
 - Login : Supports local and social account logins (django-allauth).
 

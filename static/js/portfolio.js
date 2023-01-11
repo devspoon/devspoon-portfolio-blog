@@ -92,4 +92,10 @@ window.addEventListener
 window.addEventListener('DOMContentLoaded', function()
 {
     workExperience(location.href);
+
+    const event_modal = new bootstrap.Modal(document.getElementById('myModal'), {})
+    console.log('event_modal :',event_modal)
+    if (event_modal){
+        event_modal.show();
+    }
 });

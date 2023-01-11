@@ -14,7 +14,8 @@ from typing import NoReturn, Tuple, Union
 # from minitutorial import settings
 from django.conf import settings
 
-from django.core.mail import send_mail
+#from django.core.mail import send_mail
+from utils.email.async_send_email import send_mail
 from django.template.loader import render_to_string
 from django.template import loader
 
@@ -43,8 +44,9 @@ class VerifyEmailMixin:
         url = self.__build_verification_link(result['token'])
         subject = 'Congratulations on becoming a member.'
         message = 'Go to the following link to verify. {}'.format(url)
-        html_message = render(self.request, settings.TEMPLATE_DIR + self.email_template_name_generator_token, {'url': url}).content.decode('utf-8')
-        result['sending_mail_num'] = send_mail(subject, message, from_email, [user.email], html_message=html_message, fail_silently=True)  # fail_silently=False, failure notification
+        msg_html = render(self.request, settings.TEMPLATE_DIR + self.email_template_name_generator_token, {'url': url}).content.decode('utf-8')
+        send_mail(subject=subject, message=message, from_email=from_email, recipient_list=[user.email], html_message=msg_html, fail_silently=True)
+        result['sending_mail_num'] = 1
         return result
 
 
@@ -72,15 +74,9 @@ class VerifyEmailMixin:
         msg_html = render_to_string(settings.TEMPLATE_DIR + self.email_template_name_custom_token, email_context)
 
         subject = 'Congratulations on becoming a member. Go to the following link to verify.'
-        result['sending_mail_num'] = send_mail(
-            subject,
-            msg_plain,
-            from_email,
-            [user.email],
-            html_message=msg_html,
-            fail_silently=True
-        )
 
+        send_mail(subject=subject, message=msg_plain, from_email=from_email, recipient_list=[user.email], html_message=msg_html, fail_silently=True)
+        result['sending_mail_num'] = 1
         return result
 
 
@@ -95,6 +91,7 @@ class VerifyEmailMixin:
         url = self.__build_verification_link(result['token'])
         subject = 'You can change your password.'
         message = 'Go to the following link to verify. {}'.format(url)
-        html_message = render(self.request, settings.TEMPLATE_DIR + template, {'url': url}).content.decode('utf-8')
-        result['sending_mail_num'] = send_mail(subject, message, from_email, [user.email], html_message=html_message, fail_silently=True)  # fail_silently=False, failure notification
+        msg_html = render(self.request, settings.TEMPLATE_DIR + template, {'url': url}).content.decode('utf-8')
+        send_mail(subject=subject, message=message, from_email=from_email, recipient_list=[user.email], html_message=msg_html, fail_silently=True)
+        result['sending_mail_num'] = 1
         return result

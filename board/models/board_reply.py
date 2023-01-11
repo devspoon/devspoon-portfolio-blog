@@ -54,7 +54,7 @@ class ReactivationReply(BoardReply):
     class Meta:
         db_table = 'reactivation_board_reply'
         verbose_name = _('reactivation board reply')
-        verbose_name_plural = _('reactivation boardreply')
+        verbose_name_plural = _('reactivation board reply')
         ordering = [('group'),]
 
 

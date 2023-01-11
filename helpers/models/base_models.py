@@ -50,13 +50,13 @@ class IsDeletedBaseModel(models.Model):
         # return f'{self.first_name}{self.last_name}'
         ...
 
-    get_full_name.short_description = _('')
+    get_full_name.short_description = ''
 
     def get_short_name(self):
         # return self.nickname
         ...
 
-    get_short_name.short_description = _('')
+    get_short_name.short_description = ''
 
     def get_absolute_url(self):
         ...

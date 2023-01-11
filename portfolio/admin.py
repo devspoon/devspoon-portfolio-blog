@@ -71,6 +71,11 @@ class EducationStudyAdmin(SummernoteModelAdmin):
 class InterestedInAdmin(SummernoteModelAdmin):
     list_display = ['id','title','created_at']
     list_display_links = ['id', 'title']
+    fieldsets = [
+        ('icon',{'fields':('icon',),
+            'description': '<div class="help">icon searching : <a href="https://lineicons.com/icons/" target="_blank">lineicons.com</a></div>',}),
+        ('content',{'fields':('title','content')}),
+    ]
     summernote_fields = ('title','content',)
 
 

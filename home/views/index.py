@@ -19,7 +19,15 @@ class IndexView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         return context
-    
+
+
+class PrivacyPolicyView(TemplateView):
+    template_name = 'pages/privacy-policy.html'
+
+
+class TermsOfServiceView(TemplateView):
+    template_name = 'pages/terms-of-service.html'
+
 
 class SearchView(TemplateView, Search):
     template_name = 'base/search_result_board_list.html'

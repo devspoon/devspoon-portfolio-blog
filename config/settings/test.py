@@ -2,7 +2,7 @@ from .base import *
 # from .sub_settings.http.cors import *
 from .sub_settings.system.logs import *
 
-# from .sub_settings.email.gmail import *
+# from .sub_settings.email. import *
 
 from decouple import config
 

@@ -179,3 +179,23 @@ class AboutProjects(models.Model):
 
     def __str__(self):
         return "%s" % (self.pk)
+
+
+class GetInTouchLog(models.Model):
+    name = models.CharField(blank=False, max_length=300, verbose_name=_('Name'))
+    state = models.BooleanField(blank=False, default=True, verbose_name=_('State'))
+    email = models.EmailField(max_length=128, blank=False, verbose_name=_('Email'))
+    phone_number_regex = RegexValidator(regex = r'^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$')
+    phone_number = models.CharField(validators = [phone_number_regex], max_length = 16, blank=True, verbose_name=_('Phone Number'))
+    subject = models.CharField(blank=False, max_length=300, verbose_name=_('Subject'))
+    message = models.TextField(blank=False, verbose_name=_('Message'))
+    created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
+
+    class Meta:
+        db_table = 'get_in_touch'
+        verbose_name = _('get in touch')
+        verbose_name_plural = _('get in touch')
+        ordering = [('-created_at'),]
+
+    def __str__(self):
+        return "%s : %s"  % (self.name,self.email)

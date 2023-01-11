@@ -4,16 +4,55 @@
 {% load portfolio_base_tag %}
 {% block title %}portfolio{% endblock %}
 {% block content %}
+    {% if messages %}
+    <!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">{% trans "Get In Touch Messages" %}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% for message in messages %}
+                <h6>{{ message }}</h6>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
 	<!--====== About Me PART START ======-->
     <section class="about-me section">
         <div class="container">
             <div class="row">
+                    <form class='row g-3' action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <div class="col-auto">
+                            <select class="form-select" aria-label="Default select example" name="language" >
+                                {% get_current_language as LANGUAGE_CODE %}
+                                {% get_available_languages as LANGUAGES %}
+                                {% get_language_info_list for LANGUAGES as languages %}
+                                {% for language in languages %}
+                                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                                        {{ language.name_local }} ({{ language.code }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                        <input class="btn btn-outline-secondary" type="submit" value="Switch">
+                        </div>
+                    </form>
                 <div class="col-lg-6 col-sm-12">
                     <div class="about-left about-box">
                         <div class="section-title align-left">
-                            <h3>WHO <strong>AM I</strong>?</h3>
+                            {% trans "<h3>WHO <strong>AM I</strong>?</h3>" %}
                             {{portfolio.summary|safe}}
-                            <a href="{{portfolio.portfolio_cv_file.url}}" class="btn btn-outline-danger" download>DOWNLOAD MY CV</a>
+                            <a href="{{portfolio.portfolio_cv_file.url}}" class="btn btn-outline-danger" download>{{_("DOWNLOAD MY CV")}}</a>
                             <!-- Button trigger modal -->
                         </div>
                         <div class="about-tab wow fadeInUp" data-wow-delay=".4s">
@@ -96,8 +135,10 @@
             <div class="row justify-content-center">
                 <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
                     <div class="text-center section-title mb-60">
+                        {% blocktrans %}
                         <h1>Work Experience</h1>
-                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt dolore magna.</p>
+                        <p>It shows experiences related to startup, planning, development, and marketing by color.</p>
+                        {% endblocktrans %}
                     </div>
                 </div>
             </div>
@@ -119,25 +160,27 @@
             <div class="row">
                 <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
                     <div class="text-center section-title mb-60">
+                        {% blocktrans %}
                         <h1>Education & Study</h1>
-                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt dolore magna.</p>
+                        <p>Learning history through online/offline sites or technical books.</p>
+                        {% endblocktrans %}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="educations-info-wrapper">
-                            <h3><strong>EDU</strong>CATION</h3>
+                            {% trans "<h3><strong>EDU</strong>CATION</h3>" %}
                             {% for item in study%}
                                 {% if item.type == '0' %}
                                     <!-- About Info Item Start -->
                                     <div class="educations-info-item row">
-                                        <div class="col-4">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
                                             <p>{{item.study_start_date|date:'Y-m-d'}}-{{item.study_end_date|date:'Y/m/d'}}</p>
                                             <h6><strong>{{item.site_name}}</strong></h6>
                                         </div>
 
-                                        <div class="col-8 educations-info-border">
-                                            <a href='{{item.class_link}}'><h4>{{item.title}}</h4></a>
+                                        <div class="col-lg-8 ol-md-8 ol-sm-8 educations-info-border">
+                                            <a href='{{item.class_link}}' target="_blank"><h4>{{item.title}}</h4></a>
                                             {{item.content|safe}}
                                         </div>
                                     </div>
@@ -148,18 +191,18 @@
                     </div>
                     <div class="col-md-6">
                         <div class="educations-info-wrapper">
-                            <h3><strong>SKILL</strong>-BOOKS</h3>
+                            {% trans "<h3><strong>SKILL</strong>-BOOKS</h3>" %}
                             {% for item in study%}
                                 {% if item.type == '1' %}
                                     <!-- About Info Item Start -->
                                     <div class="educations-info-item row">
-                                        <div class="col-4">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
                                             <p>{{item.study_start_date|date:'Y-m-d'}}-{{item.study_end_date|date:'Y/m/d'}}</p>
                                             <h6><strong>{{item.site_name}}</strong></h6>
                                         </div>
 
-                                        <div class="col-8 educations-info-border">
-                                            <a href='{{item.class_link}}'><h4>{{item.title}}</h4></a>
+                                        <div class="col-lg-8 ol-md-8 ol-sm-8 educations-info-border">
+                                            <a href='{{item.class_link}}' target="_blank"><h4>{{item.title}}</h4></a>
                                             <p>{{item.content}}</p>
                                         </div>
                                     </div>
@@ -180,7 +223,7 @@
             <div class="row">
                 <!-- Section Title Start -->
                 <div class="section--title">
-                    <h2><strong>WHAT I AM INTERESTED IN</strong></h2>
+                    <h2><strong>{% trans "WHAT I AM INTERESTED IN" %}</strong></h2>
                 </div>
                 <!-- Section Title End -->
 
@@ -215,8 +258,10 @@
             <div class="row">
                 <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
                     <div class="text-center section-title mb-60">
+                        {% blocktrans %}
                         <h1>About Projects</h1>
-                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt dolore magna.</p>
+                        <p>Open source, teaching/learning projects created and operated by teams or individuals.</p>
+                        {% endblocktrans %}
                     </div>
                 </div>
             </div>
@@ -293,52 +338,55 @@
     </section>
     <!--====== Project PART END ======-->
 
+    {% if info.get_in_touch is True %}
     <!--====== Contact PART START ======-->
     <section class="contact py-5 pb-110">
         <div class="container">
           <div class="row">
             <div class="col-lg-7">
               <div class="contact-form-wrapper">
-                <form action="assets/php/contact.php" method="POST">
+                <form action="{% url 'portfolio:mail' %}" method="POST">
+                {% csrf_token %}
                   <div class="row">
                     <div class="col-md-6">
                       <div class="single-input">
-                        <label for="name">Name</label>
+                        <label for="name">{{_("Name")}}</label>
                         <input type="text" id="name" name="name" class="form-input" placeholder="Name">
                         <i class="lni lni-user"></i>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="single-input">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" class="form-input" placeholder="Email">
+                        <label for="email">{{_("Email")}}</label>
+                        <input type="email" id="emailfrom" name="emailfrom" class="form-input" placeholder="Email">
                         <i class="lni lni-envelope"></i>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="single-input">
-                        <label for="number">Number</label>
+                        <label for="number">{{_("Number")}}</label>
                         <input type="text" id="number" name="number" class="form-input" placeholder="Number">
                         <i class="lni lni-phone"></i>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="single-input">
-                        <label for="subject">Subject</label>
+                        <label for="subject">{{_("Subject")}}</label>
                         <input type="text" id="subject" name="subject" class="form-input" placeholder="Subject">
                         <i class="lni lni-text-format"></i>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="single-input">
-                        <label for="message">Message</label>
+                        <label for="message">{{_("Message")}}</label>
                         <textarea name="message" id="message" class="form-input" placeholder="Message" rows="6"></textarea>
                         <i class="lni lni-comments-alt"></i>
                       </div>
                     </div>
+                    <input type="hidden" id="emailto" name="emailto" value="{{info.office_email}}">
                     <div class="col-md-12">
                       <div class="form-button">
-                        <button type="submit" class="btn btn-primary btn-lg col-12">Submit <i class="lni lni-telegram-original"></i> </button>
+                        <button type="submit" class="btn btn-primary btn-lg col-12">{{_("Submit")}}<i class="lni lni-telegram-original"></i> </button>
                       </div>
                     </div>
                   </div>
@@ -350,40 +398,56 @@
             <div class="col-lg-5 order-first order-lg-last">
               <div class="left-wrapper">
                 <div class="section-title mb-40">
+                    {% blocktrans %}
                   <h3 class="mb-15">Get in touch</h3>
-                  <p>Stop wasting time and money designing and managing a website that doesn’t get results. Happiness guaranteed!</p>
+                  <p>If you'd like to collaborate on something cool or share your thoughts, please get in touch! Cheerful, joyful, happy things are all good!</p>
+                  {% endblocktrans %}
                 </div>
                 <div class="row">
+                {% if info.phone_number %}
+                  <div class="col-lg-12 col-md-6">
+                    <div class="single-item">
+                      <div class="icon">
+                        <i class="lni lni-mobile"></i>
+                      </div>
+                      <div class="text">
+                        <p>
+                            {% if info.country_code %}
+                            {{info.country_code}}
+                            {% endif %}
+                            {{info.phone_number}}</p>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+                {% if info.phone_number %}
                   <div class="col-lg-12 col-md-6">
                     <div class="single-item">
                       <div class="icon">
                         <i class="lni lni-phone"></i>
                       </div>
                       <div class="text">
-                        <p>0045939863784</p>
+                        <p>
+                            {% if info.country_code %}
+                            {{info.country_code}}
+                            {% endif %}
+                            {{info.office_phone_number}}</p>
                       </div>
                     </div>
                   </div>
+                  {% endif %}
+                  {% if info.office_email %}
                   <div class="col-lg-12 col-md-6">
                     <div class="single-item">
                       <div class="icon">
                         <i class="lni lni-envelope"></i>
                       </div>
                       <div class="text">
-                        <p>yourmail@gmail.com</p>
+                        <p>{{info.office_email}}</p>
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-12 col-md-6">
-                    <div class="single-item">
-                      <div class="icon">
-                        <i class="lni lni-map-marker"></i>
-                      </div>
-                      <div class="text">
-                        <p>John's House, 13/5 Road, Sidny United State Of America</p>
-                      </div>
-                    </div>
-                  </div>
+                  {% endif %}
                 </div>
               </div>
             </div>
@@ -391,5 +455,6 @@
         </div>
       </section>
     <!--====== Contact PART END ======-->
+    {% endif %}
 
 	{% endblock %}

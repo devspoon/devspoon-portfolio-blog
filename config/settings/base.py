@@ -16,10 +16,9 @@ from decouple import config
 from os.path import join
 from django.contrib import messages
 
-#from .sub_settings.email.gmail import *
-from .sub_settings.email.sendinblue import *
+#from .sub_settings.email.sendinblue import *
 #from .sub_settings.email.mailgun import *
-# from .sub_settings.email.sendgrid import *
+from .sub_settings.email.sendgrid import *
 #from .sub_settings.email.aws_ses import *
 
 from django.utils.translation import gettext_lazy as _

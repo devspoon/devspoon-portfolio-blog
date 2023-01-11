@@ -178,7 +178,7 @@ class UserVerification(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='verification', verbose_name=_('User'), null = True)
     verify_name = models.SmallIntegerField(choices = VERIFY_NAME.choices, default=VERIFY_NAME.EMAIL, verbose_name=_('Verify Name'))
-    key = models.CharField(null=False, max_length=200, unique=True, verbose_name=_('Token Key'))
+    key = models.CharField(null=False, max_length=200, verbose_name=_('Token Key'))
     sending_result = models.BooleanField(default=False, verbose_name=_('Sending Mail Result'))
     verified = models.BooleanField(default=False, verbose_name=_('Verified State'))
     expired_at = models.DateTimeField(null=True, verbose_name=_('Expired Time'))
@@ -240,7 +240,7 @@ class PolicyPages(models.Model):
 
     class Meta:
             db_table = 'policy_pages'
-            verbose_name = _('pilicy pages')
+            verbose_name = _('policy pages')
             verbose_name_plural = _('policy pages')
 
     def __str__(self):

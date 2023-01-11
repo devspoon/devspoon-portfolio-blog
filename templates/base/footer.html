@@ -18,7 +18,7 @@ mobile_menu.html was previously included.
                         <a href="{% url 'home:index' %}" class="d-inline-block mb-30 col-md-6 col-sm-4 col-6">
                             <img src="{% static 'images/logo.png' %}" alt="">
                         </a>
-                        <p class="text-white mb-25">This site is made by open source on 'devspoon' repository</p>
+                        <p class="text-white mb-25">This site is made by open source on 'devspoon-portfolio-blog' repository</p>
                         <ul class="social">
                             {% if site_info.office_twitter %}
                                 <li><a href="{{ site_info.office_twitter }}"><i class="lni lni-twitter"></i></a></li>
@@ -36,8 +36,8 @@ mobile_menu.html was previously included.
                     <div class="footer-widget">
                         <h4>Quick Link</h4>
                         <ul class="link">
-                            <li><a href="javascript:void(0)">Home</a></li>
-                            <li><a href="javascript:void(0)">Portfolio</a></li>
+                            <li><a href="{% url 'home:index' %}">Home</a></li>
+                            <li><a href="{% url 'portfolio:portfolio' %}">Portfolio</a></li>
                         </ul>
                     </div>
                 </div>
@@ -46,27 +46,11 @@ mobile_menu.html was previously included.
                     <div class="footer-widget">
                         <h4>Support</h4>
                         <ul class="link">
-                            <li><a href="javascript:void(0)">Privacy Policy</a></li>
-                            <li><a href="javascript:void(0)">Terms of Service</a></li>
-                            {% comment %} <li><a href="javascript:void(0)">Youth Protection Policy</a></li> {% endcomment %}
-                            <li><a href="javascript:void(0)">
-                                Report a Problem</a></li>
+                            <li><a href="{% url 'home:privacy_policy' %}">Privacy Policy</a></li>
+                            <li><a href="{% url 'home:terms_of_service' %}">Terms of Service</a></li>
                         </ul>
                     </div>
                 </div>
-
-                {% comment %} <div class="col-xl-2 col-md-4 order-md-4 order-xl-3 col-sm-6">
-                    <div class="footer-widget">
-                        <h4>Information</h4>
-                        <ul class="link">
-                            <li><a href="javascript:void(0)">Company</a></li>
-                            <li><a href="javascript:void(0)">Contact Info</a></li>
-                            <li><a href="javascript:void(0)">Blog & Articles</a></li>
-                            <li><a href="javascript:void(0)">Terms of Service</a></li>
-                            <li><a href="javascript:void(0)">Privacy Policy</a></li>
-                        </ul>
-                    </div>
-                </div> {% endcomment %}
 
                 <div class="col-xl-2 col-md-5 order-md-1 order-xl-4 col-sm-6">
                     <div class="footer-widget">
