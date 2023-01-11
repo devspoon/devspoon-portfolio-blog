@@ -1,6 +1,5 @@
 from django import template
 from django.core.paginator import Page
-from home.models.default import MainMenu, SiteInfo
 
 register = template.Library()
 
@@ -19,14 +18,3 @@ def slice_visible_pages(paging: Page):
     min_page = max(min_page, 1)
     max_page = min(min_page + 9, paging.paginator.num_pages)
     return range(min_page, max_page + 1)
-
-
-@register.simple_tag
-def main_menu_tag():
-    menu = MainMenu.objects.all()
-    return menu
-
-@register.simple_tag
-def site_info_tag():
-    info = SiteInfo.objects.all().first()
-    return info

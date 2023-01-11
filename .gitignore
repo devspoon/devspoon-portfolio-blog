@@ -3,8 +3,8 @@ __pycache__/
 migrations/
 
 # secure files
-/.env
 .env
+.env*
 
 # log files
 logs/

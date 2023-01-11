@@ -1,9 +1,7 @@
 {% load static %}
-{% load blog_base_tag %}
+{% load home_tag %}
 
-{% comment %} 
-mobile_menu.html was previously included.
-{% site_info_tag as site_info %} {% endcomment %}
+{% site_info_tag as site_info %}
 
 <footer class="footer-area">
     <div class="widget-wrapper">
@@ -58,7 +56,7 @@ mobile_menu.html was previously included.
                         <ul>
                             <li>
                                 <span>Phone:</span>
-                                <a href="tel:{{site_info.country_code}}-{{site_info.office_phone_number}}">{{site_info.country_code}}-{{site_info.office_pone_number}}</a>
+                                <a href="tel:{{site_info.country_code}}-{{site_info.office_phone_number}}">{{site_info.country_code}}-{{site_info.office_phone_number}}</a>
                             </li>
                             <li>
                                 <span>Email:</span>
