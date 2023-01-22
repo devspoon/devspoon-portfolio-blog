@@ -44,7 +44,7 @@ class PersonalInfo(models.Model):
     office_email = models.EmailField(max_length=128, unique = True, blank=True, verbose_name=_('Office Email'))
     office_twitter = models.URLField(blank=True, verbose_name=_('Office Twitter'))
     office_facebook = models.URLField(blank=True, verbose_name=_('Office Facebook'))
-    office_instragram = models.URLField(blank=True, verbose_name=_('Office Instragram'))
+    office_instragram = models.URLField(blank=True, verbose_name=_('Office Instagram'))
     office_youtube = models.URLField(blank=True, verbose_name=_('Office Youtube'))
     get_in_touch = models.BooleanField(default=True, verbose_name=_('Get In Touch'))
     created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
@@ -92,7 +92,7 @@ class WorkExperience(models.Model):
         STARTUP_CEO = '0', _('Startup CEO')
         PROJECT_MANAGER = '1', _('Project Manager')
         PROJECT_LEADER = '2', _('Project Leader')
-        PROJECT_ASSITANT = '3', _('Project Assitant')
+        PROJECT_ASSITANT = '3', _('Project Assistant')
         MARKETER = '4', _('Marketer')
 
     class Color(models.TextChoices):

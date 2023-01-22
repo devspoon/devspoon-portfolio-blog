@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 {% load home_tag %}
 
 {% site_info_tag as site_info %}
@@ -16,7 +17,7 @@
                         <a href="{% url 'home:index' %}" class="d-inline-block mb-30 col-md-6 col-sm-4 col-6">
                             <img src="{% static 'images/logo.png' %}" alt="">
                         </a>
-                        <p class="text-white mb-25">This site is made by open source on 'devspoon-portfolio-blog' repository</p>
+                        <p class="text-white mb-25">{% trans "This site is made by open source on 'devspoon-portfolio-blog' repository " %}</p>
                         <ul class="social">
                             {% if site_info.office_twitter %}
                                 <li><a href="{{ site_info.office_twitter }}"><i class="lni lni-twitter"></i></a></li>
@@ -32,7 +33,7 @@
 
                 <div class="col-xl-2 col-md-4 order-md-2 order-xl-1 col-sm-6">
                     <div class="footer-widget">
-                        <h4>Quick Link</h4>
+                        <h4>{% trans "Quick Link" %}</h4>
                         <ul class="link">
                             <li><a href="{% url 'home:index' %}">Home</a></li>
                             <li><a href="{% url 'portfolio:portfolio' %}">Portfolio</a></li>
@@ -42,17 +43,17 @@
 
                 <div class="col-xl-2 col-md-4 order-md-3 order-xl-2 col-sm-6">
                     <div class="footer-widget">
-                        <h4>Support</h4>
+                        <h4>{% trans "Support" %}</h4>
                         <ul class="link">
-                            <li><a href="{% url 'home:privacy_policy' %}">Privacy Policy</a></li>
-                            <li><a href="{% url 'home:terms_of_service' %}">Terms of Service</a></li>
+                            <li><a href="{% url 'home:privacy_policy' %}">{% trans "Privacy Policy" %}</a></li>
+                            <li><a href="{% url 'home:terms_of_service' %}">{% trans "Terms of Service" %}</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="col-xl-2 col-md-5 order-md-1 order-xl-4 col-sm-6">
                     <div class="footer-widget">
-                        <h4>Contact Us</h4>
+                        <h4>{% trans "Contact Us" %}</h4>
                         <ul>
                             <li>
                                 <span>Phone:</span>

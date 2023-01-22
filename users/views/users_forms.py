@@ -15,9 +15,9 @@ class RegisterForm(forms.Form):
     password_confirm = forms.CharField(label='Password Confirm',
                                        min_length=8,
                                        widget=forms.PasswordInput, help_text=_('Enter the same password'), required=True)
-    username = forms.CharField(label='User Name', min_length=4, max_length=20, help_text=_('Enter between 4 and 20 charactor'), required=True)
+    username = forms.CharField(label='User Name', min_length=4, max_length=20, help_text=_('Enter between 4 and 20 character'), required=True)
 
-    nickname = forms.CharField(label='Nick Name', min_length=4, max_length=20, help_text=_('Enter between 4 and 20 charactor'), required=True)
+    nickname = forms.CharField(label='Nick Name', min_length=4, max_length=20, help_text=_('Enter between 4 and 20 character'), required=True)
     profile_image = forms.ImageField(label='Profile Image', required=False)
 
     def clean(self):

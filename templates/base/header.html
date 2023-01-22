@@ -1,6 +1,7 @@
 {% load static %}
 {% load mptt_tags %}
 {% load home_tag %}
+{% load i18n %}
 
 {% main_menu_tag as main_menu %}
 
@@ -64,7 +65,6 @@
                                 {% endrecursetree %}
                             </ul>
                         </div>
-                        <div class="mobile-manu row-vh d-flex flex-row justify-content-around">
                             <ul class="header-btn d-sm-flex">
                                 {% if request.user.is_authenticated %}
 
@@ -99,13 +99,37 @@
                             </div>
                         </div>
                     </nav> <!-- navbar -->
-                        <form action="{% url 'home:search_queryset' %}" method="get" id="search_form">
-                            {% csrf_token %}
-                            <div class="input-group justify-content-center mt-2">
-                                <input type="search" class="form-control rounded" name="keyword" placeholder="Search..." aria-label="Search" aria-describedby="search-addon" />
-                                <button type="submit" form="search_form" class="btn btn-outline-primary search-btn">search</button>
-                            </div>
-                        </form>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="col-8">
+                            <form action="{% url 'home:search_queryset' %}" method="get" id="search_form">
+                                {% csrf_token %}
+                                <div class="input-group justify-content-center mt-2">
+                                    <input type="search" class="form-control rounded" name="keyword" placeholder="Search..." aria-label="Search" aria-describedby="search-addon" />
+                                    <button type="submit" form="search_form" class="btn btn-outline-primary search-btn">search</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <form class='row g-3' action="{% url 'set_language' %}" method="post">
+                                {% csrf_token %}
+                                <div class="col-auto">
+                                    <select class="form-select form-select-sm" aria-label="Default select example" name="language" >
+                                        {% get_current_language as LANGUAGE_CODE %}
+                                        {% get_available_languages as LANGUAGES %}
+                                        {% get_language_info_list for LANGUAGES as languages %}
+                                        {% for language in languages %}
+                                            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                                                {{ language.code  }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                <input class="btn btn-outline-secondary btn-sm" type="submit" value="Switch">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div> <!-- row -->
         </div> <!-- container -->

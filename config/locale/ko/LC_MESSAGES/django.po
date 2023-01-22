@@ -3,13 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
-#: .\helpers\models\base_models.py:53 .\helpers\models\base_models.py:59
-
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-11 20:13+0900\n"
+"POT-Creation-Date: 2023-01-22 23:03+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -282,8 +280,7 @@ msgstr "공지 보드 댓글"
 msgid "visiter board reply"
 msgstr "방문자 보드 댓글"
 
-#: .\board\models\board_reply.py:56
-#: .\board\models\board_reply.py:57
+#: .\board\models\board_reply.py:56 .\board\models\board_reply.py:57
 msgid "reactivation board reply"
 msgstr "재활성화 보드 댓글"
 
@@ -485,7 +482,7 @@ msgid "portfolio"
 msgstr "포트폴리오"
 
 #: .\portfolio\models.py:37 .\portfolio\models.py:185
-#: .\templates\portfolio\portfolio.html:336
+#: .\templates\portfolio\portfolio.html:338
 msgid "Name"
 msgstr "이름"
 
@@ -517,7 +514,7 @@ msgstr "마케팅"
 msgid "Startup"
 msgstr "스타트업"
 
-#: .\portfolio\models.py:73
+#: .\portfolio\models.py:73 .\templates\home\index.html:53
 msgid "Portfolio"
 msgstr "포트폴리오"
 
@@ -659,22 +656,233 @@ msgstr "프로젝트에 대해"
 msgid "State"
 msgstr "상태"
 
-#: .\portfolio\models.py:187 .\templates\portfolio\portfolio.html:343
+#: .\portfolio\models.py:187 .\templates\portfolio\portfolio.html:345
 #: .\users\models.py:62 .\users\models.py:176
 msgid "Email"
 msgstr "이메일"
 
-#: .\portfolio\models.py:190 .\templates\portfolio\portfolio.html:357
+#: .\portfolio\models.py:190 .\templates\portfolio\portfolio.html:359
 msgid "Subject"
 msgstr "주제"
 
-#: .\portfolio\models.py:191 .\templates\portfolio\portfolio.html:364
+#: .\portfolio\models.py:191 .\templates\portfolio\portfolio.html:366
 msgid "Message"
 msgstr "메시지"
 
 #: .\portfolio\models.py:196 .\portfolio\models.py:197
 msgid "get in touch"
 msgstr "연락하다"
+
+#: .\templates\base\footer.html:21
+msgid ""
+"This site is made by open source on 'devspoon-portfolio-blog' repository "
+msgstr ""
+"이 사이트는 'devspoon-portfolio-blog' 저장소의 오픈 소스로 만들어졌습니다. "
+
+#: .\templates\base\footer.html:37
+msgid "Quick Link"
+msgstr "빠른 링크"
+
+#: .\templates\base\footer.html:47
+msgid "Support"
+msgstr "고객지원"
+
+#: .\templates\base\footer.html:49 .\users\models.py:75
+msgid "Privacy Policy"
+msgstr "개인 정보 정책"
+
+#: .\templates\base\footer.html:50 .\users\models.py:76
+msgid "Terms of Service"
+msgstr "서비스 약관"
+
+#: .\templates\base\footer.html:57
+msgid "Contact Us"
+msgstr "문의하기"
+
+#: .\templates\home\index.html:16
+msgid "Welcome to"
+msgstr "환영합니다"
+
+#: .\templates\home\index.html:16
+msgid " my 'devspoon' website!"
+msgstr " 여기는 'devspoon'의 웹사이트 입니다!"
+
+#: .\templates\home\index.html:18
+msgid "Hey folks"
+msgstr "안녕하세요 여러분"
+
+#: .\templates\home\index.html:18
+msgid "I'm"
+msgstr "저는"
+
+#: .\templates\home\index.html:20
+msgid " Full-Stack Developer "
+msgstr " 풀 스택 개발자 "
+
+#: .\templates\home\index.html:21
+msgid " Online Marketer "
+msgstr " 온라인 마케터 "
+
+#: .\templates\home\index.html:22
+msgid " ready to join with you "
+msgstr " 함께 할 래디 완료!  "
+
+#: .\templates\home\index.html:25
+msgid ""
+"\n"
+"                    <p>This site was created as an open source based django "
+"in the <strong>'devspoon-portfolio-blog' repository. </strong></p>\n"
+"                    <p>It is used for <strong><i>personal portfolio, blog, "
+"and community</i></strong> purposes</p>\n"
+"                    <p>And supports English and Korean multilingual.</p>\n"
+"                    "
+msgstr ""
+"\n"
+"                    <p>이 사이트는 <strong>'devspoon-portfolio-blog' 저장소</strong>의  "
+"django 기반 오픈 소스로 만들어졌습니다.</p>\n"
+"                    <p><strong><i>개인 포트폴리오, 블로그,  "
+"커뮤니티</i></strong> 용도로 사용되며</p>\n"
+"                    <p>영어와 한국어 다국어를 지원합니다.</p>\n"
+"                    "
+
+#: .\templates\home\index.html:31
+msgid " Devspoon's Open Source"
+msgstr "Devspoon의 오픈 소스"
+
+#: .\templates\home\index.html:32
+msgid "Official Manual"
+msgstr "공식 매뉴얼"
+
+#: .\templates\home\index.html:54
+msgid ""
+"\n"
+"                    <p>I am a <strong>pull-stack developer</strong> and "
+"interested in <u>docker and CI/CD</u>\n"
+"                    so doing open source activities. I ran an <u>online "
+"branding marketing startup</u> and collaborated with various companies.</p>\n"
+"                    "
+msgstr ""
+"\n"
+"                    <p>저는 <strong> 풀스택 개발자</strong>로 "
+"<u>docker와 CI/CD에</u>관심을 가지고 있어\n"
+"                    관련한 오픈소스 활동을 하고 있습니다. 저는 <u>온라인 "
+"브랜딩 마케팅 스타트업</u>을 운영하며 다양한 기업들과 협업을 했었습니다.</p>\n"
+"                    "
+
+#: .\templates\home\index.html:58
+msgid "See Portfolio"
+msgstr "포트폴리오 보기"
+
+#: .\templates\home\index.html:101
+msgid "My future plans"
+msgstr "나의 미래 계획"
+
+#: .\templates\home\index.html:102
+msgid "What I want to do, what I am interested in these days!"
+msgstr "내가 하고 싶은 것, 요즘 관심 있는 것!"
+
+#: .\templates\home\index.html:103
+msgid "Skills I would like to add to a project soon or start learning"
+msgstr "곧 프로젝트에 추가하거나 학습을 시작하고 싶은 기술들"
+
+#: .\templates\home\index.html:112
+msgid "Applying Docker-swarm"
+msgstr "Docker-swarm 적용"
+
+#: .\templates\home\index.html:113
+msgid "Applying docker-swarm to open source projects you manage."
+msgstr "관리하는 오픈 소스 프로젝트에 docker-swarm을 적용."
+
+#: .\templates\home\index.html:121
+msgid "Swift and kotlin"
+msgstr "스위프트와 코틀린"
+
+#: .\templates\home\index.html:122
+msgid ""
+"Start learning Kotlin and Swift. Getting Started with Android and iOS "
+"Development."
+msgstr ""
+"Kotlin 및 Swift 학습을 시작하기. Android 및 iOS 개발 시작하기."
+
+#: .\templates\home\index.html:130
+msgid "React"
+msgstr "리액트"
+
+#: .\templates\home\index.html:131
+msgid "Start learning React. Start my new web development project with React."
+msgstr "React 학습을 시작하기. React로 새로운 웹 개발 프로젝트 시작하기."
+
+#: .\templates\home\index.html:139
+msgid "Node.js"
+msgstr "노드 제이에스"
+
+#: .\templates\home\index.html:140
+msgid "Implementation of chatbot and real-time chatting system using Node.js."
+msgstr "Node.js를 이용한 챗봇 및 실시간 채팅 시스템 구현."
+
+#: .\templates\home\index.html:151
+msgid "Applying Monitoring system"
+msgstr "모니터링 시스템 적용"
+
+#: .\templates\home\index.html:152
+msgid ""
+"Applying Monitoring system using Prometheus, Sentry, Slack API at existing "
+"open source projects. "
+msgstr ""
+"기존 오픈소스 프로젝트에 Prometheus, Sentry, Slack API를 "
+"이용한 모니터링 시스템 적용. "
+
+#: .\templates\home\index.html:160
+msgid "Python recommender system"
+msgstr "파이썬 추천 시스템"
+
+#: .\templates\home\index.html:161
+msgid ""
+"Creating a recommendation system using Naver, Google, Twitter, and Instagram "
+"data."
+msgstr ""
+"네이버, 구글, 트위터, 인스타그램 데이터를 활용한 추천 시스템 구축."
+
+#: .\templates\home\index.html:169
+msgid "Shopping mall with Vue.js"
+msgstr "Vue.js 기반 쇼핑몰"
+
+#: .\templates\home\index.html:170
+msgid "Starting Django and Vue.js-based shopping mall open source project."
+msgstr "Django 및 Vue.js 기반 쇼핑몰 오픈소스 프로젝트 시작."
+
+#: .\templates\home\index.html:178
+msgid "Smart mirror with Android"
+msgstr "안드로이드 스마트 미러"
+
+#: .\templates\home\index.html:179
+msgid ""
+"Renewal of the smart mirror, which was currently developed based on Tizen, "
+"based on Android."
+msgstr ""
+"기존 타이젠 기반으로 개발되던 스마트미러를 안드로이드 기반으로 리뉴얼."
+
+#: .\templates\home\index.html:195
+msgid "About Projects"
+msgstr "프로젝트 정보"
+
+#: .\templates\home\index.html:196
+msgid ""
+"Open source, teaching/learning projects created and operated by teams or "
+"individuals."
+msgstr ""
+"팀 또는 개인이 만들고 운영하는 오픈 소스와 교육/학습 프로젝트들."
+
+#: .\templates\home\index.html:279
+msgid "Latest Blog Posts"
+msgstr "최신 블로그 게시물"
+
+#: .\templates\home\index.html:280
+msgid ""
+"You can see the latest articles in open source, study, book, and blog "
+"categories. "
+msgstr ""
+"오픈소스, 스터디, 도서, 블로그 카테고리의 최신 기사를 보실 수 있습니다. "
 
 #: .\templates\pages\privacy-policy.html:2
 msgid "privacy policy (Required)"
@@ -685,16 +893,16 @@ msgid "Terms of Service (Required)"
 msgstr "이용약관 (필수)"
 
 #: .\templates\portfolio\portfolio.html:13
-msgid "Get In Touch Result"
-msgstr "연락 결과"
+msgid "Get In Touch Messages"
+msgstr "연락하기 메시지"
 
 #: .\templates\portfolio\portfolio.html:22
 msgid "Close"
 msgstr "닫다"
 
 #: .\templates\portfolio\portfolio.html:35
-msgid "<h3>WHO<strong>AM I</strong>?</h3>"
-msgstr "<h3>나는<strong>누구일까</strong>?</h3>"
+msgid "<h3>WHO <strong>AM I</strong>?</h3>"
+msgstr "<h3>나는 <strong>누구일까</strong>?</h3>"
 
 #: .\templates\portfolio\portfolio.html:37
 msgid "DOWNLOAD MY CV"
@@ -709,11 +917,12 @@ msgid ""
 "                        "
 msgstr ""
 "\n"
-" <h1>경력</h1>\n"
-" <p>스타트업, 기획, 개발, 마케팅 관련 경험을 색상별로 보여줍니다.</p>\n"
+"                        <h1>경력</h1>\n"
+"                        <p>스타트업, 기획, 개발, 마케팅 관련 경험을 "
+"색상별로 보여줍니다.</p>\n"
 "                        "
 
-#: .\templates\portfolio\portfolio.html:145
+#: .\templates\portfolio\portfolio.html:146
 msgid ""
 "\n"
 "                        <h1>Education & Study</h1>\n"
@@ -723,22 +932,23 @@ msgid ""
 msgstr ""
 "\n"
 "                        <h1>교육 & 학습</h1>\n"
-"                        <p>온/오프라인 사이트 혹은 기술서적을 통한 학습 이력.</p>\n"
+"                        <p>온/오프라인 사이트 혹은 "
+"기술서적을 통한 학습 이력.</p>\n"
 "                        "
 
-#: .\templates\portfolio\portfolio.html:154
+#: .\templates\portfolio\portfolio.html:155
 msgid "<h3><strong>EDU</strong>CATION</h3>"
 msgstr "<h3><strong>교육</strong></h3>"
 
-#: .\templates\portfolio\portfolio.html:176
+#: .\templates\portfolio\portfolio.html:177
 msgid "<h3><strong>SKILL</strong>-BOOKS</h3>"
 msgstr "<h3><strong>기술 서적</strong></h3>"
 
-#: .\templates\portfolio\portfolio.html:208
+#: .\templates\portfolio\portfolio.html:210
 msgid "WHAT I AM INTERESTED IN"
 msgstr "내가 관심있는 것"
 
-#: .\templates\portfolio\portfolio.html:244
+#: .\templates\portfolio\portfolio.html:245
 msgid ""
 "\n"
 "                        <h1>About Projects</h1>\n"
@@ -748,18 +958,19 @@ msgid ""
 msgstr ""
 "\n"
 "                        <h1>프로젝트 정보</h1>\n"
-"                        <p>팀 또는 개인이 만들고 운영하는 오픈 소스, 교육/학습 프로젝트.</p>\n"
+"                        <p>팀 또는 개인이 만들고 운영하는 오픈 소스, "
+"교육/학습 프로젝트.</p>\n"
 "                        "
 
-#: .\templates\portfolio\portfolio.html:350
+#: .\templates\portfolio\portfolio.html:352
 msgid "Number"
 msgstr "연락처"
 
-#: .\templates\portfolio\portfolio.html:372
+#: .\templates\portfolio\portfolio.html:374
 msgid "Submit"
 msgstr "제출"
 
-#: .\templates\portfolio\portfolio.html:384
+#: .\templates\portfolio\portfolio.html:386
 msgid ""
 "\n"
 "                  <h3 class=\"mb-15\">Get in touch</h3>\n"
@@ -771,7 +982,8 @@ msgstr ""
 "\n"
 "                  <h3 class=\"mb-15\">연락하기</h3>\n"
 "                  <p>만약 무언가 멋진 일이나 생각을 공유하고 싶다면 연락 주세요."
-" 즐겁고, 재미있고, 행복한 것은 모두 좋아요!</p>\n"
+"즐겁고, 재미있고, 행복한 일들이라면 "
+"모두 좋아합니다!</p>\n"
 "                  "
 
 #: .\users\models.py:58
@@ -805,14 +1017,6 @@ msgstr "이메일 확인 상태"
 #: .\users\models.py:67
 msgid "User Profile Image"
 msgstr "사용자 프로필 이미지"
-
-#: .\users\models.py:75
-msgid "Privacy Policy"
-msgstr "개인 정보 정책"
-
-#: .\users\models.py:76
-msgid "Terms of Service"
-msgstr "서비스 약관"
 
 #: .\users\models.py:77
 msgid "Mobile Authentication"
@@ -943,8 +1147,7 @@ msgstr "페이지 슬러그"
 msgid "Necessary Policy"
 msgstr "필요한 정책"
 
-#: .\users\models.py:243
-#: .\users\models.py:244
+#: .\users\models.py:243 .\users\models.py:244
 msgid "policy pages"
 msgstr "정책 페이지"
 
@@ -1085,3 +1288,4 @@ msgstr "성"
 #: .\users\views\users_forms.py:121
 msgid "Profile Image"
 msgstr "프로필 이미지"
+

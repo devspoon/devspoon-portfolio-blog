@@ -74,7 +74,7 @@ class User(AbstractUser):
 
     is_privacy_policy = models.BooleanField(blank=True, default=True, verbose_name=_('Privacy Policy'))
     is_terms_of_service = models.BooleanField(blank=True, default=True, verbose_name=_('Terms of Service'))
-    is_mobile_authentication = models.BooleanField(blank=True, default=False, verbose_name=_('Mobile Athentication'))
+    is_mobile_authentication = models.BooleanField(blank=True, default=False, verbose_name=_('Mobile Authentication'))
     is_dormant_account = models.BooleanField(blank=True, default=False, verbose_name=_('Dormant Account State'))
     is_deleted = models.BooleanField(blank=True, default=False, verbose_name=_('Deleted State'))
     is_site_register = models.BooleanField(blank=True, default=False, verbose_name=_('Site Register User'))
@@ -285,7 +285,7 @@ class WorldSocialAccount(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='world_social_account', verbose_name=_('User'))
     twitter = models.URLField(blank=True, verbose_name=_('twitter'))
     facebook = models.URLField(blank=True, verbose_name=_('facebook'))
-    instragram = models.URLField(blank=True, verbose_name=_('instragram'))
+    instragram = models.URLField(blank=True, verbose_name=_('instagram'))
     youtube = models.URLField(blank=True, verbose_name=_('youtube'))
     pinterest = models.URLField(blank=True, verbose_name=_('pinterest'))
     linkedin = models.URLField(blank=True, verbose_name=_('linkedin'))

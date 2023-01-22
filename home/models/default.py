@@ -79,7 +79,7 @@ class SiteInfo(models.Model):
     office_email = models.EmailField(max_length=128, unique = True, blank=True, verbose_name=_('Office Email'))
     office_twitter = models.URLField(blank=True, verbose_name=_('Office Twitter'))
     office_facebook = models.URLField(blank=True, verbose_name=_('Office Facebook'))
-    office_instragram = models.URLField(blank=True, verbose_name=_('Office Instragram'))
+    office_instragram = models.URLField(blank=True, verbose_name=_('Office Instagram'))
     office_youtube = models.URLField(blank=True, verbose_name=_('Office Youtube'))
     national_language = models.CharField(blank=True, max_length=10, choices = Language.choices, default=Language.ENGLISH, verbose_name=_('National Language'))
 

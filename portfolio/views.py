@@ -31,7 +31,7 @@ class PortfolioView(TemplateView):
         context['info'] = PersonalInfo.objects.first()
         context['study'] = EducationStudy.objects.all()
         context['interested'] = InterestedIn.objects.all()
-        context['projects'] = AboutProjects.objects.all().select_related('projectpost')
+        context['projects'] = AboutProjects.objects.all().select_related('projectpost').select_related('projectpost__author')
         portfolio = Portfolio.objects.prefetch_related('portfolio_summary').first()
         context['portfolio'] = portfolio
         context['portfolio_summary'] = portfolio.portfolio_summary.all()
