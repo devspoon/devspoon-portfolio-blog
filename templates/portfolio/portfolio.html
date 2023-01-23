@@ -34,7 +34,9 @@
                         <div class="section-title align-left">
                             {% trans "<h3>WHO <strong>AM I</strong>?</h3>" %}
                             {{portfolio.summary|safe}}
+                            {% if portfolio.portfolio_cv_file %}
                             <a href="{{portfolio.portfolio_cv_file.url}}" class="btn btn-outline-danger" download>{{_("DOWNLOAD MY CV")}}</a>
+                            {% endif %}
                             <!-- Button trigger modal -->
                         </div>
                         <div class="about-tab wow fadeInUp" data-wow-delay=".4s">

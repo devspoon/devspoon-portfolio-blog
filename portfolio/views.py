@@ -18,6 +18,9 @@ from .models import Portfolio, PersonalInfo, WorkExperience, EducationStudy, Int
 
 logger = logging.getLogger(__name__)
 
+def get_language_index():
+    return [i for i, v in enumerate(settings.LANGUAGES) if v[0] == translation.get_language()]
+
 # Create your views here.
 class PortfolioView(TemplateView):
     template_name = 'portfolio/portfolio.html'
@@ -25,16 +28,15 @@ class PortfolioView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # You can exchange model information using the code below.
-        #print('get_current_language  : ',translation.get_language())
+        lang = get_language_index()
 
-        context['info'] = PersonalInfo.objects.first()
-        context['study'] = EducationStudy.objects.all()
-        context['interested'] = InterestedIn.objects.all()
-        context['projects'] = AboutProjects.objects.all().select_related('projectpost').select_related('projectpost__author')
-        portfolio = Portfolio.objects.prefetch_related('portfolio_summary').first()
+        context['info'] = PersonalInfo.objects.filter(language__in=lang).first()
+        context['study'] = EducationStudy.objects.filter(language__in=lang)
+        context['interested'] = InterestedIn.objects.filter(language__in=lang)
+        context['projects'] = AboutProjects.objects.select_related('projectpost').select_related('projectpost__author')
+        portfolio = Portfolio.objects.filter(language__in=lang).prefetch_related('portfolio_summary').first()
         context['portfolio'] = portfolio
-        context['portfolio_summary'] = portfolio.portfolio_summary.all()
+        context['portfolio_summary'] = portfolio.portfolio_summary.filter(language__in=lang)
         return context
 
 
@@ -69,7 +71,8 @@ class WorkExperienceJsonView(View):
 
 
     def get(self, request, *args, **kwargs):
-        data = WorkExperience.objects.all()
+        lang = get_language_index()
+        data = WorkExperience.objects.filter(language__in=lang)
         context = list(
             map(self.make_context, data)
         )

@@ -43,35 +43,38 @@ class PortfolioAdmin(SummernoteModelAdmin):
     portfolio_image_3.short_description = 'portfolio_image_preview_3'
 
 class PersonalInfoAdmin(admin.ModelAdmin):
-    list_display = ['id','name','created_at']
+    list_display = ['id','name','language','created_at']
     list_display_links = ['id', 'name']
+    list_editable = ('language',)
 
 
 class ProfileSummaryAdmin(SummernoteModelAdmin):
-    list_display = ['id','position','sort_num','skill','created_at']
+    list_display = ['id','position','sort_num','language','skill','created_at']
     list_display_links = ['id', 'position','skill']
-    list_editable = ('sort_num',)
+    list_editable = ('sort_num','language',)
     summernote_fields = ('content',)
 
 
 class WorkExperienceAdmin(SummernoteModelAdmin):
-    list_display = ['id','title','role','color','sort_num','project_start_date']
+    list_display = ['id','title','role','color','sort_num','language','project_start_date']
     list_display_links = ['id','title','role']
-    list_editable = ('color','sort_num',)
+    list_editable = ('color','sort_num','language',)
     summernote_fields = ('title','summary','content',)
 
 
 class EducationStudyAdmin(SummernoteModelAdmin):
-    list_display = ['id','title','sort_num','created_at']
+    list_display = ['id','title','sort_num','language','created_at']
     list_display_links = ['id','title','created_at']
-    list_editable = ('sort_num',)
+    list_editable = ('sort_num','language',)
     summernote_fields = ('content',)
 
 
 class InterestedInAdmin(SummernoteModelAdmin):
-    list_display = ['id','title','created_at']
+    list_display = ['id','title','language','created_at']
     list_display_links = ['id', 'title']
+    list_editable = ('language',)
     fieldsets = [
+        ('language',{'fields':('language',)}),
         ('icon',{'fields':('icon',),
             'description': '<div class="help">icon searching : <a href="https://lineicons.com/icons/" target="_blank">lineicons.com</a></div>',}),
         ('content',{'fields':('title','content')}),
@@ -80,9 +83,9 @@ class InterestedInAdmin(SummernoteModelAdmin):
 
 
 class AboutProjectsAdmin(admin.ModelAdmin):
-    list_display = ['id','projectpost','sort_num','created_at'] #[field.name for field in AboutProjects._meta.get_fields()]
+    list_display = ['id','projectpost','sort_num','language','created_at'] #[field.name for field in AboutProjects._meta.get_fields()]
     list_display_links = ['id', 'projectpost']
-    list_editable = ('sort_num',)
+    list_editable = ('sort_num','language',)
     raw_id_fields = ('projectpost',)
     date_hierarchy = 'created_at'
 

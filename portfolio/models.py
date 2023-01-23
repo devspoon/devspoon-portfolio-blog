@@ -10,19 +10,24 @@ from utils.os.file_path_name_gen import date_upload_to_for_file, date_upload_to_
 # Create your models here.
 logger = logging.getLogger(__name__)
 
-
-class Portfolio(models.Model):
+class PortfolioDefault(models.Model):
     class Languages(models.TextChoices):
         KOREAN = '0', _('ko')
         ENGLISH = '1', _('en')
+        
+    language = models.CharField(blank=False, max_length=15, choices = Languages.choices, default=Languages.KOREAN, verbose_name=_('Language'))
+    created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
+    
+    class Meta:
+        abstract = True
 
+
+class Portfolio(PortfolioDefault):
     portfolio_cv_file = models.FileField(blank=True, upload_to=date_upload_to_for_file,  verbose_name=_('Portfolio CV File'))
     portfolio_image1 = models.ImageField(blank=True, upload_to=date_upload_to_for_image, default='default/no_img.png', verbose_name=_('Portfolio Image1'))
     portfolio_image2 = models.ImageField(blank=True, upload_to=date_upload_to_for_image, default='default/no_img.png', verbose_name=_('Portfolio Image2'))
     portfolio_image3 = models.ImageField(blank=True, upload_to=date_upload_to_for_image, default='default/no_img.png', verbose_name=_('Portfolio Image3'))
-    language = models.CharField(blank=False, max_length=15, choices = Languages.choices, default=Languages.KOREAN, verbose_name=_('Language'))
     summary = models.TextField(blank=True, verbose_name=_('Summary'))
-    created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
 
     class Meta:
         db_table = 'portfolio'
@@ -33,11 +38,11 @@ class Portfolio(models.Model):
         return "%s" % (self.pk)
 
 
-class PersonalInfo(models.Model):
+class PersonalInfo(PortfolioDefault):
     name = models.CharField(max_length=50, blank=False, verbose_name=_('Name'))
     country = models.CharField(max_length=50, blank=False, verbose_name=_('Country'))
     country_code_regex = RegexValidator(regex = r'^\+([0-9]{2,3})$')
-    country_code = models.CharField(validators = [country_code_regex], max_length = 3, blank=True, default='+82', verbose_name=_('Country Phone Code'))
+    country_code = models.CharField(validators = [country_code_regex], max_length = 10, blank=True, default='+82', verbose_name=_('Country Phone Code'))
     phone_number_regex = RegexValidator(regex = r'^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$')
     phone_number = models.CharField(validators = [phone_number_regex], max_length = 16, unique = True, blank=True, verbose_name=_('Phone Number'))
     office_phone_number = models.CharField(max_length = 16, unique = True, blank=True, verbose_name=_('Office Phone Number'))
@@ -47,7 +52,6 @@ class PersonalInfo(models.Model):
     office_instragram = models.URLField(blank=True, verbose_name=_('Office Instagram'))
     office_youtube = models.URLField(blank=True, verbose_name=_('Office Youtube'))
     get_in_touch = models.BooleanField(default=True, verbose_name=_('Get In Touch'))
-    created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
 
     class Meta:
         db_table = 'personal_info'
@@ -63,7 +67,7 @@ class PersonalInfo(models.Model):
         return "%s" % (self.name)
 
 
-class PortfolioSummary(models.Model):
+class PortfolioSummary(PortfolioDefault):
     class Position(models.TextChoices):
         FRONT_END = '0', _('Front-End')
         BACK_END = '1', _('Back-End')
@@ -75,7 +79,6 @@ class PortfolioSummary(models.Model):
     position = models.CharField(blank=False, max_length=15, choices = Position.choices, default=Position.BACK_END, verbose_name=_('Position'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
     skill = models.CharField(blank=False, max_length=300, verbose_name=_('Skill'),help_text='Insert skill using comma(,)')
-    created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
 
     class Meta:
         db_table = 'portfolio_summary'
@@ -87,7 +90,7 @@ class PortfolioSummary(models.Model):
         return "%s" % (self.position)
 
 
-class WorkExperience(models.Model):
+class WorkExperience(PortfolioDefault):
     class Role(models.TextChoices):
         STARTUP_CEO = '0', _('Startup CEO')
         PROJECT_MANAGER = '1', _('Project Manager')
@@ -114,7 +117,6 @@ class WorkExperience(models.Model):
     summary = models.TextField(blank=False, verbose_name=_('Summary'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
     color = models.CharField(blank=False, max_length=15, choices = Color.choices, default=Color.PINK, verbose_name=_('Color'))
-    created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
 
     class Meta:
         db_table = 'work_experience'
@@ -126,7 +128,7 @@ class WorkExperience(models.Model):
         return "%s" % (self.title)
 
 
-class EducationStudy(models.Model):
+class EducationStudy(PortfolioDefault):
     class TYPE(models.TextChoices):
         EDUCATION = '0', _('Education')
         STUDY = '1', _('Study')
@@ -139,7 +141,6 @@ class EducationStudy(models.Model):
     content = models.TextField(blank=False, verbose_name=_('Content'))
     site_name = models.CharField(blank=True, max_length=50, verbose_name=_('Site Name'))
     class_link = models.URLField(blank=True, verbose_name=_('Site Link'))
-    created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
 
     class Meta:
         db_table = 'education_study'
@@ -151,11 +152,10 @@ class EducationStudy(models.Model):
         return "%s" % (self.title)
 
 
-class InterestedIn(models.Model):
+class InterestedIn(PortfolioDefault):
     icon = models.CharField(blank=False, max_length=50, verbose_name=_('Icon'))
     title = models.CharField(blank=False, max_length=300, verbose_name=_('Title'))
     content = models.TextField(blank=False, verbose_name=_('Content'))
-    created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
 
     class Meta:
         db_table = 'interested_in'
@@ -166,10 +166,9 @@ class InterestedIn(models.Model):
         return "%s" % (self.pk)
 
 
-class AboutProjects(models.Model):
+class AboutProjects(PortfolioDefault):
     projectpost = models.OneToOneField(ProjectPost, null=True, on_delete=models.CASCADE, related_name='about_project', verbose_name=_('Project Post'))
     sort_num = models.IntegerField(blank=False, default=0, verbose_name=_('Sort Number'))
-    created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
 
     class Meta:
         db_table = 'about_projects'
@@ -181,7 +180,7 @@ class AboutProjects(models.Model):
         return "%s" % (self.pk)
 
 
-class GetInTouchLog(models.Model):
+class GetInTouchLog(PortfolioDefault):
     name = models.CharField(blank=False, max_length=300, verbose_name=_('Name'))
     state = models.BooleanField(blank=False, default=True, verbose_name=_('State'))
     email = models.EmailField(max_length=128, blank=False, verbose_name=_('Email'))
@@ -189,7 +188,6 @@ class GetInTouchLog(models.Model):
     phone_number = models.CharField(validators = [phone_number_regex], max_length = 16, blank=True, verbose_name=_('Phone Number'))
     subject = models.CharField(blank=False, max_length=300, verbose_name=_('Subject'))
     message = models.TextField(blank=False, verbose_name=_('Message'))
-    created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('Created Time'))
 
     class Meta:
         db_table = 'get_in_touch'
