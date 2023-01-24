@@ -65,10 +65,6 @@ class MainMenu(MPTTModel):
 
 # footer info
 class SiteInfo(models.Model):
-    class Languages(models.TextChoices):
-        KOREAN = '0', _('ko')
-        ENGLISH = '1', _('en')
-
     site_name = models.CharField(max_length=255, blank=False, verbose_name=_('Site Name'))
     site_owner = models.CharField(max_length=255, blank=False, verbose_name=_('Site Owner'))
     country_code_regex = RegexValidator(regex = r'^\+([0-9]{2,3})$')
@@ -81,7 +77,6 @@ class SiteInfo(models.Model):
     office_facebook = models.URLField(blank=True, verbose_name=_('Office Facebook'))
     office_instragram = models.URLField(blank=True, verbose_name=_('Office Instagram'))
     office_youtube = models.URLField(blank=True, verbose_name=_('Office Youtube'))
-    language = models.CharField(blank=False, max_length=15, choices = Languages.choices, default=Languages.KOREAN, verbose_name=_('Language'))
 
     class Meta:
         db_table = 'site_info'

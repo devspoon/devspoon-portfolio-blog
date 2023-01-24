@@ -10,5 +10,5 @@ def main_menu_tag():
 
 @register.simple_tag
 def site_info_tag():
-    info = SiteInfo.objects.all().first()
+    info = SiteInfo.objects.first()
     return info
