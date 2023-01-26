@@ -93,8 +93,8 @@ class User(AbstractUser):
     class Meta:
         default_manager_name = 'objects'
         db_table = "abstractuser_user"
-        verbose_name = ('user')
-        verbose_name_plural = ('users')
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
         ordering = [('-date_joined'),]
         # ordering = [F('date_joined').desc(nulls_last=True)] # Null 밑으로
         # ordering = [F('-date_joined').asc(nulls_last=True)] # Null 상위로

@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'blog',
     'board',
     'portfolio',
+    'custom_middlewares',
 
     "mptt",
     "anymail",
@@ -68,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'custom_middlewares.common.statistics.ConnectionMethodStatsMiddleware',
 ]
 
 AUTHENTICATION_BACKENDS = [

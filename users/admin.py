@@ -8,6 +8,9 @@ from django.contrib.admin import SimpleListFilter
 from django import forms
 from django.contrib import messages
 
+from django.conf import settings
+from django.utils import translation
+
 import csv
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
@@ -35,6 +38,7 @@ class NickNameFilter(SimpleListFilter):
         if self.value().lower() == 'no_nickname':
             return queryset.filter(nickname='')
 
+
 class ExportCsvMixin:
     def export_as_csv(self, request, queryset):
 
@@ -51,8 +55,14 @@ class ExportCsvMixin:
             row = writer.writerow([getattr(obj, field) for field in field_names])
         return response
 
+
 class CsvImportForm(forms.Form):
     csv_file = forms.FileField()
+
+
+def get_language_index():
+    return [i for i, v in enumerate(settings.LANGUAGES) if v[0] == translation.get_language()]
+
 
 class UserAdminSite(AdminSite):
     site_header = 'User Admin'
@@ -64,6 +74,9 @@ class UserAdminSite(AdminSite):
         Return a sorted list of all the installed apps that have been
         registered in this site.
         '''
+        
+        lang = translation.get_language()
+        
         ordering = {
             'Users': 1,
             'User profile': 2,
@@ -79,15 +92,20 @@ class UserAdminSite(AdminSite):
         app_list = sorted(app_dict.values(), key=lambda x: x['name'].lower())
 
         # Sort the models alphabetically within each app.
-        for app in app_list:
-            app['models'].sort(key=lambda x: ordering[x['name']])
+        
+        if lang == 'en':
+            for app in app_list:
+                app['models'].sort(key=lambda x: ordering[x['name']])
 
         return app_list
 
+
 user_admin_site = UserAdminSite(name='user_admin')
+
 
 class UserProfileInline(admin.TabularInline):
     model = UserProfile # OneT
+
 
 class CustomUserAdmin(UserAdmin, ExportCsvMixin):
     change_list_template = 'admin/users_changelist.html'
