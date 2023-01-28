@@ -133,6 +133,7 @@ class LoginView(AnonymousRequiredMixin, FormView):
             #user= User.user_objects.get_users().get(username=user.username, is_site_register=True)
             self.request.session['email']=user.email
             self.request.session['username']=user.username
+            user.last_login_ipaddress = self.request.META.get('REMOTE_ADDR')
             user.last_login_at = timezone.now()
             user.save()
             return super().form_valid(form)

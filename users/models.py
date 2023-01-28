@@ -71,6 +71,7 @@ class User(AbstractUser):
         format="JPEG",  # 최종 저장 포맷
         options={"quality": 100},  # 저장 옵션
     )
+    last_login_ipaddress = models.GenericIPAddressField(null=False, default='0.0.0.0', verbose_name=_('Last Login Ip Address'))
 
     is_privacy_policy = models.BooleanField(blank=True, default=True, verbose_name=_('Privacy Policy'))
     is_terms_of_service = models.BooleanField(blank=True, default=True, verbose_name=_('Terms of Service'))
