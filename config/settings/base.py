@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "anymail",
     'imagekit',
     'rangefilter',
+    'django_user_agents',
 ]
 
 MIDDLEWARE = [
@@ -69,7 +70,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
     'custom_middlewares.common.statistics.ConnectionMethodStatsMiddleware',
+    'custom_middlewares.common.statistics.ConnectionHardwareStatsMiddleware',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -183,3 +186,5 @@ SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_COOKIE_SECURE = True # https
 
+# django-user-agent의 캐시 사용하려는 경우 'default'로 설정, 그외에는 None으로 설정
+USER_AGENTS_CACHE = 'default'

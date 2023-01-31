@@ -1,24 +1,29 @@
 from django.db.models import F
-from ..models import ConnectionMethodStats
+from django.db import transaction
+from django.utils import timezone
+from ..models import ConnectionMethodStats, ConnectionHardwareStats
 
 class ConnectionMethodStatsMiddleware:
 
   def __init__(self, get_response):
     self.get_response = get_response
 
-
   def stats(self, os_info):
-    if "Windows" in os_info:
-        ConnectionMethodStats.objects.all().update(win=F('win') + 1)
-    elif "mac" in os_info:
-        ConnectionMethodStats.objects.all().update(mac=F('mac') + 1)
-    elif "iPhone" in os_info:
-        ConnectionMethodStats.objects.all().update(iph=F('iph') + 1)
-    elif "Android" in os_info:
-        ConnectionMethodStats.objects.all().update(android=F('android') + 1)
-    else:
-        ConnectionMethodStats.objects.all().update(oth=F('oth') + 1)
-
+    with transaction.atomic():
+        count=ConnectionMethodStats.objects.filter(created_at__day=timezone.now().date().day)
+        if not count:
+            ConnectionMethodStats.objects.create(created_at=timezone.now())
+        
+        if "Windows" in os_info:
+            count.update(win=F('win') + 1)
+        elif "mac" in os_info:
+            count.update(mac=F('mac') + 1)
+        elif "iPhone" in os_info:
+            count.update(iph=F('iph') + 1)
+        elif "Android" in os_info:
+            count.update(android=F('android') + 1)
+        else:
+            count.update(oth=F('oth') + 1)
 
   def __call__(self, request):
       
@@ -30,6 +35,31 @@ class ConnectionMethodStatsMiddleware:
     return response
   
 
+class ConnectionHardwareStatsMiddleware:
+    
+  def __init__(self, get_response):
+    self.get_response = get_response
+
+  def __call__(self, request):
+      
+    if "admin" not in request.path:
+        with transaction.atomic():
+            count=ConnectionHardwareStats.objects.filter(created_at__day=timezone.now().date().day)
+            if not count:
+                ConnectionHardwareStats.objects.create(created_at=timezone.now())
+            
+            if request.user_agent.is_mobile:
+                count.update(mobile=F('mobile') + 1)
+            elif request.user_agent.is_tablet:
+                count.update(tablet=F('tablet') + 1)
+            elif request.user_agent.is_pc:
+                count.update(pc=F('pc') + 1)
+            elif request.user_agent.is_bot:
+                count.update(bot=F('bot') + 1)
+                
+    response = self.get_response(request)
+
+    return response
 
 
 
