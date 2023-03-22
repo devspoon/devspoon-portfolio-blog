@@ -1,6 +1,8 @@
 import os
 from uuid import uuid4
+
 from django.utils import timezone
+
 
 def date_upload_to_for_image(instance, filename):
     # upload_to="%Y/%m/%d" 처럼 날짜로 세분화
@@ -12,7 +14,7 @@ def date_upload_to_for_image(instance, filename):
     # 결합 후 return
     return "/".join(
         [
-            'images_repo',
+            "images_repo",
             ymd_path,
             uuid_name + extension,
         ]
@@ -24,11 +26,12 @@ def date_upload_to_for_file(instance, filename):
     ymd_path = timezone.now().strftime("%Y/%m/%d")
     return "/".join(
         [
-            'files_repo',
+            "files_repo",
             ymd_path,
             filename,
         ]
     )
+
 
 def date_upload_to_for_summernote(self, filename):
     # upload_to="%Y/%m/%d" 처럼 날짜로 세분화
@@ -41,7 +44,7 @@ def date_upload_to_for_summernote(self, filename):
 
     return "/".join(
         [
-            'summernote_repo',
+            "summernote_repo",
             ymd_path,
             uuid_name + extension,
         ]

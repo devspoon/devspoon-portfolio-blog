@@ -1,32 +1,47 @@
 import logging
 
 from django import forms
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-from blog.models.blog import BooksPost
 from django_summernote.widgets import SummernoteWidget
 
-logger = logging.getLogger(__name__)
+from blog.models.blog import BooksPost
+
+logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
 
 
 class BooksForm(forms.ModelForm):
-
-    tag_set = forms.CharField(label='tags', help_text=_('Separate tags using ","'), required=False, initial="")
+    tag_set = forms.CharField(
+        label="tags", help_text=_('Separate tags using ","'), required=False, initial=""
+    )
 
     def __init__(self, *args, **kwargs):
         super(BooksForm, self).__init__(*args, **kwargs)
-        self.fields['title'].required = True
-        self.fields['content'].required = True
-        self.fields['dev_lang'].required = True
+        self.fields["title"].required = True
+        self.fields["content"].required = True
+        self.fields["dev_lang"].required = True
 
-        self.fields['content'].widget.attrs.update({
-            'placeholder': _('Enter Content'),
-            'class': 'form-control',
-            'autofocus': True,
-        })
+        self.fields["content"].widget.attrs.update(
+            {
+                "placeholder": _("Enter Content"),
+                "class": "form-control",
+                "autofocus": True,
+            }
+        )
 
     class Meta:
         model = BooksPost
-        fields = ["title", "dev_lang", "branch","difficulty_level", "content", "link1", "link2", "file1", "file2"]
+        fields = [
+            "title",
+            "dev_lang",
+            "branch",
+            "difficulty_level",
+            "content",
+            "link1",
+            "link2",
+            "file1",
+            "file2",
+        ]
 
         labels = {
             "link1": "link1",
@@ -41,5 +56,5 @@ class BooksForm(forms.ModelForm):
         }
 
         widgets = {
-            'content': SummernoteWidget(),
+            "content": SummernoteWidget(),
         }

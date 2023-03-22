@@ -8,7 +8,9 @@ from middlewares.
 
 from home.admin.default_admin import home_admin_site
 from ..models import newstats
-
+import logging
+from django.conf import settings
+logger = logging.getLogger(getattr(settings, "COMMON_LOGGER", "django"))
 @home_admin_site.register(newstats)
 class NewStatsAdmin(admin.ModelAdmin):
 

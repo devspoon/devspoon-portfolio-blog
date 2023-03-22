@@ -11,17 +11,23 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
-from pathlib import Path
-from decouple import config
 from os.path import join
+from pathlib import Path
+
+#linux requirement
+import pymysql
+from decouple import config
 from django.contrib import messages
+from django.utils.translation import gettext_lazy as _
 
 #from .sub_settings.email.sendinblue import *
 #from .sub_settings.email.mailgun import *
 from .sub_settings.email.sendgrid import *
+
 #from .sub_settings.email.aws_ses import *
 
-from django.utils.translation import gettext_lazy as _
+
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

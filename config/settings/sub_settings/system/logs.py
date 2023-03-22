@@ -1,17 +1,17 @@
 import os
 import sys
+
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from os.path import join
 
-from config.settings.base import ROOT_DIR
-from config.settings.base import MIDDLEWARE
+from config.settings.base import MIDDLEWARE, ROOT_DIR
 
 MIDDLEWARE += [
     "request_logging.middleware.LoggingMiddleware",
 ]
 
-'''
+"""
 ref:
 1. https://docs.djangoproject.com/en/4.0/topics/logging/#loggers
 2. https://docs.djangoproject.com/en/4.0/howto/logging/#logging-how-to
@@ -44,90 +44,131 @@ def home(request):
     return HttpResponse('finish')
 issues : 윈도우 테스트시 debug level 출력 안됨, 파일 출력 안됨
          차후 버그 픽스
-'''
+"""
 
 # DEFAULT_LOGGING = {
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-
+    "version": 1,
+    "disable_existing_loggers": False,
     # Filters
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse',
+    "filters": {
+        "require_debug_false": {
+            "()": "django.utils.log.RequireDebugFalse",
         },
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
+        "require_debug_true": {
+            "()": "django.utils.log.RequireDebugTrue",
         },
     },
-
     # Formatter
-    'formatters': {
-        'django.server': {
-            '()': 'django.utils.log.ServerFormatter',
-			'format': '[{server_time}] {message}',
-			'datefmt': '%d/%b/%Y %H:%M:%S',
-            'style': '{',
+    "formatters": {
+        "django.server": {
+            "()": "django.utils.log.ServerFormatter",
+            "format": "[{server_time}] : {levelname} [{filename}:{name} -> {funcName} : {lineno}] {message}",
+            "datefmt": "%d/%b/%Y %H:%M:%S",
+            "style": "{",
         },
-        'standard': {
-            'format': '[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s',
-            'datefmt': '%d/%b/%Y %H:%M:%S',
+        "standard": {
+            "format": "[%(asctime)s] %(levelname)s [%(filename)s:%(name)s -> %(funcName)5s() : %(lineno)s] %(message)s",
+            "datefmt": "%d/%b/%Y %H:%M:%S",
         },
     },
-
     # Handler
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'encoding': 'utf-8',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filters': ['require_debug_true'],
-            'filename': join(ROOT_DIR, 'logs/logfile.log'),
-            'maxBytes': 1024*1024*15,
-            'backupCount': 10,
-            'formatter': 'standard',
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "encoding": "utf-8",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filters": ["require_debug_true"],
+            "filename": join(ROOT_DIR, "logs/logfile.log"),
+            "maxBytes": 1024 * 1024 * 15,
+            "backupCount": 10,
+            "formatter": "standard",
         },
-        'console': {
-            'level': 'DEBUG',
-            'filters': ['require_debug_true'],
-            'class': 'logging.StreamHandler',
-			'formatter': 'standard',
+        "console": {
+            "level": "DEBUG",
+            "filters": ["require_debug_true"],
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
         },
-        'django.server': {
-            'level': 'DEBUG',
-            'filters': ['require_debug_true'],
-            'class': 'logging.StreamHandler',
-            'formatter': 'django.server',
+        "django.server": {
+            "level": "DEBUG",
+            "filters": ["require_debug_true"],
+            "class": "logging.StreamHandler",
+            "formatter": "django.server",
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_true'],
-            'class': 'django.utils.log.AdminEmailHandler',
-            'formatter': 'standard',
+        "mail_admins": {
+            "level": "ERROR",
+            "filters": ["require_debug_true"],
+            "class": "django.utils.log.AdminEmailHandler",
+            "formatter": "standard",
         },
     },
-
     # Logger
-    'loggers': {
-        # 'django': {
-        #     'handlers': ['file'],
-        #     'level': 'DEBUG',
-        # },
-        # runserver 작업시 콘솔 출력
-        # 'django.server': {
-        #     'handlers': ['django.server'],
-        #     'level': 'DEBUG',
-        #     'propagate': False,
-        # },
+    "loggers": {
+        "django": {
+            "handlers": ["file", "console", "mail_admins"],
+            "level": "WARNING",
+        },
+        # # runserver 작업시 콘솔 출력
+        "django.server": {
+            "handlers": ["django.server"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
         # 요청 출력
-        # 'django.request': {
-        #     'handlers': ['console', 'file'],
-        #     'level': 'DEBUG',
-        #     'propagate': False,
-        # },
-        '': {
-            'handlers': ['console','mail_admins'],#,'file'],
-            'level': 'INFO',
-        }
-    }
+        "django.request": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "common": {
+            "handlers": [
+                "console",
+            ],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "home": {
+            "handlers": [
+                "console",
+            ],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "blog": {
+            "handlers": [
+                "console",
+            ],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "board": {
+            "handlers": [
+                "console",
+            ],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "portfolio": {
+            "handlers": [
+                "console",
+            ],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "users": {
+            "handlers": [
+                "console",
+            ],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
 }
+
+COMMON_LOGGER = "common"
+HOME_LOGGER = "home"
+BLOG_LOGGER = "blog"
+BOARD_LOGGER = "board"
+PORTFOLIO_LOGGER = "portfolio"
+USERS_LOGGER = "users"

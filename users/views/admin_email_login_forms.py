@@ -1,15 +1,21 @@
+import logging
+
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.conf import settings
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+
 from ..models import User
 
-class CustomUserCreationForm(UserCreationForm):
+logger = logging.getLogger(getattr(settings, "USERS_LOGGER", "django"))
 
+
+class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ("username", "email")
+
 
 class CustomUserChangeForm(UserChangeForm):
-
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ("username", "email")

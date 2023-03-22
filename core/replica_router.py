@@ -1,8 +1,12 @@
+import logging
 import random
+
 from django.conf import settings
 
-class ReplicationRouter:
+logger = logging.getLogger(getattr(settings, "COMMON_LOGGER", "django"))
 
+
+class ReplicationRouter:
     def db_for_read(self, model, **hints):
         """
         Randomly pick a database to read from
@@ -11,13 +15,13 @@ class ReplicationRouter:
         """
         # return random.choice([key for key in settings.DATABASES]) # for All database
         # return random.choice(['replica1', 'replica2']) # for replica database
-        return 'replica1'
+        return "replica1"
 
     def db_for_write(self, model, **hints):
         """
         Always send write queries to the master database.
         """
-        return 'default';
+        return "default"
 
     def allow_relation(self, obj1, obj2, **hints):
         """
@@ -39,6 +43,6 @@ class ReplicationRouter:
         """
         Only allow migration operations on the master database, just in case.
         """
-        if db == 'default':
+        if db == "default":
             return True
         return None
