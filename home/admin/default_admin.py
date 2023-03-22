@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.admin import AdminSite
 from mptt.admin import DraggableMPTTAdmin  # 관리자페이지에서 카테고리를 트리형식으로
 
-from common.components.admin.admin_components import AdminCacheClean
+from common.components.admin.admin_components import AdminCacheCleanFixedKey
 from custom_middlewares.admin.home_statistics_admin import (
     ConnectionHardwareStatsAdmin,
     ConnectionMethodStatsAdmin,
@@ -25,9 +25,9 @@ class HomeAdminSite(AdminSite):
 home_admin_site = HomeAdminSite(name="home_admin")
 
 
-class MainMenuAdmin(AdminCacheClean, DraggableMPTTAdmin):
+class MainMenuAdmin(AdminCacheCleanFixedKey, DraggableMPTTAdmin):
     view_key = [
-        "home:main_menu",
+        "home:main_menu:0:main_menu",
     ]
     template_key = [
         "home:template_main_menu_pc",
@@ -45,12 +45,12 @@ class MainMenuAdmin(AdminCacheClean, DraggableMPTTAdmin):
         return actions
 
 
-class SiteInfoAdmin(AdminCacheClean, admin.ModelAdmin):
+class SiteInfoAdmin(AdminCacheCleanFixedKey, admin.ModelAdmin):
     list_display = [field.name for field in SiteInfo._meta.get_fields()]
     list_display_links = ["id", "phone_number", "office_email"]
 
     view_key = [
-        "home:site_info",
+        "home:site_info:0:site_info",
     ]
     template_key = ""
 

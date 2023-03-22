@@ -16,16 +16,10 @@ from blog.models.blog import (
 )
 from board.models.board import Notice, Reactivation, Visiter
 
-# from django.core.cache import cache
-
 logger = logging.getLogger(getattr(settings, "HOME_LOGGER", "django"))
 
 
 class Search:
-    def create_redis_cache_key(self, category, keyword, page_number):
-        identifier = "search"
-        return "%s:%s:%s:%s" % (identifier, category, keyword, page_number)
-
     def get_keyword_search_query_set(self, instance, keyword):
         result = (
             instance.activate_objects.get_data()
@@ -63,12 +57,6 @@ class Search:
         return result
 
     def queryset_tag_search(self, tag, page_number, per_page):
-        cache_key = self.create_redis_cache_key("queryset_tag", tag, page_number)
-        # cached_data = cache.get(cache_key)
-        # if cached_data:
-        #     return cached_data
-        # logger.debug("get_search_query_set queryset : {}".format(queryset))
-
         tag = Tag.objects.filter(tag=tag)
 
         # blog result
@@ -101,19 +89,9 @@ class Search:
             "tag": tag,
         }
 
-        # cache.set(cache_key, result, 60)
-
         return result
 
     def queryset_keyword_search(self, keyword, page_number, per_page):
-        cache_key = self.create_redis_cache_key(
-            "queryset_keyword", keyword, page_number
-        )
-        # cached_data = cache.get(cache_key)
-        # if cached_data:
-        #     return cached_data
-        # logger.debug("get_search_query_set queryset : {}".format(queryset))
-
         # board result
         notice_queryset = self.get_keyword_search_query_set(Notice, keyword)
         visiter_queryset = self.get_keyword_search_query_set(Visiter, keyword)
@@ -153,7 +131,5 @@ class Search:
         }
 
         print("result : ", result)
-
-        # cache.set(cache_key, result, 60)
 
         return result

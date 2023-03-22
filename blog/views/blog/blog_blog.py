@@ -46,7 +46,7 @@ class BlogDetailView(DetailView):
     model = BlogPost
     template_name = "blog/blog/blog_detail.html"
     context_object_name = "board"
-    cache_prefix = "board:BlogDetailView"
+    cache_prefix = "blog:Blog"
 
     def get_queryset(self):
         check_cached_key = dredis_cache_check_key(
@@ -149,6 +149,7 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
     form_class = BlogForm
     template_name = "blog/blog/blog_update.html"
     login_url = reverse_lazy("users:login")
+    cache_prefix = "blog:Blog"
 
     def get_success_url(self):
         return reverse_lazy("blog:blog_detail", kwargs={"pk": self.object.pk})
@@ -162,6 +163,11 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
 
         data.tag_save(form.cleaned_data["tag_set"])
 
+        dredis_cache_delete(
+            self.cache_prefix,
+            self.kwargs.get("pk"),
+        )
+
         return super().form_valid(form)
 
 
@@ -170,6 +176,7 @@ class BlogDeleteView(LoginRequiredMixin, DeleteView):
     pk_url_kwarg = "pk"
     success_url = reverse_lazy("blog:blog_list")
     login_url = reverse_lazy("users:login")
+    cache_prefix = "blog:Blog"
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -178,14 +185,16 @@ class BlogDeleteView(LoginRequiredMixin, DeleteView):
         self.object = super().get_object()
         if self.request.user != self.object.author:
             raise PermissionDenied()
+        dredis_cache_delete(
+            self.cache_prefix,
+            self.kwargs.get("pk"),
+        )
         return super().form_valid(None)
 
 
 class BlogLikeJsonView(LoginRequiredMixin, View):
     def get(self, request, pk):
         post = get_object_or_404(BlogPost, pk=pk)
-
-        print("BlogLikeJsonView !!!!!")
 
         with transaction.atomic():
             post_like = post.like_user_set.select_for_update().filter(

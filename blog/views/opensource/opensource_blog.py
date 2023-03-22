@@ -18,6 +18,13 @@ from django.views.generic import (
 )
 from isort import file
 
+from common.components.django_redis_cache_components import (
+    dredis_cache_check_key,
+    dredis_cache_delete,
+    dredis_cache_get,
+    dredis_cache_set,
+)
+
 from ...models.blog import OpenSourcePost
 from .opensource_forms import OpenSourceForm
 
@@ -39,40 +46,82 @@ class OpenSourceDetailView(DetailView):
     model = OpenSourcePost
     template_name = "blog/opensource/opensource_detail.html"
     context_object_name = "board"
+    cache_prefix = "blog:OpenSource"
+
+    def get_queryset(self):
+        check_cached_key = dredis_cache_check_key(
+            self.cache_prefix,
+            self.kwargs.get("pk"),
+            "get_queryset",
+        )
+        if check_cached_key:
+            queryset = dredis_cache_get(
+                self.cache_prefix,
+                self.kwargs.get("pk"),
+                "get_queryset",
+            )
+        else:
+            queryset = super().get_queryset()
+            dredis_cache_set(
+                self.cache_prefix,
+                self.kwargs.get("pk"),
+                get_queryset=queryset,
+            )
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        pre_temp_queryset = (
-            OpenSourcePost.objects.filter(pk__lt=context["board"].pk)
-            .order_by("-pk")
-            .first()
+        check_cached_key = dredis_cache_check_key(
+            self.cache_prefix, self.kwargs.get("pk"), "user_auth"
         )
-        next_temp_queryset = (
-            OpenSourcePost.objects.filter(pk__gt=context["board"].pk)
-            .order_by("pk")
-            .first()
-        )
-
-        if not pre_temp_queryset:
-            context["pre_board"] = ""
+        if check_cached_key:
+            queryset = dredis_cache_get(
+                self.cache_prefix,
+                self.kwargs.get("pk"),
+            )
+            context.update(queryset)
         else:
-            context["pre_board"] = pre_temp_queryset
+            pre_temp_queryset = (
+                OpenSourcePost.objects.filter(pk__lt=context["board"].pk)
+                .order_by("-pk")
+                .first()
+            )
+            next_temp_queryset = (
+                OpenSourcePost.objects.filter(pk__gt=context["board"].pk)
+                .order_by("pk")
+                .first()
+            )
 
-        if not pre_temp_queryset:
-            context["next_board"] = ""
-        else:
-            context["next_board"] = next_temp_queryset
+            if not pre_temp_queryset:
+                context["pre_board"] = ""
+            else:
+                context["pre_board"] = pre_temp_queryset
 
-        context["like_state"] = (
-            OpenSourcePost.objects.filter(pk=self.kwargs.get("pk"))
-            .first()
-            .like_user_set.filter(pk=self.request.user.pk)
-            .exists()
-        )
+            if not pre_temp_queryset:
+                context["next_board"] = ""
+            else:
+                context["next_board"] = next_temp_queryset
 
-        context["user_auth"] = self.get_object().author == self.request.user
+            context["like_state"] = (
+                OpenSourcePost.objects.filter(pk=self.kwargs.get("pk"))
+                .first()
+                .like_user_set.filter(pk=self.request.user.pk)
+                .exists()
+            )
 
+            context["user_auth"] = self.request.user
+            caching_data = context.copy()
+
+            [caching_data.pop(x, None) for x in ["object", "board", "view"]]
+            dredis_cache_set(
+                self.cache_prefix,
+                self.kwargs.get("pk"),
+                **caching_data,
+            )
+
+        logger.debug(f"final context : {context}")
         return context
 
 
@@ -100,6 +149,7 @@ class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
     form_class = OpenSourceForm
     template_name = "blog/opensource/opensource_update.html"
     login_url = reverse_lazy("users:login")
+    cache_prefix = "blog:OpenSource"
 
     def get_success_url(self):
         return reverse_lazy("blog:opensource_detail", kwargs={"pk": self.object.pk})
@@ -113,6 +163,11 @@ class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
 
         data.tag_save(form.cleaned_data["tag_set"])
 
+        dredis_cache_delete(
+            self.cache_prefix,
+            self.kwargs.get("pk"),
+        )
+
         return super().form_valid(form)
 
 
@@ -121,6 +176,7 @@ class OpenSourceDeleteView(LoginRequiredMixin, DeleteView):
     pk_url_kwarg = "pk"
     success_url = reverse_lazy("blog:opensource_list")
     login_url = reverse_lazy("users:login")
+    cache_prefix = "blog:OpenSource"
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -129,6 +185,10 @@ class OpenSourceDeleteView(LoginRequiredMixin, DeleteView):
         self.object = super().get_object()
         if self.request.user != self.object.author:
             raise PermissionDenied()
+        dredis_cache_delete(
+            self.cache_prefix,
+            self.kwargs.get("pk"),
+        )
         return super().form_valid(None)
 
 

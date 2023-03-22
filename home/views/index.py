@@ -9,6 +9,12 @@ from django.http import Http404
 from django.views.generic import TemplateView, View
 
 from blog.models.blog import BlogPost, BooksPost, OnlineStudyPost, OpenSourcePost
+from common.components.django_redis_cache_components import (
+    dredis_cache_check_key,
+    dredis_cache_delete,
+    dredis_cache_get,
+    dredis_cache_set,
+)
 from home.views.service.search import Search
 from portfolio.models import AboutProjects
 
@@ -21,11 +27,17 @@ CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
 class IndexView(TemplateView):
     template_name = "home/index.html"
+    cache_prefix = "index"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if "index" in cache:
-            context["latest"] = cache.get("home:index")
+            # context["latest"] = cache.get("home:index")
+            queryset = dredis_cache_get(
+                self.cache_prefix,
+                0,
+            )
+            context.update(queryset)
         else:
             context["projects"] = (
                 AboutProjects.objects.all()
@@ -97,7 +109,15 @@ class IndexView(TemplateView):
             context["latest"] = latest.union(books, all=False).order_by("created_at")[
                 :9
             ]
-            cache.set("home:index", context["latest"], timeout=CACHE_TTL)
+            caching_data = context.copy()
+
+            [caching_data.pop(x, None) for x in ["view"]]
+            dredis_cache_set(
+                self.cache_prefix,
+                0,
+                **caching_data,
+            )
+        logger.debug(f"final context : {context}")
         return context
 
 

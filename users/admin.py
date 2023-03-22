@@ -14,7 +14,7 @@ from django.utils import translation
 from django.utils.safestring import mark_safe
 from rangefilter.filters import DateRangeFilter, DateTimeRangeFilter
 
-from common.components.admin.admin_components import AdminCacheClean
+from common.components.admin.admin_components import AdminCacheCleanFixedKey
 
 from .models import (
     LocalSocialAccount,
@@ -302,7 +302,7 @@ class SendingEmailMonitorAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
-class PolicyPagesAdmin(AdminCacheClean, admin.ModelAdmin):
+class PolicyPagesAdmin(AdminCacheCleanFixedKey, admin.ModelAdmin):
     list_display = ("id", "title")
     list_display_links = ["id", "title"]
     list_per_page = 20

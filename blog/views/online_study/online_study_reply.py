@@ -18,6 +18,13 @@ from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DeleteView, UpdateView, View
 
+from common.components.django_redis_cache_components import (
+    dredis_cache_check_key,
+    dredis_cache_delete,
+    dredis_cache_get,
+    dredis_cache_set,
+)
+
 from ...models.blog import OnlineStudyPost
 from ...models.blog_reply import OnlineStudyPostReply
 
@@ -33,41 +40,68 @@ def make_list_by_paginator(paginator, pages):
 
 class OnlineStudyReplyListJsonView(View):
     the_number_of_replies = 10
+    cache_prefix = "blog:OnlineStudyReply"
+    temp_pk = 0
 
     def get(self, request, pk):
-        post = OnlineStudyPostReply.objects.filter(post=pk).select_related("author")
-        paginator = Paginator(post, self.the_number_of_replies)
         page = request.GET.get("page", 1)
 
-        pages = paginator.get_page(page)
-
-        pagination_info = make_list_by_paginator(paginator, pages)
-
-        replies = list(
-            map(
-                lambda context: {
-                    "pk": context.pk,
-                    "author": str(context.author),
-                    "comment": context.comment,
-                    "depth": context.depth,
-                    "group": context.group,
-                    "parent": str(context.parent_id),
-                    "post": str(context.post.pk),
-                    "created_at": context.created_at.strftime("%Y-%m-%d %I:%M:%S %p"),
-                    "thumbnail": str(context.author.photo_thumbnail.url),
-                    "user_auth": str(context.author) == str(request.user.username),
-                },
-                pages.object_list,
-            )
+        check_cached_key = dredis_cache_check_key(
+            self.cache_prefix,
+            self.temp_pk,
+            page,
         )
+        if check_cached_key:
+            results = dredis_cache_get(
+                self.cache_prefix,
+                self.temp_pk,
+                page,
+            )
+        else:
+            post = OnlineStudyPostReply.objects.filter(post=pk).select_related("author")
+            paginator = Paginator(post, self.the_number_of_replies)
 
-        results = pagination_info + replies
+            pages = paginator.get_page(page)
+
+            pagination_info = make_list_by_paginator(paginator, pages)
+
+            replies = list(
+                map(
+                    lambda context: {
+                        "pk": context.pk,
+                        "author": str(context.author),
+                        "comment": context.comment,
+                        "depth": context.depth,
+                        "group": context.group,
+                        "parent": str(context.parent_id),
+                        "post": str(context.post.pk),
+                        "created_at": context.created_at.strftime(
+                            "%Y-%m-%d %I:%M:%S %p"
+                        ),
+                        "thumbnail": str(context.author.photo_thumbnail.url),
+                        "user_auth": str(context.author) == str(request.user.username),
+                    },
+                    pages.object_list,
+                )
+            )
+
+            results = pagination_info + replies
+            caching_data = {}
+            caching_data[page] = results
+            dredis_cache_set(
+                self.cache_prefix,
+                self.temp_pk,
+                **caching_data,
+            )
+        logger.debug(f"final context : {results}")
 
         return JsonResponse(results, safe=False)
 
 
 class OnlineStudyReplyCreateJsonView(LoginRequiredMixin, View):
     login_url = reverse_lazy("users:login")
+    cache_prefix = "blog:OnlineStudyReply"
+    temp_pk = 0
 
     def get(self, request, *args, **kwargs):
         return redirect("blog:online_study_detail", kwargs.get("pk"))
@@ -110,10 +144,18 @@ class OnlineStudyReplyCreateJsonView(LoginRequiredMixin, View):
                 pk=kwargs.get("pk")
             ).update(reply_count=F("reply_count") + 1)
 
+        dredis_cache_delete(
+            self.cache_prefix,
+            self.temp_pk,
+        )
+
         return redirect("blog:online_study_detail", kwargs.get("pk"))
 
 
 class OnlineStudyReplyUpdateJsonView(LoginRequiredMixin, View):
+    cache_prefix = "blog:OnlineStudyReply"
+    temp_pk = 0
+
     def post(self, request, pk, reply_pk):
         content = json.loads(request.body.decode("utf-8"))
         comment = content["comment"]
@@ -132,6 +174,11 @@ class OnlineStudyReplyUpdateJsonView(LoginRequiredMixin, View):
 
         context = {"message": message}
 
+        dredis_cache_delete(
+            self.cache_prefix,
+            self.temp_pk,
+        )
+
         return JsonResponse(context, safe=True)
 
 
@@ -139,6 +186,8 @@ class OnlineStudyReplyDeleteView(LoginRequiredMixin, DeleteView):
     model = OnlineStudyPostReply
     pk_url_kwarg = "reply_pk"
     login_url = reverse_lazy("users:login")
+    cache_prefix = "blog:OnlineStudyReply"
+    temp_pk = 0
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -150,6 +199,11 @@ class OnlineStudyReplyDeleteView(LoginRequiredMixin, DeleteView):
             raise PermissionDenied()
 
         self.post_pk = self.object.post.pk
+
+        dredis_cache_delete(
+            self.cache_prefix,
+            self.temp_pk,
+        )
         return super().form_valid(None)
 
     def get_success_url(self):

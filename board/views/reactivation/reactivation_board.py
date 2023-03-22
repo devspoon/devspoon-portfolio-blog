@@ -18,16 +18,17 @@ from django.views.generic import (
     View,
 )
 
+from common.components.django_redis_cache_components import (
+    dredis_cache_check_key,
+    dredis_cache_delete,
+    dredis_cache_get,
+    dredis_cache_set,
+)
+
 from ...models.board import Reactivation
 from .reactivation_forms import ReactivationForm
 
 logger = logging.getLogger(getattr(settings, "BOARD_LOGGER", "django"))
-
-from django.conf import settings
-from django.core.cache import cache
-from django.core.cache.backends.base import DEFAULT_TIMEOUT
-
-CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
 
 class ReactivationListView(ListView):
@@ -45,20 +46,52 @@ class ReactivationDetailView(DetailView):
     model = Reactivation
     template_name = "board/reactivation/reactivation_detail.html"
     context_object_name = "board"
+    cache_prefix = "board:Reactivation"
 
     def get_queryset(self):
-        key = "board:ReactivationDetailView" + str(self.kwargs.get(self.pk_url_kwarg))
-        if key in cache:
-            queryset = cache.get(key)
+        check_cached_key = dredis_cache_check_key(
+            self.cache_prefix,
+            self.kwargs.get("pk"),
+            "get_queryset",
+        )
+        if check_cached_key:
+            queryset = dredis_cache_get(
+                self.cache_prefix,
+                self.kwargs.get("pk"),
+                "get_queryset",
+            )
         else:
             queryset = super().get_queryset()
-            cache.set(key, queryset, timeout=CACHE_TTL, nx=True)
+            dredis_cache_set(
+                self.cache_prefix,
+                self.kwargs.get("pk"),
+                get_queryset=queryset,
+            )
+
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["user_auth"] = self.request.user
+        check_cached_key = dredis_cache_check_key(
+            self.cache_prefix, self.kwargs.get("pk"), "user_auth"
+        )
+        if check_cached_key:
+            queryset = dredis_cache_get(
+                self.cache_prefix,
+                self.kwargs.get("pk"),
+            )
+            context.update(queryset)
+        else:
+            context["user_auth"] = self.request.user
+            caching_data = context.copy()
+
+            [caching_data.pop(x, None) for x in ["object", "board", "view"]]
+            dredis_cache_set(
+                self.cache_prefix,
+                self.kwargs.get("pk"),
+                **caching_data,
+            )
 
         return context
 
@@ -85,6 +118,7 @@ class ReactivationUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ReactivationForm
     template_name = "board/reactivation/reactivation_update.html"
     login_url = reverse_lazy("users:login")
+    cache_prefix = "board:Reactivation"
 
     def get_success_url(self):
         return reverse_lazy("board:reactivation_update", kwargs={"pk": self.object.pk})
@@ -94,6 +128,11 @@ class ReactivationUpdateView(LoginRequiredMixin, UpdateView):
         if self.request.user != review.author:
             raise PermissionDenied()
 
+        dredis_cache_delete(
+            self.cache_prefix,
+            self.kwargs.get("pk"),
+        )
+
         return super().form_valid(form)
 
 
@@ -102,6 +141,7 @@ class ReactivationDeleteView(LoginRequiredMixin, DeleteView):
     pk_url_kwarg = "pk"
     success_url = reverse_lazy("board:reactivation_list")
     login_url = reverse_lazy("users:login")
+    cache_prefix = "board:Reactivation"
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -110,8 +150,10 @@ class ReactivationDeleteView(LoginRequiredMixin, DeleteView):
         self.object = super().get_object()
         if self.request.user != self.object.author:
             raise PermissionDenied()
-        key = "board:ReactivationDetailView" + str(self.kwargs.get(self.pk_url_kwarg))
-        cache.delete(key)
+        dredis_cache_delete(
+            self.cache_prefix,
+            self.kwargs.get("pk"),
+        )
 
         return super().form_valid(None)
 

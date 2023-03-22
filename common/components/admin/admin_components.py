@@ -16,7 +16,7 @@ class AdminCommonAction(object):
         queryset.update(is_hidden=False)
 
 
-class AdminCacheClean(object):
+class AdminCacheCleanFixedKey(object):
     view_key = ""
     template_key = ""
 
