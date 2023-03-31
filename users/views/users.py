@@ -1,20 +1,16 @@
 import logging
 from datetime import timedelta
 
-from allauth.socialaccount.models import SocialAccount
 from braces.views import AnonymousRequiredMixin
 from django.conf import settings
 from django.contrib import auth, messages
-from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
-from django.http import Http404
-from django.shortcuts import HttpResponseRedirect, get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
-from django.views import View
-from django.views.generic import FormView, UpdateView
+from django.views.generic import FormView, TemplateView, UpdateView, View
 
 from utils.email.verify_email_mixins import VerifyEmailMixin
 
@@ -365,3 +361,11 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     #                 print(f"{field} is {error}error!!! ")
 
     #     return super().form_invalid(form)
+
+
+class PrivacyPolicyView(TemplateView):
+    template_name = "pages/privacy-policy.html"
+
+
+class TermsOfServiceView(TemplateView):
+    template_name = "pages/terms-of-service.html"

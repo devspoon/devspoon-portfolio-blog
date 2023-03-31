@@ -3,10 +3,13 @@ import logging
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import AdminSite
+from django.utils.decorators import method_decorator
 from django.utils.safestring import mark_safe
 from django_summernote.admin import SummernoteModelAdmin
 
 from blog.models.blog import ProjectPost
+from common.components.admin.admin_components import AdminCacheClean
+from common.decorators.cache import index_cache_clean
 from portfolio.models import (
     AboutProjects,
     EducationStudy,
@@ -36,7 +39,10 @@ class ProfileSummaryInline(
     model = PortfolioSummary
 
 
-class PortfolioAdmin(SummernoteModelAdmin):
+class PortfolioAdmin(AdminCacheClean, SummernoteModelAdmin):
+    cache_prefix = "portfolio"
+    use_pk = False
+
     list_display = [
         "id",
         "portfolio_image_1",
@@ -72,6 +78,15 @@ class PortfolioAdmin(SummernoteModelAdmin):
     ]
     inlines = [ProfileSummaryInline]
     summernote_fields = ("summary",)
+    actions = [
+        "delete_all_cache",
+        "delete_selected_items",
+    ]
+
+    def get_actions(self, request):
+        actions = super(PortfolioAdmin, self).get_actions(request)
+        del actions["delete_selected"]
+        return actions
 
     def portfolio_image_1(self, obj):
         return mark_safe(
@@ -99,13 +114,29 @@ class PortfolioAdmin(SummernoteModelAdmin):
     portfolio_image_3.short_description = "portfolio_image_preview_3"
 
 
-class PersonalInfoAdmin(admin.ModelAdmin):
+class PersonalInfoAdmin(AdminCacheClean, admin.ModelAdmin):
+    cache_prefix = "portfolio"
+    use_pk = False
+
     list_display = ["id", "name", "language", "created_at"]
     list_display_links = ["id", "name"]
     list_editable = ("language",)
 
+    actions = [
+        "delete_all_cache",
+        "delete_selected_items",
+    ]
 
-class ProfileSummaryAdmin(SummernoteModelAdmin):
+    def get_actions(self, request):
+        actions = super(PersonalInfoAdmin, self).get_actions(request)
+        del actions["delete_selected"]
+        return actions
+
+
+class ProfileSummaryAdmin(AdminCacheClean, SummernoteModelAdmin):
+    cache_prefix = "portfolio"
+    use_pk = False
+
     list_display = ["id", "position", "sort_num", "language", "skill", "created_at"]
     list_display_links = ["id", "position", "skill"]
     list_editable = (
@@ -114,8 +145,21 @@ class ProfileSummaryAdmin(SummernoteModelAdmin):
     )
     summernote_fields = ("content",)
 
+    actions = [
+        "delete_all_cache",
+        "delete_selected_items",
+    ]
 
-class WorkExperienceAdmin(SummernoteModelAdmin):
+    def get_actions(self, request):
+        actions = super(ProfileSummaryAdmin, self).get_actions(request)
+        del actions["delete_selected"]
+        return actions
+
+
+class WorkExperienceAdmin(AdminCacheClean, SummernoteModelAdmin):
+    cache_prefix = "portfolio"
+    use_pk = False
+
     list_display = [
         "id",
         "title",
@@ -137,8 +181,21 @@ class WorkExperienceAdmin(SummernoteModelAdmin):
         "content",
     )
 
+    actions = [
+        "delete_all_cache",
+        "delete_selected_items",
+    ]
 
-class EducationStudyAdmin(SummernoteModelAdmin):
+    def get_actions(self, request):
+        actions = super(WorkExperienceAdmin, self).get_actions(request)
+        del actions["delete_selected"]
+        return actions
+
+
+class EducationStudyAdmin(AdminCacheClean, SummernoteModelAdmin):
+    cache_prefix = "portfolio"
+    use_pk = False
+
     list_display = ["id", "title", "sort_num", "language", "created_at"]
     list_display_links = ["id", "title", "created_at"]
     list_editable = (
@@ -147,8 +204,21 @@ class EducationStudyAdmin(SummernoteModelAdmin):
     )
     summernote_fields = ("content",)
 
+    actions = [
+        "delete_all_cache",
+        "delete_selected_items",
+    ]
 
-class InterestedInAdmin(SummernoteModelAdmin):
+    def get_actions(self, request):
+        actions = super(EducationStudyAdmin, self).get_actions(request)
+        del actions["delete_selected"]
+        return actions
+
+
+class InterestedInAdmin(AdminCacheClean, SummernoteModelAdmin):
+    cache_prefix = "portfolio"
+    use_pk = False
+
     list_display = ["id", "title", "language", "created_at"]
     list_display_links = ["id", "title"]
     list_editable = ("language",)
@@ -168,8 +238,21 @@ class InterestedInAdmin(SummernoteModelAdmin):
         "content",
     )
 
+    actions = [
+        "delete_all_cache",
+        "delete_selected_items",
+    ]
 
-class AboutProjectsAdmin(admin.ModelAdmin):
+    def get_actions(self, request):
+        actions = super(InterestedInAdmin, self).get_actions(request)
+        del actions["delete_selected"]
+        return actions
+
+
+class AboutProjectsAdmin(AdminCacheClean, admin.ModelAdmin):
+    cache_prefix = "portfolio"
+    use_pk = False
+
     list_display = [
         "id",
         "projectpost",
@@ -184,6 +267,28 @@ class AboutProjectsAdmin(admin.ModelAdmin):
     )
     raw_id_fields = ("projectpost",)
     date_hierarchy = "created_at"
+
+    actions = [
+        "delete_all_cache",
+        "delete_selected_items",
+    ]
+
+    def get_actions(self, request):
+        actions = super(AboutProjectsAdmin, self).get_actions(request)
+        del actions["delete_selected"]
+        return actions
+
+    @method_decorator(index_cache_clean)
+    def delete_selected_items(self, request, queryset):
+        super().delete_selected_items(request, queryset)
+
+    @method_decorator(index_cache_clean)
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+
+    @method_decorator(index_cache_clean)
+    def delete_model(self, request, obj):
+        super().delete_model(request, obj)
 
 
 class ProjectPostHiddenAdmin(admin.ModelAdmin):

@@ -5,9 +5,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.db.models import F, Q
-from django.http import Http404, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -24,6 +25,7 @@ from common.components.django_redis_cache_components import (
     dredis_cache_get,
     dredis_cache_set,
 )
+from common.decorators.cache import index_cache_clean
 
 from ...models.blog import OnlineStudyPost
 from .online_study_forms import OnlineStudyForm
@@ -127,6 +129,7 @@ class OnlineStudyDetailView(DetailView):
         return context
 
 
+@method_decorator(index_cache_clean, name="dispatch")
 class OnlineStudyCreateView(LoginRequiredMixin, CreateView):
     model = OnlineStudyPost
     template_name = "blog/online_study/online_study_edit.html"
@@ -145,6 +148,7 @@ class OnlineStudyCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+@method_decorator(index_cache_clean, name="dispatch")
 class OnlineStudyUpdateView(LoginRequiredMixin, UpdateView):
     model = OnlineStudyPost
     pk_url_kwarg = "pk"
@@ -173,12 +177,14 @@ class OnlineStudyUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
+@method_decorator(index_cache_clean, name="dispatch")
 class OnlineStudyDeleteView(LoginRequiredMixin, DeleteView):
     model = OnlineStudyPost
     pk_url_kwarg = "pk"
     success_url = reverse_lazy("blog:online_study_list")
     login_url = reverse_lazy("users:login")
     cache_prefix = "blog:OnlineStudy"
+    cache_reply_prefix = "blog:OnlineStudyReply"
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -189,7 +195,11 @@ class OnlineStudyDeleteView(LoginRequiredMixin, DeleteView):
             raise PermissionDenied()
         dredis_cache_delete(
             self.cache_prefix,
-            self.kwargs.get("pk"),
+            kwargs.get("pk"),
+        )
+        dredis_cache_delete(
+            self.cache_reply_prefix,
+            kwargs.get("pk"),
         )
         return super().form_valid(None)
 

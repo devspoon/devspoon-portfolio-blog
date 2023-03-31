@@ -5,9 +5,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.db.models import F, Q
-from django.http import Http404, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -24,6 +25,7 @@ from common.components.django_redis_cache_components import (
     dredis_cache_get,
     dredis_cache_set,
 )
+from common.decorators.cache import index_cache_clean
 
 from ...models.blog import BooksPost
 from .books_forms import BooksForm
@@ -125,6 +127,7 @@ class BooksDetailView(DetailView):
         return context
 
 
+@method_decorator(index_cache_clean, name="dispatch")
 class BooksCreateView(LoginRequiredMixin, CreateView):
     model = BooksPost
     template_name = "blog/books/books_edit.html"
@@ -143,6 +146,7 @@ class BooksCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+@method_decorator(index_cache_clean, name="dispatch")
 class BooksUpdateView(LoginRequiredMixin, UpdateView):
     model = BooksPost
     pk_url_kwarg = "pk"
@@ -171,12 +175,14 @@ class BooksUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
+@method_decorator(index_cache_clean, name="dispatch")
 class BooksDeleteView(LoginRequiredMixin, DeleteView):
     model = BooksPost
     pk_url_kwarg = "pk"
     success_url = reverse_lazy("blog:books_list")
     login_url = reverse_lazy("users:login")
     cache_prefix = "blog:Books"
+    cache_reply_prefix = "blog:BooksReply"
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -187,7 +193,11 @@ class BooksDeleteView(LoginRequiredMixin, DeleteView):
             raise PermissionDenied()
         dredis_cache_delete(
             self.cache_prefix,
-            self.kwargs.get("pk"),
+            kwargs.get("pk"),
+        )
+        dredis_cache_delete(
+            self.cache_reply_prefix,
+            kwargs.get("pk"),
         )
         return super().form_valid(None)
 

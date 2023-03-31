@@ -5,9 +5,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.db.models import F, Q
-from django.http import Http404, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -16,7 +17,6 @@ from django.views.generic import (
     UpdateView,
     View,
 )
-from isort import file
 
 from common.components.django_redis_cache_components import (
     dredis_cache_check_key,
@@ -24,6 +24,7 @@ from common.components.django_redis_cache_components import (
     dredis_cache_get,
     dredis_cache_set,
 )
+from common.decorators.cache import index_cache_clean
 
 from ...models.blog import OpenSourcePost
 from .opensource_forms import OpenSourceForm
@@ -125,6 +126,7 @@ class OpenSourceDetailView(DetailView):
         return context
 
 
+@method_decorator(index_cache_clean, name="dispatch")
 class OpenSourceCreateView(LoginRequiredMixin, CreateView):
     model = OpenSourcePost
     template_name = "blog/opensource/opensource_edit.html"
@@ -143,6 +145,7 @@ class OpenSourceCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+@method_decorator(index_cache_clean, name="dispatch")
 class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
     model = OpenSourcePost
     pk_url_kwarg = "pk"
@@ -171,12 +174,14 @@ class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
+@method_decorator(index_cache_clean, name="dispatch")
 class OpenSourceDeleteView(LoginRequiredMixin, DeleteView):
     model = OpenSourcePost
     pk_url_kwarg = "pk"
     success_url = reverse_lazy("blog:opensource_list")
     login_url = reverse_lazy("users:login")
     cache_prefix = "blog:OpenSource"
+    cache_reply_prefix = "blog:OpenSourceReply"
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -187,7 +192,11 @@ class OpenSourceDeleteView(LoginRequiredMixin, DeleteView):
             raise PermissionDenied()
         dredis_cache_delete(
             self.cache_prefix,
-            self.kwargs.get("pk"),
+            kwargs.get("pk"),
+        )
+        dredis_cache_delete(
+            self.cache_reply_prefix,
+            kwargs.get("pk"),
         )
         return super().form_valid(None)
 

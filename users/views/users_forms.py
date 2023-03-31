@@ -2,8 +2,6 @@ import logging
 
 from django import forms
 from django.conf import settings
-from django.contrib.auth.hashers import check_password, make_password
-from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 
 from ..models import User, UserProfile

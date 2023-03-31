@@ -120,9 +120,10 @@ DATABASES = {
         "USER": config("DEFAULT_DB_USER"),
         "PASSWORD": config("DEFAULT_DB_PASSWORD"),
         "CHARSET": config("DEFAULT_DB_CHARSET"),
-        # 'TEST': {
-        #     'NAME': config('DEFAULT_DB_TEST_NAME)'
-        # }
+        "TEST": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "test_default.sqlite3",
+        },
         # * 주의 TEST 파라미터는 데이터베이스 사용후 삭제함
     },
     "replica1": {
@@ -133,9 +134,10 @@ DATABASES = {
         "USER": config("REPLICA1_DB_USER"),
         "PASSWORD": config("REPLICA1_DB_PASSWORD"),
         "CHARSET": config("REPLICA1_DB_CHARSET"),
-        # 'TEST': {
-        #     'NAME': config('REPLICA1_DB_TEST_NAME)'
-        # }
+        "TEST": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "test_replica1.sqlite3",
+        },
         # * 주의 TEST 파라미터는 데이터베이스 사용후 삭제함
     },
 }

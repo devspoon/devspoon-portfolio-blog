@@ -1,11 +1,6 @@
-import datetime
 import json
 import logging
-import re
-from email.policy import default
-from signal import default_int_handler
 
-from django import forms
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -13,10 +8,10 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import F
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DeleteView, UpdateView, View
+from django.views.generic import DeleteView, View
 
 from common.components.django_redis_cache_components import (
     dredis_cache_check_key,
@@ -41,20 +36,19 @@ def make_list_by_paginator(paginator, pages):
 class BlogReplyListJsonView(View):
     the_number_of_replies = 10
     cache_prefix = "blog:BlogReply"
-    temp_pk = 0
 
     def get(self, request, pk):
         page = request.GET.get("page", 1)
 
         check_cached_key = dredis_cache_check_key(
             self.cache_prefix,
-            self.temp_pk,
+            pk,
             page,
         )
         if check_cached_key:
             results = dredis_cache_get(
                 self.cache_prefix,
-                self.temp_pk,
+                pk,
                 page,
             )
         else:
@@ -90,7 +84,7 @@ class BlogReplyListJsonView(View):
             caching_data[page] = results
             dredis_cache_set(
                 self.cache_prefix,
-                self.temp_pk,
+                pk,
                 **caching_data,
             )
         logger.debug(f"final context : {results}")
@@ -100,7 +94,6 @@ class BlogReplyListJsonView(View):
 class BlogReplyCreateJsonView(LoginRequiredMixin, View):
     login_url = reverse_lazy("users:login")
     cache_prefix = "blog:BlogReply"
-    temp_pk = 0
 
     def get(self, request, *args, **kwargs):
         return redirect("blog:blog_detail", kwargs.get("pk"))
@@ -145,7 +138,7 @@ class BlogReplyCreateJsonView(LoginRequiredMixin, View):
 
         dredis_cache_delete(
             self.cache_prefix,
-            self.temp_pk,
+            kwargs.get("pk"),
         )
 
         return redirect("blog:blog_detail", kwargs.get("pk"))
@@ -153,7 +146,6 @@ class BlogReplyCreateJsonView(LoginRequiredMixin, View):
 
 class BlogReplyUpdateJsonView(LoginRequiredMixin, View):
     cache_prefix = "blog:BlogReply"
-    temp_pk = 0
 
     def get(self, request, *args, **kwargs):
         return redirect("blog:blog_reply_update", kwargs.get("reply_pk"))
@@ -178,7 +170,7 @@ class BlogReplyUpdateJsonView(LoginRequiredMixin, View):
 
         dredis_cache_delete(
             self.cache_prefix,
-            self.temp_pk,
+            pk,
         )
 
         return JsonResponse(context, safe=True)
@@ -189,7 +181,6 @@ class BlogReplyDeleteView(LoginRequiredMixin, DeleteView):
     pk_url_kwarg = "reply_pk"
     login_url = reverse_lazy("users:login")
     cache_prefix = "blog:BlogReply"
-    temp_pk = 0
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -204,7 +195,7 @@ class BlogReplyDeleteView(LoginRequiredMixin, DeleteView):
 
         dredis_cache_delete(
             self.cache_prefix,
-            self.temp_pk,
+            kwargs.get("pk"),
         )
         return super().form_valid(None)
 

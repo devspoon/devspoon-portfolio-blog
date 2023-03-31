@@ -4,16 +4,14 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
-from django.db.models import F, Q
-from django.http import Http404, JsonResponse
-from django.shortcuts import get_object_or_404
+from django.db.models import F
+from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
     DeleteView,
     DetailView,
     ListView,
-    TemplateView,
     UpdateView,
     View,
 )
@@ -142,6 +140,7 @@ class ReactivationDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("board:reactivation_list")
     login_url = reverse_lazy("users:login")
     cache_prefix = "board:Reactivation"
+    cache_reply_prefix = "board:ReactivationReply"
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -152,7 +151,11 @@ class ReactivationDeleteView(LoginRequiredMixin, DeleteView):
             raise PermissionDenied()
         dredis_cache_delete(
             self.cache_prefix,
-            self.kwargs.get("pk"),
+            kwargs.get("pk"),
+        )
+        dredis_cache_delete(
+            self.cache_reply_prefix,
+            kwargs.get("pk"),
         )
 
         return super().form_valid(None)

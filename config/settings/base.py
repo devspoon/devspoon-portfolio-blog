@@ -14,17 +14,17 @@ import os
 from os.path import join
 from pathlib import Path
 
-#linux requirement
+# linux requirement
 import pymysql
 from decouple import config
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
-#from .sub_settings.email.sendinblue import *
-#from .sub_settings.email.mailgun import *
+# from .sub_settings.email.sendinblue import *
+# from .sub_settings.email.mailgun import *
 from .sub_settings.email.sendgrid import *
 
-#from .sub_settings.email.aws_ses import *
+# from .sub_settings.email.aws_ses import *
 
 
 pymysql.install_as_MySQLdb()
@@ -38,7 +38,7 @@ TEMPLATE_DIR = os.path.join(ROOT_DIR, "templates")
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -46,80 +46,76 @@ SECRET_KEY = config('SECRET_KEY')
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    'home',
-    'users',
-    'blog',
-    'board',
-    'portfolio',
-    'custom_middlewares',
-
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "home",
+    "users",
+    "blog",
+    "board",
+    "portfolio",
+    "custom_middlewares",
     "mptt",
     "anymail",
-    'imagekit',
-    'rangefilter',
-    'django_user_agents',
+    "imagekit",
+    "rangefilter",
+    "django_user_agents",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_user_agents.middleware.UserAgentMiddleware',
-    'custom_middlewares.common.statistics.ConnectionMethodStatsMiddleware',
-    'custom_middlewares.common.statistics.ConnectionHardwareStatsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_user_agents.middleware.UserAgentMiddleware",
+    "custom_middlewares.common.statistics.ConnectionMethodStatsMiddleware",
+    "custom_middlewares.common.statistics.ConnectionHardwareStatsMiddleware",
 ]
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend' # 기본 인증 백엔드
-]
+AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]  # 기본 인증 백엔드
 
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [TEMPLATE_DIR],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = "config.wsgi.application"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -127,26 +123,22 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-#LANGUAGE_CODE = "ko-kr"
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = "ko-kr"
+LANGUAGE_CODE = "en-us"
 
-#TIME_ZONE = "Asia/Seoul"
-TIME_ZONE = 'UTC'
+# TIME_ZONE = "Asia/Seoul"
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
-USE_L10N = True
-
 LANGUAGES = [
-    ('ko', _('Korean')),
-    ('en', _('English')),
+    ("ko", _("Korean")),
+    ("en", _("English")),
 ]
 
-LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale'),
-)
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 
-USE_TZ = True #true로 선택하면 UTC 기준으로 시간이 저장됨
+USE_TZ = True  # true로 선택하면 UTC 기준으로 시간이 저장됨
 # ref : https://it-eldorado.tistory.com/13
 
 # 자동으로 모델의 id 혹은 pk를 설정해줌
@@ -177,20 +169,20 @@ SITE_ID = 1
 
 # messages setting
 MESSAGE_TAGS = {
-    messages.DEBUG: 'alert-info',
-    messages.INFO: 'alert-info',
-    messages.SUCCESS: 'alert-success',
-    messages.WARNING: 'alert-warning',
-    messages.ERROR: 'alert-danger',
+    messages.DEBUG: "alert-info",
+    messages.INFO: "alert-info",
+    messages.SUCCESS: "alert-success",
+    messages.WARNING: "alert-warning",
+    messages.ERROR: "alert-danger",
 }
 
 
 # Django Session Timeout Code
-#SESSION_COOKIE_AGE = 1200 # second
+# SESSION_COOKIE_AGE = 1200 # second
 SESSION_COOKIE_AGE = 2147483647
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_COOKIE_SECURE = True # https
 
 # django-user-agent의 캐시 사용하려는 경우 'default'로 설정, 그외에는 None으로 설정
-USER_AGENTS_CACHE = 'default'
+USER_AGENTS_CACHE = "default"

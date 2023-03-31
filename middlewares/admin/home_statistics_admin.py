@@ -1,23 +1,23 @@
-import json 
+import json
+import logging
 
+from django.conf import settings
 from django.contrib import admin
-
-from django.core.serializers.json import DjangoJSONEncoder
 from django.core import serializers
-from middlewares.
+from django.core.serializers.json import DjangoJSONEncoder
 
 from home.admin.default_admin import home_admin_site
+
 from ..models import newstats
-import logging
-from django.conf import settings
+
 logger = logging.getLogger(getattr(settings, "COMMON_LOGGER", "django"))
+
+
 @home_admin_site.register(newstats)
 class NewStatsAdmin(admin.ModelAdmin):
-
     def changelist_view(self, request, extra_context=None):
-
-        stat_data = (
-            newstats.objects.annotate().values("win","mac","iph","android","oth")
+        stat_data = newstats.objects.annotate().values(
+            "win", "mac", "iph", "android", "oth"
         )
 
         # data = newstats.objects.all()
@@ -28,5 +28,3 @@ class NewStatsAdmin(admin.ModelAdmin):
         extra_context = extra_context or {"stat_data": as_json}
 
         return super().changelist_view(request, extra_context=extra_context)
-
-

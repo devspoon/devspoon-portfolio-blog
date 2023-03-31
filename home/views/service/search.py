@@ -1,10 +1,8 @@
-import datetime
 import logging
 
 from django.conf import settings
 from django.core.paginator import Paginator
-from django.db.models import Exists, F, OuterRef, Q
-from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from blog.models.blog import (
     BlogPost,

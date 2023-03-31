@@ -1,11 +1,10 @@
-from django.urls import path, include
-from .views.index import IndexView, PrivacyPolicyView, TermsOfServiceView, SearchView
+from django.urls import path
+
+from .views.index import IndexView, SearchView
 
 app_name = "home"
 
 urlpatterns = [
-    path('', IndexView.as_view(),name='index'),
-    path('search/queryset/', SearchView.as_view(),name='search_queryset'),
-    path('privacy-policy/', PrivacyPolicyView.as_view(),name='privacy_policy'),
-    path('terms-of-service', TermsOfServiceView.as_view(),name='terms_of_service'),
+    path("", IndexView.as_view(), name="index"),
+    path("search/queryset/", SearchView.as_view(), name="search_queryset"),
 ]

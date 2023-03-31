@@ -3,15 +3,13 @@ import logging
 from django.conf import settings
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
-from django.core.cache.utils import make_template_fragment_key
 from django.db.models import Value
 from django.http import Http404
-from django.views.generic import TemplateView, View
+from django.views.generic import TemplateView
 
 from blog.models.blog import BlogPost, BooksPost, OnlineStudyPost, OpenSourcePost
 from common.components.django_redis_cache_components import (
     dredis_cache_check_key,
-    dredis_cache_delete,
     dredis_cache_get,
     dredis_cache_set,
 )
@@ -19,8 +17,6 @@ from home.views.service.search import Search
 from portfolio.models import AboutProjects
 
 logger = logging.getLogger(getattr(settings, "HOME_LOGGER", "django"))
-
-# Create your views here.
 
 CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
@@ -31,12 +27,13 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if "index" in cache:
-            # context["latest"] = cache.get("home:index")
-            queryset = dredis_cache_get(
-                self.cache_prefix,
-                0,
-            )
+        check_cached_key = dredis_cache_check_key(
+            self.cache_prefix,
+            0,
+            "projects",
+        )
+        if check_cached_key:
+            queryset = dredis_cache_get(self.cache_prefix, 0)
             context.update(queryset)
         else:
             context["projects"] = (
@@ -119,14 +116,6 @@ class IndexView(TemplateView):
             )
         logger.debug(f"final context : {context}")
         return context
-
-
-class PrivacyPolicyView(TemplateView):
-    template_name = "pages/privacy-policy.html"
-
-
-class TermsOfServiceView(TemplateView):
-    template_name = "pages/terms-of-service.html"
 
 
 class SearchView(TemplateView, Search):

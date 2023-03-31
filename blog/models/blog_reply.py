@@ -3,13 +3,11 @@ import logging
 from django.conf import settings
 from django.db import models, transaction
 from django.db.models import F
-from django.db.models.signals import post_delete, pre_save
+from django.db.models.signals import post_delete
 from django.dispatch import receiver
-from django.urls import reverse
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from .blog import BlogPost, BooksPost, OnlineStudyPost, OpenSourcePost, ProjectPost
+# from .blog import BlogPost, BooksPost, OnlineStudyPost, OpenSourcePost, ProjectPost
 
 logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
 

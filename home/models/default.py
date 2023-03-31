@@ -3,12 +3,8 @@ import logging
 from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
-from django.urls import reverse
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey
-
-from users.models import User
 
 logger = logging.getLogger(getattr(settings, "HOME_LOGGER", "django"))
 # Create your models here.

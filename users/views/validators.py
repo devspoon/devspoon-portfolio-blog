@@ -4,8 +4,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
-from ..models import UserVerification
-
 logger = logging.getLogger(getattr(settings, "USERS_LOGGER", "django"))
 
 """

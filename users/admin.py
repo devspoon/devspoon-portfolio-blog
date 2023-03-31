@@ -12,7 +12,7 @@ from django.shortcuts import redirect, render
 from django.urls import path, reverse
 from django.utils import translation
 from django.utils.safestring import mark_safe
-from rangefilter.filters import DateRangeFilter, DateTimeRangeFilter
+from rangefilter.filters import DateRangeFilter
 
 from common.components.admin.admin_components import AdminCacheCleanFixedKey
 
@@ -141,7 +141,53 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
         (
             "key information",
             {
-                "fields": ["username", "email", "password", "nickname", "gender"],
+                "fields": [
+                    "username",
+                    "email",
+                    "password1",
+                    "password2",
+                    "nickname",
+                    "gender",
+                ],
+                "classes": ["collapse"],
+            },
+        ),
+        (
+            "detail information",
+            {
+                "fields": [
+                    "date_joined",
+                    "last_login_at",
+                    "last_login",
+                    "verified",
+                    "is_superuser",
+                    "is_staff",
+                    "is_active",
+                    "is_privacy_policy",
+                    "is_terms_of_service",
+                    "is_mobile_authentication",
+                    "is_deleted",
+                ],
+                "classes": ["collapse"],
+            },
+        ),
+        (
+            "more information",
+            {"fields": ["profile_image", "deleted_at"], "classes": ["collapse"]},
+        ),
+    ]
+    add_fieldsets = [
+        (
+            "key information",
+            {
+                "fields": [
+                    "username",
+                    "email",
+                    "password1",
+                    "password2",
+                    "nickname",
+                    "gender",
+                ],
                 "classes": ["collapse"],
             },
         ),
@@ -189,7 +235,15 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
         "export_as_csv",
     ]
     readonly_fields = ["is_mobile_authentication", "is_site_register"]
-    # inlines = [UserProfileInline] user's signal handle this
+    # inlines = [UserProfileInline]  # user's signal handle this
+
+    def get_form(self, request, obj=None, **kwargs):
+        if not obj:
+            self.form = self.add_form
+        else:
+            self.form = self.form
+
+        return super(CustomUserAdmin, self).get_form(request, obj, **kwargs)
 
     def get_urls(self):
         urls = super().get_urls()
@@ -307,10 +361,10 @@ class PolicyPagesAdmin(AdminCacheCleanFixedKey, admin.ModelAdmin):
     list_display_links = ["id", "title"]
     list_per_page = 20
 
-    view_key = ""
-    template_key = [
-        "home:privacy-policy",
-        "home:terms-of-service",
+    view_keys = ""
+    template_keys = [
+        "users:privacy-policy",
+        "users:terms-of-service",
     ]
 
     actions = [

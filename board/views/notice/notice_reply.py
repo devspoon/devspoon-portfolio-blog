@@ -1,11 +1,6 @@
-import datetime
 import json
 import logging
-import re
-from email.policy import default
-from signal import default_int_handler
 
-from django import forms
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -13,13 +8,19 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import F
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DeleteView, UpdateView, View
+from django.views.generic import DeleteView, View
 
 from board.models.board import Notice
 from board.models.board_reply import NoticeReply
+from common.components.django_redis_cache_components import (
+    dredis_cache_check_key,
+    dredis_cache_delete,
+    dredis_cache_get,
+    dredis_cache_set,
+)
 
 logger = logging.getLogger(getattr(settings, "BOARD_LOGGER", "django"))
 
@@ -33,41 +34,66 @@ def make_list_by_paginator(paginator, pages):
 
 class NoticeReplyListJsonView(View):
     the_number_of_replies = 10
+    cache_prefix = "board:NoticeReply"
 
     def get(self, request, pk):
-        post = NoticeReply.objects.filter(board=pk).select_related("author")
-        paginator = Paginator(post, self.the_number_of_replies)
         page = request.GET.get("page", 1)
 
-        pages = paginator.get_page(page)
-
-        pagination_info = make_list_by_paginator(paginator, pages)
-
-        replies = list(
-            map(
-                lambda context: {
-                    "pk": context.pk,
-                    "author": str(context.author),
-                    "comment": context.comment,
-                    "depth": context.depth,
-                    "group": context.group,
-                    "parent": str(context.parent_id),
-                    "post": str(context.board.pk),
-                    "created_at": context.created_at.strftime("%Y-%m-%d %I:%M:%S %p"),
-                    "thumbnail": str(context.author.photo_thumbnail.url),
-                    "user_auth": str(context.author) == str(request.user.username),
-                },
-                pages.object_list,
-            )
+        check_cached_key = dredis_cache_check_key(
+            self.cache_prefix,
+            pk,
+            page,
         )
+        if check_cached_key:
+            results = dredis_cache_get(
+                self.cache_prefix,
+                pk,
+                page,
+            )
+        else:
+            post = NoticeReply.objects.filter(board=pk).select_related("author")
+            paginator = Paginator(post, self.the_number_of_replies)
 
-        results = pagination_info + replies
+            pages = paginator.get_page(page)
+
+            pagination_info = make_list_by_paginator(paginator, pages)
+
+            replies = list(
+                map(
+                    lambda context: {
+                        "pk": context.pk,
+                        "author": str(context.author),
+                        "comment": context.comment,
+                        "depth": context.depth,
+                        "group": context.group,
+                        "parent": str(context.parent_id),
+                        "post": str(context.board.pk),
+                        "created_at": context.created_at.strftime(
+                            "%Y-%m-%d %I:%M:%S %p"
+                        ),
+                        "thumbnail": str(context.author.photo_thumbnail.url),
+                        "user_auth": str(context.author) == str(request.user.username),
+                    },
+                    pages.object_list,
+                )
+            )
+
+            results = pagination_info + replies
+            caching_data = {}
+            caching_data[page] = results
+            dredis_cache_set(
+                self.cache_prefix,
+                pk,
+                **caching_data,
+            )
+        logger.debug(f"final context : {results}")
 
         return JsonResponse(results, safe=False)
 
 
 class NoticeReplyCreateJsonView(LoginRequiredMixin, View):
     login_url = reverse_lazy("users:login")
+    cache_prefix = "board:NoticeReply"
 
     def get(self, request, *args, **kwargs):
         return redirect("board:notice_detail", kwargs.get("pk"))
@@ -110,10 +136,14 @@ class NoticeReplyCreateJsonView(LoginRequiredMixin, View):
                 reply_count=F("reply_count") + 1
             )
 
+        dredis_cache_delete(self.cache_prefix, kwargs.get("pk"))
+
         return redirect("board:notice_detail", kwargs.get("pk"))
 
 
 class NoticeReplyUpdateJsonView(LoginRequiredMixin, View):
+    cache_prefix = "board:NoticeReply"
+
     def post(self, request, pk, reply_pk):
         content = json.loads(request.body.decode("utf-8"))
         comment = content["comment"]
@@ -132,6 +162,8 @@ class NoticeReplyUpdateJsonView(LoginRequiredMixin, View):
 
         context = {"message": message}
 
+        dredis_cache_delete(self.cache_prefix, pk)
+
         return JsonResponse(context, safe=True)
 
 
@@ -139,6 +171,7 @@ class NoticeReplyDeleteView(LoginRequiredMixin, DeleteView):
     model = NoticeReply
     pk_url_kwarg = "reply_pk"
     login_url = reverse_lazy("users:login")
+    cache_prefix = "board:NoticeReply"
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -150,6 +183,8 @@ class NoticeReplyDeleteView(LoginRequiredMixin, DeleteView):
             raise PermissionDenied()
 
         self.post_pk = self.object.board.pk
+
+        dredis_cache_delete(self.cache_prefix, kwargs.get("pk"))
         return super().form_valid(None)
 
     def get_success_url(self):

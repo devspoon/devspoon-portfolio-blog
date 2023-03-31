@@ -1,22 +1,17 @@
 import logging
 import os
 import shutil
-import string
 from uuid import uuid4
 
 from allauth.account.models import EmailAddress
-from allauth.exceptions import ImmediateHttpResponse
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.socialaccount.models import SocialAccount
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.db.models import F
 from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
-from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
