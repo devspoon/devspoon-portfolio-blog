@@ -1,0 +1,89 @@
+{% load static %}
+{% load i18n %}
+{% load home_tag %}
+
+{% site_info_tag as site_info %}
+
+<footer class="footer-area">
+    <div class="widget-wrapper">
+        <div class="map-img">
+            {% comment %} <img src="assets/images/footer/map-img.svg" alt=""> {% endcomment %}
+        </div>
+        <div class="container">
+            <div class="row">
+
+                <div class="col-xl-4 col-md-7">
+                    <div class="footer-widget about">
+                        <a href="{% url 'home:index' %}" class="d-inline-block mb-30 col-md-6 col-sm-4 col-6">
+                            <img src="{% static 'images/logo.png' %}" alt="">
+                        </a>
+                        <p class="text-white mb-25">{% trans "This site is made by open source on 'devspoon-portfolio-blog' repository " %}</p>
+                        <ul class="social">
+                            {% if site_info.office_twitter %}
+                                <li><a href="{{ site_info.office_twitter }}"><i class="lni lni-twitter"></i></a></li>
+                            {% endif %}
+
+                            <li><a href="{{ site_info.office_facebook }}"><i class="lni lni-facebook-filled"></i></a></li>
+                            <li><a href="{{ site_info.office_twitter }}"><i class="lni lni-twitter-filled"></i></a></li>
+                            <li><a href="{{ site_info.office_instragram }}"><i class="lni lni-instagram-filled"></i></a></li>
+                            <li><a href="{{ site_info.office_youtube }}"><i class="lni lni-youtube"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-xl-2 col-md-4 order-md-2 order-xl-1 col-sm-6">
+                    <div class="footer-widget">
+                        <h4>{% trans "Quick Link" %}</h4>
+                        <ul class="link">
+                            <li><a href="{% url 'home:index' %}">Home</a></li>
+                            <li><a href="{% url 'portfolio:portfolio' %}">Portfolio</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-xl-2 col-md-4 order-md-3 order-xl-2 col-sm-6">
+                    <div class="footer-widget">
+                        <h4>{% trans "Support" %}</h4>
+                        <ul class="link">
+                            <li><a href="{% url 'users:privacy_policy' %}">{% trans "Privacy Policy" %}</a></li>
+                            <li><a href="{% url 'users:terms_of_service' %}">{% trans "Terms of Service" %}</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-xl-2 col-md-5 order-md-1 order-xl-4 col-sm-6">
+                    <div class="footer-widget">
+                        <h4>{% trans "Contact Us" %}</h4>
+                        <ul>
+                            <li>
+                                <span>Phone:</span>
+                                <a href="tel:{{site_info.country_code}}-{{site_info.office_phone_number}}">{{site_info.country_code}}-{{site_info.office_phone_number}}</a>
+                            </li>
+                            <li>
+                                <span>Email:</span>
+                                <a href="mailto:{{site_info.office_email}}" >{{site_info.office_email}}</a>
+                            </li>
+                            <li>
+                                <span>Copyright:</span>
+                                from 2022-Now 
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-right">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="text-center">
+                        <p>Designed & Developed By <a href="https://graygrids.com/" rel="nofollow" target="_blank">GrayGrids</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

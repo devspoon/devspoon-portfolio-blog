@@ -1,0 +1,47 @@
+{% load static %}
+
+<!--====== BOOTSTRAP JS ======-->
+<script src="{% static 'vendors/bootstrap/bootstrap-5.1.3.bundle.min.js' %}"></script>
+
+<!--====== AOS SLIDER JS ======-->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> 
+
+<!--====== WOW JS ======-->
+<script src="{% static 'vendors/slider/wow/wow-1.3.0.min.js' %}"></script>
+
+<!--====== GLIGHTBOX JS ======-->
+<script src="{% static 'vendors/litebox/js/glightbox-3.1.0.min.js' %}"></script>
+
+<!--====== SELECTR JS ======-->
+<script src="{% static 'vendors/selectr/selectr.min.js' %}"></script>
+
+<!--====== NOUISLIDER JS ======-->
+<script src="{% static 'vendors/nouislider/js/nouislider-15.5.1.js' %}"></script>
+
+<!--====== Ionicframework icons JS ======-->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+<!--====== SUMMERNOTE JS ======-->
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.js"></script>    
+
+<!--====== AXIOS JS ======-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!--====== MAIN JS ======-->
+<script src="{% static 'js/main.js' %}"></script>
+
+{% if 'portfolio' in request.path %}
+
+<!--====== BLOG JS ======-->
+<script src="{% static 'js/portfolio.js' %}"></script>
+
+{% else %}
+
+<!--====== BLOG JS ======-->
+<script src="{% static 'js/blog.js' %}"></script>
+
+<!--====== BLOG API JS ======-->
+<script src="{% static 'js/blog_apis.js' %}"></script>
+
+{% endif %}

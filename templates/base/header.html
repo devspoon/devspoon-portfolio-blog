@@ -1,0 +1,139 @@
+{% load static %}
+{% load mptt_tags %}
+{% load home_tag %}
+{% load i18n %}
+{% load cache %}
+
+{% main_menu_tag as main_menu %}
+
+<header class="header_area">
+    <div id="header_navbar" class="header_navbar">
+        <div class="container position-relative">
+            <div class="row align-items-center">
+                <div class="row">
+                    <nav class="navbar navbar-expand-lg">
+                        <a class="navbar-brand" href="{% url 'home:index' %}">
+                            <img id="logo" src={% static 'images/logo.png' %} alt="Logo">
+                        </a>
+                        <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                            <ul id="nav" class="navbar-nav">
+                                {% cache 86400 home:template_main_menu_pc %}
+                                {% recursetree main_menu %}
+                                {% if node.is_root_node %}
+                                <li class="nav-item">
+                                        <a class="page-scroll" data-toggle="collapse" data-target="#{{node.pk}}" aria-controls="{{node.pk}}"
+                                            aria-expanded="false" aria-label="Toggle navigation"
+                                            {% if node.menu_path %}
+                                            href="{% url node.menu_path %}"
+                                            {% elif node.menu_link  %}
+                                                href="{{node.menu_link}}"
+                                            {% endif %}
+                                            >{{node.menu_name}}
+                                            <div class="sub-nav-toggler">
+                                                <span></span>
+                                            </div>
+                                        </a>
+                                            {% if not node.is_leaf_node %}
+                                            <ul class="dropdown-menu sub-menu collapse" id="{{ node.pk }}">
+                                            {% elif node.is_leaf_node %}
+                                            </li>
+                                            {% endif %}
+                                {% elif node.is_child_node and node.level == 1%}
+                                    {% if node.menu_path  %}
+                                    <li class="nav-item">
+                                        <a class="page-scroll" href="{% url node.menu_path %}">{{ node.menu_name }}</a>
+                                    </li>
+                                    {% elif node.menu_link  %}
+                                    <li class="nav-item">
+                                        <a class="page-scroll" href="{{ node.menu_link }}">{{ node.menu_name }}</a>
+                                    </li>
+                                    {% else %}
+                                    <li class="nav-item">
+                                        <a class="page-scroll">{{ node.menu_name }} </a>
+                                    </li>
+                                    {% endif %}
+
+                                    {% if not node.get_next_sibling %}
+                                        </ul>
+                                    </li>
+                                    {% endif %}
+
+                                {%  endif %}
+
+                                {% if not node.is_leaf_node %}
+                                    {{ children }}
+                                {%  endif %}
+                                {% endrecursetree %}
+                                {% endcache %}
+                            </ul>
+                        </div>
+                            <ul class="header-btn d-sm-flex">
+                                {% if request.user.is_authenticated %}
+
+                                <li>
+                                    <a href="#" onclick="return false;" class="main-btn account-btn">
+                                        <span class="d-md-none"><i class="lni lni-user"></i></span>
+                                        <span class="d-none d-md-block">
+                                            {% if request.session.username %} {{request.session.username}}
+                                            {% else %} {{request.session.email}}
+                                            {% endif %}
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-nav">
+                                        <li><a href="{% url 'home:index' %}">Favorite Post</a></li>
+                                        <li><a href="{% url 'users:profile' %}">Profile Settings</a></li>
+                                        <li><a href="{% url 'users:logout' %}">LogOut</a></li>
+                                    </ul>
+                                </li>
+                                {% endif %}
+
+                                {% if not request.user.is_authenticated %}
+                                <li>
+                                    <a href="{% url 'users:login' %}" class="main-btn btn-hover login d-block">Login</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'users:register' %}" class="main-btn btn-hover d-none d-md-block">Register</a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                            <div class="canvas_open d-lg-none">
+                                <a href="#" onclick="return false;"><ion-icon name="menu-outline"></ion-icon></a>
+                            </div>
+                        </div>
+                    </nav> <!-- navbar -->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="col-8">
+                            <form action="{% url 'home:search_queryset' %}" method="get" id="search_form">
+                                {% csrf_token %}
+                                <div class="input-group justify-content-center mt-2">
+                                    <input type="search" class="form-control rounded" name="keyword" placeholder="Search..." aria-label="Search" aria-describedby="search-addon" />
+                                    <button type="submit" form="search_form" class="btn btn-outline-primary search-btn">search</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <form class='row g-3' action="{% url 'set_language' %}" method="post">
+                                {% csrf_token %}
+                                <div class="col-auto">
+                                    <select class="form-select form-select-sm" aria-label="Default select example" name="language" >
+                                        {% get_current_language as LANGUAGE_CODE %}
+                                        {% get_available_languages as LANGUAGES %}
+                                        {% get_language_info_list for LANGUAGES as languages %}
+                                        {% for language in languages %}
+                                            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                                                {{ language.code  }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                <input class="btn btn-outline-secondary btn-sm" type="submit" value="Switch">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- row -->
+        </div> <!-- container -->
+    </div> <!-- header navbar -->
+</header>

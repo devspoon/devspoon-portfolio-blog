@@ -1,0 +1,77 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% load public_tags %}
+
+{% block title %}opensource update{% endblock %}
+
+{% block content %}
+
+	<!--====== REGISTER PART START ======-->
+    <section class="login first grey">
+        <div class="container">
+            <div class="box-wrapper col col-lg-10 mt-4">
+                <div class="box box-border">
+                    <div class="box-body">
+                        <h4>OpenSource</h4>
+                        {% for message in messages %}
+                            <div class="alert {{ message.tags }} alert-auto-dismissible alert-dismissible notification-container text-center" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                        <form enctype="multipart/form-data" method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                            {% if field.name == 'content' %}
+                            <div class="form-group">
+                            {{ field | safe }}
+                            </div>
+                            {% else %}
+                            <div class="form-group">
+                                {% if field.field.widget.input_type == 'select' %}
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                <select class="form-select mb-3" name="{{ field.name }}" id="{{ field.id_for_label }}">
+                                    {% for item in field %}
+                                    {{ item }}
+                                    {% comment %} {{ field }} {% endcomment %}
+                                    {% endfor %}
+                                </select>
+                                {% else %}
+                                    {% if field.label == 'file1' or field.label == 'file2' %}
+                                        {{field.label}} :<a href='{{ field.url }}'>{{ field.value|filename }}</a>
+                                    {% else %}
+                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {% endif %}
+
+                                    {% if field.name == 'tag_set' %}
+                                        <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" value="{{field.value | join:', '}}"/>
+                                    {% else %}
+                                        <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" value="{{ field.value}}"/>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+
+                            {% endif %}
+                            {% if field.errors %}
+                            <ol class="validation_error">
+                                {% for error in field.errors %}
+                                    <li><strong>{{ error|escape }}</strong></li>
+                                {% endfor %}
+                            </ol>
+                            {% endif %}
+                            {% endfor %}
+                            <div class="form-group text-right">
+                                <button class="btn btn-primary col-12">Write</button>
+                            </div>
+                            <div class="form-group text-center pt-10">
+                                <a href="{% url 'users:login' %}">Cancle</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+	<!--====== REGISTER PART END ======-->
+
+{% endblock %}

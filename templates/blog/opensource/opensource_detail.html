@@ -1,0 +1,153 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% load public_tags %}
+
+{% block title %}opensource detail{% endblock %}
+
+{% block content %}
+
+	<!--====== Blog Detail PART START ======-->
+    <section class="blog-details-area">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8 m-auto text-center">
+              <h2 class="title">{{board.title}}</h2>
+              Repository
+              <a href="{{board.repository}}"><h4 class="pb-2">{{board.title}}</h4></a>
+              <div class="post-info d-flex justify-content-center">
+                <div>
+                    Use
+                    <a href="#" onclick="return false;">{{board.dev_lang}}</a>
+                </div>
+                <div>
+                    Branch
+                    <a href="#" onclick="return false;">{{board.get_branch_display}}</a>
+                </div>
+                <div>
+                    Roles
+                    <a href="#" onclick="return false;">{{board.get_role_display}}</a>
+                </div>
+                <div>
+                    Difficulty
+                    <a href="#" onclick="return false;">{{board.get_difficulty_level_display}}</a>
+                </div>
+              </div>
+
+              <div class="meta">
+                By
+                <a class="author" href="#" onclick="return false;">{{board.author}}</a>
+                <a href="#" onclick="return false;">{{board.created_at|date:'Y-m-d H:i'}}</a>
+              </div>
+            </div>
+
+            <div class="col-lg-10 col-xl-8 m-auto">
+                <div class="post-details-content">
+                    <div class="post-details-body">
+                        <div class="content form-control">
+                            {{board.content|safe}}
+
+                        </div>
+                        <div class="tags mb-3">
+                            <label for = "tags">tags</label>
+                                <span id = "tags" class = "form-control">
+                                    {% if board.tag_set.all is not None %}
+                                        {% for tag in board.tag_set.all %}
+                                            <a href="{% url 'home:search_queryset' %}?tag={{tag}}">{{tag}}</a>,
+                                        {% endfor %}
+                                    {% endif %}
+                                </span>
+                        </div>
+                        {% if user_auth %}
+                        <div class="blog-button">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-end" id="detail-button-group">
+                                        <a href="{{board.id}}" id="update-button"><button type="button" class="btn btn-outline-primary  me-3">Edit</button></a>
+                                        <a href="{{board.id}}" id="delete-button"><button type="button" class="btn btn-outline-danger ">Delete</button></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="blog-links mt-5">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    link 1 :
+                                    {% if board.link1 %}<a href='{{ board.link1 }}'>{{ board.link1|urlizetrunc:30 }}</a> {% endif %}
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    link 2 :
+                                    {% if board.link2 %}<a href='{{ board.link2 }}'>{{ board.link2|urlizetrunc:30 }}</a> {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="blog-files mt-5">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    file 1 :
+                                    {% if board.file1 %}<a href='{{ board.file1.url }}'>{{ board.file1|filename }}</a> {% endif %}
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    file 2 :{% if board.file2 %}<a href='{{ board.file2.url }}'>{{ board.file2|filename }}</a> {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="blog-like mt-5">
+                                <div class="col-12 text-center">
+                                    <div class="like"><h4>좋아요 <span class="like_count" id="like-count-37" >{{board.like_count}}</span>개</h1></div>
+                                </div>
+                                <div class="btn_container col-12 text-center mt-3">
+                                    <div class="like-btn" data-name="like"><h4>
+                                        {% if like_state %}
+                                        <i class="lni lni-heart clicked">
+                                        {% else %}
+                                        <i class="lni lni-heart">
+                                        {% endif %}
+                                        </i></span></h1>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="blog-history-navigation" id="navigation-group">
+                            <div class="row">
+                            {% if pre_board %}
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="nav-prev">
+                                <a href="{{board.id}}" id="nav-left">
+                                    <span><i class="lni lni-arrow-left"></i> Older</span>
+                                    {{pre_board.title}} <br>{{pre_board|striptags|truncatechars:80 }}
+                                </a>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if next_board %}
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="nav-next">
+                                <a href="{{board.id}}" id="nav-right">
+                                    <span>Newer <i class="lni lni-arrow-right"></i></span>
+                                    {{next_board.title}} <br>{{next_board|striptags|truncatechars:80 }}
+                                </a>
+                                </div>
+                            </div>
+                            {% endif %}
+                            </div>
+                        </div>
+                        <!-- blog history navigation end -->
+
+                        <!-- comment list start -->
+                        {% include "base/reply.html" %}
+                        <!-- reply list end -->
+
+                        <!-- comment replies pagination start -->
+                        {% include "base/replies_pagination.html" %}
+                        <!-- comment replies pagination start -->
+
+                    </div>
+                </div>
+              </div>
+
+          </div>
+        </div>
+      </section>
+	<!--====== Blog Detail PART END ======-->
+
+	{% endblock %}

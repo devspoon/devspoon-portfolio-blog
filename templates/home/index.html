@@ -1,0 +1,351 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}devspoon home{% endblock %}
+
+{% block content %}
+
+<!--====== ILLUST START ======-->
+
+<section class="illust full-screen d-lg-flex justify-content-center align-items-center" id="illust">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-12 col-12 d-flex align-items-center">
+                <div class="about-text">
+                    <small class="small-text">{% trans "Welcome to"%}<span class="mobile-block">{% trans " my 'devspoon' website!"%}</span></small>
+                    <h1 class="animated animated-text">
+                        <span class="mr-2">{% trans "Hey folks"%}, {% trans "I'm"%}</span>
+                            <div class="animated-info">
+                                <span class="animated-item">{% trans " Full-Stack Developer "%}</span>
+                                <span class="animated-item">{% trans " Online Marketer "%}</span>
+                                <span class="animated-item">{% trans " ready to join with you "%}</span>
+                            </div>
+                    </h1>
+                    {% blocktrans %}
+                    <p>This site was created as an open source based django in the <strong>'devspoon-portfolio-blog' repository. </strong></p>
+                    <p>It is used for <strong><i>personal portfolio, blog, and community</i></strong> purposes</p>
+                    <p>And supports English and Korean multilingual.</p>
+                    {% endblocktrans %}
+                    <div class="custom-btn-group mt-4">
+                      <a href="https://github.com/devspoon/devspoon-portfolio-blog" target='_blank' class="btn mr-lg-2 custom-btn"><i class='uil uil-file-alt'>{% trans " Devspoon's Open Source"%}</i></a>
+                      <a href="" class="btn custom-btn custom-btn-bg custom-btn-link" target='_blank'><i class='uil uil-file-alt'>{% trans "Official Manual"%}</i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-12 col-12">
+                <div class="about-image svg">
+                    <img src="{% static 'images/undraw_software_engineer_lvl5.svg' %}" class="img-fluid" alt="my image">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--====== ILLUST END ======-->
+
+<!--====== PORTFOLIO START ======-->
+<section class="portfolio py-5" id="portfolio">
+    <div class="container ">
+        <div class="row">
+            <div class="mx-auto col-lg-6 col-10">
+                <div class="text-center portfolio-section-title mb-50">
+                    <h1>{% blocktrans %}Portfolio{% endblocktrans %}</h1>
+                    {% blocktrans %}
+                    <p>I am a <strong>pull-stack developer</strong> and interested in <u>docker and CI/CD</u>
+                    so doing open source activities. I ran an <u>online branding marketing startup</u> and collaborated with various companies.</p>
+                    {% endblocktrans %}
+                    <a href="{% url 'portfolio:portfolio' %}" class="main-btn btn-hover">{% blocktrans %}See Portfolio{% endblocktrans %}</a>
+                    
+                </div>
+            </div>
+            
+        </div>
+        <div id="carouselExampleInterval" class="carousel slide col-lg-10 col-md-12" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active" data-bs-interval="3000">
+                <img class="d-block w-100" src="{% static 'images/test1.jpg' %}" alt="First slide">          
+              </div>
+              <div class="carousel-item" data-bs-interval="3000">
+                <img class="d-block w-100" src="{% static 'images/test2.jpg' %}" alt="Second slide">
+          
+              </div>
+              <div class="carousel-item" data-bs-interval="3000">
+                <img class="d-block w-100" src="{% static 'images/test3.jpg' %}" alt="Third slide">
+          
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+    </div>
+</section>
+<!--====== PORTFOLIO ENDS ======-->
+
+<!--====== SKILL START ======-->
+<section class="skills py-5" id="services-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+                <span class="subheading">{% trans "My future plans" %} </span>
+                <h2 class="mb-4"> {% trans "What I want to do, what I am interested in these days!" %}</h2>
+                <p> {% trans "Skills I would like to add to a project soon or start learning" %}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-3d-design"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">{% trans "Applying Docker-swarm"%} </h3>
+                        <p> {% trans "Applying docker-swarm to open source projects you manage." %}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-app-development"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">{% trans "Swift and kotlin" %} </h3>
+                        <p> {% trans "Start learning Kotlin and Swift. Getting Started with Android and iOS Development." %}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-web-programming"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">{% trans "React" %} </h3>
+                        <p> {% trans "Start learning React. Start my new web development project with React." %}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-vector"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">{% trans "Node.js" %} </h3>
+                        <p> {% trans "Implementation of chatbot and real-time chatting system using Node.js." %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-branding"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">{% trans "Applying Monitoring system" %} </h3>
+                        <p> {% trans "Applying Monitoring system using Prometheus, Sentry, Slack API at existing open source projects. " %}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-computer"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">{% trans "Python recommender system" %} </h3>
+                        <p> {% trans "Creating a recommendation system using Naver, Google, Twitter, and Instagram data." %}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-vector"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">{% trans "Shopping mall with Vue.js" %} </h3>
+                        <p> {% trans "Starting Django and Vue.js-based shopping mall open source project." %}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-zoom"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">{% trans "Smart mirror with Android" %} </h3>
+                        <p> {% trans "Renewal of the smart mirror, which was currently developed based on Tizen, based on Android." %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--====== SKILL ENDS ======-->
+
+<!--====== PROJECTS START ======-->
+<section class="latest-product-area py-5 pb-110">
+    <div class="container" data-aos="fade-up"
+ data-aos-anchor-placement="top-bottom">
+        <div class="row">
+            <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
+                <div class="text-center section-title mb-60">
+                    <h1>{% trans "About Projects" %} </h1>
+                    <p>{% trans "Open source, teaching/learning projects created and operated by teams or individuals." %}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for item in projects %}
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="card-box">
+                    <div class="card-img">
+                        <a href="{% url 'blog:opensource_detail' item.projectpost %}">
+                            <img src="{{item.projectpost.title_image}}">
+                        </a>
+                        <div class="product-action">
+                            <a href="{{item.projectpost.repository}}"  class="share" title="Repository"><i class="lni lni-world"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h3 class="name"><i class="lni lni-github"></i> <a href="{% url 'blog:opensource_detail' item.projectpost %}" >{{item.projectpost.title}}</a></h3>
+                        <span class="update">{{item.projectpost.content|safe|truncatechars:80}}</span>
+                        <div class="project-info row justify-content-center ">
+                            <div class="col-6" >
+                                <i class="lni lni-calendar"></i> {{item.projectpost.created_at|date:'Y-m-d H:i'}}
+                            </div>
+                            {% if item.projectpost.dev_lang %}
+                            <div class="col-6" >
+                                <i class="lni lni-bookmark"></i> {{item.projectpost.dev_lang}}
+                            </div>
+                            {% endif %}
+
+                            {% if item.projectpost.branch %}
+                            <div class="col-6" >
+                                <i class="lni lni-layers"></i> {{item.projectpost.get_branch_display}}
+                            </div>
+                            {% endif %}
+
+                            {% if item.projectpost.role %}
+                            <div class="col-6" >
+                                <i class="lni lni-folder"></i> {{item.projectpost.get_role_display}}
+                            </div>
+                            {% endif %}
+
+                            {% if item.projectpost.version %}
+                            <div class="col-6" >
+                                <i class="lni lni-tag"></i> {{item.projectpost.version}}
+                            </div>
+                            {% endif %}
+
+                            {% if item.projectpost.repository %}
+                            <div class="col-6" >
+                                <i class="lni lni-tag"></i> <a ref='{{item.projectpost.repository}}'>Repository</a>
+                            </div>
+                            {% endif %}
+
+                            <div class="col-6" >
+                                <i class="lni lni-heart"></i> {{item.projectpost.like_count}}
+                            </div>
+                            <div class="col-6" >
+                                <i class="lni lni-comments-reply"></i> {{item.projectpost.reply_count}}
+                            </div>
+                            <div class="col-6" >
+                                <i class="lni lni-user"></i> {{item.projectpost.visit_count}}
+                            </div>
+                            <div class="col-6" >
+                                <i class="lni lni-pencil-alt"></i> {{item.projectpost.author}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!--====== PROJECTS ENDS ======-->
+
+<!--====== Latest BLogs START ======-->
+<section class="blog py-5">
+    <div class="container">
+        <div class="row">
+            <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
+                <div class="text-center section-title mb-60">
+                    <h1>{% trans "Latest Blog Posts" %} </h1>
+                    <p> {% trans "You can see the latest articles in open source, study, book, and blog categories. " %}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for item in latest %}
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <!--== Start Blog Post Item ==-->
+                <div class="card-box post-item">
+                    <div class="card-img thumb">
+                        <a href="product-details.html">
+                            <img src="{{item.title_image}}" alt="{{item.title_image.label}}">
+                        </a>
+                    </div>
+                    <div class="card-content content">
+                        <h4 class="title">
+                            {% if item.table == 'OnlineStudy' %}
+                            <a href="{% url 'blog:online_study_detail' item.pk %}">{{item.title|safe}}</a>
+                            {% elif item.table == 'Blog' %}
+                            <a href="{% url 'blog:blog_detail' item.pk %}">{{item.title|safe}}</a>
+                            {% elif item.table == 'OpenSource' %}
+                            <a href="{% url 'blog:opensource_detail' item.pk %}">{{item.title|safe}}</a>
+                            {% else %}
+                            <a href="{% url 'blog:books_detail' item.pk %}">{{item.title|safe}}</a>
+                            {% endif %}
+                            
+                        </h4>
+                        <p>{{item.content|truncatechars:20|safe}}</p>
+                        <div class="meta bottom meta-bottom">
+                            <div class="blog-info row col-12 justify-content-center ">
+                                <div class="col-6" >
+                                    <ion-icon name="calendar-outline"></ion-icon>{{item.created_at|date:'Y-m-d'}}
+                                </div>
+                                <div class="col-6" >
+                                    <ion-icon name="folder-open-outline"></ion-icon> {{item.author}}
+                                </div>
+                                <div class="col-6" >
+                                    <ion-icon name="chatbox-outline"></ion-icon> {{item.reply_count}}
+                                </div>
+                                <div class="col-6" >
+                                    <ion-icon name="chatbox-outline"></ion-icon> {{item.visit_count}}
+                                </div>
+                                <div class="col-12" >
+                                    {% if item.table == 'OnlineStudy' %}
+                                    <a class="category" href="{% url 'blog:online_study_list'%}"><ion-icon name="folder-open-outline"></ion-icon> In <span>{{item.table}}</span></a>
+                                    {% elif item.table == 'Blog' %}
+                                    <a class="category" href="{% url 'blog:blog_list'%}"><ion-icon name="folder-open-outline"></ion-icon> In <span>{{item.table}}</span></a>
+                                    {% elif item.table == 'OpenSource' %}
+                                    <a class="category" href="{% url 'blog:opensource_list'%}"><ion-icon name="folder-open-outline"></ion-icon> In <span>{{item.table}}</span></a>
+                                    {% else %}
+                                    <a class="category" href="{% url 'blog:books_list'%}"><ion-icon name="folder-open-outline"></ion-icon> In <span>{{item.table}}</span></a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--== End Blog Post Item ==-->
+            </div>
+            {% endfor %}
+
+
+        </div>
+    </div>
+</section>
+<!--====== Latest BLogs ENDS ======-->
+
+<!--====== ChatBot START ======-->
+<!--====== ChatBot ENDS ======-->
+
+{% endblock %}
