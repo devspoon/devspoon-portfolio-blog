@@ -27,7 +27,8 @@ export DJANGO_SETTINGS_MODULE=config.settings.stage
 export DJANGO_SETTINGS_MODULE=config.settings.prod
 """
 
-DEBUG = config("DEBUG_STATE")
+# DEBUG = config("DEBUG_STATE")
+DEBUG = False
 
 ALLOWED_HOSTS = [config("ALLOWED_HOSTS_IP")]
 

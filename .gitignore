@@ -1,6 +1,7 @@
 # cache files
 __pycache__/
 migrations/
+.pytest_cache/
 
 # secure files
 .env
