@@ -56,8 +56,7 @@ LOGGING = {
             "()": "django.utils.log.RequireDebugFalse",
         },
         "require_debug_true": {
-            "()": "django.utils.log.RequireDebugFalse",
-            # "()": "django.utils.log.RequireDebugTrue",
+            "()": "django.utils.log.RequireDebugTrue",
         },
     },
     # Formatter
@@ -79,7 +78,7 @@ LOGGING = {
             "level": "DEBUG",
             "encoding": "utf-8",
             "class": "logging.handlers.RotatingFileHandler",
-            "filters": ["require_debug_true"],
+            "filters": ["require_debug_false"],
             "filename": join(ROOT_DIR, "logs/logfile.log"),
             "maxBytes": 1024 * 1024 * 15,
             "backupCount": 30,
@@ -93,13 +92,13 @@ LOGGING = {
         },
         "django.server": {
             "level": "DEBUG",
-            "filters": ["require_debug_true"],
+            "filters": ["require_debug_true", "require_debug_false"],
             "class": "logging.StreamHandler",
             "formatter": "django.server",
         },
         "mail_admins": {
             "level": "ERROR",
-            "filters": ["require_debug_true"],
+            "filters": ["require_debug_true", "require_debug_false"],
             "class": "django.utils.log.AdminEmailHandler",
             "formatter": "standard",
         },
@@ -108,8 +107,7 @@ LOGGING = {
     "loggers": {
         "django": {
             "handlers": ["file", "console", "mail_admins"],
-            "level": "INFO",
-            "propagate": False,
+            "level": "WARNING",
         },
         # # runserver 작업시 콘솔 출력
         "django.server": {

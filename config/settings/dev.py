@@ -166,11 +166,11 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600
 
 STATIC_URL = "/static/"
 # STATIC_URL = "/assets/"
-STATIC_ROOT = os.path.join(ROOT_DIR, "static")
-# STATIC_DIR = os.path.join(ROOT_DIR, "static")
-# STATICFILES_DIRS = [
-#     os.path.join(ROOT_DIR, "static"),
-# ]
+# STATIC_ROOT = os.path.join(ROOT_DIR, "static")
+STATIC_DIR = os.path.join(ROOT_DIR, "static")
+STATICFILES_DIRS = [
+    os.path.join(ROOT_DIR, "static"),
+]
 # # OR
 # STATICFILES_DIRS = [
 #     BASE_DIR / 'static'
