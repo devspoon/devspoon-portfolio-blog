@@ -56,7 +56,8 @@ LOGGING = {
             "()": "django.utils.log.RequireDebugFalse",
         },
         "require_debug_true": {
-            "()": "django.utils.log.RequireDebugTrue",
+            "()": "django.utils.log.RequireDebugFalse",
+            # "()": "django.utils.log.RequireDebugTrue",
         },
     },
     # Formatter
@@ -81,7 +82,7 @@ LOGGING = {
             "filters": ["require_debug_true"],
             "filename": join(ROOT_DIR, "logs/logfile.log"),
             "maxBytes": 1024 * 1024 * 15,
-            "backupCount": 10,
+            "backupCount": 30,
             "formatter": "standard",
         },
         "console": {
@@ -107,7 +108,8 @@ LOGGING = {
     "loggers": {
         "django": {
             "handlers": ["file", "console", "mail_admins"],
-            "level": "WARNING",
+            "level": "INFO",
+            "propagate": False,
         },
         # # runserver 작업시 콘솔 출력
         "django.server": {
