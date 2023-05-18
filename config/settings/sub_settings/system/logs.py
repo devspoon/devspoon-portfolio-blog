@@ -118,7 +118,7 @@ LOGGING = {
         # 요청 출력
         "django.request": {
             "handlers": ["console", "file"],
-            "level": "INFO",
+            "level": "WARNING",
             "propagate": False,
         },
         "common": {

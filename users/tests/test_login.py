@@ -10,6 +10,7 @@ headers = {
 }
 
 
+@pytest.mark.users
 @pytest.mark.django_db
 @pytest.mark.parametrize(
     "email, password",
@@ -31,6 +32,7 @@ def test_login_success(client, static_user, email, password):
     assert response.url == reverse("home:index")
 
 
+@pytest.mark.users
 @pytest.mark.django_db
 @pytest.mark.parametrize(
     "email, password",
@@ -50,6 +52,7 @@ def test_login_fail(client, static_user, email, password):
     assert response.url == reverse("users:login")
 
 
+@pytest.mark.users
 @pytest.mark.django_db
 def test_profile_exist(client, static_user):
     result = UserProfile.objects.filter(user=static_user).values()
