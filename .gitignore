@@ -15,6 +15,6 @@ logs/
 *.prof
 
 # media files
-media/
+media/*
 !media/default/no_img-removebg-preview.png
 !media/default/no_img.png
