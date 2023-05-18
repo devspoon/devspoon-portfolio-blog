@@ -36,12 +36,17 @@ class BlogPostAdmin(AdminCommonAction, AdminCacheCleanPost):
     ]
     filter_horizontal = ("tag_set",)
     date_hierarchy = "created_at"
+    exclude = ("table_name",)
     # prepopulated_fields = {'slug' : ['title']}
 
     def get_actions(self, request):
         actions = super(BlogPostAdmin, self).get_actions(request)
         del actions["delete_selected"]
         return actions
+
+    def save_model(self, request, obj, form, change):
+        obj.table_name = obj._meta.db_table
+        super().save_model(request, obj, form, change)
 
 
 class BlogPostReplyAdmin(AdminCommonAction, AdminCacheCleanReply):

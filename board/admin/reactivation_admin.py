@@ -34,11 +34,16 @@ class ReactivationBoardAdmin(AdminCommonAction, AdminCacheCleanPost):
         "delete_all_cache",
         "delete_selected_items",
     ]
+    exclude = ("table_name",)
 
     def get_actions(self, request):
         actions = super(ReactivationBoardAdmin, self).get_actions(request)
         del actions["delete_selected"]
         return actions
+
+    def save_model(self, request, obj, form, change):
+        obj.table_name = obj._meta.db_table
+        super().save_model(request, obj, form, change)
 
 
 class ReactivationReplyAdmin(AdminCommonAction, AdminCacheCleanReply):

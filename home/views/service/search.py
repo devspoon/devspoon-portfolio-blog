@@ -128,6 +128,4 @@ class Search:
             "keyword": keyword,
         }
 
-        print("result : ", result)
-
         return result

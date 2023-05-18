@@ -36,11 +36,16 @@ class BooksPostAdmin(AdminCommonAction, AdminCacheCleanPost):
     ]
     filter_horizontal = ("tag_set",)
     date_hierarchy = "created_at"
+    exclude = ("table_name",)
 
     def get_actions(self, request):
         actions = super(BooksPostAdmin, self).get_actions(request)
         del actions["delete_selected"]
         return actions
+
+    def save_model(self, request, obj, form, change):
+        obj.table_name = obj._meta.db_table
+        super().save_model(request, obj, form, change)
 
 
 class BooksPostReplyAdmin(AdminCommonAction, AdminCacheCleanReply):
