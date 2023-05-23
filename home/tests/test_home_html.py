@@ -6,10 +6,14 @@ headers = {
 }
 
 
-@pytest.mark.http_error
+@pytest.mark.home
 @pytest.mark.django_db
-def test_error_404(client):
-    url = reverse("home:index") + "test.html"
+def test_home(client):
+    url = reverse("home:index")
     response = client.get(path=url, **headers)
     content = response.content.decode("utf-8")
-    assert "404 Error" in content
+    assert "illust" in content
+    assert "portfolio" in content
+    assert "services-section" in content
+    assert "latest-product-area" in content
+    assert "blog" in content
