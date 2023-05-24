@@ -3,7 +3,6 @@ import os
 import re
 
 from bs4 import BeautifulSoup as Bs
-
 # from django.db.models.constraints import UniqueConstraint
 from django.conf import settings
 from django.db import models
@@ -12,7 +11,6 @@ from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
 from utils.os.file_path_name_gen import date_upload_to_for_file
 
 logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))

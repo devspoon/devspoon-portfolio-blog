@@ -29,7 +29,9 @@ def dredis_cache_get(prefix: str, pk: int, key: str = None) -> Union[QuerySet, d
     if key:
         redis_key = prefix + ":" + str(pk) + ":" + key
         logger.debug(f"redis key : {redis_key}")
-        return cache.get(redis_key)
+        cache_result = cache.get(redis_key)
+        logger.debug(f"redis result : {cache_result}")
+        return cache_result
     else:
         redis_key = prefix + ":" + str(pk) + ":*"
         split_key = prefix + ":" + str(pk) + ":"
