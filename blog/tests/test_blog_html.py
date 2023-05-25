@@ -48,7 +48,7 @@ def test_blog_project_create(staff):
             "role": 0,
             "branch": 0,
         },
-        **headers
+        **headers,
     )
     assert response.status_code == 302
     queryset = ProjectPost.objects.filter(
@@ -61,19 +61,76 @@ def test_blog_project_create(staff):
     )
 
 
-# @pytest.mark.blog
-# @pytest.mark.django_db
-# def test_blog_project_update(client, pk):
-#     url = reverse("blog:project_update", kwargs={"pk": pk})
-#     response = client.get(path=url, **headers)
-#     content = response.content.decode("utf-8")
-#     assert "illust" in content
+@pytest.mark.blog
+@pytest.mark.django_db
+def test_blog_project_update(staff):
+    url = reverse("blog:project_create")
+    response = staff.post(
+        path=url,
+        data={
+            "title": "test",
+            "content": "hello",
+            "dev_lang": "python",
+            "repository": "http://github.com/test",
+            "version": "1.0.0",
+            "role": 0,
+            "branch": 0,
+        },
+        **headers,
+    )
+    assert response.status_code == 302
+    queryset = ProjectPost.objects.filter(
+        title="test",
+    )
+    assert "hello" in queryset.values()[0]["content"]
+    url = reverse("blog:project_update", kwargs={"pk": queryset.values()[0]["id"]})
+    response = staff.post(
+        path=url,
+        data={
+            "title": "test",
+            "content": "bye",
+            "dev_lang": "python",
+            "repository": "http://github.com/test",
+            "version": "1.0.0",
+            "role": 0,
+            "branch": 0,
+        },
+        **headers,
+    )
+    queryset = ProjectPost.objects.filter(
+        title="test",
+    )
+    assert "bye" in queryset.values()[0]["content"]
 
 
-# @pytest.mark.blog
-# @pytest.mark.django_db
-# def test_blog_project_delete(client, pk):
-#     url = reverse("blog:project_delete", kwargs={"pk": pk})
-#     response = client.get(path=url, **headers)
-#     content = response.content.decode("utf-8")
-#     assert "illust" in content
+@pytest.mark.blog
+@pytest.mark.django_db
+def test_blog_project_create(staff):
+    url = reverse("blog:project_create")
+    response = staff.post(
+        path=url,
+        data={
+            "title": "test",
+            "content": "<p>hello<br></p>",
+            "dev_lang": "python",
+            "repository": "http://github.com/test",
+            "version": "1.0.0",
+            "role": 0,
+            "branch": 0,
+        },
+        **headers,
+    )
+    assert response.status_code == 302
+    queryset = ProjectPost.objects.filter(
+        title="test",
+    )
+    assert queryset.exists()
+    url = reverse("blog:project_delete", kwargs={"pk": queryset.values()[0]["id"]})
+    response = staff.get(
+        path=url,
+        **headers,
+    )
+    queryset = ProjectPost.objects.filter(
+        title="test",
+    )
+    assert queryset.exists() is False
