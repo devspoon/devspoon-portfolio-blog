@@ -19,7 +19,8 @@ def dredis_cache_set(prefix: str, pk: int, **kwargs: dict) -> None:
     for key, value in kwargs.items():
         redis_key = prefix + ":" + str(pk) + ":" + key
         logger.debug(f"redis key : {redis_key}")
-        cache.set(redis_key, value, timeout=CACHE_TTL, nx=True)
+        result = cache.set(redis_key, value, timeout=CACHE_TTL, nx=True)
+        logger.debug(f"cache.set result : {result}")
 
 
 # django-redis cache get

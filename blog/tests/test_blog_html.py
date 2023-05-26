@@ -105,7 +105,7 @@ def test_blog_project_update(staff):
 
 @pytest.mark.blog
 @pytest.mark.django_db
-def test_blog_project_create(staff):
+def test_blog_project_delete(staff):
     url = reverse("blog:project_create")
     response = staff.post(
         path=url,
