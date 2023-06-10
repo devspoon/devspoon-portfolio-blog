@@ -33,10 +33,10 @@ DEBUG = False
 ALLOWED_HOSTS = [config("ALLOWED_HOSTS_IP")]
 
 # debug toolbar를 동작시키기 위한 서버 ip 정보를 명시함
-INTERNAL_IPS = [
-    config("IP_ADDRESSES1"),
-    config("IP_ADDRESSES2"),
-]
+# INTERNAL_IPS = [
+#     config("IP_ADDRESSES1"),
+#     config("IP_ADDRESSES2"),
+# ]
 
 
 def custom_show_toolbar(self):
