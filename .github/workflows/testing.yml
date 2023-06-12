@@ -38,3 +38,22 @@ jobs:
               with:
                 redis-version: ${{ matrix.redis-version }}
                 # redis-port: 6379
+            - name: Add environment variables to .env
+              run: |
+                    echo DEBUG_STATE=False >> .env
+                    echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
+                    echo ALLOWED_HOSTS_IP=* >> .env
+                    echo MAILGUN_ACCESS_KEY=${{ secrets.MAILGUN_ACCESS_KEY }} >> .env
+                    echo MAILGUN_SERVER_NAME=${{ secrets.MAILGUN_SERVER_NAME }} >> .env
+                    echo MAILGUN_DEFAULT_FROM_EMAIL=${{ secrets.MAILGUN_DEFAULT_FROM_EMAIL }} >> .env
+                    echo SENDINBLUE_EMAIL_DOMAIN=${{ secrets.SENDINBLUE_EMAIL_DOMAIN }} >> .env
+                    echo SENDINBLUE_EMAIL_HOST_USER=${{ secrets.SENDINBLUE_EMAIL_HOST_USER }} >> .env
+                    echo SENDINBLUE_EMAIL_HOST_API=${{ secrets.SENDINBLUE_EMAIL_HOST_API }} >> .env
+                    echo SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} >> .env
+                    echo SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }} >> .env
+                    echo NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }} >> .env
+                    echo NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }} >> .env
+            - name: Lint with flake8
+              run: |
+                pip install flake8
+                flake8
