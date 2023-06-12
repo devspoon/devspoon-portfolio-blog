@@ -53,7 +53,8 @@ jobs:
                     echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
                     echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
                     echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
-            - name: Lint with flake8
+            - name: Coverage report
               run: |
-                pip install flake8
-                flake8
+                pip install coverage
+                coverage run manage.py test
+                coverage report
