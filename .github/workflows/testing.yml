@@ -53,7 +53,7 @@ jobs:
                     echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
                     echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
                     echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
-                    echo .env
+                    cat .env
             - name: Coverage report
               run: |
                 pip install coverage
