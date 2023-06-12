@@ -56,4 +56,5 @@ jobs:
                     echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
             - name: Django Testing
               run: |
+                pip install pytest-django
                 pytest
