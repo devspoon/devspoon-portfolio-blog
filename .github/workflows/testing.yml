@@ -41,8 +41,6 @@ jobs:
             - name: Add environment variables to .env
               run: |
                     rm .env
-                    echo "${{ secrets.SECRET_KEY }}"
-                    echo ${{ secrets.MAILGUN_ACCESS_KEY }}"
                     echo "DEBUG_STATE=False" >> .env
                     echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
                     echo "ALLOWED_HOSTS_IP=*" >> .env
@@ -56,9 +54,6 @@ jobs:
                     echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
                     echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
                     echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
-                    cat .env
-            - name: Coverage report
+            - name: Django Testing
               run: |
-                pip install coverage
-                coverage run manage.py test
-                coverage report
+                pytest
