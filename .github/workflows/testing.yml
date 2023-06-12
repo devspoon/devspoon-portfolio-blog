@@ -41,6 +41,8 @@ jobs:
             - name: Add environment variables to .env
               run: |
                     rm .env
+                    echo "${{ secrets.SECRET_KEY }}"
+                    echo ${{ secrets.MAILGUN_ACCESS_KEY }}"
                     echo "DEBUG_STATE=False" >> .env
                     echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
                     echo "ALLOWED_HOSTS_IP=*" >> .env
