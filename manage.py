@@ -7,7 +7,7 @@ import sys
 def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
-    # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.test')
+    # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.test")
     # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.stage')
     # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.prod')
     try:

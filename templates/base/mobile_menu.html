@@ -4,7 +4,7 @@
 {% load home_tag %}
 {% load cache %}
 
-{% main_menu_tag as main_menu %}
+
 {% site_info_tag as site_info %}
 
 <div class="body_overlay">
@@ -47,6 +47,7 @@
                     <div id="menu" class="sub-menu-bar text-left ">
                         <ul class="offcanvas_main_menu navbar-nav">
                             {% cache 86400 home:template_main_menu_mobile %}
+                            {% main_menu_tag as main_menu %}
                             {% recursetree main_menu %}
 
                             {% if node.is_root_node %}

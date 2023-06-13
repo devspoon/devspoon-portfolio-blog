@@ -107,7 +107,6 @@ class IndexView(TemplateView):
                 :9
             ]
             caching_data = context.copy()
-
             [caching_data.pop(x, None) for x in ["view"]]
             dredis_cache_set(
                 self.cache_prefix,
