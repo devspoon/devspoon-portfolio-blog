@@ -5,14 +5,12 @@ from django.conf import settings
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.db.models import QuerySet
-from django_redis import get_redis_connection
 
 CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
 REDIS_CONN = getattr(settings, "REDIS_CONNECTION")
 
 logger = logging.getLogger(getattr(settings, "COMMON_LOGGER", "django"))
-redis_conn = get_redis_connection("default")
 
 
 # django-redis cache set
@@ -21,6 +19,7 @@ def dredis_cache_set(prefix: str, pk: int, **kwargs: dict) -> None:
     for key, value in kwargs.items():
         redis_key = prefix + ":" + str(pk) + ":" + key
         logger.debug(f"redis key : {redis_key}")
+        logger.debug(f"redis value : {value}")
         # result = cache.set(redis_key, value, timeout=CACHE_TTL, nx=True)
         result = cache.set(redis_key, value, timeout=CACHE_TTL, nx=False)
         logger.debug(f"cache.set result : {result}")
@@ -85,7 +84,4 @@ def dredis_cache_check_key(prefix: str, pk: int, key: str) -> bool:
             return False
         else:
             logger.debug(f"{ttl} : the key is over than 300 seconds")
-            if redis_conn.exists(key) == 0:
-                logger.debug("redis_conn.exists(key) is 0")
-                return False
             return True

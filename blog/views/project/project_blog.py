@@ -40,7 +40,6 @@ class ProjectListView(ListView):
     context_object_name = "board"
 
     def get_queryset(self):
-        print("test result : ", self.request.path)
         return ProjectPost.objects.filter(Q(is_hidden=False) and Q(is_deleted=False))
 
 
