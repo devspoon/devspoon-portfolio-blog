@@ -11,6 +11,9 @@ migrations/
 logs/
 .log
 
+# dist folder
+**/dist/
+
 # prof files
 *.prof
 

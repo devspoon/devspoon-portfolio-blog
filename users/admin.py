@@ -362,10 +362,6 @@ class PolicyPagesAdmin(AdminCacheCleanFixedKey, admin.ModelAdmin):
     list_per_page = 20
 
     view_keys = ""
-    template_keys = [
-        "users:privacy-policy",
-        "users:terms-of-service",
-    ]
 
     actions = [
         "delete_all_cache",

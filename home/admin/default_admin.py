@@ -29,10 +29,6 @@ class MainMenuAdmin(AdminCacheCleanFixedKey, DraggableMPTTAdmin):
     view_keys = [
         "home:main_menu:0:main_menu",
     ]
-    template_keys = [
-        "home:template_main_menu_pc",
-        "home:template_main_menu_mobile",
-    ]
 
     actions = [
         "delete_all_cache",
@@ -52,7 +48,6 @@ class SiteInfoAdmin(AdminCacheCleanFixedKey, admin.ModelAdmin):
     view_keys = [
         "home:site_info:0:site_info",
     ]
-    template_keys = ""
 
     actions = [
         "delete_all_cache",

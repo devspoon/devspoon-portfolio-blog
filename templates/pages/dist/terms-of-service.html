@@ -1,5 +1,5 @@
-{% load i18n %} {% load cache %} {% cache 86400 users:terms-of-service %}
+{% load i18n %} {% load cache %}
 <h1>{{ _("Terms of Service (Required)") }}</h1>
 <h1>{% trans "Hello World" %}</h1>
 <h1>{% translate "Hello World" %}</h1>
-{% blocktrans %} {% endblocktrans %} {% endcache %}
+{% blocktrans %} {% endblocktrans %}

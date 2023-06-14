@@ -17,7 +17,7 @@ from django.views.generic import (
     UpdateView,
     View,
 )
-
+from django.shortcuts import render
 from common.components.django_redis_cache_components import (
     dredis_cache_check_key,
     dredis_cache_delete,
@@ -40,6 +40,7 @@ class ProjectListView(ListView):
     context_object_name = "board"
 
     def get_queryset(self):
+        print("test result : ", self.request.path)
         return ProjectPost.objects.filter(Q(is_hidden=False) and Q(is_deleted=False))
 
 

@@ -176,6 +176,7 @@ STATICFILES_DIRS = [
 #     BASE_DIR / 'static'
 # ]
 
+# STATIC_ROOT = os.path.join(ROOT_DIR, "static")
 
 # static url로 접근했을 때 연결되는 위치 정의
 # static 파일을 한 곳에 모아서 서비스 할 경우 상위 STATICFILES_DIRS 변수는 불필요함

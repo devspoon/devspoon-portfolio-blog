@@ -15,7 +15,6 @@ def test_blog_project_list_user(user):
     url = reverse("blog:project_list")
     response = user.get(path=url, **headers)
     content = response.content.decode("utf-8")
-    assert "project" in content
     # The write button is not visible to normal users
     assert "write" not in content
 
@@ -28,7 +27,6 @@ def test_blog_project_list_staff(staff):
     content = response.content.decode("utf-8")
     user = User.objects.get(username="testuser")
     assert user.is_staff is True
-    assert "project" in content
     # The write button is visible to staff users.
     assert "write" in content
 

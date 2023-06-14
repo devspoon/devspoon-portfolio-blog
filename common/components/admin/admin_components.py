@@ -28,7 +28,6 @@ class AdminCommonAction(object):
 
 
 class AdminCacheClean(object):
-    template_keys = ""
     cache_prefix = ""
     use_pk = True
 
@@ -37,9 +36,6 @@ class AdminCacheClean(object):
             dredis_cache_delete(prefix, pk)
         else:
             dredis_cache_delete(prefix, 0)
-        for key in self.template_keys:
-            redis_key = make_template_fragment_key(key)
-            cache.delete(redis_key)
 
     def delete_all_cache(self, request, queryset):
         self.delete_cache(self.cache_prefix)
@@ -60,14 +56,10 @@ class AdminCacheClean(object):
 
 class AdminCacheCleanFixedKey(AdminCacheClean):
     view_keys = ""
-    template_keys = ""
 
     def delete_cache(self):
         for key in self.view_keys:
             cache.delete(key)
-        for key in self.template_keys:
-            redis_key = make_template_fragment_key(key)
-            cache.delete(redis_key)
 
     def delete_selected_items(self, request, queryset):
         for obj in queryset:
@@ -88,14 +80,10 @@ class AdminCacheCleanFixedKey(AdminCacheClean):
 
 class AdminCacheCleanPost(SummernoteModelAdmin):
     cache_reply_prefix = ""
-    template_keys = ""
     cache_prefix = ""
 
     def delete_cache(self, prefix: str, pk: int = None):
         dredis_cache_delete(prefix, pk)
-        for key in self.template_keys:
-            redis_key = make_template_fragment_key(key)
-            cache.delete(redis_key)
 
     def delete_all_cache(self, request, queryset):
         self.delete_cache(self.cache_prefix)
@@ -121,14 +109,10 @@ class AdminCacheCleanPost(SummernoteModelAdmin):
 
 
 class AdminCacheCleanReply(admin.ModelAdmin):
-    template_keys = ""
     cache_prefix = ""
 
     def delete_cache(self, prefix: str, pk: int = None):
         dredis_cache_delete(prefix, pk)
-        for key in self.template_keys:
-            redis_key = make_template_fragment_key(key)
-            cache.delete(redis_key)
 
     def delete_all_cache(self, request, queryset):
         self.delete_cache(self.cache_prefix)

@@ -46,7 +46,6 @@
                     </div>
                     <div id="menu" class="sub-menu-bar text-left ">
                         <ul class="offcanvas_main_menu navbar-nav">
-                            {% cache 86400 home:template_main_menu_mobile %}
                             {% main_menu_tag as main_menu %}
                             {% recursetree main_menu %}
 
@@ -99,7 +98,6 @@
                             {{ children }}
                             {% endif %}
                             {% endrecursetree %}
-                            {% endcache %}
                         </ul>
                     </div>
 

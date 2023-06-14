@@ -101,10 +101,11 @@ class IndexView(TemplateView):
                     "table",
                 )
             )
+
             latest = study.union(blog, all=False)
             latest = latest.union(opensource, all=False)
             context["latest"] = latest.union(books, all=False).order_by("created_at")[
-                :9
+                0:9
             ]
             caching_data = context.copy()
             [caching_data.pop(x, None) for x in ["view"]]

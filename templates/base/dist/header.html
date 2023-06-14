@@ -17,7 +17,6 @@
                         </a>
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav">
-                                {% cache 86400 home:template_main_menu_pc %}
                                 {% main_menu_tag as main_menu %}
                                 {% recursetree main_menu %}
                                 {% if node.is_root_node %}
@@ -65,7 +64,6 @@
                                     {{ children }}
                                 {%  endif %}
                                 {% endrecursetree %}
-                                {% endcache %}
                             </ul>
                         </div>
                             <ul class="header-btn d-sm-flex">
