@@ -1,0 +1,3 @@
+[run]
+include = blog/*, board/*, home/*, portfolio/*, users/*
+omit = .github/*, */__pycache__/*
