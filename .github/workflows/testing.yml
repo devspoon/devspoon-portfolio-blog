@@ -84,6 +84,8 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
+          echo "github.repository : ${{ github.repository }}"
+          echo "github.server_url : ${{ github.server_url }}"
           curl -X POST -H 'Content-type: application/json' \
           --data '{"text":"Repository: [${{ github.repository }}](${{ github.server_url }}/${{ github.repository }})"}' \
           $SLACK_WEBHOOK_URL
