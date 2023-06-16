@@ -80,6 +80,8 @@ jobs:
         run: |
           sudo apt-get install zip unzip
           zip htmlcov.zip htmlcov/
+          ls htmlcov
+          ls
           sudo apt-get install mutt
           echo "set smtp_url==${{ secrets.SMTP_URL }}" >> muttrc
           echo "set smtp_pass==${{ secrets.SMTP_PASS }}" >> muttrc
