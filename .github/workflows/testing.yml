@@ -88,4 +88,4 @@ jobs:
           echo "set ssl_force_tls = yes" >> muttrc
           mkdir ~/.mutt/
           cp -r ./muttrc ~/.mutt/
-          mutt -s "devspoon-portfolio-blog coverage html" -a htmlcov.zip ${{ secrets.SMTP_TO }} < "coverage completed successfully."
+          mutt -s "devspoon-portfolio-blog coverage html" -a htmlcov.zip ${{ secrets.SMTP_TO }}
