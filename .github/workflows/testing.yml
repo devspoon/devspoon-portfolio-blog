@@ -78,8 +78,8 @@ jobs:
           coverage html
       - name: zip
         run: |
-          sudo apt-get install zip unzip
-          zip htmlcov.zip htmlcov/
+          sudo apt-get install zip
+          zip htmlcov.zip -r ./htmlcov
       - name: send msg to slack channel
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
