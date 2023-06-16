@@ -76,7 +76,7 @@ jobs:
           pip install coverage
           coverage run manage.py test
           coverage html
-      - name: zip & send email
+      - name: zip
         run: |
           sudo apt-get install zip unzip
           zip htmlcov.zip htmlcov/
@@ -87,11 +87,11 @@ jobs:
           curl -X POST -H 'Content-type: application/json' \
           --data '{"text":"Workflow: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) has completed testing."}' \
           $SLACK_WEBHOOK_URL
-      - name: send zip file to slack channel
+      - name: send coverage zip file to slack channel
         uses: MeilCli/slack-upload-file@v3
         with:
           slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
-          channels: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
+          channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
           file_path: './htmlcov.zip'
           file_name: 'htmlcov.zip'
           file_type: 'zip'
