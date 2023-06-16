@@ -78,9 +78,9 @@ jobs:
           coverage html
       - name: zip & send email
         run: |
-          apt-get install zip unzip
+          sudo apt-get install zip unzip
           zip htmlcov.zip htmlcov/
-          apt-get install mutt
+          sudo apt-get install mutt
           echo "set smtp_url==${{ secrets.SMTP_URL }}" >> muttrc
           echo "set smtp_pass==${{ secrets.SMTP_PASS }}" >> muttrc
           echo "set from==${{ secrets.SMTP_FROM }}" >> muttrc
