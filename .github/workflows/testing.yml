@@ -71,3 +71,20 @@ jobs:
           python manage.py makemigrations
           python manage.py migrate
           pytest
+      - name: Coverage report
+        run: |
+          pip install coverage
+          coverage run manage.py test
+          coverage html
+      - name: zip & send email
+        run: |
+          apt-get install zip unzip
+          zip htmlcov.zip htmlcov/
+          apt-get install mutt
+          echo "set smtp_url==${{ secrets.SMTP_URL }}" >> muttrc
+          echo "set smtp_pass==${{ secrets.SMTP_PASS }}" >> muttrc
+          echo "set from==${{ secrets.SMTP_FROM }}" >> muttrc
+          echo "set realname==${{ secrets.SMTP_REALNAME }}" >> muttrc
+          echo "set ssl_force_tls = yes" >> muttrc
+          cp -r ./muttrc ~/.mutt/
+          mutt -s "devspoon-portfolio-blog coverage html" -a htmlcov.zip ${{ secrets.SMTP_TO }} < "coverage completed successfully."
