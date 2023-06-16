@@ -80,18 +80,17 @@ jobs:
         run: |
           sudo apt-get install zip unzip
           zip htmlcov.zip htmlcov/
-      - name: send zip file to slack channel
+      - name: send msg to slack channel
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
           --data '{"text":"Repository: [${{ github.repository }}](${{ github.server_url }}/${{ github.repository }})"}' \
           $SLACK_WEBHOOK_URL
-        uses: MeilCli/slack-upload-file@v1
+      - name: send zip file to slack channel
+        uses: MeilCli/slack-upload-file@v3
         with:
           slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
           channels: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
           file_path: './htmlcov.zip'
-          file_name: 'htmlcov.zip'
-          file_type: 'zip'
-          initial_comment: 'coverage zip file 전송 성공'
+          initial_comment: 'coverage zip file transfer success'
