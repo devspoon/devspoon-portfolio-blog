@@ -80,14 +80,12 @@ jobs:
         run: |
           sudo apt-get install zip unzip
           zip htmlcov.zip htmlcov/
-          ls htmlcov
-          ls
-          sudo apt-get install mutt
-          echo "set smtp_url==${{ secrets.SMTP_URL }}" >> muttrc
-          echo "set smtp_pass==${{ secrets.SMTP_PASS }}" >> muttrc
-          echo "set from==${{ secrets.SMTP_FROM }}" >> muttrc
-          echo "set realname==${{ secrets.SMTP_REALNAME }}" >> muttrc
-          echo "set ssl_force_tls = yes" >> muttrc
-          mkdir ~/.mutt/
-          cp -r ./muttrc ~/.mutt/
-          mutt -s "devspoon-portfolio-blog coverage html" -a htmlcov.zip -- ${{ secrets.SMTP_TO }} < /dev/null
+      - name: send zip file to slack channel
+        uses: MeilCli/slack-upload-file@v1
+        with:
+          slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
+          channels: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
+          file_path: './htmlcov.zip'
+          file_name: 'htmlcov.zip'
+          file_type: 'zip'
+          initial_comment: '${{ github.ref }} coverage zip file 전송 성공'
