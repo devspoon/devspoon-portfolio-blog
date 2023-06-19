@@ -29,7 +29,9 @@ export DJANGO_SETTINGS_MODULE=config.settings.prod
 
 DEBUG = config("DEBUG_STATE") == "True"
 
-ALLOWED_HOSTS = [config("ALLOWED_HOSTS_IP")]
+host = config("ALLOWED_HOSTS_IP")
+
+ALLOWED_HOSTS = [host.split(",")]
 
 # debug toolbar를 동작시키기 위한 서버 ip 정보를 명시함
 INTERNAL_IPS = [
