@@ -31,7 +31,7 @@ DEBUG = config("DEBUG_STATE") == "True"
 
 host = config("ALLOWED_HOSTS_IP")
 
-ALLOWED_HOSTS = [host.split(",")]
+ALLOWED_HOSTS = host.split(",")
 
 # debug toolbar를 동작시키기 위한 서버 ip 정보를 명시함
 INTERNAL_IPS = [
@@ -138,7 +138,12 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": "redis://"
+        + config("DEFAULT_CACHE_HOST")
+        + ":"
+        + config("DEFAULT_CACHE_PORT")
+        + "/"
+        + config("DEFAULT_CACHE_DATABASE"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
