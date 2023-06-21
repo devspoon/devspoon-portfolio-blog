@@ -30,31 +30,9 @@ export DJANGO_SETTINGS_MODULE=config.settings.prod
 # DEBUG = config("DEBUG_STATE")
 DEBUG = False
 
-ALLOWED_HOSTS = [config("ALLOWED_HOSTS_IP")]
+host = config("ALLOWED_HOSTS_IP")
 
-# debug toolbar를 동작시키기 위한 서버 ip 정보를 명시함
-# INTERNAL_IPS = [
-#     config("IP_ADDRESSES1"),
-#     config("IP_ADDRESSES2"),
-# ]
-
-
-def custom_show_toolbar(self):
-    return True
-
-
-# INSTALLED_APPS += [
-#     "django_nose",
-#     "silk",
-#     "django_extensions",
-# ]
-
-
-# django-extentions로 ERP 만들때 해줘야 하는 설정
-GRAPH_MODELS = {
-    "all_applications": True,
-    "group_models": True,
-}
+ALLOWED_HOSTS = host.split(",")
 
 MIDDLEWARE += [
     # "silk.middleware.SilkyMiddleware",
@@ -94,13 +72,19 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": "redis://"
+        + config("DEFAULT_CACHE_HOST")
+        + ":"
+        + config("DEFAULT_CACHE_PORT")
+        + "/"
+        + config("DEFAULT_CACHE_DATABASE"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
         "KEY_PREFIX": "devspoon",
     }
 }
+
 
 REDIS_CONNECTION = get_redis_connection()
 

@@ -1,4 +1,6 @@
 from .base import *
+from django_redis import get_redis_connection
+
 # from .sub_settings.http.cors import *
 from .sub_settings.system.logs import *
 
@@ -36,7 +38,13 @@ export DJANGO_SETTINGS_MODULE=config.settings.prod
 # https://sophilabs.com/blog/configure-a-read-replica-database-in-django
 # https://urunimi.github.io/architecture/python/use-replica/
 
-DATABASE_ROUTERS = ['core.replica_router.ReplicationRouter']
+DEBUG = config("DEBUG_STATE")
+
+host = config("ALLOWED_HOSTS_IP")
+
+ALLOWED_HOSTS = host.split(",")
+
+DATABASE_ROUTERS = ["core.replica_router.ReplicationRouter"]
 
 DATABASES = {
     # "default": {
@@ -44,26 +52,26 @@ DATABASES = {
     #     "NAME": os.path.join(ROOT_DIR, "db.sqlite3"),
     # },
     "default": {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': config('DEFAULT_DB_HOST'),
-        'PORT': config('DEFAULT_DB_PORT',default=3306, cast=int),
-        'NAME': config('DEFAULT_DB_NAME'),
-        'USER': config('DEFAULT_DB_USER'),
-        'PASSWORD': config('DEFAULT_DB_PASSWORD'),
-        'CHARSET': config('DEFAULT_DB_CHARSET'),
+        "ENGINE": "django.db.backends.mysql",
+        "HOST": config("DEFAULT_DB_HOST"),
+        "PORT": config("DEFAULT_DB_PORT", default=3306, cast=int),
+        "NAME": config("DEFAULT_DB_NAME"),
+        "USER": config("DEFAULT_DB_USER"),
+        "PASSWORD": config("DEFAULT_DB_PASSWORD"),
+        "CHARSET": config("DEFAULT_DB_CHARSET"),
         # 'TEST': {
         #     'NAME': config('DEFAULT_DB_TEST_NAME)'
         # }
         # * 주의 TEST 파라미터는 데이터베이스 사용후 삭제함
-     },
-    'replica1': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': config('REPLICA1_DB_HOST'),
-        'PORT': config('DEFAULT_DB_PORT',default=3306, cast=int),
-        'NAME': config('REPLICA1_DB_NAME'),
-        'USER': config('REPLICA1_DB_USER'),
-        'PASSWORD': config('REPLICA1_DB_PASSWORD'),
-        'CHARSET': config('REPLICA1_DB_CHARSET'),
+    },
+    "replica1": {
+        "ENGINE": "django.db.backends.mysql",
+        "HOST": config("REPLICA1_DB_HOST"),
+        "PORT": config("DEFAULT_DB_PORT", default=3306, cast=int),
+        "NAME": config("REPLICA1_DB_NAME"),
+        "USER": config("REPLICA1_DB_USER"),
+        "PASSWORD": config("REPLICA1_DB_PASSWORD"),
+        "CHARSET": config("REPLICA1_DB_CHARSET"),
         # 'TEST': {
         #     'NAME': config('REPLICA1_DB_TEST_NAME)'
         # }
@@ -71,33 +79,54 @@ DATABASES = {
     },
 }
 
-DEBUG=config('DEBUG_STATE')
-
-ALLOWED_HOSTS = [config('ALLOWED_HOSTS_IP')]
 
 INSTALLED_APPS += [
-    'django_prometheus',
+    "django_prometheus",
 ]
 
-'''
+"""
 django_prometheus는 모든 middleware를 감싸는 형식으로
 'django_prometheus.middleware.PrometheusBeforeMiddleware'는 최상단에
 'django_prometheus.middleware.PrometheusAfterMiddleware'는 최하단에
 정의한다
-'''
+"""
 MIDDLEWARE += []
 
-MIDDLEWARE.insert(0,'django_prometheus.middleware.PrometheusBeforeMiddleware')
-MIDDLEWARE.insert(-1,'django_prometheus.middleware.PrometheusAfterMiddleware')
+MIDDLEWARE.insert(0, "django_prometheus.middleware.PrometheusBeforeMiddleware")
+MIDDLEWARE.insert(-1, "django_prometheus.middleware.PrometheusAfterMiddleware")
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://"
+        + config("DEFAULT_CACHE_HOST")
+        + ":"
+        + config("DEFAULT_CACHE_PORT")
+        + "/"
+        + config("DEFAULT_CACHE_DATABASE"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "KEY_PREFIX": "devspoon",
+    }
+}
+
+REDIS_CONNECTION = get_redis_connection()
+
+CACHE_TTL = 60 * 60 * 24
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"  # use only cache
+SESSION_CACHE_ALIAS = "default"
+
+AUTH_USER_MODEL = "users.User"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
-# STATIC_DIR = os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = [
-#     STATIC_DIR,
-# ]
+STATIC_DIR = os.path.join(ROOT_DIR, "static")
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
 # OR
 # STATICFILES_DIRS = [
 #     BASE_DIR / 'static'
@@ -112,3 +141,5 @@ STATIC_ROOT = os.path.join(ROOT_DIR, "static")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(ROOT_DIR, "media")
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600
