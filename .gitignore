@@ -3,6 +3,9 @@ __pycache__/
 migrations/
 .pytest_cache/
 
+# ipynb files
+*.ipynb
+
 # secure files
 .env
 .env*
