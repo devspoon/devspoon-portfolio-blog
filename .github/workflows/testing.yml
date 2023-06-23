@@ -96,6 +96,13 @@ jobs:
         run: |
           sudo apt-get install zip
           zip htmlcov.zip -r ./htmlcov
+          mkdir release
+          cp htmlcov.zip ./release
+      - name: Upload Apk
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage zip file
+          path: ./release
       - name: send msg to slack channel
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
