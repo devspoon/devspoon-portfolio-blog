@@ -21,46 +21,45 @@ jobs:
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
             cd ~/project/github/devspoon-web/www/
-            rm .env
-            git pull origin main
-      - name: Add environment variables to .env
-        run: |
-          echo "DEBUG_STATE=False" >> .env
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-          echo "ALLOWED_HOSTS_IP=*" >> .env
-          echo "IP_ADDRESSES1=${{ secrets.IP_ADDRESSES1 }}" >> .env
-          echo "IP_ADDRESSES2=${{ secrets.IP_ADDRESSES2 }}" >> .env
-          echo "DEFAULT_DB_HOST=${{ secrets.DEFAULT_DB_HOST }}" >> .env
-          echo "DEFAULT_DB_PORT=${{ secrets.DEFAULT_DB_PORT }}" >> .env
-          echo "DEFAULT_DB_NAME=${{ secrets.DEFAULT_DB_NAME }}" >> .env
-          echo "DEFAULT_DB_USER=${{ secrets.DEFAULT_DB_USER }}" >> .env
-          echo "DEFAULT_DB_PASSWORD=${{ secrets.DEFAULT_DB_PASSWORD }}" >> .env
-          echo "DEFAULT_DB_CHARSET=${{ secrets.DEFAULT_DB_CHARSET }}" >> .env
-          echo "REPLICA1_DB_HOST=${{ secrets.REPLICA1_DB_HOST }}" >> .env
-          echo "REPLICA1_DB_PORT=${{ secrets.REPLICA1_DB_PORT }}" >> .env
-          echo "REPLICA1_DB_NAME=${{ secrets.REPLICA1_DB_NAME }}" >> .env
-          echo "REPLICA1_DB_USER=${{ secrets.REPLICA1_DB_USER }}" >> .env
-          echo "REPLICA1_DB_PASSWORD=${{ secrets.REPLICA1_DB_PASSWORD }}" >> .env
-          echo "REPLICA1_DB_CHARSET=${{ secrets.REPLICA1_DB_CHARSET }}" >> .env
-          echo "DEFAULT_CACHE_HOST=${{ secrets.DEFAULT_CACHE_HOST }}" >> .env
-          echo "DEFAULT_CACHE_PORT=${{ secrets.DEFAULT_CACHE_PORT }}" >> .env
-          echo "DEFAULT_CACHE_DATABASE=${{ secrets.DEFAULT_CACHE_DATABASE }}" >> .env
-          echo "MAILGUN_ACCESS_KEY=${{ secrets.MAILGUN_ACCESS_KEY }}" >> .env
-          echo "MAILGUN_SERVER_NAME=${{ secrets.MAILGUN_SERVER_NAME }}" >> .env
-          echo "MAILGUN_DEFAULT_FROM_EMAIL=${{ secrets.MAILGUN_DEFAULT_FROM_EMAIL }}" >> .env
-          echo "SENDINBLUE_EMAIL_DOMAIN=${{ secrets.SENDINBLUE_EMAIL_DOMAIN }}" >> .env
-          echo "SENDINBLUE_EMAIL_HOST_USER=${{ secrets.SENDINBLUE_EMAIL_HOST_USER }}" >> .env
-          echo "SENDINBLUE_EMAIL_HOST_API=${{ secrets.SENDINBLUE_EMAIL_HOST_API }}" >> .env
-          echo "SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}" >> .env
-          echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
-          echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
-          echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
-      - name: copy file via ssh key
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.REMOTE_IP }}
-          username: ${{ secrets.REMOTE_SSH_ID }}
-          key: ${{ secrets.REMOTE_SSH_KEY }}
-          port: ${{ secrets.REMOTE_SSH_PORT }}
-          source: ".env"
-          target: ~/project/github/devspoon-web/www/
+            pwd
+    #   - name: Add environment variables to .env
+    #     run: |
+    #       echo "DEBUG_STATE=False" >> .env
+    #       echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+    #       echo "ALLOWED_HOSTS_IP=*" >> .env
+    #       echo "IP_ADDRESSES1=${{ secrets.IP_ADDRESSES1 }}" >> .env
+    #       echo "IP_ADDRESSES2=${{ secrets.IP_ADDRESSES2 }}" >> .env
+    #       echo "DEFAULT_DB_HOST=${{ secrets.DEFAULT_DB_HOST }}" >> .env
+    #       echo "DEFAULT_DB_PORT=${{ secrets.DEFAULT_DB_PORT }}" >> .env
+    #       echo "DEFAULT_DB_NAME=${{ secrets.DEFAULT_DB_NAME }}" >> .env
+    #       echo "DEFAULT_DB_USER=${{ secrets.DEFAULT_DB_USER }}" >> .env
+    #       echo "DEFAULT_DB_PASSWORD=${{ secrets.DEFAULT_DB_PASSWORD }}" >> .env
+    #       echo "DEFAULT_DB_CHARSET=${{ secrets.DEFAULT_DB_CHARSET }}" >> .env
+    #       echo "REPLICA1_DB_HOST=${{ secrets.REPLICA1_DB_HOST }}" >> .env
+    #       echo "REPLICA1_DB_PORT=${{ secrets.REPLICA1_DB_PORT }}" >> .env
+    #       echo "REPLICA1_DB_NAME=${{ secrets.REPLICA1_DB_NAME }}" >> .env
+    #       echo "REPLICA1_DB_USER=${{ secrets.REPLICA1_DB_USER }}" >> .env
+    #       echo "REPLICA1_DB_PASSWORD=${{ secrets.REPLICA1_DB_PASSWORD }}" >> .env
+    #       echo "REPLICA1_DB_CHARSET=${{ secrets.REPLICA1_DB_CHARSET }}" >> .env
+    #       echo "DEFAULT_CACHE_HOST=${{ secrets.DEFAULT_CACHE_HOST }}" >> .env
+    #       echo "DEFAULT_CACHE_PORT=${{ secrets.DEFAULT_CACHE_PORT }}" >> .env
+    #       echo "DEFAULT_CACHE_DATABASE=${{ secrets.DEFAULT_CACHE_DATABASE }}" >> .env
+    #       echo "MAILGUN_ACCESS_KEY=${{ secrets.MAILGUN_ACCESS_KEY }}" >> .env
+    #       echo "MAILGUN_SERVER_NAME=${{ secrets.MAILGUN_SERVER_NAME }}" >> .env
+    #       echo "MAILGUN_DEFAULT_FROM_EMAIL=${{ secrets.MAILGUN_DEFAULT_FROM_EMAIL }}" >> .env
+    #       echo "SENDINBLUE_EMAIL_DOMAIN=${{ secrets.SENDINBLUE_EMAIL_DOMAIN }}" >> .env
+    #       echo "SENDINBLUE_EMAIL_HOST_USER=${{ secrets.SENDINBLUE_EMAIL_HOST_USER }}" >> .env
+    #       echo "SENDINBLUE_EMAIL_HOST_API=${{ secrets.SENDINBLUE_EMAIL_HOST_API }}" >> .env
+    #       echo "SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}" >> .env
+    #       echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
+    #       echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
+    #       echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
+    #   - name: copy file via ssh key
+    #     uses: appleboy/scp-action@v0.1.4
+    #     with:
+    #       host: ${{ secrets.REMOTE_IP }}
+    #       username: ${{ secrets.REMOTE_SSH_ID }}
+    #       key: ${{ secrets.REMOTE_SSH_KEY }}
+    #       port: ${{ secrets.REMOTE_SSH_PORT }}
+    #       source: ".env"
+    #       target: ~/project/github/devspoon-web/www/
