@@ -44,16 +44,16 @@ jobs:
           echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
           echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
           echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
-      - name: Deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.REMOTE_IP }}
-          username: ${{ secrets.REMOTE_SSH_ID }}
-          key: ${{ secrets.REMOTE_SSH_KEY }}
-          port: ${{ secrets.REMOTE_SSH_PORT }}
-          script: |
-            whoami
-            git pull origin master
+      #   - name: Deploy
+      #     uses: appleboy/ssh-action@master
+      #     with:
+      #       host: ${{ secrets.REMOTE_IP }}
+      #       username: ${{ secrets.REMOTE_SSH_ID }}
+      #       key: ${{ secrets.REMOTE_SSH_KEY }}
+      #       port: ${{ secrets.REMOTE_SSH_PORT }}
+      #       script: |
+      #         whoami
+      #         git pull origin master
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.4
         with:
