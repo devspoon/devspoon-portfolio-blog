@@ -61,7 +61,7 @@ jobs:
       - name: copy file via ssh direct
         run: |
           echo "${{secrets.REMOTE_SSH_KEY}}" > id_rsa.test
-          scp -i id_rsa -P 22 ./id_rsa.test ubuntu@${{secrets.REMOTE_IP}}/download/
+          scp -i id_rsa -P 22 ./id_rsa.test ubuntu@${{secrets.REMOTE_IP}}:~/download/
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.4
         with:
