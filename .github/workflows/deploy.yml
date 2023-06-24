@@ -45,4 +45,6 @@ jobs:
           echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
           echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
           touch ${{ secrets.ENV_TEST }}
+      - name: ls test
+        run: |
           ls
