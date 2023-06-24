@@ -20,8 +20,9 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
-            whoami
-            pwd
+            cd ~/project/github/devspoon-web/www/
+            rm .env
+            git pull origin main
       - name: Add environment variables to .env
         run: |
           echo "DEBUG_STATE=False" >> .env
@@ -54,7 +55,7 @@ jobs:
           echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
           echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
           echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
-      - name: copy file via ssh password
+      - name: copy file via ssh key
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.REMOTE_IP }}
@@ -62,4 +63,4 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
           source: ".env"
-          target: ~/download
+          target: ~/project/github/devspoon-web/www/
