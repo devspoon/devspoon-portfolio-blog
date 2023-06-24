@@ -1,38 +1,17 @@
-name: Django Tests
+name: Django CD with OCI
 
 on:
+  workflow_run:
+    workflows: ["Django Tests"]
+    types:
+      - completed
   workflow_dispatch:
-
-# on:
-#     push:
-#         branches: [ "main" ]
-#     pull_request:
-#         branches: [ "main" ]
-
-# on:
-#   schedule:
-#     - cron:  '*/15 * * * *'
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: ["3.11"]
-        redis-version: ["5"]
     environment: deply-oci-single-service
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements/dev_ubuntu22.04.txt
       - name: Add environment variables to .env
         run: |
           rm .env
@@ -66,15 +45,4 @@ jobs:
           echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
           echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
           echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
-      - name: Lint with flake8
-        run: |
-          pip install flake8
-          flake8
-      - name: Coverage report
-        run: |
-          pip install coverage
-          coverage run manage.py test
-          coverage report
-      - name: Django Testing
-        run: |
-          pytest
+          cat .evn
