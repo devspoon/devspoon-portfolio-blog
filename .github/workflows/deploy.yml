@@ -44,6 +44,10 @@ jobs:
           echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
           echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
           echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
+          echo "REMOTE_IP=${{ secrets.REMOTE_IP }}"
+          echo "REMOTE_SSH_ID=${{ secrets.REMOTE_SSH_ID }}"
+          echo "REMOTE_SSH_KEY=${{ secrets.REMOTE_SSH_KEY }}"
+          echo "REMOTE_SSH_PORT=${{ secrets.REMOTE_SSH_PORT }}"
       #   - name: Deploy
       #     uses: appleboy/ssh-action@master
       #     with:
@@ -57,7 +61,7 @@ jobs:
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: ${{ secrets.REMOTE_SSH_IP }}
+          host: ${{ secrets.REMOTE_IP }}
           username: ${{ secrets.REMOTE_SSH_ID }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
