@@ -14,7 +14,6 @@ jobs:
     steps:
       - name: Add environment variables to .env
         run: |
-          rm .env
           echo "DEBUG_STATE=False" >> .env
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
           echo "ALLOWED_HOSTS_IP=*" >> .env
