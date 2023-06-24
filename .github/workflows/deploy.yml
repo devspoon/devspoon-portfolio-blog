@@ -72,6 +72,7 @@ jobs:
         run: |
           curl -X POST -H 'Content-type: application/json' \
           --data '{"text":"Workflow deploy: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) has completed deploy to OCI."}' \
+          $SLACK_WEBHOOK_URL
 
   handle-failure:
     runs-on: ubuntu-latest
