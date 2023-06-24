@@ -44,32 +44,27 @@ jobs:
           echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
           echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
           echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
-      #   - name: Deploy
-      #     uses: appleboy/ssh-action@master
-      #     with:
-      #       host: ${{ secrets.REMOTE_IP }}
-      #       username: ${{ secrets.REMOTE_SSH_ID }}
-      #       key: ${{ secrets.REMOTE_SSH_KEY }}
-      #       port: ${{ secrets.REMOTE_SSH_PORT }}
-      #       script: |
-      #         whoami
-      #         git pull origin master
-      - name: copy file via ssh direct
-        run: |
-          if [ -n "${{ secrets.REMOTE_IP }}" ]; then
-            echo "REMOTE_IP secret is set."
-          else
-            echo "REMOTE_IP secret is not set."
-          fi
-          echo "hello world" > test.txt
-          echo "${{secrets.REMOTE_SSH_KEY}}" > id_rsa
-          scp -i id_rsa -P 22 ./test.txt ubuntu@${{secrets.REMOTE_IP}}:~/download/
-      - name: copy file via ssh password
-        uses: appleboy/scp-action@v0.1.4
+      - name: Deploy
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_IP }}
           username: ${{ secrets.REMOTE_SSH_ID }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
-          source: ".env"
-          target: ~/download
+          script: |
+            whoami
+            pwd
+    #   - name: copy file via ssh direct
+    #     run: |
+    #       echo "hello world" > test.txt
+    #       echo "${{secrets.REMOTE_SSH_KEY}}" > id_rsa
+    #       scp -i id_rsa -P 22 ./test.txt ubuntu@${{secrets.REMOTE_IP}}:~/download/
+    #   - name: copy file via ssh password
+    #     uses: appleboy/scp-action@v0.1.4
+    #     with:
+    #       host: ${{ secrets.REMOTE_IP }}
+    #       username: ${{ secrets.REMOTE_SSH_ID }}
+    #       key: ${{ secrets.REMOTE_SSH_KEY }}
+    #       port: ${{ secrets.REMOTE_SSH_PORT }}
+    #       source: ".env"
+    #       target: ~/download
