@@ -108,7 +108,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"Workflow: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) has completed testing."}' \
+          --data '{"text":"Workflow testing: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) has completed testing."}' \
           $SLACK_WEBHOOK_URL
       - name: send coverage zip file to slack channel
         uses: MeilCli/slack-upload-file@v3
@@ -130,5 +130,5 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"Workflow: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) errors has occurred."}' \
+          --data '{"text":"Workflow testing: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) errors has occurred."}' \
           $SLACK_WEBHOOK_URL
