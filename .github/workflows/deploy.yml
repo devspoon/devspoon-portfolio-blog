@@ -44,10 +44,6 @@ jobs:
           echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
           echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
           echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
-          echo "REMOTE_IP=${{ secrets.REMOTE_IP }}"
-          echo "REMOTE_SSH_ID=${{ secrets.REMOTE_SSH_ID }}"
-          echo "REMOTE_SSH_KEY=${{ secrets.REMOTE_SSH_KEY }}"
-          echo "REMOTE_SSH_PORT=${{ secrets.REMOTE_SSH_PORT }}"
       #   - name: Deploy
       #     uses: appleboy/ssh-action@master
       #     with:
@@ -60,6 +56,11 @@ jobs:
       #         git pull origin master
       - name: copy file via ssh direct
         run: |
+          if [ -n "${{ secrets.REMOTE_IP }}" ]; then
+            echo "REMOTE_IP secret is set."
+          else
+            echo "REMOTE_IP secret is not set."
+          fi
           echo "hello world" > test.txt
           echo "${{secrets.REMOTE_SSH_KEY}}" > id_rsa
           scp -i id_rsa -P 22 ./test.txt ubuntu@${{secrets.REMOTE_IP}}:~/download/
