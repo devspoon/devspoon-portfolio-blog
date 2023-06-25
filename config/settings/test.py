@@ -98,9 +98,6 @@ AUTH_USER_MODEL = "users.User"
 # reference blog : https://velog.io/@kim6515516/Django-silk-%EC%84%B1%EB%8A%A5-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC%EB%9F%AC
 # reference github : https://github.com/jazzband/django-silk
 
-SILKY_PYTHON_PROFILER = False
-SILKY_PYTHON_PROFILER_BINARY = False
-
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(ROOT_DIR, "media")
 
