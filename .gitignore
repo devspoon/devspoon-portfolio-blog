@@ -20,6 +20,9 @@ logs/
 # prof files
 *.prof
 
+# silk files
+**/silk/
+
 # media files
 media/*
 !media/default/no_img-removebg-preview.png

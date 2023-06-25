@@ -46,7 +46,7 @@ if DEBUG:
 
     MIDDLEWARE += [
         "debug_toolbar.middleware.DebugToolbarMiddleware",
-        # "silk.middleware.SilkyMiddleware",
+        "silk.middleware.SilkyMiddleware",
     ]
 
     DEBUG_TOOLBAR_PANELS = [
@@ -76,8 +76,7 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 INSTALLED_APPS += [
-    # "django_nose",
-    # "silk",
+    "silk",
     "django_extensions",
 ]
 
@@ -163,8 +162,22 @@ AUTH_USER_MODEL = "users.User"
 # reference blog : https://velog.io/@kim6515516/Django-silk-%EC%84%B1%EB%8A%A5-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC%EB%9F%AC
 # reference github : https://github.com/jazzband/django-silk
 
-SILKY_PYTHON_PROFILER = False
+SILKY_PYTHON_PROFILER = True
 SILKY_PYTHON_PROFILER_BINARY = False
+
+SILKY_META = True
+
+# SILKY_AUTHENTICATION = True  # User must login
+# SILKY_AUTHORISATION = True  # User must have permissions
+
+# SILKY_MAX_REQUEST_BODY_SIZE = -1  # Silk takes anything <0 as no limit
+# SILKY_MAX_RESPONSE_BODY_SIZE = 1024  # If response body>1024 bytes, ignore
+
+# If this is not set, MEDIA_ROOT will be used.
+# SILKY_PYTHON_PROFILER_RESULT_PATH = '/path/to/profiles/'
+SILKY_PYTHON_PROFILER_EXTENDED_FILE_NAME = True
+
+# SILKY_INTERCEPT_PERCENT = 50 # log only 50% of requests
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(ROOT_DIR, "media")

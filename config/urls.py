@@ -46,6 +46,7 @@ urlpatterns = [
     path("portfolio/", include("portfolio.urls")),
     path("error/", include(error_patterns)),
     path("i18n/", include("django.conf.urls.i18n")),
+    # path("silk/", include("silk.urls", namespace="silk")),
 ]
 
 if settings.DEBUG:
