@@ -1,11 +1,17 @@
+import mimetypes
 from .base import *
 from django_redis import get_redis_connection
+from .sub_settings.editor.summernote import *
 
 # from .sub_settings.http.cors import *
 from .sub_settings.system.logs import *
-
+from .sub_settings.http.cors import *
+from .sub_settings.oauth.allauth_default import *
+from .sub_settings.system.logs import *
 
 from decouple import config
+
+mimetypes.add_type("application/javascript", ".js", True)
 
 """
 export DJANGO_SETTINGS_MODULE=config.settings.dev
@@ -38,7 +44,7 @@ export DJANGO_SETTINGS_MODULE=config.settings.prod
 # https://sophilabs.com/blog/configure-a-read-replica-database-in-django
 # https://urunimi.github.io/architecture/python/use-replica/
 
-DEBUG = config("DEBUG_STATE")
+DEBUG = False
 
 host = config("ALLOWED_HOSTS_IP")
 
@@ -80,9 +86,7 @@ DATABASES = {
 }
 
 
-INSTALLED_APPS += [
-    "django_prometheus",
-]
+INSTALLED_APPS += []
 
 """
 django_prometheus는 모든 middleware를 감싸는 형식으로
@@ -91,9 +95,6 @@ django_prometheus는 모든 middleware를 감싸는 형식으로
 정의한다
 """
 MIDDLEWARE += []
-
-MIDDLEWARE.insert(0, "django_prometheus.middleware.PrometheusBeforeMiddleware")
-MIDDLEWARE.insert(-1, "django_prometheus.middleware.PrometheusAfterMiddleware")
 
 CACHES = {
     "default": {
@@ -124,9 +125,9 @@ AUTH_USER_MODEL = "users.User"
 
 STATIC_URL = "/static/"
 STATIC_DIR = os.path.join(ROOT_DIR, "static")
-STATICFILES_DIRS = [
-    STATIC_DIR,
-]
+# STATICFILES_DIRS = [
+#     STATIC_DIR,
+# ]
 # OR
 # STATICFILES_DIRS = [
 #     BASE_DIR / 'static'

@@ -1,10 +1,10 @@
-name: Django CD with OCI
+name: Django CD with Testing version to OCI
 
 on:
-  workflow_run:
-    workflows: ["Django Tests"]
-    types:
-      - completed
+  #   workflow_run:
+  #     workflows: ["Django Tests"]
+  #     types:
+  #       - completed
   workflow_dispatch:
 
 jobs:
