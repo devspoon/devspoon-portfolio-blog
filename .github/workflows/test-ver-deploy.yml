@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
     environment: deply-oci-single-service
     steps:
@@ -71,18 +71,18 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"Workflow deploy: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) has completed deploy to OCI."}' \
+          --data '{"text":"Workflow test deploy: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) has completed deploy to OCI."}' \
           $SLACK_WEBHOOK_URL
 
   handle-failure:
     runs-on: ubuntu-latest
-    needs: [test]
-    if: failure() && needs.test.result == 'failure'
+    needs: [deploy]
+    if: failure() && needs.deploy.result == 'failure'
     steps:
       - name: Send Report to slack
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"Workflow deploy: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) errors has occurred."}' \
+          --data '{"text":"Workflow test deploy: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) errors has occurred."}' \
           $SLACK_WEBHOOK_URL
