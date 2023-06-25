@@ -256,7 +256,7 @@
                 <div class="col-xl-4 col-lg-6 col-md-6">
                     <div class="card-box">
                         <div class="card-img">
-                            <a href="{% url 'blog:opensource_detail' item.projectpost %}">
+                            <a href="{% url 'blog:project_detail' item.projectpost %}">
                                 <img src="{{item.projectpost.title_image}}">
                             </a>
                             <div class="product-action">
@@ -265,7 +265,7 @@
                         </div>
 
                         <div class="card-content">
-                            <h3 class="name"><i class="lni lni-github"></i> <a href="{% url 'blog:opensource_detail' item.projectpost %}" >{{item.projectpost.title}}</a></h3>
+                            <h3 class="name"><i class="lni lni-github"></i> <a href="{% url 'blog:project_detail' item.projectpost %}" >{{item.projectpost.title}}</a></h3>
                             <span class="update">{{item.projectpost.content|safe|truncatechars:80}}</span>
                             <div class="project-info row justify-content-center ">
                                 <div class="col-6" >
