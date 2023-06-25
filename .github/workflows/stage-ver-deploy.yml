@@ -67,7 +67,9 @@ jobs:
             mv ../.env ./
             sed -i 's/config.settings.dev/config.settings.stage/' manage.py
             sed -i 's/config.settings.dev/config.settings.stage/' ./config/wsgi.py
-            echo "${{ secrets.SUDO }}" | sudo -S docker restart gunicorn-app
+            cd ~/project/github/devspoon-web/compose/web_service/nginx_gunicorn/
+            echo "${{ secrets.SUDO }}" | sudo -S docker-compose stop
+            echo "${{ secrets.SUDO }}" | sudo -S docker-compose up --build
       - name: send msg to slack channel
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

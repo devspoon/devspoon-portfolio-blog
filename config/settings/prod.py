@@ -59,6 +59,7 @@ DATABASES = {
         "USER": config("DEFAULT_DB_USER"),
         "PASSWORD": config("DEFAULT_DB_PASSWORD"),
         "CHARSET": config("DEFAULT_DB_CHARSET"),
+        "CONN_MAX_AGE": 500,
         # 'TEST': {
         #     'NAME': config('DEFAULT_DB_TEST_NAME)'
         # }
@@ -72,6 +73,7 @@ DATABASES = {
         "USER": config("REPLICA1_DB_USER"),
         "PASSWORD": config("REPLICA1_DB_PASSWORD"),
         "CHARSET": config("REPLICA1_DB_CHARSET"),
+        "CONN_MAX_AGE": 500,
         # 'TEST': {
         #     'NAME': config('REPLICA1_DB_TEST_NAME)'
         # }
