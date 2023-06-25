@@ -1,4 +1,4 @@
-name: Django CD with Testing version to OCI
+name: Django CD with staging version to OCI
 
 on:
   #   workflow_run:
