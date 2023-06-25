@@ -30,7 +30,17 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - uses: actions/cache@v3
+      - name: Check if requirements.txt changed
+        id: check_requirements
+        run: |
+          if [[ -n "$(git diff --name-only ${{ github.base_ref }} ${{ github.sha }} | grep 'dev_ubuntu22.04.txt')" ]]; then
+            echo "::set-output name=requirements_changed::true"
+          else
+            echo "::set-output name=requirements_changed::false"
+          fi
+      - name: Cache dependencies
+        if: steps.check_requirements.outputs.requirements_changed == 'false'
+        uses: actions/cache@v3
         id: pip-cache
         with:
           path: ${{ matrix.path }}
