@@ -43,7 +43,27 @@ from .views.visiter.visiter_reply import (
     VisiterReplyUpdateJsonView,
 )
 
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import (
+    NoticeListSitemap,
+    NoticeSitemap,
+    VisiterListSitemap,
+    VisiterSitemap,
+    ReactivationListSitemap,
+    ReactivationSitemap,
+)
+
 app_name = "board"
+
+
+sitemaps = {
+    "notice_list": NoticeListSitemap,
+    "notice_detail": NoticeSitemap,
+    "visiter_list": VisiterListSitemap,
+    "visiter_detail": VisiterSitemap,
+    "reactivation_list": ReactivationListSitemap,
+    "reactivation_detail": ReactivationSitemap,
+}
 
 notice_patterns = [
     path("", NoticeListView.as_view(), name="notice_list"),

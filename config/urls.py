@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib import admin
 from django.urls import include, path
 
 from blog.admin.common_admin import blog_admin_site
@@ -23,6 +22,7 @@ from board.admin.common_admin import board_admin_site
 from home.admin.default_admin import home_admin_site
 from portfolio.admin import portfolio_admin_site
 from users.admin import user_admin_site
+from django.views.generic import TemplateView
 
 error_patterns = []
 
@@ -46,6 +46,12 @@ urlpatterns = [
     path("portfolio/", include("portfolio.urls")),
     path("error/", include(error_patterns)),
     path("i18n/", include("django.conf.urls.i18n")),
+    path(
+        "robots.txt",
+        TemplateView.as_view(
+            template_name="home/robots.txt", content_type="text/plain"
+        ),
+    ),
     # path("silk/", include("silk.urls", namespace="silk")),
 ]
 
@@ -59,5 +65,6 @@ else:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler400 = "common.error.error_views.bad_request_page"
+handler403 = "common.error.error_views.permission_denied_page"
 handler404 = "common.error.error_views.page_not_found_page"
 handler500 = "common.error.error_views.server_error_page"

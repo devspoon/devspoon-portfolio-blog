@@ -7,9 +7,10 @@ from django.db import transaction
 from django.db.models import F
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 from django.views.generic import (
     CreateView,
-    DeleteView,
     DetailView,
     ListView,
     UpdateView,
@@ -136,7 +137,7 @@ class NoticeUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class NoticeDeleteView(LoginRequiredMixin, DeleteView):
+class NoticeDeleteView(LoginRequiredMixin, View):
     model = Notice
     pk_url_kwarg = "pk"
     success_url = reverse_lazy("board:notice_list")
@@ -148,8 +149,8 @@ class NoticeDeleteView(LoginRequiredMixin, DeleteView):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        self.object = super().get_object()
-        if self.request.user != self.object.author:
+        post = get_object_or_404(self.model, id=kwargs.get("pk"))
+        if self.request.user != post.author:
             raise PermissionDenied()
         dredis_cache_delete(
             self.cache_prefix,
@@ -159,8 +160,9 @@ class NoticeDeleteView(LoginRequiredMixin, DeleteView):
             self.cache_reply_prefix,
             kwargs.get("pk"),
         )
-
-        return super().form_valid(None)
+        post.is_deleted = True
+        post.save()
+        return redirect(self.success_url)
 
 
 class NoticeVisitJsonView(View):

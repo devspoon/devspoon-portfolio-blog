@@ -46,7 +46,7 @@ if DEBUG:
 
     MIDDLEWARE += [
         "debug_toolbar.middleware.DebugToolbarMiddleware",
-        "silk.middleware.SilkyMiddleware",
+        # "silk.middleware.SilkyMiddleware",
     ]
 
     DEBUG_TOOLBAR_PANELS = [
@@ -76,7 +76,7 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 INSTALLED_APPS += [
-    "silk",
+    # "silk",
     "django_extensions",
 ]
 

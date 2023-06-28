@@ -1,8 +1,14 @@
 from django.urls import path
 
 from .views.index import IndexView, SearchView
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import Indexitemap
 
 app_name = "home"
+
+sitemaps = {
+    "index": Indexitemap,
+}
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),

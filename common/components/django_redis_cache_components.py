@@ -20,14 +20,13 @@ def dredis_cache_set(prefix: str, pk: int, **kwargs: dict) -> None:
         redis_key = prefix + ":" + str(pk) + ":" + key
         logger.debug(f"redis key : {redis_key}")
         logger.debug(f"redis value : {value}")
-        # result = cache.set(redis_key, value, timeout=CACHE_TTL, nx=True)
         result = cache.set(redis_key, value, timeout=CACHE_TTL, nx=False)
         logger.debug(f"cache.set result : {result}")
 
 
 # django-redis cache get
 def dredis_cache_get(prefix: str, pk: int, key: str = None) -> Union[QuerySet, dict]:
-    logger.debug(f"key : {key}")
+    # logger.debug(f"key : {key}")
     key_value_dict = {}
     if key:
         redis_key = prefix + ":" + str(pk) + ":" + key
@@ -57,19 +56,16 @@ def dredis_cache_delete(prefix: str, pk: int = None, key: str = None) -> None:
     if pk:
         if key:
             redis_key = prefix + ":" + str(pk) + ":" + key
-            logger.debug(f"redis key : {redis_key}")
         else:
             redis_key = prefix + ":" + str(pk) + ":*"
-            logger.debug(f"redis key : {redis_key}")
     else:
         redis_key = prefix + ":*"
-        logger.debug(f"redis key : {redis_key}")
-
+    logger.debug(f"redis key : {redis_key}")
     cache.delete_pattern(redis_key, itersize=100_000)
 
 
 def dredis_cache_check_key(prefix: str, pk: int, key: str) -> bool:
-    logger.debug(f"key : {key}")
+    # logger.debug(f"key : {key}")
     redis_key = prefix + ":" + str(pk) + ":" + key
     logger.debug(f"redis key : {redis_key}")
     ttl = cache.ttl(redis_key)

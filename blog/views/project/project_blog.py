@@ -9,9 +9,9 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.shortcuts import redirect
 from django.views.generic import (
     CreateView,
-    DeleteView,
     DetailView,
     ListView,
     UpdateView,
@@ -40,7 +40,7 @@ class ProjectListView(ListView):
     context_object_name = "board"
 
     def get_queryset(self):
-        return ProjectPost.objects.filter(Q(is_hidden=False) and Q(is_deleted=False))
+        return ProjectPost.activate_objects.get_data()
 
 
 class ProjectDetailView(DetailView):
@@ -173,7 +173,7 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
 
 
 @method_decorator(index_cache_clean, name="dispatch")
-class ProjectDeleteView(LoginRequiredMixin, DeleteView):
+class ProjectDeleteView(LoginRequiredMixin, View):
     model = ProjectPost
     pk_url_kwarg = "pk"
     success_url = reverse_lazy("blog:project_list")
@@ -185,8 +185,8 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        self.object = super().get_object()
-        if self.request.user != self.object.author:
+        post = self.model.objects.filter(id=kwargs.get("pk"))
+        if self.request.user != post[0].author:
             raise PermissionDenied()
         dredis_cache_delete(
             self.cache_prefix,
@@ -196,7 +196,9 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
             self.cache_reply_prefix,
             kwargs.get("pk"),
         )
-        return super().form_valid(None)
+        post.is_deleted = True
+        post.save()
+        return redirect(self.success_url)
 
 
 class ProjectLikeJsonView(LoginRequiredMixin, View):

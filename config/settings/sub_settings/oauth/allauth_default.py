@@ -1,5 +1,6 @@
 import os
 import sys
+
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from config.settings.base import INSTALLED_APPS, AUTHENTICATION_BACKENDS
@@ -12,21 +13,20 @@ from config.settings.base import INSTALLED_APPS, AUTHENTICATION_BACKENDS
 # naver api setting : https://developers.naver.com/
 
 # admin setting
-# 
+#
 
 INSTALLED_APPS += [
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.auth0',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.kakao',
-    'allauth.socialaccount.providers.naver',
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.auth0",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.kakao",
+    "allauth.socialaccount.providers.naver",
 ]
 
 AUTHENTICATION_BACKENDS += [
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 # All auth
@@ -37,7 +37,7 @@ AUTHENTICATION_BACKENDS += [
 # 이후 social applications에 연동할 서비스 정보 추가
 # 구글의 경우  client id, secret key, sites 선택 을 입력 및 선택해준다
 
-# 해당 로그인으로 가져오는 정보 중 email은 user의 email 정보와 중복이 되어 
+# 해당 로그인으로 가져오는 정보 중 email은 user의 email 정보와 중복이 되어
 # 기존 가입자의 경우 메일의 유일성이 사라짐
 # 구글의 꼼수로 아이디 뒤에 + 문자를 입력하면 + 이후는 무시한다
 
@@ -46,8 +46,8 @@ AUTHENTICATION_BACKENDS += [
 
 
 SITE_ID = 1
-LOGIN_REDIRECT_URL = 'home:index'
-ACCOUNT_LOGOUT_REDIRECT_URL = 'home:index'
+LOGIN_REDIRECT_URL = "home:index"
+ACCOUNT_LOGOUT_REDIRECT_URL = "home:index"
 
 # logout을 url, get으로 접근해도 처리를 수행할 수 있게 설정
 ACCOUNT_LOGOUT_ON_GET = True
@@ -57,13 +57,11 @@ ACCOUNT_LOGOUT_ON_GET = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile', 'email'
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
+    "google": {
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
     },
 }
 
@@ -76,7 +74,7 @@ SOCIALACCOUNT_PROVIDERS = {
 ACCOUNT_EMAIL_REQUIRED = False
 
 # 확인 메일이 반복해서 전송되는 기능을 끔
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
-SOCIALACCOUNT_ADAPTER = 'users.models.CustomSocialAccountAdapter'
+SOCIALACCOUNT_ADAPTER = "users.models.CustomSocialAccountAdapter"
 ACCOUNT_UNIQUE_EMAIL = False

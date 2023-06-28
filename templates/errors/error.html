@@ -15,6 +15,11 @@
         <p class="lead mt-4">
             The request hostname is invalid.
         </p>
+        {% elif status_code == 403 %}
+        <p class="fs-3 mt-4"> <span class="text-danger">Opps!</span> Permission Denied.</p>
+        <p class="lead mt-4">
+            Please check user permission or author.
+        </p>
         {% elif status_code == 404 %}
         <p class="fs-3 mt-4"> <span class="text-danger">Opps!</span> Page not found.</p>
         <p class="lead mt-4">

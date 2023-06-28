@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.shortcuts import redirect
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -40,7 +41,7 @@ class OpenSourceListView(ListView):
     context_object_name = "board"
 
     def get_queryset(self):
-        return OpenSourcePost.objects.filter(Q(is_hidden=False) and Q(is_deleted=False))
+        return OpenSourcePost.activate_objects.get_data()
 
 
 class OpenSourceDetailView(DetailView):
@@ -175,7 +176,7 @@ class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
 
 
 @method_decorator(index_cache_clean, name="dispatch")
-class OpenSourceDeleteView(LoginRequiredMixin, DeleteView):
+class OpenSourceDeleteView(LoginRequiredMixin, View):
     model = OpenSourcePost
     pk_url_kwarg = "pk"
     success_url = reverse_lazy("blog:opensource_list")
@@ -187,8 +188,8 @@ class OpenSourceDeleteView(LoginRequiredMixin, DeleteView):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        self.object = super().get_object()
-        if self.request.user != self.object.author:
+        post = get_object_or_404(self.model, id=kwargs.get("pk"))
+        if self.request.user != post.author:
             raise PermissionDenied()
         dredis_cache_delete(
             self.cache_prefix,
@@ -198,7 +199,9 @@ class OpenSourceDeleteView(LoginRequiredMixin, DeleteView):
             self.cache_reply_prefix,
             kwargs.get("pk"),
         )
-        return super().form_valid(None)
+        post.is_deleted = True
+        post.save()
+        return redirect(self.success_url)
 
 
 class OpenSourceLikeJsonView(LoginRequiredMixin, View):
