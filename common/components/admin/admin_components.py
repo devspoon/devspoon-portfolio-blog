@@ -38,19 +38,23 @@ class AdminCacheClean(object):
             dredis_cache_delete(prefix, 0)
 
     def delete_all_cache(self, request, queryset):
-        self.delete_cache(self.cache_prefix)
+        if self.cache_prefix != "":
+            self.delete_cache(self.cache_prefix)
 
     def delete_selected_items(self, request, queryset):
         for obj in queryset:
-            self.delete_cache(self.cache_prefix, obj.pk)
+            if self.cache_prefix != "":
+                self.delete_cache(self.cache_prefix, obj.pk)
             obj.delete()
 
     def save_model(self, request, obj, form, change):
-        self.delete_cache(self.cache_prefix, obj.pk)
+        if self.cache_prefix != "":
+            self.delete_cache(self.cache_prefix, obj.pk)
         super().save_model(request, obj, form, change)
 
     def delete_model(self, request, obj):
-        self.delete_cache(self.cache_prefix, obj.pk)
+        if self.cache_prefix != "":
+            self.delete_cache(self.cache_prefix, obj.pk)
         super().delete_model(request, obj)
 
 
@@ -59,7 +63,8 @@ class AdminCacheCleanFixedKey(AdminCacheClean):
 
     def delete_cache(self):
         for key in self.view_keys:
-            cache.delete(key)
+            if cache.has_key(key):
+                cache.delete(key)
 
     def delete_selected_items(self, request, queryset):
         for obj in queryset:
