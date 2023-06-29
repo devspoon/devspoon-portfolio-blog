@@ -7,10 +7,6 @@ from .sitemaps import Portfolioitemap
 
 app_name = "portfolio"
 
-sitemaps = {
-    "portfolio": Portfolioitemap,
-}
-
 urlpatterns = [
     path("", PortfolioView.as_view(), name="portfolio"),
     path("json/", WorkExperienceJsonView.as_view(), name="work_experience"),

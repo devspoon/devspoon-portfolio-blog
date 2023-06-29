@@ -68,6 +68,7 @@ jobs:
             sed -i 's/config.settings.dev/config.settings.stage/' manage.py
             sed -i 's/config.settings.dev/config.settings.stage/' ./config/wsgi.py
             cd ~/project/github/devspoon-web/compose/web_service/nginx_gunicorn/
+            sed -i 's/domain/${{ secrets.STAGE_SERVER_URL }}/' ./templates/home/robots.txt
             echo "${{ secrets.SUDO }}" | sudo -S docker-compose stop
             echo "${{ secrets.SUDO }}" | sudo -S docker-compose up --build -d
       - name: send msg to slack channel

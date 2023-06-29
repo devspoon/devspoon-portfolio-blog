@@ -76,35 +76,7 @@ from blog.views.project.project_reply import (
     ProjectReplyUpdateJsonView,
 )
 
-from django.contrib.sitemaps.views import sitemap
-from .sitemaps import (
-    ProjectPostListSitemap,
-    ProjectPostSitemap,
-    OnlineStudyPostListSitemap,
-    OnlineStudyPostSitemap,
-    BlogPostListSitemap,
-    BlogPostSitemap,
-    OpenSourcePostListSitemap,
-    OpenSourcePostSitemap,
-    BooksPostListSitemap,
-    BooksPostSitemap,
-)
-
 app_name = "blog"
-
-sitemaps = {
-    "project_list": ProjectPostListSitemap,
-    "project_detail": ProjectPostSitemap,
-    "online_study_list": OnlineStudyPostListSitemap,
-    "online_study_detail": OnlineStudyPostSitemap,
-    "blog_list": BlogPostListSitemap,
-    "blog_detail": BlogPostSitemap,
-    "opensource_list": OpenSourcePostListSitemap,
-    "opensource_detail": OpenSourcePostSitemap,
-    "books_list": BooksPostListSitemap,
-    "books_detail": BooksPostSitemap,
-}
-
 
 blog_patterns = [
     path("", BlogListView.as_view(), name="blog_list"),
@@ -283,7 +255,6 @@ online_study_patterns = [
 ]
 
 urlpatterns = [
-    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
     path("blog/", include(blog_patterns)),
     path("books/", include(books_patterns)),
     path("opensource/", include(opensource_patterns)),

@@ -6,9 +6,6 @@ from .sitemaps import Indexitemap
 
 app_name = "home"
 
-sitemaps = {
-    "index": Indexitemap,
-}
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),

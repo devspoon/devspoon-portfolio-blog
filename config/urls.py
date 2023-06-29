@@ -16,13 +16,58 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path
-
 from blog.admin.common_admin import blog_admin_site
 from board.admin.common_admin import board_admin_site
 from home.admin.default_admin import home_admin_site
 from portfolio.admin import portfolio_admin_site
 from users.admin import user_admin_site
 from django.views.generic import TemplateView
+
+from django.contrib.sitemaps.views import sitemap, index
+
+from portfolio.sitemaps import Portfolioitemap
+from home.sitemaps import Indexitemap
+from board.sitemaps import (
+    NoticeListSitemap,
+    NoticeSitemap,
+    VisiterListSitemap,
+    VisiterSitemap,
+    ReactivationListSitemap,
+    ReactivationSitemap,
+)
+from blog.sitemaps import (
+    ProjectPostListSitemap,
+    ProjectPostSitemap,
+    OnlineStudyPostListSitemap,
+    OnlineStudyPostSitemap,
+    BlogPostListSitemap,
+    BlogPostSitemap,
+    OpenSourcePostListSitemap,
+    OpenSourcePostSitemap,
+    BooksPostListSitemap,
+    BooksPostSitemap,
+)
+
+sitemaps = {
+    "portfolio": Portfolioitemap,
+    "index": Indexitemap,
+    "notice_list": NoticeListSitemap,
+    "notice_detail": NoticeSitemap,
+    "visiter_list": VisiterListSitemap,
+    "visiter_detail": VisiterSitemap,
+    "reactivation_list": ReactivationListSitemap,
+    "reactivation_detail": ReactivationSitemap,
+    "project_list": ProjectPostListSitemap,
+    "project_detail": ProjectPostSitemap,
+    "online_study_list": OnlineStudyPostListSitemap,
+    "online_study_detail": OnlineStudyPostSitemap,
+    "blog_list": BlogPostListSitemap,
+    "blog_detail": BlogPostSitemap,
+    "opensource_list": OpenSourcePostListSitemap,
+    "opensource_detail": OpenSourcePostSitemap,
+    "books_list": BooksPostListSitemap,
+    "books_detail": BooksPostSitemap,
+}
 
 error_patterns = []
 
@@ -51,6 +96,18 @@ urlpatterns = [
         TemplateView.as_view(
             template_name="home/robots.txt", content_type="text/plain"
         ),
+    ),
+    path(
+        "sitemap.xml",
+        index,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.index",
+    ),
+    path(
+        "sitemap-<section>.xml",
+        sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
     ),
     # path("silk/", include("silk.urls", namespace="silk")),
 ]
