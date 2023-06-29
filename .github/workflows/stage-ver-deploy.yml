@@ -19,6 +19,7 @@ jobs:
           echo "ALLOWED_HOSTS_IP=*" >> .env
           echo "IP_ADDRESSES1=${{ secrets.IP_ADDRESSES1 }}" >> .env
           echo "IP_ADDRESSES2=${{ secrets.IP_ADDRESSES2 }}" >> .env
+          echo "CSRF_TRUSTED_ORIGINS=${{ secrets.CSRF_TRUSTED_ORIGINS }}" >> .env
           echo "DEFAULT_DB_HOST=${{ secrets.DEFAULT_DB_HOST }}" >> .env
           echo "DEFAULT_DB_PORT=${{ secrets.DEFAULT_DB_PORT }}" >> .env
           echo "DEFAULT_DB_NAME=${{ secrets.DEFAULT_DB_NAME }}" >> .env
