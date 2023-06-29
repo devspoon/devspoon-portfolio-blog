@@ -145,3 +145,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(ROOT_DIR, "media")
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600
+
+trusted_domain_list = config("CSRF_TRUSTED_ORIGINS")
+
+CSRF_TRUSTED_ORIGINS = trusted_domain_list.split(",")
