@@ -131,4 +131,4 @@ def test_blog_project_delete(staff):
     queryset = ProjectPost.objects.filter(
         title="test",
     )
-    assert queryset.exists() is False
+    assert queryset[0].is_deleted is True

@@ -148,7 +148,7 @@ class VisiterDeleteView(LoginRequiredMixin, View):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        post = get_object_or_404(self.model, id=kwargs.get("pk")).first()
+        post = get_object_or_404(self.model, id=kwargs.get("pk"))
         if not post:
             raise Http404("Post not found")
         if self.request.user != post.author:
@@ -161,8 +161,7 @@ class VisiterDeleteView(LoginRequiredMixin, View):
             self.cache_reply_prefix,
             kwargs.get("pk"),
         )
-        post.is_deleted = True
-        post.save()
+        post.update(is_deleted=True)
         return redirect(self.success_url)
 
 
