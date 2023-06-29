@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.db.models import F, Q
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -188,7 +188,9 @@ class OnlineStudyDeleteView(LoginRequiredMixin, View):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        post = get_object_or_404(self.model, id=kwargs.get("pk"))
+        post = get_object_or_404(self.model, id=kwargs.get("pk")).first()
+        if not post:
+            raise Http404("Post not found")
         if self.request.user != post.author:
             raise PermissionDenied()
         dredis_cache_delete(
