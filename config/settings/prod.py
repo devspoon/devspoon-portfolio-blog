@@ -2,10 +2,21 @@ from .base import *
 from django_redis import get_redis_connection
 
 # from .sub_settings.http.cors import *
+
+import mimetypes
+from .sub_settings.editor.summernote import *
+
+# from .sub_settings.http.cors import *
+from .sub_settings.http.cors import *
+from .sub_settings.oauth.allauth_default import *
 from .sub_settings.system.logs import *
 
-
 from decouple import config
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+mimetypes.add_type("application/javascript", ".js", True)
 
 """
 export DJANGO_SETTINGS_MODULE=config.settings.dev
@@ -149,3 +160,17 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600
 trusted_domain_list = config("CSRF_TRUSTED_ORIGINS")
 
 CSRF_TRUSTED_ORIGINS = trusted_domain_list.split(",")
+
+sentry_sdk.init(
+    dsn=config("SENTRY_DNS"),
+    integrations=[
+        DjangoIntegration(),
+    ],
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True,
+)
