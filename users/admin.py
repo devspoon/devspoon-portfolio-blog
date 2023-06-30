@@ -144,8 +144,7 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
                 "fields": [
                     "username",
                     "email",
-                    "password1",
-                    "password2",
+                    "password",
                     "nickname",
                     "gender",
                 ],
@@ -183,8 +182,7 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
                 "fields": [
                     "username",
                     "email",
-                    "password1",
-                    "password2",
+                    "password",
                     "nickname",
                     "gender",
                 ],

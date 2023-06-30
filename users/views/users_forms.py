@@ -220,10 +220,8 @@ class ProfileForm(forms.ModelForm):
                 self.add_error("new_password", "Password is empty")
             if not new_password_confirm:
                 self.add_error("new_password_confirm", "New password confirm is empty")
-
             if not self.instance.check_password(password):
                 self.add_error("password", "Old password is incorrect")
-
             if new_password != new_password_confirm:
                 self.add_error("new_password_confirm", "Password doesn't match")
 
