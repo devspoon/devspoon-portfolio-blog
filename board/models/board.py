@@ -87,7 +87,6 @@ class Notice(Board):
         ordering = ["-created_at"]
 
     def get_absolute_url(self):
-        print("Notice !!!! ")
         return reverse("board:notice_detail", kwargs={"pk": self.pk})
 
 
@@ -100,7 +99,7 @@ class Visiter(Board):
         ordering = ["-created_at"]
 
     def get_absolute_url(self):
-        return reverse("board:notice_detail", kwargs={"pk": self.pk})
+        return reverse("board:visiter_detail", kwargs={"pk": self.pk})
 
 
 class Reactivation(Board):
@@ -112,4 +111,4 @@ class Reactivation(Board):
         ordering = ["-created_at"]
 
     def get_absolute_url(self):
-        return reverse("board:notice_detail", kwargs={"pk": self.pk})
+        return reverse("board:reactivation_detail", kwargs={"pk": self.pk})

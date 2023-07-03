@@ -3,6 +3,7 @@ import os
 import re
 
 from bs4 import BeautifulSoup as Bs
+
 # from django.db.models.constraints import UniqueConstraint
 from django.conf import settings
 from django.db import models
@@ -164,7 +165,7 @@ class ProjectPost(Post):
         ordering = ["-created_at"]
 
     def get_absolute_url(self):
-        return reverse("blog:opensource_detail", kwargs={"pk": self.pk})
+        return reverse("blog:project_detail", kwargs={"pk": self.pk})
 
 
 class OnlineStudyPost(Post):
@@ -198,7 +199,7 @@ class OnlineStudyPost(Post):
         ordering = ["-created_at"]
 
     def get_absolute_url(self):
-        return reverse("blog:opensource_detail", kwargs={"pk": self.pk})
+        return reverse("blog:online_study_detail", kwargs={"pk": self.pk})
 
 
 class BlogPost(Post):
@@ -217,7 +218,7 @@ class BlogPost(Post):
         ordering = ["-created_at"]
 
     def get_absolute_url(self):
-        return reverse("blog:opensource_detail", kwargs={"pk": self.pk})
+        return reverse("blog:blog_detail", kwargs={"pk": self.pk})
 
 
 class OpenSourcePost(Post):
@@ -292,7 +293,7 @@ class BooksPost(Post):
         ordering = ["-created_at"]
 
     def get_absolute_url(self):
-        return reverse("blog:opensource_detail", kwargs={"pk": self.pk})
+        return reverse("blog:books_detail", kwargs={"pk": self.pk})
 
 
 class Tag(models.Model):

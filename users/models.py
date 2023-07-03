@@ -159,9 +159,6 @@ class User(AbstractUser):
 
     get_full_name.short_description = _("Full name")
 
-    def get_absolute_url(self):
-        return reverse("")  # profile page
-
     def set_dormant_account(self):
         # self.instance
         # send email
