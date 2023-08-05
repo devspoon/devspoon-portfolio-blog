@@ -79,7 +79,7 @@ matplotlib-inline==0.1.6
 mdurl==0.1.2
 mistune==2.0.5
 mypy-extensions==1.0.0
-mysqlclient==2.1.1
+mysqlclient==2.2.0
 nbclassic==0.5.3
 nbclient==0.7.2
 nbconvert==7.2.10
