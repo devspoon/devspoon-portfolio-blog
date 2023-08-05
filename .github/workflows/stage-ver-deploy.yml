@@ -56,6 +56,7 @@ jobs:
           source: ".env"
           target: ~/project/github/devspoon-web/www/
       - name: Deploy
+        timeout-minutes: 30
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_IP }}
@@ -69,8 +70,8 @@ jobs:
             mv ../.env ./
             sed -i 's/config.settings.dev/config.settings.stage/' manage.py
             sed -i 's/config.settings.dev/config.settings.stage/' ./config/wsgi.py
-            cd ~/project/github/devspoon-web/compose/web_service/nginx_gunicorn/
             sed -i 's/domain/${{ secrets.STAGE_SERVER_URL }}/' ./templates/home/robots.txt
+            cd ~/project/github/devspoon-web/compose/web_service/nginx_gunicorn/
             echo "${{ secrets.SUDO }}" | sudo -S docker-compose stop
             echo "${{ secrets.SUDO }}" | sudo -S docker-compose up --build -d
       - name: send msg to slack channel
