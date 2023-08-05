@@ -10,6 +10,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     environment: deply-oci-single-service
     steps:
       - name: Add environment variables to .env
@@ -56,7 +57,6 @@ jobs:
           source: ".env"
           target: ~/project/github/devspoon-web/www/
       - name: Deploy
-        timeout-minutes: 30
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_IP }}
