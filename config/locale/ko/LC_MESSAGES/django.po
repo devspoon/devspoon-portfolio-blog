@@ -193,7 +193,7 @@ msgstr "오픈 소스 포스트"
 
 #: .\blog\models\blog.py:217 .\blog\models\blog.py:218
 msgid "books post"
-msgstr "서적 포스트"
+msgstr "책 포스트"
 
 #: .\blog\models\blog.py:230
 msgid "tag"
@@ -217,7 +217,7 @@ msgstr "댓글 그룹"
 
 #: .\blog\models\blog_reply.py:36 .\blog\models\blog_reply.py:37
 msgid "project post reply"
-msgstr "프로젝트 포스트 답장"
+msgstr "프로젝트 포스트 댓글"
 
 #: .\blog\models\blog_reply.py:46 .\blog\models\blog_reply.py:47
 msgid "online study post reply"

@@ -25,8 +25,8 @@ from django.views.generic import TemplateView
 
 from django.contrib.sitemaps.views import sitemap, index
 
-from portfolio.sitemaps import Portfolioitemap
-from home.sitemaps import Indexitemap
+from portfolio.sitemaps import PortfolioSitemap
+from home.sitemaps import IndexSitemap
 from board.sitemaps import (
     NoticeListSitemap,
     NoticeSitemap,
@@ -49,8 +49,8 @@ from blog.sitemaps import (
 )
 
 sitemaps = {
-    "portfolio": Portfolioitemap,
-    "index": Indexitemap,
+    "portfolio": PortfolioSitemap,
+    "index": IndexSitemap,
     "notice_list": NoticeListSitemap,
     "notice_detail": NoticeSitemap,
     "visiter_list": VisiterListSitemap,

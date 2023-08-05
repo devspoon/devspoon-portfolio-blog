@@ -1,7 +1,6 @@
 import logging
 
 from django.conf import settings
-from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.db.models import Value
 from django.http import Http404

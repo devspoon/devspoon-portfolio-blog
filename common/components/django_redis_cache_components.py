@@ -16,12 +16,13 @@ logger = logging.getLogger(getattr(settings, "COMMON_LOGGER", "django"))
 # django-redis cache set
 def dredis_cache_set(prefix: str, pk: int, **kwargs: dict) -> None:
     logger.debug(f"kwargs : {kwargs}")
-    for key, value in kwargs.items():
-        redis_key = prefix + ":" + str(pk) + ":" + key
-        logger.debug(f"redis key : {redis_key}")
-        logger.debug(f"redis value : {value}")
-        result = cache.set(redis_key, value, timeout=CACHE_TTL, nx=False)
-        logger.debug(f"cache.set result : {result}")
+    if 2 < len(kwargs):
+        for key, value in kwargs.items():
+            redis_key = prefix + ":" + str(pk) + ":" + key
+            logger.debug(f"redis key : {redis_key}")
+            logger.debug(f"redis value : {value}")
+            result = cache.set(redis_key, value, timeout=CACHE_TTL, nx=False)
+            logger.debug(f"cache.set result : {result}")
 
 
 # django-redis cache get

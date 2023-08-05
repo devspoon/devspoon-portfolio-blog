@@ -129,7 +129,7 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
         "id",
         "username",
         "email",
-        "profile_thumbnail",
+        "last_login_at",
         "verified",
         "is_site_register",
         "is_active",

@@ -71,8 +71,6 @@ class Search:
             "-created_at"
         )
 
-        print("result_queryset : ", result_queryset)
-
         logger.debug("result_queryset : {}".format(result_queryset))
 
         paginator = Paginator(result_queryset, per_page)

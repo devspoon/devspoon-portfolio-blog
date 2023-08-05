@@ -1383,9 +1383,11 @@ section.first {
     -moz-transition: all 0.5s;
 }
 
-/* .policy-box {
-    height: 400px;
-} */
+pre {
+    padding:10px;
+    overflow: auto;
+    white-space: pre-wrap;
+}
 
 .policy-notice {
     color: red;
@@ -2927,4 +2929,15 @@ section.first button.btn {
 
 .timeline-icon-gray {
     background-color: #808080;
+}
+
+
+/*===========================
+    21. pages css
+===========================*/
+/*===== pages common  =====*/
+.text-wrapper {
+    padding: 10px;
+    overflow: auto;
+    white-space: pre-wrap;
 }
