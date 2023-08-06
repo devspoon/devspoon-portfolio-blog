@@ -2936,8 +2936,9 @@ section.first button.btn {
     21. pages css
 ===========================*/
 /*===== pages common  =====*/
-.text-wrapper {
+pre .text-wrapper {
     padding: 10px;
-    overflow: auto;
     white-space: pre-wrap;
+    overflow: auto;
+    word-break: break-all;
 }
