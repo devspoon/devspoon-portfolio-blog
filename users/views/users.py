@@ -43,6 +43,9 @@ def update_or_create_sending_email_result(result: list) -> None:
             this_month=timezone.now().month,
             last_sending_state=False,
         )
+        logger.debug(
+            f"SendingEmailMonitor create this month {timezone.now().month} : {obj}"
+        )
 
     if result["sending_mail_num"] == 0:
         obj = SendingEmailMonitor.objects.filter(
@@ -53,6 +56,7 @@ def update_or_create_sending_email_result(result: list) -> None:
             last_sending_state=False,
             last_failed_at=timezone.now(),
         )
+        logger.debug(f"SendingEmailMonitor sending fail {obj}")
     else:
         obj = SendingEmailMonitor.objects.filter(
             vendor=settings.MAIL_VENDOR, this_month=timezone.now().month
@@ -62,6 +66,7 @@ def update_or_create_sending_email_result(result: list) -> None:
             last_sending_state=True,
             last_success_at=timezone.now(),
         )
+        logger.debug(f"SendingEmailMonitor sending success {obj}")
 
 
 class RegisterView(VerifyEmailMixin, FormView):
@@ -84,6 +89,18 @@ class RegisterView(VerifyEmailMixin, FormView):
         nickname = form.cleaned_data["nickname"]
         profile_image = form.cleaned_data["profile_image"]
 
+        if User.objects.filter(email=email).exists():
+            messages.error(self.request, "This email is exist")
+            return redirect(reverse("users:register"))
+
+        if User.objects.filter(username=username).exists():
+            messages.error(self.request, "This username is exist")
+            return redirect(reverse("users:register"))
+
+        if User.objects.filter(nickname=nickname).exists():
+            messages.error(self.request, "This nickname is exist")
+            return redirect(reverse("users:register"))
+
         if profile_image:
             user = User.objects.create_user(
                 email=email,
@@ -101,10 +118,6 @@ class RegisterView(VerifyEmailMixin, FormView):
                 nickname=nickname,
                 is_site_register=True,
             )
-
-        if not user:
-            messages.error()(self.request, "This user is already registered")
-            return redirect(reverse("users:register"))
 
         result = self.send_verification_email_management(
             self.verify_email_template_name1,
@@ -361,11 +374,3 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     #                 print(f"{field} is {error}error!!! ")
 
     #     return super().form_invalid(form)
-
-
-class PrivacyPolicyView(TemplateView):
-    template_name = "pages/privacy-policy.html"
-
-
-class TermsOfServiceView(TemplateView):
-    template_name = "pages/terms-of-service.html"

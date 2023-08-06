@@ -52,7 +52,20 @@ class RegisterForm(forms.Form):
         help_text=_("Enter between 4 and 20 character"),
         required=True,
     )
+
     profile_image = forms.ImageField(label="Profile Image", required=False)
+
+    is_privacy_policy = forms.BooleanField(
+        label="Privacy Policy",
+        help_text=_("To sign up, you must read and agree to the linked policy."),
+        required=True,
+    )
+
+    is_terms_of_service = forms.BooleanField(
+        label="Terms of Service",
+        help_text=_("To sign up, you must read and agree to the linked policy."),
+        required=True,
+    )
 
     def clean(self):
         cleaned_data = super(RegisterForm, self).clean()
@@ -62,7 +75,9 @@ class RegisterForm(forms.Form):
         if password and password_confirm:
             if password != password_confirm:
                 raise forms.ValidationError(
-                    {"password_confirm": ["Password information must be the same!"]}
+                    message={
+                        "password_confirm": ["Password information must be the same!"]
+                    }
                 )
 
         return cleaned_data

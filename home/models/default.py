@@ -128,6 +128,12 @@ class SiteInfo(models.Model):
     office_facebook = models.URLField(blank=True, verbose_name=_("Office Facebook"))
     office_instragram = models.URLField(blank=True, verbose_name=_("Office Instagram"))
     office_youtube = models.URLField(blank=True, verbose_name=_("Office Youtube"))
+    privacy_policy = models.TextField(
+        null=True, blank=True, verbose_name=_("Privacy Policy")
+    )
+    terms_of_service = models.TextField(
+        null=True, blank=True, verbose_name=_("Terms Of Service")
+    )
 
     class Meta:
         db_table = "site_info"

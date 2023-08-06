@@ -58,7 +58,7 @@ class AdminCacheClean(object):
         super().delete_model(request, obj)
 
 
-class AdminCacheCleanFixedKey(AdminCacheClean):
+class AdminCacheCleanFixedKey(AdminCacheClean, SummernoteModelAdmin):
     view_keys = ""
 
     def delete_cache(self):

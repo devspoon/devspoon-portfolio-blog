@@ -13,6 +13,7 @@ from common.components.django_redis_cache_components import (
     dredis_cache_set,
 )
 from home.views.service.search import Search
+from home.models import SiteInfo
 from portfolio.models import AboutProjects
 
 logger = logging.getLogger(getattr(settings, "HOME_LOGGER", "django"))
@@ -134,3 +135,19 @@ class SearchView(TemplateView, Search):
 
         if keyword:
             return self.queryset_keyword_search(keyword, page_number, self.paginate_by)
+
+
+class PrivacyPolicyView(TemplateView):
+    template_name = "pages/privacy-policy.html"
+
+    def get_context_data(self, **kwargs):
+        context = SiteInfo.objects.values("privacy_policy").first()
+        return context
+
+
+class TermsOfServiceView(TemplateView):
+    template_name = "pages/terms-of-service.html"
+
+    def get_context_data(self, **kwargs):
+        context = SiteInfo.objects.values("terms_of_service").first()
+        return context

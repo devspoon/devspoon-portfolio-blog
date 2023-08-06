@@ -41,7 +41,7 @@ class MainMenuAdmin(AdminCacheCleanFixedKey, DraggableMPTTAdmin):
         return actions
 
 
-class SiteInfoAdmin(AdminCacheCleanFixedKey, admin.ModelAdmin):
+class SiteInfoAdmin(AdminCacheCleanFixedKey):
     list_display = [field.name for field in SiteInfo._meta.get_fields()]
     list_display_links = ["id", "phone_number", "office_email"]
 
@@ -53,6 +53,11 @@ class SiteInfoAdmin(AdminCacheCleanFixedKey, admin.ModelAdmin):
         "delete_all_cache",
         "delete_selected_items",
     ]
+
+    summernote_fields = (
+        "privacy_policy",
+        "terms_of_service",
+    )
 
     def get_actions(self, request):
         actions = super(SiteInfoAdmin, self).get_actions(request)

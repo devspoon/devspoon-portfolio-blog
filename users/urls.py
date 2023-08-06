@@ -4,11 +4,9 @@ from .views.users import (
     ForgetPasswordView,
     LoginView,
     LogoutView,
-    PrivacyPolicyView,
     ProfileView,
     RegisterView,
     ResendVerificationEmailView,
-    TermsOfServiceView,
     UpdatePasswordView,
     UserDeleteView,
     VerificationView,
@@ -34,6 +32,4 @@ urlpatterns = [
     ),
     path("profile/", ProfileView.as_view(), name="profile"),
     path("delete/", UserDeleteView.as_view(), name="user_delete"),
-    path("privacy-policy/", PrivacyPolicyView.as_view(), name="privacy_policy"),
-    path("terms-of-service", TermsOfServiceView.as_view(), name="terms_of_service"),
 ]

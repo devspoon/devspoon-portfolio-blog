@@ -266,9 +266,7 @@ class UserProfile(models.Model):
 
 
 class SendingEmailMonitor(models.Model):
-    vendor = models.CharField(
-        max_length=20, blank=False, unique=True, verbose_name=_("Vendor Name")
-    )
+    vendor = models.CharField(max_length=20, blank=False, verbose_name=_("Vendor Name"))
     sending_success_cnt = models.IntegerField(
         blank=True, default=0, verbose_name=_("Sending Success Count")
     )
