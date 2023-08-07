@@ -42,7 +42,7 @@ class IndexView(TemplateView):
                 .select_related("projectpost__author")
             )
             study = (
-                OnlineStudyPost.objects.all()[:3]
+                OnlineStudyPost.activate_objects.get_data()[:3]
                 .annotate(table=Value("OnlineStudy"))
                 .values(
                     "pk",
@@ -57,7 +57,7 @@ class IndexView(TemplateView):
                 )
             )
             blog = (
-                BlogPost.objects.all()[:3]
+                BlogPost.activate_objects.get_data()[:3]
                 .annotate(table=Value("Blog"))
                 .values(
                     "pk",
@@ -72,7 +72,7 @@ class IndexView(TemplateView):
                 )
             )
             opensource = (
-                OpenSourcePost.objects.all()[:3]
+                OpenSourcePost.activate_objects.get_data()[:3]
                 .annotate(table=Value("OpenSource"))
                 .values(
                     "pk",
@@ -87,7 +87,7 @@ class IndexView(TemplateView):
                 )
             )
             books = (
-                BooksPost.objects.all()[:3]
+                BooksPost.activate_objects.get_data()[:3]
                 .annotate(table=Value("Books"))
                 .values(
                     "pk",

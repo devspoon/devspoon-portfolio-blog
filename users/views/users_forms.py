@@ -3,8 +3,6 @@ import logging
 from django import forms
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.hashers import check_password
-
 from ..models import User, UserProfile
 from .validators import (
     LoginVerificationEmailValidator,
