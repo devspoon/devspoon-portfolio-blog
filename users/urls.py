@@ -8,6 +8,7 @@ from .views.users import (
     RegisterView,
     ResendVerificationEmailView,
     UpdatePasswordView,
+    PeriodicPasswordReplacementView,
     UserDeleteView,
     VerificationView,
 )
@@ -29,6 +30,11 @@ urlpatterns = [
         "password/update/<int:userid>/",
         UpdatePasswordView.as_view(),
         name="update_password",
+    ),
+    path(
+        "password/replace/<int:userid>/",
+        PeriodicPasswordReplacementView.as_view(),
+        name="replace_password",
     ),
     path("profile/", ProfileView.as_view(), name="profile"),
     path("delete/", UserDeleteView.as_view(), name="user_delete"),

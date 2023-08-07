@@ -113,6 +113,9 @@ class User(AbstractUser):
     deleted_at = models.DateTimeField(
         blank=True, null=True, verbose_name=_("Deleted Time")
     )
+    password_replacement_at = models.DateTimeField(
+        auto_now_add=True, verbose_name=_("Password Replacement Time")
+    )
 
     objects = UserManager()
     user_objects = UserCustomManager()

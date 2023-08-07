@@ -1,10 +1,10 @@
 import logging
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from braces.views import AnonymousRequiredMixin
 from django.conf import settings
 from django.contrib import auth, messages
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import F
 from django.shortcuts import get_object_or_404, redirect
@@ -28,6 +28,7 @@ from .users_forms import (
     ResendVerificationEmailForm,
     ResetPasswordForm,
     UpdatePasswordForm,
+    ReplacePasswordForm,
 )
 
 # Create your views here.
@@ -223,6 +224,19 @@ class LoginView(AnonymousRequiredMixin, FormView):
             user.last_login_ipaddress = self.request.META.get("REMOTE_ADDR")
             user.last_login_at = timezone.now()
             user.save()
+
+            # password replacement check
+            current_date = timezone.now()
+            six_months_ago = (
+                current_date - timedelta(days=settings.PASSWORD_REPLACEMENT_CYCLE * 30)
+            ).replace(tzinfo=None)
+            time_at = user.password_replacement_at.replace(tzinfo=None)
+            datetime_format = "%Y-%m-%d %H:%M:%S.%f"
+            datetime_result = datetime.strptime(str(time_at), datetime_format)
+
+            if datetime_result < six_months_ago:
+                self.success_url = "users/password_replacement.html"
+
             return super().form_valid(form)
         else:
             messages.warning(self.request, "Please check your email or password.")
@@ -342,6 +356,32 @@ class UpdatePasswordView(FormView):
 
         users.password = make_password(password)
         users.save()
+
+        return super().form_valid(form)
+
+
+class PeriodicPasswordReplacementView(LoginRequiredMixin, FormView):
+    template_name = "users/password_replacement.html"
+    form_class = ReplacePasswordForm
+    success_url = reverse_lazy("home:index")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["userid"] = self.kwargs.get("userid")
+        return context
+
+    def form_valid(self, form, **kwargs):
+        old_password = form.cleaned_data["old_password"]
+        new_password = form.cleaned_data["new_password"]
+
+        if check_password(old_password, self.request.user.password):
+            self.request.user.set_password(new_password)
+            self.request.user.save()
+        else:
+            messages.warning(self.request, "Old password is incorrect")
+            return redirect(
+                reverse("users:replace_password", args=[self.request.user.id])
+            )
 
         return super().form_valid(form)
 

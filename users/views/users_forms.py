@@ -3,6 +3,7 @@ import logging
 from django import forms
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.hashers import check_password
 
 from ..models import User, UserProfile
 from .validators import (
@@ -162,6 +163,46 @@ class UpdatePasswordForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(UpdatePasswordForm, self).clean()
+        new_password = cleaned_data.get("new_password")
+        new_password_confirm = cleaned_data.get("new_password_confirm")
+
+        if new_password and new_password_confirm:
+            if new_password != new_password_confirm:
+                raise forms.ValidationError(
+                    {"new_password_confirm": ["Password information must be the same!"]}
+                )
+
+        return cleaned_data
+
+
+class ReplacePasswordForm(forms.Form):
+    old_password = forms.CharField(
+        label="Old Password",
+        min_length=8,
+        max_length=20,
+        widget=forms.PasswordInput,
+        help_text=_("Enter old password"),
+        required=True,
+    )
+    new_password = forms.CharField(
+        label="Password",
+        min_length=8,
+        max_length=20,
+        widget=forms.PasswordInput,
+        help_text=_("Enter new password"),
+        required=True,
+    )
+    new_password_confirm = forms.CharField(
+        label="Password confirm",
+        min_length=8,
+        max_length=20,
+        widget=forms.PasswordInput,
+        help_text=_("Enter password same like new password"),
+        required=True,
+    )
+
+    def clean(self):
+        cleaned_data = super(ReplacePasswordForm, self).clean()
         new_password = cleaned_data.get("new_password")
         new_password_confirm = cleaned_data.get("new_password_confirm")
 

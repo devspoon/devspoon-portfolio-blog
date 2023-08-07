@@ -188,3 +188,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # django-user-agent의 캐시 사용하려는 경우 'default'로 설정, 그외에는 None으로 설정
 USER_AGENTS_CACHE = "default"
+
+PASSWORD_REPLACEMENT_CYCLE = 6

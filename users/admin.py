@@ -210,7 +210,7 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
         ),
         (
             "more information",
-            {"fields": ["profile_image", "deleted_at"], "classes": ["collapse"]},
+            {"fields": ["profile_image", "deleted_at","password_replacement_at",], "classes": ["collapse"]},
         ),
     ]
     list_display_links = ["id", "username", "email"]
