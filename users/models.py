@@ -55,6 +55,9 @@ class User(AbstractUser):
     email = models.EmailField(
         max_length=200, unique=False, null=True, verbose_name=_("Email")
     )  # it can be null for synchronization of social account
+    notification_email = models.EmailField(
+        max_length=200, unique=False, null=True, verbose_name=_("Notification Email")
+    )
     username = models.CharField(
         null=False, max_length=30, unique=True, verbose_name=_("User Name")
     )

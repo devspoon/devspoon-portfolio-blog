@@ -88,7 +88,7 @@
                                                 </div>
                                                 {% for field in form %}
 
-                                                    {% if field.name == 'new_password' or field.name == 'new_password_confirm' or field.name == 'profile_image' or field.name == 'password' or field.name == 'email_notifications'%}
+                                                    {% if field.name == 'new_password' or field.name == 'new_password_confirm' or field.name == 'profile_image' or field.name == 'password' or field.name == 'email_notifications' or field.name == 'notification_email'%}
                                                     {% elif field.name == 'gender' %}
                                                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                                                     <select name="{{ field.name }}" class="form-group form-select" id="{{ field.id_for_label }}" aria-label="Default select example">
@@ -101,7 +101,7 @@
                                                         <div class="col">
                                                             <div class="form-group">
                                                                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                                                <input class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}" value="{{ field.value }}"/>
+                                                                <input class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" value="{{ field.value }}"/>
                                                             </div>
                                                         </div>
                                                     </div>

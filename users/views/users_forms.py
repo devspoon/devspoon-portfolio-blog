@@ -247,9 +247,17 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["nickname", "first_name", "last_name", "gender", "profile_image"]
+        fields = [
+            "notification_email",
+            "nickname",
+            "first_name",
+            "last_name",
+            "gender",
+            "profile_image",
+        ]
         # fields = "__all__"
         labels = {
+            "notification_email": _("Notification Email"),
             "nickname": _("Nickname"),
             "first_name": _("First Name"),
             "last_name": _("Last Name"),
@@ -257,7 +265,14 @@ class ProfileForm(forms.ModelForm):
             "profile_image": _("Profile Image"),
         }
         widgets = {}
-        help_texts = {}
+        help_texts = {
+            "notification_email": _(
+                "Please fill out this field to receive notification emails here."
+            ),
+            "nickname": _("Nicknames must be unique."),
+            "first_name": _("Please enter your first name "),
+            "last_name": _("Please enter your last name"),
+        }
         error_messages = {}
 
     def clean(self):
