@@ -144,7 +144,8 @@ class User(AbstractUser):
         # ordering = [F('-date_joined').asc(nulls_last=True)] # Null 상위로
         constraints = [
             models.UniqueConstraint(
-                fields=["email", "nickname"], name="unique fields of constraint"
+                fields=["email", "nickname", "notification_email"],
+                name="unique fields of constraint",
             ),
         ]
         indexes = [
