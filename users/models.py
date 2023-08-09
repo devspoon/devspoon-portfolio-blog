@@ -53,10 +53,14 @@ class User(AbstractUser):
         NO_DISCLOSE = "2", _("Not to disclose")
 
     email = models.EmailField(
-        max_length=200, unique=False, null=True, verbose_name=_("Email")
+        max_length=200, null=True, verbose_name=_("Email")
     )  # it can be null for synchronization of social account
     notification_email = models.EmailField(
-        max_length=200, unique=False, null=True, verbose_name=_("Notification Email")
+        max_length=200,
+        unique=True,
+        blank=True,
+        null=True,
+        verbose_name=_("Notification Email"),
     )
     username = models.CharField(
         null=False, max_length=30, unique=True, verbose_name=_("User Name")
@@ -144,7 +148,10 @@ class User(AbstractUser):
         # ordering = [F('-date_joined').asc(nulls_last=True)] # Null 상위로
         constraints = [
             models.UniqueConstraint(
-                fields=["email", "nickname", "notification_email"],
+                fields=[
+                    "email",
+                    "nickname",
+                ],
                 name="unique fields of constraint",
             ),
         ]

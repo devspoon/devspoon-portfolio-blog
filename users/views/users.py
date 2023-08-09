@@ -389,7 +389,7 @@ class PeriodicPasswordReplacementView(LoginRequiredMixin, FormView):
 class ProfileView(LoginRequiredMixin, UpdateView):
     template_name = "users/profile.html"
     form_class = ProfileForm
-    success_url = reverse_lazy("users:login")
+    success_url = reverse_lazy("users:profile")
 
     def get_object(self, queryset=None):
         return get_object_or_404(User, pk=self.request.user.pk)
