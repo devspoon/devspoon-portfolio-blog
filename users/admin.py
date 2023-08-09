@@ -210,7 +210,14 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
         ),
         (
             "more information",
-            {"fields": ["profile_image", "deleted_at","password_replacement_at",], "classes": ["collapse"]},
+            {
+                "fields": [
+                    "profile_image",
+                    "deleted_at",
+                    "password_replacement_at",
+                ],
+                "classes": ["collapse"],
+            },
         ),
     ]
     list_display_links = ["id", "username", "email"]
@@ -339,24 +346,28 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
 class UserVerificationAdmin(admin.ModelAdmin):
     list_display = ["id", "user", "verified", "created_at"]
     list_display_links = ["id", "user", "verified"]
+    search_fields = ("id", "user")
     list_per_page = 20
 
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "nickname", "point", "email_notifications")
     list_display_links = ["id", "user", "nickname"]
+    search_fields = ("id", "user", "nickname")
     list_per_page = 20
 
 
 class SendingEmailMonitorAdmin(admin.ModelAdmin):
     list_display = [field.name for field in SendingEmailMonitor._meta.get_fields()]
     list_display_links = ["id", "vendor"]
+    search_fields = ("id",)
     list_per_page = 20
 
 
 class PolicyPagesAdmin(AdminCacheCleanFixedKey, admin.ModelAdmin):
     list_display = ("id", "title")
     list_display_links = ["id", "title"]
+    search_fields = ("id", "title")
     list_per_page = 20
 
     view_keys = ""

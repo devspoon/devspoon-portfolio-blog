@@ -101,6 +101,9 @@ class User(AbstractUser):
     is_site_register = models.BooleanField(
         blank=True, default=False, verbose_name=_("Site Register User")
     )
+    created_at = models.DateTimeField(
+        auto_now_add=True, null=False, verbose_name=_("Created Time")
+    )
     last_login_at = models.DateTimeField(
         blank=True, null=True, verbose_name=_("Last Login Time")
     )
