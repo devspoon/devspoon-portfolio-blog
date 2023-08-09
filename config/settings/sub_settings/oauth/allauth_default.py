@@ -45,8 +45,7 @@ AUTHENTICATION_BACKENDS += [
 # 예 ) http://127.0.0.1:8000/oauth/kakao/login/callback/
 
 
-SITE_ID = 1
-LOGIN_REDIRECT_URL = "home:index"
+# LOGIN_REDIRECT_URL = "home:index"
 ACCOUNT_LOGOUT_REDIRECT_URL = "home:index"
 
 # logout을 url, get으로 접근해도 처리를 수행할 수 있게 설정
@@ -70,7 +69,8 @@ SOCIALACCOUNT_PROVIDERS = {
 # 이메일이 선택 동의이기에 정보가 안올 수 있음
 # 필수로 받으려면 설정의 필수동의를 위해 비즈니스 정보의 비즈 앱 정보를 만든다
 
-# 소셜 로그인 할때마다 메일을 보내는 기본 기능을 끔 (메일 정보가 없을 수 있는 경우 대비)
+# 소셜 로그인 할때마다 메일을 보내는 기본 기능을 끔 (메일 정보가 없을 수 있는 경우 대비, 기본 수집 정보가 아니라 동의에 따른 수집 정보임)
+# 비지니스앱으로 사업자 등록 번호와 함께 등록 하면 메일 정보 수집 가능함
 ACCOUNT_EMAIL_REQUIRED = False
 
 # 확인 메일이 반복해서 전송되는 기능을 끔

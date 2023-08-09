@@ -48,6 +48,8 @@ from blog.sitemaps import (
     BooksPostSitemap,
 )
 
+from django.contrib import admin
+
 sitemaps = {
     "portfolio": PortfolioSitemap,
     "index": IndexSitemap,
@@ -72,7 +74,7 @@ sitemaps = {
 error_patterns = []
 
 admin_patterns = [
-    # path('admin/', admin.site.urls),
+    path("default/", admin.site.urls),
     path("home/", home_admin_site.urls),
     path("users/", user_admin_site.urls),
     path("blog/", blog_admin_site.urls),

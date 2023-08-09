@@ -157,7 +157,7 @@ LOGIN_URL = "/users/login/"
 # 로그인 완료 후 next 인자가 지정되면 해당 URL 페이지로 이동
 # next 인자가 없으면 아래 URL로 이동
 
-LOGIN_REDIRECT_URL = ""
+LOGIN_REDIRECT_URL = "home:index"
 
 # 로그아웃 후에 next 인자기 지정되면 해당 URL 페이지로 이동
 # next 인자가 없으면 LOGOUT_REDIRECT_URL로 이동
