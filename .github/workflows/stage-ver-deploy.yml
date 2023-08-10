@@ -17,7 +17,7 @@ jobs:
         run: |
           echo "DEBUG_STATE=False" >> .env
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-          echo "ALLOWED_HOSTS_IP=*" >> .env
+          echo "ALLOWED_HOSTS_IP=${{ secrets.ALLOWED_HOSTS_IP }}" >> .env
           echo "IP_ADDRESSES1=${{ secrets.IP_ADDRESSES1 }}" >> .env
           echo "IP_ADDRESSES2=${{ secrets.IP_ADDRESSES2 }}" >> .env
           echo "CSRF_TRUSTED_ORIGINS=${{ secrets.CSRF_TRUSTED_ORIGINS }}" >> .env
