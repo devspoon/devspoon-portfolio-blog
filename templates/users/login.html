@@ -48,9 +48,15 @@
                             <div class="title-line">
                                 or
                             </div>
-                             <a href="{% provider_login_url 'google' %}" class="btn btn-social col-12 google"><i class="ion-social-facebook"></i> Login with google</a>
-                             <a href="{% provider_login_url 'kakao' %}" class="btn btn-social col-12 kakao mt-1"><i class="ion-social-facebook"></i> Login with kakaotalk</a>
-                             <a href="{% provider_login_url 'naver' %}" class="btn btn-social col-12 naver mt-1"><i class="ion-social-facebook"></i> Login with naver</a>
+                            <a href="{% provider_login_url 'google' %}" class="btn col-12">
+                                <img src={% static 'images/btn_google_signin_dark_pressed_web.png' %} />
+                            </a>
+                            <a href="{% provider_login_url 'kakao' %}" class="btn col-12">
+                                <img src={% static 'images/kakao_login_medium_narrow.png' %} />
+                            </a>
+                            <a href="{% provider_login_url 'naver' %}" class="btn col-12">
+                                <img src={% static 'images/naver_btnW_official.png' %} />
+                            </a>
                         </form>
                     </div>
                 </div>
