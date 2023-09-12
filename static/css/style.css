@@ -1184,6 +1184,22 @@ textarea:focus {
     border-color: #FF6B6B;
 }
 
+.header_area {
+    margin-bottom: 0px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .header_area {
+      margin-bottom: 30px ;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .header_area {
+      margin-bottom: 50px ;
+    }
+  }
+
 .sticky {
   position: fixed;
   z-index: 999;
