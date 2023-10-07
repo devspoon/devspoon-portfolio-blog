@@ -183,12 +183,12 @@ class User(AbstractUser):
         # it can recover using user id(pk)
         # this process run by celery
         self.is_dormant_account = True
-        self.email = ""
-        self.username = ""
-        self.nickname = ""
-        self.first_name = ""
-        self.last_name = ""
-        self.password = ""
+        # self.email = ""
+        # self.username = ""
+        # self.nickname = ""
+        # self.first_name = ""
+        # self.last_name = ""
+        # self.password = ""
         self.dormant_account_at = timezone.now()
         self.save()
 
@@ -457,6 +457,8 @@ def on_save_user(sender, instance, **kwargs):
 def delete_thumbnail(origin_file, instance):
     last_path = str(origin_file).split(".")[0]
 
+    if not instance.photo_thumbnail:
+        return True
     thumbnail_path, _ = os.path.split(instance.photo_thumbnail.path)
     origin_path = thumbnail_path.split("images")
     full_path = origin_path[0] + "images/" + last_path
