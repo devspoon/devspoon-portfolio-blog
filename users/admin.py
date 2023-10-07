@@ -214,7 +214,6 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
                 "fields": [
                     "profile_image",
                     "deleted_at",
-                    "password_replacement_at",
                 ],
                 "classes": ["collapse"],
             },
@@ -239,7 +238,10 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
         "dormant_account_at",
         "export_as_csv",
     ]
-    readonly_fields = ["is_mobile_authentication", "is_site_register"]
+    readonly_fields = [
+        "is_site_register",
+        "password_replacement_at",
+    ]
     # inlines = [UserProfileInline]  # user's signal handle this
 
     def get_form(self, request, obj=None, **kwargs):
@@ -346,14 +348,14 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
 class UserVerificationAdmin(admin.ModelAdmin):
     list_display = ["id", "user", "verified", "created_at"]
     list_display_links = ["id", "user", "verified"]
-    search_fields = ("id", "user")
+    search_fields = ("id", "user__username")
     list_per_page = 20
 
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "nickname", "point", "email_notifications")
     list_display_links = ["id", "user", "nickname"]
-    search_fields = ("id", "user", "nickname")
+    search_fields = ("id", "user__username", "nickname")
     list_per_page = 20
 
 
