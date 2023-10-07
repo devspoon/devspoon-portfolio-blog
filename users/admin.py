@@ -182,11 +182,12 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
                 "fields": [
                     "username",
                     "email",
-                    "password",
+                    "password1",
+                    "password2",
                     "nickname",
                     "gender",
                 ],
-                "classes": ["collapse"],
+                # "classes": ["collapse"],
             },
         ),
         (
@@ -205,7 +206,7 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
                     "is_mobile_authentication",
                     "is_deleted",
                 ],
-                "classes": ["collapse"],
+                # "classes": ["collapse"],
             },
         ),
         (
@@ -215,7 +216,7 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
                     "profile_image",
                     "deleted_at",
                 ],
-                "classes": ["collapse"],
+                # "classes": ["collapse"],
             },
         ),
     ]
@@ -244,13 +245,15 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
     ]
     # inlines = [UserProfileInline]  # user's signal handle this
 
-    def get_form(self, request, obj=None, **kwargs):
-        if not obj:
-            self.form = self.add_form
-        else:
-            self.form = self.form
+    # def get_form(self, request, obj=None, **kwargs):
+    #     if not obj:
+    #         print("not obj ")
+    #         self.form = self.add_form
+    #     else:
+    #         print("obj ")
+    #         self.form = self.form
 
-        return super(CustomUserAdmin, self).get_form(request, obj, **kwargs)
+    #     return super(CustomUserAdmin, self).get_form(request, obj, **kwargs)
 
     def get_urls(self):
         urls = super().get_urls()

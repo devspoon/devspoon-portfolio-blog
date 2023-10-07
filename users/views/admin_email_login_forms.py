@@ -15,7 +15,7 @@ logger = logging.getLogger(getattr(settings, "USERS_LOGGER", "django"))
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ["email", "password", "username", "nickname", "profile_image"]
 
 
 class CustomUserChangeForm(UserChangeForm):
