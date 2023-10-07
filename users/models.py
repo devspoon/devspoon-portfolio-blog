@@ -439,18 +439,18 @@ def on_save_user(sender, instance, **kwargs):
 
     temp_num = 0
     if not profile:
-        nickname = instance.email.split("@")[0]
-        check_nickname = UserProfile.objects.filter(
-            nickname__icontains=nickname
-        ).values_list("username", flat=True)
-        print("nickname : ", nickname)
-        print("check_nickname : ", check_nickname)
-        if nickname in check_nickname:
-            for num in len(check_nickname):
-                nickname = nickname + str(temp_num + 1)
-                if not nickname in check_nickname:
-                    print("selected nickname : ", nickname)
-                    break
+        if instance.nickname:
+            nickname = instance.nickname
+        else:
+            nickname = instance.email.split("@")[0]
+            check_nickname = User.objects.filter(
+                nickname__icontains=nickname
+            ).values_list("username", flat=True)
+            if nickname in check_nickname:
+                for num in check_nickname:
+                    nickname = nickname + str(temp_num + 1)
+                    if not nickname in check_nickname:
+                        break
         UserProfile.objects.create(user=instance, nickname=nickname, point=0)
 
 
