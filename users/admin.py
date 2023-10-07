@@ -358,7 +358,7 @@ class UserVerificationAdmin(admin.ModelAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "nickname", "point", "email_notifications")
     list_display_links = ["id", "user", "nickname"]
-    search_fields = ("id", "user__username", "nickname")
+    search_fields = ("id", "nickname")
     list_per_page = 20
 
 
