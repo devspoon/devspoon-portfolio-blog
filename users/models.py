@@ -442,7 +442,7 @@ def on_save_user(sender, instance, **kwargs):
         nickname = instance.email.split("@")[0]
         check_nickname = UserProfile.objects.filter(
             nickname__icontains=nickname
-        ).values_list()
+        ).values_list("username", flat=True)
         print("nickname : ", nickname)
         print("check_nickname : ", check_nickname)
         if nickname in check_nickname:
@@ -495,7 +495,7 @@ def auto_delete_file_on_save(sender, instance, **kwargs):
             origin_file = getattr(old_obj, field.name)
             new_file = getattr(instance, field.name)
 
-            if not origin_file:
+            if not origin_file or origin_file == "default/no_img.png":
                 return True
 
             if origin_file != new_file and os.path.isfile(origin_file.path):
@@ -519,6 +519,9 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
             or field_type == "ImageSpecField"
         ):
             origin_file = getattr(instance, field.name)
+
+            if origin_file == "default/no_img.png":
+                return True
 
             if origin_file and os.path.isfile(origin_file.path):
                 os.remove(origin_file.path)
