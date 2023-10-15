@@ -41,6 +41,7 @@ class IndexView(TemplateView):
                 .select_related("projectpost")
                 .select_related("projectpost__author")
             )
+            print("projects : ", context["projects"])
             study = (
                 OnlineStudyPost.activate_objects.get_data()[:3]
                 .annotate(table=Value("OnlineStudy"))
@@ -56,6 +57,7 @@ class IndexView(TemplateView):
                     "table",
                 )
             )
+            print("study : ", study)
             blog = (
                 BlogPost.activate_objects.get_data()[:3]
                 .annotate(table=Value("Blog"))
@@ -71,6 +73,7 @@ class IndexView(TemplateView):
                     "table",
                 )
             )
+            print("blog : ", blog)
             opensource = (
                 OpenSourcePost.activate_objects.get_data()[:3]
                 .annotate(table=Value("OpenSource"))
@@ -86,6 +89,7 @@ class IndexView(TemplateView):
                     "table",
                 )
             )
+            print("opensource : ", opensource)
             books = (
                 BooksPost.activate_objects.get_data()[:3]
                 .annotate(table=Value("Books"))
@@ -101,14 +105,20 @@ class IndexView(TemplateView):
                     "table",
                 )
             )
-
+            print("books : ", books)
             latest = study.union(blog, all=False)
+            print("latest : ", latest)
             latest = latest.union(opensource, all=False)
+            print("latest : ", latest)
             context["latest"] = latest.union(books, all=False).order_by("created_at")[
                 0:9
             ]
+            print("latest wow!! : ", context["latest"])
             caching_data = context.copy()
+            print("caching_data : ", caching_data)
             [caching_data.pop(x, None) for x in ["view"]]
+            print("wow!!!!!!!!!")
+            print("caching_data  wow !!!: ", caching_data)
             dredis_cache_set(
                 self.cache_prefix,
                 0,

@@ -116,24 +116,26 @@ DATABASE_ROUTERS = ["core.replica_router.ReplicationRouter"]
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
+        "ENGINE": config("DEFAULT_DB_ENGINE", default="django.db.backends.mysql"),
         "HOST": config("DEFAULT_DB_HOST"),
         "PORT": config("DEFAULT_DB_PORT", default=3306, cast=int),
         "NAME": config("DEFAULT_DB_NAME"),
         "USER": config("DEFAULT_DB_USER"),
         "PASSWORD": config("DEFAULT_DB_PASSWORD"),
-        "CHARSET": config("DEFAULT_DB_CHARSET"),
-        "CONN_MAX_AGE": 500,
+        "CHARSET": config("DEFAULT_DB_CHARSET", default="utf8mb4"),
+        "OPTIONS": {"options": config("DEFAULT_DB_OPTIONS", default="")},
+        "CONN_MAX_AGE": config("DEFAULT_DB_CONN_MAX_AGE", cast=int),
     },
     "replica1": {
-        "ENGINE": "django.db.backends.mysql",
+        "ENGINE": "django.db.backends.postgresql",
         "HOST": config("REPLICA1_DB_HOST"),
-        "PORT": config("DEFAULT_DB_PORT", default=3306, cast=int),
+        "PORT": config("REPLICA1_DB_PORT", default=3306, cast=int),
         "NAME": config("REPLICA1_DB_NAME"),
         "USER": config("REPLICA1_DB_USER"),
         "PASSWORD": config("REPLICA1_DB_PASSWORD"),
-        "CHARSET": config("REPLICA1_DB_CHARSET"),
-        "CONN_MAX_AGE": 500,
+        "CHARSET": config("REPLICA1_DB_CHARSET", default="utf8mb4"),
+        "OPTIONS": {"options": config("REPLICA1_DB_OPTIONS", default="")},
+        "CONN_MAX_AGE": config("REPLICA1_DB_CONN_MAX_AGE", cast=int),
     },
 }
 

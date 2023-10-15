@@ -371,7 +371,7 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         if user.email is not None:
             nickname = user.email.split("@")[0]
             user.username = str(uuid4())
-            user.nickname = nickname
+            user.nickname = nickname + "_" + user.username
 
         return user
 
