@@ -93,7 +93,7 @@ This project that supports the development of personal homepages for portfolios 
 
 - The settings folder contains fragmented files and folders for each service. So users can easily included any service they want by using 'Import'.
 - The current settings folder contains files for 5 cases: Basic, Development, Test, Stage, and Product. For all settings, user must include the base file that is default file.
-- You can copy the '.env' file information at [.env](https://devspoon.tistory.com/manage/posts/)
+- You can copy the '.env' file information at [.env](https://devspoon.tistory.com/167)
   - When the project's .env is updated, the post is automatically updated.
 
 # Installing
