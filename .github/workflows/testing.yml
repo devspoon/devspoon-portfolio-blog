@@ -1,11 +1,11 @@
 name: Django Tests
 
 on:
-    push:
-      branches: ["main"]
-    pull_request:
-      branches: ["main"]
-    workflow_dispatch:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
 
 # on:
 #   schedule:
@@ -106,7 +106,7 @@ jobs:
           curl -X POST -H 'Content-type: application/json' \
           --data '{"text":"Workflow test deploy: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) .env : $(cat .env)"}' \
           $SLACK_WEBHOOK_URL
-          - name: Django Testing
+      - name: Django Testing
         run: |
           python manage.py makemigrations
           python manage.py migrate
