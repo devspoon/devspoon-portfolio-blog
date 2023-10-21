@@ -103,8 +103,8 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
-          cat .env |curl -X POST -H 'Content-type: application/json' \
-          --data @- \
+          curl -X POST -H 'Content-type: application/json' \
+          -d .env \
           $SLACK_WEBHOOK_URL
       - name: Django Testing
         run: |
