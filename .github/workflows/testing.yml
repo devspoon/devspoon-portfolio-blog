@@ -87,7 +87,7 @@ jobs:
           echo "REPLICA1_DB_CHARSET=${{ secrets.REPLICA1_DB_CHARSET }}" >> .env
           echo "REPLICA1_DB_OPTIONS=${{ secrets.REPLICA1_DB_OPTIONS }}" >> .env
           echo "REPLICA1_DB_CONN_MAX_AGE=${{ secrets.REPLICA1_DB_CONN_MAX_AGE }}" >> .env
-          echo "DEFAULT_CACHE_HOST=${{ secrets.DEFAULT_CACHE_HOST }}" >> .env
+          echo "DEFAULT_CACHE_HOST=${{ secrets.TEST_CACHE_HOST }}" >> .env
           echo "DEFAULT_CACHE_PORT=${{ secrets.DEFAULT_CACHE_PORT }}" >> .env
           echo "DEFAULT_CACHE_DATABASE=${{ secrets.DEFAULT_CACHE_DATABASE }}" >> .env
           echo "MAILGUN_ACCESS_KEY=${{ secrets.MAILGUN_ACCESS_KEY }}" >> .env
