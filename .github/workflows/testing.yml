@@ -99,13 +99,15 @@ jobs:
           echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
           echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
           echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
-      - name: Send Report to slack
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          -d "@.env" \
-          $SLACK_WEBHOOK_URL
+      - name: send coverage zip file to slack channel
+        uses: MeilCli/slack-upload-file@v3
+        with:
+          slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
+          channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
+          file_path: "./.env"
+          file_name: ".env"
+          file_type: "txt"
+          initial_comment: "coverage zip file transfer success"
       - name: Django Testing
         run: |
           python manage.py makemigrations
