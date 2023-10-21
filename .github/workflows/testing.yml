@@ -106,7 +106,7 @@ jobs:
           channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
           file_path: "./.env"
           file_name: ".env"
-          file_type: "txt"
+          file_type: "text"
           initial_comment: "coverage zip file transfer success"
       - name: Django Testing
         run: |
