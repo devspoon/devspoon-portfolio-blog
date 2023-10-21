@@ -127,7 +127,7 @@ DATABASES = {
         "CONN_MAX_AGE": config("DEFAULT_DB_CONN_MAX_AGE", cast=int),
     },
     "replica1": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": config("REPLICA1_DB_ENGINE", default="django.db.backends.mysql"),
         "HOST": config("REPLICA1_DB_HOST"),
         "PORT": config("REPLICA1_DB_PORT", default=3306, cast=int),
         "NAME": config("REPLICA1_DB_NAME"),
