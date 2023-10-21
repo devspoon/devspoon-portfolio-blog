@@ -1,10 +1,10 @@
 name: Django Tests
 
 on:
-  #   push:
-  #     branches: ["main"]
-  #   pull_request:
-  #     branches: ["main"]
+    push:
+      branches: ["main"]
+    pull_request:
+      branches: ["main"]
   workflow_dispatch:
 
 # on:
@@ -99,7 +99,14 @@ jobs:
           echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
           echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
           echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
-      - name: Django Testing
+      - name: Send Report to slack
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"Workflow test deploy: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) .env : $(cat .env)"}' \
+          $SLACK_WEBHOOK_URL
+          - name: Django Testing
         run: |
           python manage.py makemigrations
           python manage.py migrate
