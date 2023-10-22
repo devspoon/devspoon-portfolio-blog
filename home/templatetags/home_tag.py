@@ -26,7 +26,7 @@ def main_menu_tag():
         key,
     )
     if check_cached_key:
-        logger.debug(f"called redis cache - {self.__class__.__name__}")
+        logger.debug(f"called redis cache - main_menu_tag")
         main_menu = dredis_cache_get(
             cache_prefix,
             temp_pk,
@@ -34,7 +34,7 @@ def main_menu_tag():
         )
     else:
         main_menu = MainMenu.objects.all()
-        logger.debug(f"called database - {self.__class__.__name__}")
+        logger.debug(f"called database - main_menu_tag")
         dredis_cache_set(
             cache_prefix,
             temp_pk,
@@ -55,7 +55,7 @@ def site_info_tag():
         key,
     )
     if check_cached_key:
-        logger.debug(f"called redis cache - {self.__class__.__name__}")
+        logger.debug(f"called redis cache - site_info_tag")
         site_info = dredis_cache_get(
             cache_prefix,
             temp_pk,
@@ -63,7 +63,7 @@ def site_info_tag():
         )
     else:
         site_info = SiteInfo.objects.first()
-        logger.debug(f"called database - {self.__class__.__name__}")
+        logger.debug(f"called database - site_info_tag")
         dredis_cache_set(
             cache_prefix,
             temp_pk,
