@@ -116,6 +116,8 @@ REDIS_CONNECTION = get_redis_connection()
 CACHE_TTL = 60 * 60 * 24
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"  # use only cache
 SESSION_CACHE_ALIAS = "default"
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 AUTH_USER_MODEL = "users.User"
 
