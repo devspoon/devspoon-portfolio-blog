@@ -46,6 +46,7 @@ class ProjectReplyListJsonView(View):
             page,
         )
         if check_cached_key:
+            logger.debug(f"called redis cache - {self.__class__.__name__}")
             results = dredis_cache_get(
                 self.cache_prefix,
                 pk,
@@ -82,6 +83,7 @@ class ProjectReplyListJsonView(View):
             results = pagination_info + replies
             caching_data = {}
             caching_data[page] = results
+            logger.debug(f"called database - {self.__class__.__name__}")
             dredis_cache_set(
                 self.cache_prefix,
                 pk,

@@ -56,6 +56,7 @@ class BlogDetailView(DetailView):
             "get_queryset",
         )
         if check_cached_key:
+            logger.debug(f"called redis cache - {self.__class__.__name__}")
             queryset = dredis_cache_get(
                 self.cache_prefix,
                 self.kwargs.get("pk"),
@@ -63,6 +64,7 @@ class BlogDetailView(DetailView):
             )
         else:
             queryset = super().get_queryset()
+            logger.debug(f"called database - {self.__class__.__name__}")
             dredis_cache_set(
                 self.cache_prefix,
                 self.kwargs.get("pk"),
@@ -78,6 +80,7 @@ class BlogDetailView(DetailView):
             self.cache_prefix, self.kwargs.get("pk"), "user_auth"
         )
         if check_cached_key:
+            logger.debug(f"called redis cache - {self.__class__.__name__}")
             queryset = dredis_cache_get(
                 self.cache_prefix,
                 self.kwargs.get("pk"),
@@ -116,6 +119,7 @@ class BlogDetailView(DetailView):
             caching_data = context.copy()
 
             [caching_data.pop(x, None) for x in ["object", "board", "view"]]
+            logger.debug(f"called database - {self.__class__.__name__}")
             dredis_cache_set(
                 self.cache_prefix,
                 self.kwargs.get("pk"),

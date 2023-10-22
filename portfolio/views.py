@@ -17,6 +17,7 @@ from common.components.django_redis_cache_components import (
     dredis_cache_check_key,
     dredis_cache_get,
     dredis_cache_set,
+    dredis_cache_delete,
 )
 
 # from django.core.mail import send_mail
@@ -52,17 +53,21 @@ class PortfolioView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        lang = get_language_index()
         check_cached_key = dredis_cache_check_key(
-            self.cache_prefix,
+            self.cache_prefix + ":" + str(lang),
             0,
             "info",
         )
         if check_cached_key:
+            logger.debug(f"called redis cache - {self.__class__.__name__}")
             queryset = dredis_cache_get(self.cache_prefix, 0)
             context.update(queryset)
         else:
-            lang = get_language_index()
-
+            logger.debug(f"called database - {self.__class__.__name__}")
+            dredis_cache_delete(
+                self.cache_prefix,
+            )
             context["info"] = PersonalInfo.objects.filter(language__in=lang).first()
             context["study"] = EducationStudy.objects.filter(language__in=lang)
             context["interested"] = InterestedIn.objects.filter(language__in=lang)
@@ -127,8 +132,10 @@ class WorkExperienceJsonView(View):
             "WorkExperience",
         )
         if check_cached_key:
+            logger.debug("called redis cache - WorkExperienceJsonView")
             context = dredis_cache_get(self.cache_prefix, 0, "WorkExperience")
         else:
+            logger.debug("called database - WorkExperienceJsonView")
             lang = get_language_index()
             data = WorkExperience.objects.filter(language__in=lang)
             context = list(map(self.make_context, data))
