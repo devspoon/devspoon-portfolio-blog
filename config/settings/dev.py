@@ -79,6 +79,7 @@ DEBUG_TOOLBAR_CONFIG = {
 INSTALLED_APPS += [
     # "silk",
     "django_extensions",
+    "captcha",
 ]
 
 # django-extentions로 ERP 만들때 해줘야 하는 설정
@@ -218,3 +219,13 @@ NOTEBOOK_ARGUMENTS = [
     "--NotebookApp.password=''",
     # 위 옵션은 노트북에 접근할 때 Token 또는 Password가 필요 없도록 합니다.
 ]
+
+# Recaptcha Settings
+RECAPTCHA_PUBLIC_KEY = config(
+    "RECAPTCHA_PUBLIC_KEY", default="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+)
+RECAPTCHA_PRIVATE_KEY = config(
+    "RECAPTCHA_PRIVATE_KEY", default="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
+)
+# SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
+# RECAPTCHA_DOMAIN = 'www.recaptcha.net'

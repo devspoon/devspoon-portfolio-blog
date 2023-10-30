@@ -163,3 +163,13 @@ sentry_sdk.init(
     # django.contrib.auth) you may enable sending PII data.
     send_default_pii=True,
 )
+
+# Recaptcha Settings
+RECAPTCHA_PUBLIC_KEY = config(
+    "RECAPTCHA_PUBLIC_KEY", default="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+)
+RECAPTCHA_PRIVATE_KEY = config(
+    "RECAPTCHA_PRIVATE_KEY", default="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
+)
+# SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
+# RECAPTCHA_DOMAIN = 'www.recaptcha.net'

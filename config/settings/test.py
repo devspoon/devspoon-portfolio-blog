@@ -118,3 +118,13 @@ STATICFILES_DIRS = [
 # static 파일을 한 곳에 모아서 서비스 할 경우 상위 STATICFILES_DIRS 변수는 불필요함
 
 # STATIC_ROOT = os.path.join(ROOT_DIR, "static")
+
+# Recaptcha Settings
+RECAPTCHA_PUBLIC_KEY = config(
+    "RECAPTCHA_PUBLIC_KEY", default="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+)
+RECAPTCHA_PRIVATE_KEY = config(
+    "RECAPTCHA_PRIVATE_KEY", default="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
+)
+# SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
+# RECAPTCHA_DOMAIN = 'www.recaptcha.net'

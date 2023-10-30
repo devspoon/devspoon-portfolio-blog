@@ -3,6 +3,9 @@ import logging
 from django import forms
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV2Invisible, ReCaptchaV3
+
 from ..models import User, UserProfile
 from .validators import (
     LoginVerificationEmailValidator,
@@ -55,16 +58,18 @@ class RegisterForm(forms.Form):
     profile_image = forms.ImageField(label="Profile Image", required=False)
 
     is_privacy_policy = forms.BooleanField(
-        label="Privacy Policy",
+        label="Privacy Policy (Click on the text below)",
         help_text=_("To sign up, you must read and agree to the linked policy."),
         required=True,
     )
 
     is_terms_of_service = forms.BooleanField(
-        label="Terms of Service",
+        label="Terms of Service (Click on the text below)",
         help_text=_("To sign up, you must read and agree to the linked policy."),
         required=True,
     )
+
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
 
     def clean(self):
         cleaned_data = super(RegisterForm, self).clean()

@@ -59,6 +59,8 @@
                                                 <input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" name="{{ field.name }}" class="col-2 mb-0" />
                                             </div>
                                         {% endif %}
+                                    {% elif field.label == "Captcha" %}
+                                        {{field}}
                                     {% else %}
                                     <div class="col-12">
                                         <label for="{{ field.id_for_label }}">{{ field.label }}</label>

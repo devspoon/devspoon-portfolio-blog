@@ -100,6 +100,8 @@ jobs:
           echo "SENDGRID_DEFAULT_FROM_EMAIL=${{ secrets.SENDGRID_DEFAULT_FROM_EMAIL }}" >> .env
           echo "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
           echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
+          echo "RECAPTCHA_PUBLIC_KEY=${{ secrets.RECAPTCHA_PUBLIC_KEY }}" >> .env
+          echo "RECAPTCHA_PRIVATE_KEY=${{ secrets.RECAPTCHA_PRIVATE_KEY }}" >> .env
       - name: send env file to slack channel
         uses: MeilCli/slack-upload-file@v3
         with:
