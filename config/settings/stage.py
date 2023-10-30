@@ -85,7 +85,9 @@ DATABASES = {
 }
 
 
-INSTALLED_APPS += []
+INSTALLED_APPS += [
+    "captcha",
+]
 
 """
 django_prometheus는 모든 middleware를 감싸는 형식으로
@@ -172,4 +174,4 @@ RECAPTCHA_PRIVATE_KEY = config(
     "RECAPTCHA_PRIVATE_KEY", default="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
 )
 # SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
-RECAPTCHA_DOMAIN = "www.recaptcha.net"
+# RECAPTCHA_DOMAIN = "www.recaptcha.net"
