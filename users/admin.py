@@ -24,6 +24,7 @@ from .models import (
     UserProfile,
     UserVerification,
     WorldSocialAccount,
+    UserRegistHistory,
 )
 from .views.admin_email_login_forms import CustomUserChangeForm, CustomUserCreationForm
 
@@ -398,6 +399,11 @@ class LocalSocialAccountAdmin(admin.ModelAdmin):
     list_display_links = ["user"]
 
 
+class UserRegistHistoryAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in UserRegistHistory._meta.get_fields()]
+    list_display_links = ["email"]
+
+
 user_admin_site.register(User, CustomUserAdmin)
 user_admin_site.register(UserVerification, UserVerificationAdmin)
 user_admin_site.register(UserProfile, UserProfileAdmin)
@@ -405,3 +411,4 @@ user_admin_site.register(SendingEmailMonitor, SendingEmailMonitorAdmin)
 user_admin_site.register(PolicyPages, PolicyPagesAdmin)
 user_admin_site.register(WorldSocialAccount, WorldSocialAccountAdmin)
 user_admin_site.register(LocalSocialAccount, LocalSocialAccountAdmin)
+user_admin_site.register(UserRegistHistory, UserRegistHistoryAdmin)

@@ -20,6 +20,7 @@ from ..models import (
     User,
     UserProfile,
     UserVerification,
+    UserRegistHistory,
 )
 from .users_forms import (
     LoginForm,
@@ -150,6 +151,14 @@ class RegisterView(VerifyEmailMixin, FormView):
                 sending_result=True,
                 verify_name=0,
             )
+
+        ip_address = self.request.META.get("REMOTE_ADDR")
+        UserRegistHistory.objects.create(
+            email=email,
+            username=username,
+            nickname=nickname,
+            ip_address=ip_address,
+        )
 
         return super().form_valid(form)
 

@@ -262,6 +262,43 @@ class UserVerification(models.Model):
         return "%s" % (self.user)
 
 
+class UserRegistHistory(models.Model):
+    email = models.EmailField(max_length=200, null=True, verbose_name=_("Email"))
+    username = models.CharField(
+        null=False, max_length=30, unique=True, verbose_name=_("User Name")
+    )
+    nickname = models.CharField(null=False, max_length=30, verbose_name=_("Nick Name"))
+    ip_address = models.GenericIPAddressField(
+        null=False, default="0.0.0.0", verbose_name=_("Ip Address")
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True, null=False, verbose_name=_("Created Time")
+    )
+
+    class Meta:
+        db_table = "user_register_history"
+        verbose_name = _("register history")
+        verbose_name_plural = _("register history")
+        ordering = [
+            ("-created_at"),
+        ]
+        indexes = [
+            models.Index(
+                fields=[
+                    "email",
+                    "username",
+                ],
+                name="index register history",
+            ),
+        ]
+
+    def __str__(self):
+        return "%s - %s" % (
+            self.email,
+            self.username,
+        )
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(
         User,
@@ -372,6 +409,14 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
             nickname = user.email.split("@")[0]
             user.username = str(uuid4())
             user.nickname = nickname + "_" + user.username
+
+            ip_address = request.META.get("REMOTE_ADDR")
+            UserRegistHistory.objects.create(
+                email=user.email,
+                username=user.username,
+                nickname=user.nickname,
+                ip_address=ip_address,
+            )
 
         return user
 
