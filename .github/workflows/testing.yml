@@ -113,7 +113,7 @@ jobs:
           file_path: "./.env"
           file_name: ".env"
           file_type: "text"
-          initial_comment: ".env file transfer success"
+          initial_comment: ".env file transfer success!"
       - name: Django Testing
         run: |
           python manage.py makemigrations
