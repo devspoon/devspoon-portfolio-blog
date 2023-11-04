@@ -107,7 +107,6 @@ jobs:
           echo "CELERY_BROKER_URL=${{ secrets.CELERY_BROKER_URL }}" >> .env
       - name: send env file to slack channel
         uses: MeilCli/slack-upload-file@v3
-        id: message
         with:
           slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
           channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
@@ -144,7 +143,6 @@ jobs:
           $SLACK_WEBHOOK_URL
       - name: send coverage zip file to slack channel
         uses: MeilCli/slack-upload-file@v3
-        id: message
         with:
           slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
           channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
