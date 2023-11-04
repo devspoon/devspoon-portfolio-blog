@@ -55,6 +55,7 @@ jobs:
           echo "SENTRY_DNS=${{ secrets.SENTRY_DNS }}" >> .env
           echo "RECAPTCHA_PUBLIC_KEY=${{ secrets.RECAPTCHA_PUBLIC_KEY }}" >> .env
           echo "RECAPTCHA_PRIVATE_KEY=${{ secrets.RECAPTCHA_PRIVATE_KEY }}" >> .env
+          echo "CELERY_BROKER_URL=${{ secrets.CELERY_BROKER_URL }}" >> .env
       - name: copy file via ssh key
         uses: appleboy/scp-action@v0.1.4
         with:

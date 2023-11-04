@@ -136,7 +136,10 @@ class RegisterView(VerifyEmailMixin, FormView):
 
         update_or_create_sending_email_result(result)
 
-        messages.success(self.request, "Verification Email is sending to your mailbox.")
+        messages.success(
+            self.request,
+            "A confirmation email will be sent to your mailbox. The link included in this email is valid for 3 days. After that you will need to register again.",
+        )
 
         if result["sending_mail_num"] == 0:
             UserVerification.objects.create(

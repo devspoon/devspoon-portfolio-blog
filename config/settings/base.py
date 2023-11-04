@@ -79,6 +79,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_user_agents.middleware.UserAgentMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "custom_middlewares.common.statistics.ConnectionMethodStatsMiddleware",
     "custom_middlewares.common.statistics.ConnectionHardwareStatsMiddleware",
 ]

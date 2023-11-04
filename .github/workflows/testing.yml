@@ -45,7 +45,7 @@ jobs:
         id: pip-cache
         with:
           path: ${{ matrix.path }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
           restore-keys: ${{ runner.os }}-pip-
       - if: steps.pip-cache.outputs.cache-hit == 'true'
         run: echo 'pip cache hit!'
@@ -54,7 +54,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements/dev_ubuntu22.04.txt
+          pip install poetry
+          poetry install --no-root
+        #   pip install -r requirements/dev_ubuntu22.04.txt
       - name: Start Redis
         uses: supercharge/redis-github-action@1.5.0
         with:
@@ -102,6 +104,7 @@ jobs:
           echo "NAVER_SECRET_KEY=${{ secrets.NAVER_SECRET_KEY }}" >> .env
           echo "RECAPTCHA_PUBLIC_KEY=${{ secrets.RECAPTCHA_PUBLIC_KEY }}" >> .env
           echo "RECAPTCHA_PRIVATE_KEY=${{ secrets.RECAPTCHA_PRIVATE_KEY }}" >> .env
+          echo "CELERY_BROKER_URL=${{ secrets.CELERY_BROKER_URL }}" >> .env
       - name: send env file to slack channel
         uses: MeilCli/slack-upload-file@v3
         with:
@@ -118,7 +121,6 @@ jobs:
           pytest
       - name: Coverage report
         run: |
-          pip install coverage
           coverage run manage.py test
           coverage html
       - name: zip

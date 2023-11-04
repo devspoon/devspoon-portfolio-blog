@@ -35,7 +35,7 @@ host = config("ALLOWED_HOSTS_IP")
 ALLOWED_HOSTS = host.split(",")
 
 MIDDLEWARE += [
-    # "silk.middleware.SilkyMiddleware",
+    "silk.middleware.SilkyMiddleware",
 ]
 
 # Database
@@ -86,6 +86,7 @@ CACHES = {
 }
 
 INSTALLED_APPS += [
+    "silk",
     "captcha",
 ]
 

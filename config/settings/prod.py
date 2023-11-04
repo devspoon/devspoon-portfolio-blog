@@ -179,3 +179,40 @@ RECAPTCHA_PRIVATE_KEY = config(
 )
 # SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
 # RECAPTCHA_DOMAIN = "www.recaptcha.net"
+
+# Celery Settings
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
+CELERY_BROKER_URL = config("CELERY_BROKER_URL", default="redis://127.0.0.1:6379/3")
+
+CELERY_RESULT_BACKEND = "django-db"
+
+CELERY_RESULT_EXTENDED = True
+
+# CELERY_BEAT_SCHEDULE = {
+#     "scheduled_task": {
+#         "task": "task1.tasks.add",
+#         "schedule": 5.0,
+#         "args": (10, 10),
+#     },
+#     "database": {
+#         "task": "task3.tasks.bkup",
+#         "schedule": 5.0,
+#     },
+# }
+
+CELERY_IMPORTS = [
+    "users.tasks",
+]
+
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+
+CELERY_TIMEZONE = "UTC"
+
+CELERY_TASK_TRACK_STARTED = True
+
+# CELERY_RESULT_EXPIRES = 60 * 60 * 24 * 30  # Results expire after 1 month
+
+DJANGO_CELERY_RESULTS_TASK_ID_MAX_LENGTH = 191

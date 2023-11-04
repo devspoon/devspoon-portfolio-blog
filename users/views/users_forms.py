@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV2Invisible, ReCaptchaV3
-
+from email_validator import validate_email, EmailNotValidError, caching_resolver
 from ..models import User, UserProfile
 from .validators import (
     LoginVerificationEmailValidator,
@@ -15,6 +15,8 @@ from .validators import (
 )
 
 logger = logging.getLogger(getattr(settings, "USERS_LOGGER", "django"))
+
+resolver = caching_resolver(timeout=10)
 
 
 class RegisterForm(forms.Form):
@@ -71,10 +73,34 @@ class RegisterForm(forms.Form):
 
     captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
 
+    def check_email_validation_with_dns(self, email: str) -> [str, bool]:
+        try:
+            print("check_email_validation_with_dns email : ", email)
+            emailinfo = validate_email(
+                email, check_deliverability=True, dns_resolver=resolver
+            )
+            print("emailinfo.normalized : ", emailinfo.normalized)
+            return emailinfo.normalized, True
+
+        except EmailNotValidError as e:
+            print(str(e))
+            return "", False
+
     def clean(self):
         cleaned_data = super(RegisterForm, self).clean()
+        email = cleaned_data.get("email")
         password = cleaned_data.get("password")
         password_confirm = cleaned_data.get("password_confirm")
+
+        _, rt = self.check_email_validation_with_dns(email)
+        if not rt:
+            raise forms.ValidationError(
+                {
+                    "email": [
+                        "The email failed validation. Please enter the email address you actually use"
+                    ]
+                }
+            )
 
         if password and password_confirm:
             if password != password_confirm:
