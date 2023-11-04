@@ -105,15 +105,15 @@ jobs:
           echo "RECAPTCHA_PUBLIC_KEY=${{ secrets.RECAPTCHA_PUBLIC_KEY }}" >> .env
           echo "RECAPTCHA_PRIVATE_KEY=${{ secrets.RECAPTCHA_PRIVATE_KEY }}" >> .env
           echo "CELERY_BROKER_URL=${{ secrets.CELERY_BROKER_URL }}" >> .env
-      - name: send env file to slack channel
-        uses: MeilCli/slack-upload-file@v3
-        with:
-          slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
-          channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
-          file_path: "./.env"
-          file_name: ".env"
-          file_type: "text"
-          initial_comment: ".env file transfer success"
+      #   - name: send env file to slack channel
+      #     uses: MeilCli/slack-upload-file@v3
+      #     with:
+      #       slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
+      #       channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
+      #       file_path: "./.env"
+      #       file_name: ".env"
+      #       file_type: "text"
+      #       initial_comment: ".env file transfer success"
       - name: Django Testing
         run: |
           python manage.py makemigrations
@@ -141,15 +141,15 @@ jobs:
           curl -X POST -H 'Content-type: application/json' \
           --data '{"text":"Workflow testing: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) has completed testing."}' \
           $SLACK_WEBHOOK_URL
-      - name: send coverage zip file to slack channel
-        uses: MeilCli/slack-upload-file@v3
-        with:
-          slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
-          channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
-          file_path: "./htmlcov.zip"
-          file_name: "htmlcov.zip"
-          file_type: "zip"
-          initial_comment: "coverage zip file transfer success"
+    #   - name: send coverage zip file to slack channel
+    #     uses: MeilCli/slack-upload-file@v3
+    #     with:
+    #       slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
+    #       channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
+    #       file_path: "./htmlcov.zip"
+    #       file_name: "htmlcov.zip"
+    #       file_type: "zip"
+    #       initial_comment: "coverage zip file transfer success"
 
   handle-failure:
     runs-on: ubuntu-latest
