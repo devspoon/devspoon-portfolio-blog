@@ -31,10 +31,10 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Check if requirements.txt changed
+      - name: Check if pyproject.toml changed
         id: check_requirements
         run: |
-          if [[ -n "$(git diff --name-only ${{ github.base_ref }} ${{ github.sha }} | grep 'dev_ubuntu22.04.txt')" ]]; then
+          if [[ -n "$(git diff --name-only ${{ github.base_ref }} ${{ github.sha }} | grep 'pyproject.toml')" ]]; then
             echo "::set-output name=requirements_changed::true"
           else
             echo "::set-output name=requirements_changed::false"
@@ -116,8 +116,8 @@ jobs:
           initial_comment: ".env file transfer success"
       - name: Django Testing
         run: |
-          python manage.py makemigrations
-          python manage.py migrate
+          poetry manage.py makemigrations
+          poetry manage.py migrate
           pytest
       - name: Coverage report
         run: |
