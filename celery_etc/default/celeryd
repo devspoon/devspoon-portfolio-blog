@@ -18,7 +18,7 @@ CELERY_APP="config"
 #CELERY_APP="proj.tasks:app"
 
 # Name of the projects settings module.
-export DJANGO_SETTINGS_MODULE="config.settings.dev"
+export DJANGO_SETTINGS_MODULE="config.settings.stage"
 
 # Where to chdir at start.
 CELERYD_CHDIR="/www/devspoon-portfolio-blog"
