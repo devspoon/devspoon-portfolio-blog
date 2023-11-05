@@ -116,8 +116,8 @@ jobs:
           initial_comment: ".env file transfer success"
       - name: Django Testing
         run: |
-          poetry manage.py makemigrations
-          poetry manage.py migrate
+          python manage.py makemigrations
+          python manage.py migrate
           pytest
       - name: Coverage report
         run: |
