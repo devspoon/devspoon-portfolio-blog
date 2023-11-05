@@ -89,6 +89,8 @@ DATABASES = {
 
 INSTALLED_APPS += [
     "django_prometheus",
+    "django_celery_beat",
+    "django_celery_results",
     "captcha",
 ]
 
