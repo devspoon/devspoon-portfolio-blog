@@ -80,35 +80,37 @@ class UserAdminSite(AdminSite):
     site_title = "User Admin Portal"
     index_title = "Welcome to User Admin Portal"
 
-    def get_app_list(self, request):
-        """
-        Return a sorted list of all the installed apps that have been
-        registered in this site.
-        """
+    # def get_app_list(self, request):
+    #     """
+    #     Return a sorted list of all the installed apps that have been
+    #     registered in this site.
+    #     """
+    #     # if lang == "en":
+    #     #     return super().get_app_list(*args, **kwargs)
 
-        lang = translation.get_language()
+    #     lang = translation.get_language()
 
-        ordering = {
-            "Users": 1,
-            "User profile": 2,
-            "User email verification": 3,
-            "Sending email monitor": 4,
-            "Policy pages": 5,
-            "World social accounts": 6,
-            "Local social account": 7,
-        }
-        app_dict = self._build_app_dict(request)
-        # a.sort(key=lambda x: b.index(x[0]))
-        # Sort the apps alphabetically.
-        app_list = sorted(app_dict.values(), key=lambda x: x["name"].lower())
+    #     ordering = {
+    #         "Users": 1,
+    #         "User profile": 2,
+    #         "User email verification": 3,
+    #         "Sending email monitor": 4,
+    #         "Policy pages": 5,
+    #         "World social accounts": 6,
+    #         "Local social account": 7,
+    #     }
+    #     app_dict = self._build_app_dict(request)
+    #     # a.sort(key=lambda x: b.index(x[0]))
+    #     # Sort the apps alphabetically.
+    #     app_list = sorted(app_dict.values(), key=lambda x: x["name"].lower())
 
-        # Sort the models alphabetically within each app.
+    #     # Sort the models alphabetically within each app.
 
-        if lang == "en":
-            for app in app_list:
-                app["models"].sort(key=lambda x: ordering[x["name"]])
+    #     if lang == "en":
+    #         for app in app_list:
+    #             app["models"].sort(key=lambda x: ordering[x["name"]])
 
-        return app_list
+    #     return app_list
 
 
 user_admin_site = UserAdminSite(name="user_admin")
