@@ -281,8 +281,7 @@ class ProfileForm(forms.ModelForm):
         fields = [
             "notification_email",
             "nickname",
-            "first_name",
-            "last_name",
+            "username",
             "gender",
             "profile_image",
         ]
@@ -290,8 +289,7 @@ class ProfileForm(forms.ModelForm):
         labels = {
             "notification_email": _("Notification Email"),
             "nickname": _("Nickname"),
-            "first_name": _("First Name"),
-            "last_name": _("Last Name"),
+            "username": _("User name"),
             "gender": _("Gender"),
             "profile_image": _("Profile Image"),
         }
@@ -301,8 +299,6 @@ class ProfileForm(forms.ModelForm):
                 "Please fill out this field to receive notification emails here."
             ),
             "nickname": _("Nicknames must be unique."),
-            "first_name": _("Please enter your first name "),
-            "last_name": _("Please enter your last name"),
         }
         error_messages = {}
 

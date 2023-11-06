@@ -2,6 +2,8 @@ import logging
 import os
 import shutil
 from uuid import uuid4
+from datetime import datetime
+from django.utils.dateformat import DateFormat
 
 from allauth.account.models import EmailAddress
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
@@ -62,10 +64,10 @@ class User(AbstractUser):
         null=True,
         verbose_name=_("Notification Email"),
     )
-    username = models.CharField(
-        null=False, max_length=30, unique=True, verbose_name=_("User Name")
+    username = models.CharField(null=False, max_length=30, verbose_name=_("User Name"))
+    nickname = models.CharField(
+        null=False, max_length=30, unique=True, verbose_name=_("Nick Name")
     )
-    nickname = models.CharField(null=False, max_length=30, verbose_name=_("Nick Name"))
     gender = models.CharField(
         max_length=15,
         choices=Gender.choices,
@@ -159,8 +161,9 @@ class User(AbstractUser):
             models.Index(
                 fields=[
                     "username",
+                    "nickname",
                 ],
-                name="index username",
+                name="index username and nickname",
             ),
         ]
 
@@ -406,9 +409,9 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         # user.username = user.email[:30]
 
         if user.email is not None:
-            nickname = user.email.split("@")[0]
-            user.username = str(uuid4())
-            user.nickname = nickname + "_" + user.username
+            name = user.email.split("@")[0]
+            user.username = name
+            user.nickname = user.email + "-" + DateFormat(datetime.now()).format("Ymd")
 
             ip_address = request.META.get("REMOTE_ADDR")
             UserRegistHistory.objects.create(
