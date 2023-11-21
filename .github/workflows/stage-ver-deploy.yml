@@ -16,6 +16,7 @@ jobs:
       - name: Add environment variables to .env
         run: |
           echo "DEBUG_STATE=False" >> .env
+          echo "DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}" >> .env
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
           echo "ALLOWED_HOSTS_IP=${{ secrets.ALLOWED_HOSTS_IP }}" >> .env
           echo "IP_ADDRESSES1=${{ secrets.IP_ADDRESSES1 }}" >> .env
