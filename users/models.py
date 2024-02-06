@@ -408,6 +408,9 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         user = super().populate_user(request, sociallogin, data)
         # user.username = user.email[:30]
 
+        if UserRegistHistory.objects.filter(email=user.email).exists():
+            return
+
         if user.email is not None:
             name = user.email.split("@")[0]
             user.username = name
