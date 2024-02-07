@@ -34,8 +34,9 @@ class ConnectionMethodStatsMiddleware:
                 count.update(oth=F("oth") + 1)
 
     def __call__(self, request):
-        if "admin" not in request.path:
-            self.stats(request.META["HTTP_USER_AGENT"])
+        if "HTTP_USER_AGENT" in request.META:
+            if "admin" not in request.path:
+                self.stats(request.META["HTTP_USER_AGENT"])
 
         response = self.get_response(request)
 
