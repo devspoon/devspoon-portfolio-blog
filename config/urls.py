@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path
@@ -49,6 +50,8 @@ from blog.sitemaps import (
 )
 
 from django.contrib import admin
+
+from django.conf.urls import handler400, handler403, handler404, handler500
 
 sitemaps = {
     "portfolio": PortfolioSitemap,
@@ -123,7 +126,8 @@ if settings.DEBUG:
 else:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-handler400 = "common.error.error_views.bad_request_page"
-handler403 = "common.error.error_views.permission_denied_page"
-handler404 = "common.error.error_views.page_not_found_page"
-handler500 = "common.error.error_views.server_error_page"
+if not settings.DEBUG:
+    handler400 = "common.error.error_views.bad_request_page"
+    handler403 = "common.error.error_views.permission_denied_page"
+    handler404 = "common.error.error_views.page_not_found_page"
+    handler500 = "common.error.error_views.server_error_page"
