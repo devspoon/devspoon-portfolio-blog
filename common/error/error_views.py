@@ -1,7 +1,7 @@
 import logging
 from django.conf import settings
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
 
@@ -40,3 +40,13 @@ def server_error_page(request, exception=None):
     response.status_code = 500  # Or any other HTTP status code
     context = {"status_code": response.status_code}
     return render(request, "errors/error.html", context=context)
+
+
+# CSRF(Error)
+def csrf_error_page(request, exception=None):
+    logger.debug("CSRF error")
+    response = HttpResponse()
+    response.status_code = 505
+    context = {"status_code": response.status_code}
+    return render(request, "errors/error.html", context=context)
+    # return redirect('accounts:login')
