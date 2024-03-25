@@ -155,7 +155,7 @@ trusted_domain_list = config("CSRF_TRUSTED_ORIGINS")
 
 CSRF_TRUSTED_ORIGINS = trusted_domain_list.split(",")
 
-CSRF_FAILURE_VIEW = "common.error.error_views.csrf_error_page"
+CSRF_FAILURE_VIEW = "common.error.error_views.csrf_failure"
 
 sentry_sdk.init(
     dsn=config("SENTRY_DNS"),

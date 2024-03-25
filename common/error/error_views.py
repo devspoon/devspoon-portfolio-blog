@@ -43,10 +43,6 @@ def server_error_page(request, exception=None):
 
 
 # CSRF(Error)
-def csrf_error_page(request, exception=None):
+def csrf_failure(request, reason=""):
     logger.debug("CSRF error")
-    response = HttpResponse()
-    response.status_code = 505
-    context = {"status_code": response.status_code}
-    return render(request, "errors/error.html", context=context)
-    # return redirect('accounts:login')
+    return redirect("home:index")
