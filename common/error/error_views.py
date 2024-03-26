@@ -43,6 +43,6 @@ def server_error_page(request, exception=None):
 
 
 # CSRF(Error)
-def csrf_failure(request, reason=""):
+def csrf_failure(request, exception=None):
     logger.debug("CSRF error")
     return redirect("home:index")
