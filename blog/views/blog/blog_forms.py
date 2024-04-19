@@ -27,6 +27,10 @@ class BlogForm(forms.ModelForm):
                 "autofocus": True,
             }
         )
+        if self.instance and self.instance.pk:
+            self.fields["tag_set"].initial = "".join(
+                tag.name for tag in self.instance.tag_set.all()
+            )
 
     class Meta:
         model = BlogPost
