@@ -48,7 +48,7 @@ app_name = "board"
 
 notice_patterns = [
     path("", NoticeListView.as_view(), name="notice_list"),
-    path("write/", NoticeCreateView.as_view(), name="notice_write"),
+    path("create/", NoticeCreateView.as_view(), name="notice_create"),
     path("update/<int:pk>/", NoticeUpdateView.as_view(), name="notice_update"),
     path("delete/<int:pk>/", NoticeDeleteView.as_view(), name="notice_delete"),
     path("detail/<int:pk>/", NoticeDetailView.as_view(), name="notice_detail"),
@@ -81,7 +81,7 @@ notice_patterns = [
 
 reactivation_patterns = [
     path("", ReactivationListView.as_view(), name="reactivation_list"),
-    path("write/", ReactivationCreateView.as_view(), name="reactivation_write"),
+    path("create/", ReactivationCreateView.as_view(), name="reactivation_create"),
     path(
         "update/<int:pk>/", ReactivationUpdateView.as_view(), name="reactivation_update"
     ),
@@ -120,7 +120,7 @@ reactivation_patterns = [
 
 visiter_patterns = [
     path("", VisiterListView.as_view(), name="visiter_list"),
-    path("write/", VisiterCreateView.as_view(), name="visiter_write"),
+    path("create/", VisiterCreateView.as_view(), name="visiter_create"),
     path("update/<int:pk>/", VisiterUpdateView.as_view(), name="visiter_update"),
     path("delete/<int:pk>/", VisiterDeleteView.as_view(), name="visiter_delete"),
     path("detail/<int:pk>/", VisiterDetailView.as_view(), name="visiter_detail"),

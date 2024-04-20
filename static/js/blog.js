@@ -113,9 +113,9 @@ function newReplyBox(replyNum,depth)
 board move a new page
 ======================================= */
 
-function boardWrite()
+function boardCreate()
 {
-    const full_url = location.href + 'write';
+    const full_url = location.href + 'create';
 
     location.href=full_url;
 }

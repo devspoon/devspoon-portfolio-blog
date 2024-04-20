@@ -14,9 +14,6 @@
                     <div class="bread-crumbs pb-1">
                         <a href="{% url 'home:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active navi-blog">board navi</span>
                     </div>
-                    {% if request.user.is_staff and "visiter" not in request.path %}
-                    <a href="create/" id="blog-list-write" class="btn btn-outline-success mt-2">write</a>
-                    {% endif %}
                 </div>
             </div>
         </div>
@@ -52,13 +49,14 @@
                         {% endfor %}
 
                       </table>
-                    {% if user.is_authenticated and "visiter" in request.path %}
+                    {% if user.is_authenticated and "visiter" in request.path or request.user.is_staff and "visiter" not in request.path %}
                     <div class="board-button mt-4">
                         <div class="row">
                             <div class="col-12">
                                 <div class="d-flex justify-content-end">
-                                    <a href="javascript:void(0);" onclick="boardWrite('+replies[reply].pk+'); return false;"><button type="button" class="btn btn-outline-primary btn-sm me-3">Write</button></a>
+                                    <a href="javascript:void(0);" onclick="boardCreate('+replies[reply].pk+'); return false;"><button type="button" class="btn btn-outline-primary btn-sm me-3">Write</button></a>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
