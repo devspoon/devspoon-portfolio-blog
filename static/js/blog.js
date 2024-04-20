@@ -115,7 +115,7 @@ board move a new page
 
 function boardCreate()
 {
-    const full_url = location.href + 'create';
+    const full_url = location.href + 'create/';
 
     location.href=full_url;
 }
