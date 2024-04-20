@@ -14,6 +14,9 @@
                     <div class="bread-crumbs pb-1">
                         <a href="{% url 'home:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active navi-blog">board navi</span>
                     </div>
+                    {% if request.user.is_staff and "visiter" not in request.path %}
+                    <a href="create/" id="blog-list-write" class="btn btn-outline-success mt-2">write</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
