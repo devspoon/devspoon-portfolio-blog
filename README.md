@@ -2,7 +2,11 @@
 
 # devspoons-portfolio-blog
 
-This project that supports the development of personal homepages for portfolios and blogs. based on django that uses class views with separated views, models, admin can help you with advanced learning and practice of django.
+This project supports the development of personal homepages such as portfolios and blogs. Based on Django, it provides advanced technologies such as Class View, Modelform, and Admin Custom. It leverages a variety of external libraries that are actually used. It use redis and celery. This project includes most of the functionality required for Django commercial services.
+
+# introduce "Devspoon-Projects"
+
+- We provide an open source infrastructure integration solution that can easily service Python, Django, PHP, etc. using docker-compose. You can install the commercial-level customizable nginx service and redis at once, and install and manage more services at once. If you are interested, please visit [Devspoon-Projects](https://github.com/devspoon/Devspoon-Projects).
 
 # Navigation
 
@@ -36,16 +40,17 @@ This project that supports the development of personal homepages for portfolios 
 - **Separated config(settings) file management** : Setting files are separated with base(common file), dev, prod, stage, test. So user can choice a condition for any server status of development.
 - **Separated file management** : Normally Django provides views.py, admin.py and models.py respectively. However, it is very difficult to manage all classes and functions in one file. So this project has separated file management to show how it can be handled.
 - **Replication database management** : In a distributed system, databases are created in a replicated state. So django needs a connection point for reading and writing. This project shows you how to use replica_router.py to handle cases.
-- **Unit test** : developing - will use pytest, faker and factory boy
-- **profiling** : developing - silk, linesman
-- **Github action test** : developing.
-- **Redis cash** : developing - cash, session, celery worker buffer.
-- **Celery** : developing - will work with redis.
-- **Docker** : developing - will include nginx, unicorn, mysql, redis, monitoring etc.
-- **Distributed system** : developing - mysql replication, infra monitoring etc.
-- **Multi cloud support** : developing - oracle cloud, AWS.
-- **github action distribute** : developing - oracle cloud, AWS.
-- **Monitoring** : developing - django, db, docker, infra condition etc.
+- **test** : Based on pytest, using faker and factory boy. support nose
+- **profiling** : Support silk
+- **Github action test** : Push to github and the github action Django CD with Testing version to OCI” will run automatically.
+- **github action distribute** : Push to github, go to "Django CD with staging version to OCI" in the action menu, and click "run workflow" to start deployment.
+- **Redis cash** : Supports cache, session, and celery worker buffers. Most view classes use the Redis cache, and admin.py also handles when content is deleted or updated.
+- **Celery** : During the account creation process, account information that is not confirmed by email for a certain period of time will be deleted.
+- **Docker** : Using the "devspoon-web" repository. This includes nginx, unicorn, mysql, redis, monitoring, etc.
+- **Monitoring** : Support sentry
+- **email configuration** : mailgun, sendgrid, sendinblue
+- **Social login** : google, kakao, naver
+- **Package management** : Using poetry
 
 # Development skills to get started
 
@@ -55,7 +60,7 @@ This project that supports the development of personal homepages for portfolios 
 
 # Project understanding
 
-## Home
+## Home App
 
 - Index
 - Search (using django orm) / will update to haystack search.
@@ -63,7 +68,7 @@ This project that supports the development of personal homepages for portfolios 
 - Site information - model only.
 - Social Account - model only (not use).
 
-## User
+## User App
 
 - User - AbstractUser
 - Email Verification : It sends a email which has verification link
@@ -71,23 +76,48 @@ This project that supports the development of personal homepages for portfolios 
 - User profile : when a user register website, is created automatically.
 - Login : Supports local and social account logins (django-allauth).
 
-## Blog
+## Blog App
 
 ### Current category : Blog, Books, Online study, Open source, project
 
 - Separate files in each folder by category name (admin, models, views, test).
-- All categories have a similar structure for easy understanding. This allows users to expand new categories by copying and pasting. But it's not good for manage code.  
-  Using init function of "class view" or "function view", user can consider repactoring this one.  
+- All categories have a similar structure for easy understanding. This allows users to expand new categories by copying and pasting. But it's not good for manage code.
+  Using init function of "class view" or "function view", user can consider repactoring this one.
   But doesn't deal with in this project.
 - A blog model designed based on an abstract architecture.
 - A blog_reply designed based on an abstract architecture.
 - Almost category's reply in views files are response to json. (Request and response, UI processing with JavaScript.)
 
-## Board
+## Board App
 
 ### Current category : Notice, Reactivate, Visiter
 
 - It is similar to the blog app, the design of the 'model' is different, and the app is separated for the purpose of expanding the 'view' function and separating the 'administrator' menu.
+
+## Portfolio App
+
+- This page provides portfolio information for the site owner or administrator. This is a service that displays development history, projects, learning, areas of interest, etc. on one page.
+
+## ETC
+
+### router
+
+- There is replica_router.py in the core folder.
+- Define the DB to operate for reading, writing, and migration. default is “write db” and Replica1 is “read db”.
+
+### middleware
+
+- It is in the common folder of the custom_middlewares app.
+- There are two statistical functions: The first is "Connection Method Statistics", which collects the user's Windows, Mac, Android, etc., and the second is "Connection Hardware Statistics", which collects the user's Mobile, Tablet, PC, etc. You can check this information on the administrator page.
+
+### common
+
+- There is a separate file where the redis decorator and redis functions are defined, and there is also a file that custom-manages 400, 403, 404, 500, and CSRF errors.
+
+### celery
+
+- There is a celery_etc folder that controls celery and celery-beat.
+- Celery tasks are defined in your app's task.py. Users who have not verified their email address for a certain period of time are automatically deleted at regular intervals using celery-beat.
 
 ## Config
 
@@ -99,24 +129,15 @@ This project that supports the development of personal homepages for portfolios 
 # Installing
 
 - Install requirement file using pip
-  - Requirement folder has 4 case of file : dev.txt, test.txt, stage.txt, prod.txt
-    - stage.txt can be same with prod.txt. Users should make their own modifications according to the conditions of testing and monitoring of the server and infrastructure.
-    - development environment setting : consider local server or one or two of CURD database.
-      ```
-      pip install -r requirements/dev.txt
-      ```
-    - test environment setting : test and profiling.
-      ```
-      pip install -r requirements/test.txt
-      ```
-    - stage environment setting : infra and integration test. can include performance test.
-      ```
-      pip install -r requirements/stage.txt
-      ```
-    - product environment setting : clean install for real service.
-      ```
-      pip install -r requirements/prod.txt
-      ```
+  - The existing pip management method has been changed to the "poetry" management method, and pip provides a development setup environment only on Windows.
+    ```
+    pip install -r requirements/dev.txt
+    ```
+- Install using poetry
+  - Install only default and dev
+    ```
+    poetry install --without test,stage --no-root
+    ```
 
 # Running the tests
 
@@ -125,10 +146,10 @@ This project that supports the development of personal homepages for portfolios 
   pytest
   ```
 
-# Deployment'
+# Deployment
 
-- It is not covered in this project. Refer to following project.
-  - preparing...
+- Related files are in .github/workflows.
+- You can test and deploy using github tasks. You can define information directly on GitHub by referring to "secret" or [.env](https://devspoon.tistory.com/167).
 
 # Contributing
 
