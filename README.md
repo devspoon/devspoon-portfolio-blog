@@ -46,7 +46,7 @@ This project supports the development of personal homepages such as portfolios a
 - **github action distribute** : Push to github, go to "Django CD with staging version to OCI" in the action menu, and click "run workflow" to start deployment.
 - **Redis cash** : Supports cache, session, and celery worker buffers. Most view classes use the Redis cache, and admin.py also handles when content is deleted or updated.
 - **Celery** : During the account creation process, account information that is not confirmed by email for a certain period of time will be deleted.
-- **Docker** : Using the "devspoon-web" repository. This includes nginx, unicorn, mysql, redis, monitoring, etc.
+- **Docker** : Using the [devspoon-web](https://github.com/devspoons/devspoon-web) repository. This includes nginx, unicorn, mysql, redis, monitoring, etc. refer [Devspoon-Projects](https://github.com/devspoon/Devspoon-Projects).
 - **Monitoring** : Support sentry
 - **email configuration** : mailgun, sendgrid, sendinblue
 - **Social login** : google, kakao, naver
