@@ -1,6 +1,6 @@
 ![waving](https://capsule-render.vercel.app/api?type=waving&height=200&text=devspoons-portfolio-blog&fontSize=60&fontAlign=50&fontAlignY=40&color=gradient)
 
-# devspoons-portfolio-blog
+# devspoon-portfolio-blog
 
 This project supports the development of personal homepages such as portfolios and blogs. Based on Django, it provides advanced technologies such as Class View, Modelform, and Admin Custom. It leverages a variety of external libraries that are actually used. It use redis and celery. This project includes most of the functionality required for Django commercial services.
 
@@ -10,7 +10,7 @@ This project supports the development of personal homepages such as portfolios a
 
 # Navigation
 
-- [devspoons-portfolio-blog](#devspoons-portfolio-blog)
+- [devspoon-portfolio-blog](#devspoon-portfolio-blog)
 - [Navigation](#navigation)
 - [Official guide document](#official-guide-document)
 - [Features](#features)
