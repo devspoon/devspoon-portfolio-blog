@@ -12,7 +12,7 @@ This project supports the development of personal homepages such as portfolios a
 
 - [devspoons-portfolio-blog](#devspoons-portfolio-blog)
 - [Navigation](#navigation)
-- [Official documentation](#official-documentation)
+- [Official guide document](#official-guide-document)
 - [Features](#features)
 - [Development skills to get started](#development-skills-to-get-started)
 - [Project understanding](#project-understanding)
@@ -31,7 +31,7 @@ This project supports the development of personal homepages such as portfolios a
 - [Authors](#authors)
 - [License](#license)
 
-# Official documentation
+# Official guide document
 
 - preparing...
 
@@ -51,6 +51,7 @@ This project supports the development of personal homepages such as portfolios a
 - **email configuration** : mailgun, sendgrid, sendinblue
 - **Social login** : google, kakao, naver
 - **Package management** : Using poetry
+- **i18n, Internationalization** : Support English and Korean
 
 # Development skills to get started
 
