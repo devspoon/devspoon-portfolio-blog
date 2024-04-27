@@ -89,7 +89,7 @@ class User(AbstractUser):
         options={"quality": 100},  # 저장 옵션
     )
     last_login_ipaddress = models.GenericIPAddressField(
-        null=False, default="0.0.0.0", verbose_name=_("Last Login Ip Address")
+        null=False, default="0.0.0.0", verbose_name=_("Last Login IP Address")
     )
 
     is_privacy_policy = models.BooleanField(
@@ -272,7 +272,7 @@ class UserRegistHistory(models.Model):
     )
     nickname = models.CharField(null=False, max_length=30, verbose_name=_("Nick Name"))
     ip_address = models.GenericIPAddressField(
-        null=False, default="0.0.0.0", verbose_name=_("Ip Address")
+        null=False, default="0.0.0.0", verbose_name=_("IP Address")
     )
     created_at = models.DateTimeField(
         auto_now_add=True, null=False, verbose_name=_("Created Time")

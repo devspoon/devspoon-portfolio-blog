@@ -16,7 +16,8 @@ logger = logging.getLogger(getattr(settings, "COMMON_LOGGER", "django"))
 # django-redis cache set
 def dredis_cache_set(prefix: str, pk: int, **kwargs: dict) -> None:
     logger.debug(f"kwargs : {kwargs}")
-    if 0 < len(kwargs):
+    if 1 < len(kwargs):
+        logger.debug(f"kwargs length : {len(kwargs)}")
         for key, value in kwargs.items():
             redis_key = prefix + ":" + str(pk) + ":" + key
             logger.debug(f"redis key : {redis_key}")

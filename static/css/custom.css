@@ -149,7 +149,16 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 500px;
+    height: 570px;
+}
+
+.carousel-caption .caption-box {
+    background-color: rgba(0,0,0,0.7); 
+    padding: 30px;
+}
+
+.carousel-caption .caption-box p, h5{
+    color: #fff;
 }
 
 /*===========================

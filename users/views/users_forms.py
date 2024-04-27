@@ -289,14 +289,14 @@ class ProfileForm(forms.ModelForm):
         labels = {
             "notification_email": _("Notification Email"),
             "nickname": _("Nickname"),
-            "username": _("User name"),
+            "username": _("User Name"),
             "gender": _("Gender"),
             "profile_image": _("Profile Image"),
         }
         widgets = {}
         help_texts = {
             "notification_email": _(
-                "Please fill out this field to receive notification emails here."
+                "Please fill out this field to receive notification emails."
             ),
             "nickname": _("Nicknames must be unique."),
         }

@@ -18,18 +18,19 @@
                         <span class="mr-2">{% trans "Hey folks"%}, {% trans "I'm"%}</span>
                             <div class="animated-info">
                                 <span class="animated-item">{% trans " Full-Stack Developer "%}</span>
-                                <span class="animated-item">{% trans " Online Marketer "%}</span>
-                                <span class="animated-item">{% trans " ready to join with you "%}</span>
+                                <span class="animated-item">{% trans " Online Brand Marketer "%}</span>
+                                <span class="animated-item">{% trans " led startups 5 times "%}</span>
                             </div>
                     </h1>
                     {% blocktrans %}
+                    <p></p>
                     <p>This site was created as an open source based django in the <strong>'devspoon-portfolio-blog' repository. </strong></p>
                     <p>It is used for <strong><i>personal portfolio, blog, and community</i></strong> purposes</p>
                     <p>And supports English and Korean multilingual.</p>
                     {% endblocktrans %}
                     <div class="custom-btn-group mt-4">
-                      <a href="https://github.com/devspoon/devspoon-portfolio-blog" target='_blank' class="btn mr-lg-2 custom-btn"><i class='uil uil-file-alt'>{% trans " Devspoon's Open Source"%}</i></a>
-                      <a href="" class="btn custom-btn custom-btn-bg custom-btn-link" target='_blank'><i class='uil uil-file-alt'>{% trans "Official Manual"%}</i></a>
+                      <a href="https://github.com/devspoon/Devspoon-Projects" target='_blank' class="btn mr-lg-2 custom-btn"><i class='uil uil-file-alt'>{% trans " Devspoon's Open Source"%}</i></a>
+                      <!-- <a href="" class="btn custom-btn custom-btn-bg custom-btn-link" target='_blank'><i class='uil uil-file-alt'>{% trans "Official Manual"%}</i></a> -->
                     </div>
                 </div>
             </div>
@@ -61,30 +62,56 @@
             </div>
             
         </div>
-        <div id="carouselExampleInterval" class="carousel slide col-lg-10 col-md-12" data-bs-ride="carousel">
+        <div id="carouselExampleIndicators" class="carousel slide col-lg-10 col-md-12" data-bs-ride="carousel">
             <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="2" aria-label="Slide 3"></button>
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
             </div>
             <div class="carousel-inner">
-              <div class="carousel-item active" data-bs-interval="3000">
-                <img class="d-block w-100" src="{% static 'images/test1.jpg' %}" alt="First slide">          
+              <div class="carousel-item active" data-bs-interval="3500">
+                <img class="d-block w-100" src="{% static 'images/1_google_ai.jpg' %}" alt="First slide">
+                <div class="carousel-caption d-none d-md-block">
+                    <div class="caption-box">
+                        <h5>[Google] Google Machine Learning Boot Camp 2023/09-11</h5>
+                        <p>Coursera Deep Learning training and Kaggle mission completion from September to November</p>
+                    </div>
+                </div>
               </div>
-              <div class="carousel-item" data-bs-interval="3000">
-                <img class="d-block w-100" src="{% static 'images/test2.jpg' %}" alt="Second slide">
-          
+              <div class="carousel-item" data-bs-interval="3500">
+                <img class="d-block w-100" src="{% static 'images/2_smart_mirror.jpg' %}" alt="Second slide">
+                <div class="carousel-caption d-none d-md-block">
+                    <div class="caption-box">
+                        <h5>[StartUp] AI Smart Mirror IoT startup, PL/backend</h5>
+                        <p>2022~2023 Joining Tizen and Django-based AI smart mirror startup</p>
+                    </div>
+                </div>
               </div>
-              <div class="carousel-item" data-bs-interval="3000">
-                <img class="d-block w-100" src="{% static 'images/test3.jpg' %}" alt="Third slide">
-          
+              <div class="carousel-item" data-bs-interval="3500">
+                <img class="d-block w-100" src="{% static 'images/3_opensource_global.jpg' %}" alt="Third slide">
+                <div class="carousel-caption d-none d-md-block">
+                    <div class="caption-box">
+                        <h5>[OSS] Global Open Source Software Lead Developer</h5>
+                        <p>2020/03-12 devspoon-web, devspoon-startup-web, devspoon-startup-tizen</p>
+                    </div>
+                </div>
+              </div>
+              <div class="carousel-item" data-bs-interval="3500">
+                <img class="d-block w-100" src="{% static 'images/4_bigdata.jpg' %}" alt="Forth slide">
+                <div class="carousel-caption d-none d-md-block">
+                    <div class="caption-box">
+                        <h5>[public servant] National Police Agency</h5>
+                        <p>Big Data Division, Planning and Coordination Bureau, National Police Agency</p>
+                    </div>
+                </div>
               </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Next</span>
             </button>
@@ -98,28 +125,19 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12 heading-section text-center ftco-animate mb-5">
-                <span class="subheading">{% trans "My future plans" %} </span>
-                <h2 class="mb-4"> {% trans "What I want to do, what I am interested in these days!" %}</h2>
-                <p> {% trans "Skills I would like to add to a project soon or start learning" %}</p>
+                <span class="subheading">{% trans "study and project plans" %} </span>
+                <h2 class="mb-4"> {% trans "What I am studying, the project I am planning" %}</h2>
+                <p> {% trans "These are the skills I am learning and the new projects I am preparing. Please contact me if you would like to study together or have a project you would like to start." %}</p>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-6 col-lg-3">
                 <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
-                    <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-3d-design"></span></div>
+                    <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-branding"></span></div>
                     <div class="media-body">
-                        <h3 class="heading mb-3">{% trans "Applying Docker-swarm"%} </h3>
-                        <p> {% trans "Applying docker-swarm to open source projects you manage." %}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
-                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-app-development"></span></div>
-                    <div class="media-body">
-                        <h3 class="heading mb-3">{% trans "Swift and kotlin" %} </h3>
-                        <p> {% trans "Start learning Kotlin and Swift. Getting Started with Android and iOS Development." %}</p>
+                        <h3 class="heading mb-3">{% trans "fast-api"%} </h3>
+                        <p> {% trans "A Python server suitable for microservices based on Message Queue." %}</p>
                     </div>
                 </div>
             </div>
@@ -127,17 +145,26 @@
                 <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
                     <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-web-programming"></span></div>
                     <div class="media-body">
-                        <h3 class="heading mb-3">{% trans "React" %} </h3>
-                        <p> {% trans "Start learning React. Start my new web development project with React." %}</p>
+                        <h3 class="heading mb-3">{% trans "vue.js" %} </h3>
+                        <p> {% trans "The front-end to be used for devspoon projects." %}</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
                 <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
-                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-vector"></span></div>
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-3d-design"></span></div>
                     <div class="media-body">
-                        <h3 class="heading mb-3">{% trans "Node.js" %} </h3>
-                        <p> {% trans "Implementation of chatbot and real-time chatting system using Node.js." %}</p>
+                        <h3 class="heading mb-3">{% trans "Redis Advanced" %} </h3>
+                        <p> {% trans "Implementation of RDB, AOF, Sharding, Consistent Hashing, and Redis Cluster." %}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-suitcase"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">{% trans "RabbitMQ Advanced" %} </h3>
+                        <p> {% trans "Implementation of pub/sub, routing, topics, and RPC." %}</p>
                     </div>
                 </div>
             </div>
@@ -146,37 +173,37 @@
         <div class="row">
             <div class="col-md-6 col-lg-3">
                 <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
-                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-branding"></span></div>
-                    <div class="media-body">
-                        <h3 class="heading mb-3">{% trans "Applying Monitoring system" %} </h3>
-                        <p> {% trans "Applying Monitoring system using Prometheus, Sentry, Slack API at existing open source projects. " %}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
                     <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-computer"></span></div>
                     <div class="media-body">
-                        <h3 class="heading mb-3">{% trans "Python recommender system" %} </h3>
-                        <p> {% trans "Creating a recommendation system using Naver, Google, Twitter, and Instagram data." %}</p>
+                        <h3 class="heading mb-3">{% trans "E-commerce based on django and Vue.js" %} </h3>
+                        <p> {% trans "An open source E-commerce project using Django and Vue.js. " %}</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
                 <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
-                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-vector"></span></div>
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-calendar"></span></div>
                     <div class="media-body">
-                        <h3 class="heading mb-3">{% trans "Shopping mall with Vue.js" %} </h3>
-                        <p> {% trans "Starting Django and Vue.js-based shopping mall open source project." %}</p>
+                        <h3 class="heading mb-3">{% trans "Predictive Marketing Analytics with GA4" %} </h3>
+                        <p> {% trans "A marketing analytics project integrating GA4's BigQuery with Django." %}</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
                 <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
-                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-zoom"></span></div>
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-loyalty"></span></div>
                     <div class="media-body">
-                        <h3 class="heading mb-3">{% trans "Smart mirror with Android" %} </h3>
-                        <p> {% trans "Renewal of the smart mirror, which was currently developed based on Tizen, based on Android." %}</p>
+                        <h3 class="heading mb-3">{% trans "Recommendation System" %} </h3>
+                        <p> {% trans "Analyze user behavior and use ML to provide personalized information and recommendations" %}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="media block-6 services d-block bg-white rounded-lg shadow ftco-animate">
+                    <div class="icon shadow d-flex align-items-center justify-content-center"><span class="flaticon-listening"></span></div>
+                    <div class="media-body">
+                        <h3 class="heading mb-3">{% trans "TTS(Text to Speech), STT(Speech to Text)" %} </h3>
+                        <p> {% trans "This is a project that provides TTS or STT technology by utilizing the user's voice." %}</p>
                     </div>
                 </div>
             </div>
