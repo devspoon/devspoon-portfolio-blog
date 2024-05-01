@@ -83,17 +83,17 @@
                         </div>
                         <div class="carousel-inner">
                             {% if portfolio.portfolio_image1 %}
-                            <div class="carousel-item active">
+                            <div class="carousel-item active " data-bs-interval="3500">
                                 <img src="{{portfolio.portfolio_image1.url}}" class="d-block w-100" alt="{% get_verbose_name portfolio 'portfolio_image1' %}" />
                             </div>
                             {% endif %}
                             {% if portfolio.portfolio_image2 %}
-                            <div class="carousel-item">
+                            <div class="carousel-item" data-bs-interval="3500">
                                 <img src="{{portfolio.portfolio_image2.url}}" class="d-block w-100" alt="{% get_verbose_name portfolio 'portfolio_image2' %}" />
                             </div>
                             {% endif %}
                             {% if portfolio.portfolio_image3 %}
-                            <div class="carousel-item">
+                            <div class="carousel-item" data-bs-interval="3500">
                                 <img src="{{portfolio.portfolio_image3.url}}" class="d-block w-100" alt="{% get_verbose_name portfolio 'portfolio_image3' %}" />
                             </div>
                             {% endif %}
