@@ -75,11 +75,11 @@ class RegisterForm(forms.Form):
 
     def check_email_validation_with_dns(self, email: str) -> [str, bool]:
         try:
-            print("check_email_validation_with_dns email : ", email)
+            logger.debug("check_email_validation_with_dns email :", extra={email})
             emailinfo = validate_email(
                 email, check_deliverability=True, dns_resolver=resolver
             )
-            print("emailinfo.normalized : ", emailinfo.normalized)
+            logger.debug("emailinfo.normalized :", extra={emailinfo.normalized})
             return emailinfo.normalized, True
 
         except EmailNotValidError as e:
@@ -94,6 +94,10 @@ class RegisterForm(forms.Form):
 
         _, rt = self.check_email_validation_with_dns(email)
         if not rt:
+            logger.debug(
+                "The email failed validation. Please enter the email address you actually use",
+                extra={"email : ": email},
+            )
             raise forms.ValidationError(
                 {
                     "email": [
@@ -104,6 +108,10 @@ class RegisterForm(forms.Form):
 
         if password and password_confirm:
             if password != password_confirm:
+                logger.debug(
+                    "Password information must be the same :",
+                    extra={"email : ": email},
+                )
                 raise forms.ValidationError(
                     message={
                         "password_confirm": ["Password information must be the same!"]

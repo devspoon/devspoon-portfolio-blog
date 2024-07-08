@@ -106,8 +106,8 @@ LOGGING = {
     # Logger
     "loggers": {
         "django": {
-            "handlers": ["console", "mail_admins"],
-            "level": "WARNING",
+            "handlers": ["console", "mail_admins", "file"],
+            "level": "DEBUG",
         },
         # # runserver 작업시 콘솔 출력
         "django.server": {
@@ -163,6 +163,13 @@ LOGGING = {
             "level": "DEBUG",
             "propagate": False,
         },
+        "celery": {
+            "handlers": [
+                "console",
+            ],
+            "level": "DEBUG",
+            "propagate": False,
+        },
     },
 }
 
@@ -172,3 +179,4 @@ BLOG_LOGGER = "blog"
 BOARD_LOGGER = "board"
 PORTFOLIO_LOGGER = "portfolio"
 USERS_LOGGER = "users"
+CELERY_LOGGER = "celery"

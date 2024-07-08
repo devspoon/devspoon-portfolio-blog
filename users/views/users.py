@@ -271,6 +271,8 @@ class VerificationView(View):
     def get(self, request):
         key = request.GET.get("key", "")
 
+        logger.info("VerificationView key :", extra={key})
+
         try:
             verification = UserVerification.objects.get(key=key)
         except UserVerification.DoesNotExist:
