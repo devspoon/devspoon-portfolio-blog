@@ -107,7 +107,7 @@ LOGGING = {
     "loggers": {
         "django": {
             "handlers": ["console", "mail_admins", "file"],
-            "level": "DEBUG",
+            "level": "INFO",
         },
         # # runserver 작업시 콘솔 출력
         "django.server": {

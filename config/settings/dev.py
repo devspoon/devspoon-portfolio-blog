@@ -259,10 +259,20 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
-CELERY_TIMEZONE = "UTC"
+CELERY_TIMEZONE = TIME_ZONE
 
 CELERY_TASK_TRACK_STARTED = True
 
 # CELERY_RESULT_EXPIRES = 60 * 60 * 24 * 30  # Results expire after 1 month
 
 DJANGO_CELERY_RESULTS_TASK_ID_MAX_LENGTH = 191
+
+# This setting determines whether the Celery worker retries the broker connection when it starts.
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+# This setting determines whether long-running tasks are canceled when the connection between a Celery worker and the broker is lost.
+CELERY_WORKER_CANCEL_LONG_RUNNING_TASKS_ON_CONNECTION_LOSS = True
+
+CELERY_WORKER_CONCURRENCY = 2  # worker 개수
+CELERY_WORKER_CHILD_CONCURRENCY = 2  # child process 개수
+CELERY_WORKER_PREFETCH_MULTIPLIER = 4  # 가져오는 작업 수
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 1000  # 해당 횟수만큼 작업 후 프로세스 강제 종료

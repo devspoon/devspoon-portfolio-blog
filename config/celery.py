@@ -4,9 +4,12 @@ import os
 
 from celery import Celery
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.prod")
 
 app = Celery("config")
+
+app.conf.task_default_queue = "celery"
+app.conf.broker_connection_retry_on_startup = True
 
 app.config_from_object("django.conf:settings", namespace="CELERY")
 
