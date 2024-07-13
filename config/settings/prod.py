@@ -88,7 +88,7 @@ DATABASES = {
 
 
 INSTALLED_APPS += [
-    "django_prometheus",
+    # "django_prometheus",
     "django_celery_beat",
     "django_celery_results",
     "captcha",
@@ -102,8 +102,8 @@ django_prometheus는 모든 middleware를 감싸는 형식으로
 """
 MIDDLEWARE += []
 
-MIDDLEWARE.insert(0, "django_prometheus.middleware.PrometheusBeforeMiddleware")
-MIDDLEWARE.insert(-1, "django_prometheus.middleware.PrometheusAfterMiddleware")
+# MIDDLEWARE.insert(0, "django_prometheus.middleware.PrometheusBeforeMiddleware")
+# MIDDLEWARE.insert(-1, "django_prometheus.middleware.PrometheusAfterMiddleware")
 
 CACHES = {
     "default": {
