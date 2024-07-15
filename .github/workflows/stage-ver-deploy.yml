@@ -83,7 +83,7 @@ jobs:
             sed -i 's/domain/${{ secrets.STAGE_SERVER_URL }}/' ./templates/home/robots.txt
             cd ~/project/github/devspoon-web/compose/web_service/nginx_gunicorn/
             echo "${{ secrets.SUDO }}" | sudo -S docker-compose stop
-            echo "${{ secrets.SUDO }}" | sudo -S docker-compose up -d
+            echo "${{ secrets.SUDO }}" | sudo -S docker-compose --profile celery up -d
       - name: send msg to slack channel
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
