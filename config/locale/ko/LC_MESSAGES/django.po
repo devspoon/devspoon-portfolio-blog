@@ -827,8 +827,8 @@ msgid "fast-api"
 msgstr ""
 
 #: .\templates\home\index.html:140
-msgid "A Python server suitable for microservices based on Message Queue."
-msgstr "Message Queue 기반의 마이크로서비스에 적합한 Python 서버"
+msgid "A Python server suitable for microservices based on Rest API."
+msgstr "Rest API 기반의 마이크로서비스에 적합한 Python 서버"
 
 #: .\templates\home\index.html:148
 msgid "vue.js"
@@ -845,7 +845,7 @@ msgstr "Redis 고급"
 #: .\templates\home\index.html:158
 msgid ""
 "Implementation of RDB, AOF, Sharding, Consistent Hashing, and Redis Cluster."
-msgstr "RDB, AOF, Sharding, Consistent Hashing, Redis Cluster 구현하기"
+msgstr "RDB, AOF, Sharding, Consistent Hashing, Redis Cluster 구축하기"
 
 #: .\templates\home\index.html:166
 msgid "RabbitMQ Advanced"

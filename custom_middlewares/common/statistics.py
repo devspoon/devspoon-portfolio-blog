@@ -15,23 +15,30 @@ class ConnectionMethodStatsMiddleware:
         self.get_response = get_response
 
     def stats(self, os_info):
+        today = timezone.now().date()
         with transaction.atomic():
-            count = ConnectionMethodStats.objects.filter(
-                created_at__day=timezone.now().date().day
+            # count = ConnectionMethodStats.objects.filter(
+            #     created_at__day=timezone.now().date().day
+            # )
+            # if not count:
+            #     ConnectionMethodStats.objects.create(created_at=timezone.now())
+
+            stats, created = ConnectionMethodStats.objects.get_or_create(
+                created_at__date=today
             )
-            if not count:
-                ConnectionMethodStats.objects.create(created_at=timezone.now())
 
             if "Windows" in os_info:
-                count.update(win=F("win") + 1)
+                stats.win = F("win") + 1
             elif "mac" in os_info:
-                count.update(mac=F("mac") + 1)
+                stats.mac = F("mac") + 1
             elif "iPhone" in os_info:
-                count.update(iph=F("iph") + 1)
+                stats.iph = F("iph") + 1
             elif "Android" in os_info:
-                count.update(android=F("android") + 1)
+                stats.android = F("android") + 1
             else:
-                count.update(oth=F("oth") + 1)
+                stats.oth = F("oth") + 1
+
+            stats.save()  # 변경 사항 저장
 
     def __call__(self, request):
         if "HTTP_USER_AGENT" in request.META:
@@ -50,20 +57,23 @@ class ConnectionHardwareStatsMiddleware:
     def __call__(self, request):
         if "admin" not in request.path:
             with transaction.atomic():
-                count = ConnectionHardwareStats.objects.filter(
-                    created_at__day=timezone.now().date().day
+                today = timezone.now().date()
+                # 오늘 날짜의 통계 가져오기
+                stats, created = ConnectionHardwareStats.objects.get_or_create(
+                    created_at__date=today
                 )
-                if not count:
-                    ConnectionHardwareStats.objects.create(created_at=timezone.now())
 
+                # 사용자 에이전트에 따라 카운트 업데이트
                 if request.user_agent.is_mobile:
-                    count.update(mobile=F("mobile") + 1)
+                    stats.mobile = F("mobile") + 1
                 elif request.user_agent.is_tablet:
-                    count.update(tablet=F("tablet") + 1)
+                    stats.tablet = F("tablet") + 1
                 elif request.user_agent.is_pc:
-                    count.update(pc=F("pc") + 1)
+                    stats.pc = F("pc") + 1
                 elif request.user_agent.is_bot:
-                    count.update(bot=F("bot") + 1)
+                    stats.bot = F("bot") + 1
+
+                stats.save()  # 변경 사항 저장
 
         response = self.get_response(request)
 
