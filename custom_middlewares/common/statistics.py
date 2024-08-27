@@ -15,7 +15,7 @@ class ConnectionMethodStatsMiddleware:
         self.get_response = get_response
 
     def stats(self, os_info):
-        today = timezone.now().date()
+        today = timezone.now().date().day
         with transaction.atomic():
             # count = ConnectionMethodStats.objects.filter(
             #     created_at__day=timezone.now().date().day
@@ -57,7 +57,7 @@ class ConnectionHardwareStatsMiddleware:
     def __call__(self, request):
         if "admin" not in request.path:
             with transaction.atomic():
-                today = timezone.now().date()
+                today = timezone.now().date().day
                 # 오늘 날짜의 통계 가져오기
                 stats, created = ConnectionHardwareStats.objects.get_or_create(
                     created_at__date=today
