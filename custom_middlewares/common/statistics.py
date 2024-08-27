@@ -15,18 +15,18 @@ class ConnectionMethodStatsMiddleware:
         self.get_response = get_response
 
     def stats(self, os_info):
-        today = timezone.now().date().day
+        today = timezone.now().date()
+        print("today : ", today)
         with transaction.atomic():
-            # count = ConnectionMethodStats.objects.filter(
-            #     created_at__day=timezone.now().date().day
-            # )
-            # if not count:
-            #     ConnectionMethodStats.objects.create(created_at=timezone.now())
-
-            stats, created = ConnectionMethodStats.objects.get_or_create(
+            # 오늘 날짜의 통계 가져오기 (잠금)
+            (
+                stats,
+                created,
+            ) = ConnectionMethodStats.objects.select_for_update().get_or_create(
                 created_at__date=today
             )
 
+            # 운영체제에 따라 카운트 업데이트
             if "Windows" in os_info:
                 stats.win = F("win") + 1
             elif "mac" in os_info:
@@ -57,12 +57,14 @@ class ConnectionHardwareStatsMiddleware:
     def __call__(self, request):
         if "admin" not in request.path:
             with transaction.atomic():
-                today = timezone.now().date().day
+                today = timezone.now().date()
                 # 오늘 날짜의 통계 가져오기
-                stats, created = ConnectionHardwareStats.objects.get_or_create(
+                (
+                    stats,
+                    created,
+                ) = ConnectionHardwareStats.objects.select_for_update().get_or_create(
                     created_at__date=today
                 )
-
                 # 사용자 에이전트에 따라 카운트 업데이트
                 if request.user_agent.is_mobile:
                     stats.mobile = F("mobile") + 1
