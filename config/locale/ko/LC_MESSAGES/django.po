@@ -750,12 +750,12 @@ msgid " Full-Stack Developer "
 msgstr " 풀 스택 개발자"
 
 #: .\templates\home\index.html:21
-msgid " Online Brand Marketer "
-msgstr " 온라인 마케터"
+msgid " Digital Brand Marketer "
+msgstr " 디지털 브랜드 마케터"
 
 #: .\templates\home\index.html:22
-msgid " led startups 5 times "
-msgstr "5번의 스타트업 경험자"
+msgid " led startups 6 times "
+msgstr "6번의 스타트업 경험자"
 
 #: .\templates\home\index.html:25
 msgid ""

@@ -75,11 +75,15 @@ class RegisterForm(forms.Form):
 
     def check_email_validation_with_dns(self, email: str) -> [str, bool]:
         try:
-            logger.debug("check_email_validation_with_dns email :", extra={email})
+            logger.debug(
+                "check_email_validation_with_dns email :", extra={"email": email}
+            )
             emailinfo = validate_email(
                 email, check_deliverability=True, dns_resolver=resolver
             )
-            logger.debug("emailinfo.normalized :", extra={emailinfo.normalized})
+            logger.debug(
+                "emailinfo.normalized :", extra={"normalized": emailinfo.normalized}
+            )
             return emailinfo.normalized, True
 
         except EmailNotValidError as e:
