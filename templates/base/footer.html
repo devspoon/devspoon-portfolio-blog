@@ -55,17 +55,21 @@
                     <div class="footer-widget">
                         <h4>{% trans "Contact Us" %}</h4>
                         <ul>
+                            {% if site_info.office_phone_number %}
                             <li>
                                 <span>Phone:</span>
                                 <a href="tel:{{site_info.country_code}}-{{site_info.office_phone_number}}">{{site_info.country_code}}-{{site_info.office_phone_number}}</a>
                             </li>
+                            {% endif %}
+                            {% if site_info.office_email %}
                             <li>
                                 <span>Email:</span>
                                 <a href="mailto:{{site_info.office_email}}" >{{site_info.office_email}}</a>
                             </li>
+                            {% endif %}
                             <li>
                                 <span>Copyright:</span>
-                                from 2022-Now 
+                                from 2022.4-2024.8
                             </li>
                         </ul>
                     </div>

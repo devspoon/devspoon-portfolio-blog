@@ -6,7 +6,7 @@ from django.contrib.admin import AdminSite
 from django.utils.decorators import method_decorator
 from django.utils.safestring import mark_safe
 from django_summernote.admin import SummernoteModelAdmin
-
+from django.utils.html import format_html
 from blog.models.blog import ProjectPost
 from common.components.admin.admin_components import AdminCacheClean
 from common.decorators.cache import index_cache_clean
@@ -162,14 +162,14 @@ class WorkExperienceAdmin(AdminCacheClean, SummernoteModelAdmin):
 
     list_display = [
         "id",
-        "title",
+        "get_cleaned_title",
         "role",
         "color",
         "sort_num",
         "language",
         "project_start_date",
     ]
-    list_display_links = ["id", "title", "role"]
+    list_display_links = ["id", "get_cleaned_title", "role"]
     list_editable = (
         "color",
         "sort_num",
@@ -190,6 +190,14 @@ class WorkExperienceAdmin(AdminCacheClean, SummernoteModelAdmin):
         actions = super(WorkExperienceAdmin, self).get_actions(request)
         del actions["delete_selected"]
         return actions
+
+    def get_cleaned_title(self, obj):
+        # HTML 태그를 제거하고 텍스트만 반환
+        return format_html(
+            obj.title
+        )  # 또는 obj.title.strip()으로 HTML 제거 가능, 만약 HTML 태그를 제거하고 싶다면, strip_tags를 사용
+
+    get_cleaned_title.short_description = "Title"  # Admin에서 표시될 제목
 
 
 class EducationStudyAdmin(AdminCacheClean, SummernoteModelAdmin):

@@ -20,7 +20,7 @@ class ConnectionMethodStatsAdmin(admin.ModelAdmin):
             ConnectionMethodStats.objects.filter(
                 created_at__day=timezone.now().date().day
             )
-            .annotate()
+            # .annotate()
             .values("win", "mac", "iph", "android", "oth")
         )
 
@@ -46,7 +46,7 @@ class ConnectionHardwareStatsAdmin(admin.ModelAdmin):
             ConnectionHardwareStats.objects.filter(
                 created_at__day=timezone.now().date().day
             )
-            .annotate()
+            # .annotate()
             .values("mobile", "tablet", "pc", "bot")
         )
 

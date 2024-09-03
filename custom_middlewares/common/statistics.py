@@ -16,7 +16,6 @@ class ConnectionMethodStatsMiddleware:
 
     def stats(self, os_info):
         today = timezone.now().date()
-        print("today : ", today)
         with transaction.atomic():
             # 오늘 날짜의 통계 가져오기 (잠금)
             (
