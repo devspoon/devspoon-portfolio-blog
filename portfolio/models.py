@@ -124,6 +124,7 @@ class PortfolioSummary(PortfolioDefault):
         BACK_END = "1", _("Back-End")
         MARKETING = "2", _("Marketing")
         STARTUP = "3", _("Startup")
+        MEMBER = "4", _("Member")
 
     portfolio = models.ForeignKey(
         Portfolio,
@@ -170,14 +171,14 @@ class WorkExperience(PortfolioDefault):
         MARKETER = "4", _("Marketer")
 
     class Color(models.TextChoices):
-        PINK = "0", _("pink")
-        RED = "1", _("red")
-        ORANGE = "2", _("orange")
-        YELLOW = "3", _("yellow")
-        BLUE = "4", _("blue")
-        SKYBLUE = "5", _("skyblue")
-        GREEN = "6", _("green")
-        GRAY = "7", _("gray")
+        PINK = "0", "pink"
+        RED = "1", "red"
+        ORANGE = "2", "orange"
+        YELLOW = "3", "yellow"
+        BLUE = "4", "blue"
+        SKYBLUE = "5", "skyblue"
+        GREEN = "6", "green"
+        GRAY = "7", "gray"
 
     project_start_date = models.DateTimeField(
         null=False, verbose_name=_("Project Start Date")

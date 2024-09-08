@@ -17,7 +17,7 @@ function createTimeLine(data)
         {
             year = data[item].start_year;
 
-            timeline_year = '<!-- Single Timeline Content--><div class="single-timeline-area"><div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;"><p>Near Future</p></div><div class="row row-'+year+'"></div></div>';
+            timeline_year = '<!-- Single Timeline Content--><div class="single-timeline-area"><div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;"><p>Current</p></div><div class="row row-'+year+'"></div></div>';
 
             year_node.insertAdjacentHTML('beforeend',timeline_year);
         }
