@@ -169,6 +169,8 @@ class WorkExperience(PortfolioDefault):
         PROJECT_LEADER = "2", _("Project Leader")
         PROJECT_ASSITANT = "3", _("Project Assistant")
         MARKETER = "4", _("Marketer")
+        MEMBER = "5", _("Member")
+        OWNER = "6", _("Owner")
 
     class Color(models.TextChoices):
         PINK = "0", "pink"
