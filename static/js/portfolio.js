@@ -59,7 +59,7 @@ function createTimeLine(data)
         }
 
 
-        card = '<div class="col-12 col-md-6 col-lg-4" ><div class="single-timeline-content d-flex wow fadeInLeft" data-bs-toggle="collapse" data-bs-target="#card'+data[item].pk+'" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;"><div class="timeline-icon timeline-icon-'+data[item].color+'" >'+icon+'</div><div class="timeline-text">'+data[item].project_start_date+' - '+data[item].title+'<p>'+data[item].summary+'<p></div></div></div>';
+        card = '<div class="col-12 col-md-6 col-lg-4" ><div class="single-timeline-content d-flex wow fadeInLeft" data-bs-toggle="collapse" data-bs-target="#card'+data[item].pk+'" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;"><div class="timeline-icon timeline-icon-'+data[item].color+'" >'+icon+'</div><div class="timeline-text">'+data[item].project_start_date+' - '+data[item].title+'<p class="mt-2">'+data[item].summary+'<p></div></div></div>';
 
         collapse = '<div class="collapse" id="card'+data[item].pk+'"><div class="card card-body">'+data[item].content+'</div></div>';
 

@@ -191,7 +191,7 @@ class WorkExperience(PortfolioDefault):
     sort_num = models.IntegerField(
         blank=False, default=0, verbose_name=_("Sort Number")
     )
-    title = models.CharField(blank=False, max_length=500, verbose_name=_("Title"))
+    title = models.TextField(blank=False, verbose_name=_("Title"))
     role = models.CharField(
         blank=False,
         max_length=15,
@@ -261,7 +261,7 @@ class EducationStudy(PortfolioDefault):
 
 class InterestedIn(PortfolioDefault):
     icon = models.CharField(blank=False, max_length=50, verbose_name=_("Icon"))
-    title = models.CharField(blank=False, max_length=300, verbose_name=_("Title"))
+    title = models.TextField(blank=False, verbose_name=_("Title"))
     content = models.TextField(blank=False, verbose_name=_("Content"))
 
     class Meta:
