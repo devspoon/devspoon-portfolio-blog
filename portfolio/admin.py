@@ -8,6 +8,7 @@ from django.utils.safestring import mark_safe
 from django_summernote.admin import SummernoteModelAdmin
 from django.utils.html import format_html
 from django.template.response import TemplateResponse
+from django.db import transaction
 from blog.models.blog import ProjectPost
 from common.components.admin.admin_components import AdminCacheClean
 from common.decorators.cache import index_cache_clean
@@ -185,7 +186,21 @@ class WorkExperienceAdmin(AdminCacheClean, SummernoteModelAdmin):
     actions = [
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",  # 새로운 복사 액션 추가
     ]
+
+    def copy_selected_items(self, request, queryset):
+        # 트랜잭션을 사용하여 데이터 일관성을 보장
+        with transaction.atomic():
+            for item in queryset:
+                # 기존 항목의 데이터를 복사하여 새 항목 생성
+                item.pk = None  # 기본 키를 None으로 설정하여 새 객체로 인식하게 함
+                item.title = f"[copy] - {item.title}"  # 제목에 "[copy] - " 추가
+                item.save()  # 새 항목 저장
+
+        self.message_user(request, "The selected items have been copied.")
+
+    copy_selected_items.short_description = "Copy selected items"
 
     def get_actions(self, request):
         actions = super(WorkExperienceAdmin, self).get_actions(request)
