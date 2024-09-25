@@ -6,16 +6,18 @@ from rangefilter.filters import DateRangeFilter
 from board.admin.common_admin import board_admin_site
 from board.models.board import Notice
 from board.models.board_reply import NoticeReply
-from common.components.admin.admin_components import (
-    AdminCacheCleanPost,
-    AdminCacheCleanReply,
-    AdminCommonAction,
+from common.mixin.admin.redis_cache_handler import (
+    AdminCacheCleanPostMixin,
+    AdminCacheCleanReplyMixin,
+    AdminCommonActionMixin,
 )
+from common.mixin.admin.actions import CustomActionsAdminMixin
+from common.mixin.admin.trim_html_tags import TrimHtmlTagsAdminMixin
 
 logger = logging.getLogger(getattr(settings, "BOARD_LOGGER", "django"))
 
 
-class NoticeBoardAdmin(AdminCommonAction, AdminCacheCleanPost):
+class NoticeBoardAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanPostMixin):
     list_per_page = 20
     cache_prefix = "board:Notice"
     cache_reply_prefix = "board:NoticeReply"
@@ -33,20 +35,16 @@ class NoticeBoardAdmin(AdminCommonAction, AdminCacheCleanPost):
         "set_visible",
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
     exclude = ("table_name",)
-
-    def get_actions(self, request):
-        actions = super(NoticeBoardAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
 
     def save_model(self, request, obj, form, change):
         obj.table_name = obj._meta.db_table
         super().save_model(request, obj, form, change)
 
 
-class NoticeReplyAdmin(AdminCommonAction, AdminCacheCleanReply):
+class NoticeReplyAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanReplyMixin):
     list_per_page = 20
     cache_prefix = "blog:NoticeReply"
 
@@ -61,12 +59,8 @@ class NoticeReplyAdmin(AdminCommonAction, AdminCacheCleanReply):
         "set_visible",
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
-
-    def get_actions(self, request):
-        actions = super(NoticeReplyAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
 
 
 board_admin_site.register(Notice, NoticeBoardAdmin)

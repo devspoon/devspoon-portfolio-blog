@@ -6,16 +6,18 @@ from rangefilter.filters import DateRangeFilter
 from board.admin.common_admin import board_admin_site
 from board.models.board import Visiter
 from board.models.board_reply import VisiterReply
-from common.components.admin.admin_components import (
-    AdminCacheCleanPost,
-    AdminCacheCleanReply,
-    AdminCommonAction,
+from common.mixin.admin.redis_cache_handler import (
+    AdminCacheCleanPostMixin,
+    AdminCacheCleanReplyMixin,
+    AdminCommonActionMixin,
 )
+from common.mixin.admin.actions import CustomActionsAdminMixin
+from common.mixin.admin.trim_html_tags import TrimHtmlTagsAdminMixin
 
 logger = logging.getLogger(getattr(settings, "BOARD_LOGGER", "django"))
 
 
-class VisiterBoardAdmin(AdminCommonAction, AdminCacheCleanPost):
+class VisiterBoardAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanPostMixin):
     list_per_page = 20
     cache_prefix = "board:Visiter"
     cache_reply_prefix = "board:VisiterReply"
@@ -33,20 +35,16 @@ class VisiterBoardAdmin(AdminCommonAction, AdminCacheCleanPost):
         "set_visible",
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
     exclude = ("table_name",)
-
-    def get_actions(self, request):
-        actions = super(VisiterBoardAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
 
     def save_model(self, request, obj, form, change):
         obj.table_name = obj._meta.db_table
         super().save_model(request, obj, form, change)
 
 
-class VisiterReplyAdmin(AdminCommonAction, AdminCacheCleanReply):
+class VisiterReplyAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanReplyMixin):
     list_per_page = 20
     cache_prefix = "blog:VisiterReply"
 
@@ -61,12 +59,8 @@ class VisiterReplyAdmin(AdminCommonAction, AdminCacheCleanReply):
         "set_visible",
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
-
-    def get_actions(self, request):
-        actions = super(VisiterReplyAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
 
 
 board_admin_site.register(Visiter, VisiterBoardAdmin)

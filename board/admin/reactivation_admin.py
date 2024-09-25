@@ -6,16 +6,18 @@ from rangefilter.filters import DateRangeFilter
 from board.admin.common_admin import board_admin_site
 from board.models.board import Reactivation
 from board.models.board_reply import ReactivationReply
-from common.components.admin.admin_components import (
-    AdminCacheCleanPost,
-    AdminCacheCleanReply,
-    AdminCommonAction,
+from common.mixin.admin.redis_cache_handler import (
+    AdminCacheCleanPostMixin,
+    AdminCacheCleanReplyMixin,
+    AdminCommonActionMixin,
 )
+from common.mixin.admin.actions import CustomActionsAdminMixin
+from common.mixin.admin.trim_html_tags import TrimHtmlTagsAdminMixin
 
 logger = logging.getLogger(getattr(settings, "BOARD_LOGGER", "django"))
 
 
-class ReactivationBoardAdmin(AdminCommonAction, AdminCacheCleanPost):
+class ReactivationBoardAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanPostMixin):
     list_per_page = 20
     cache_prefix = "board:Reactivation"
     cache_reply_prefix = "board:ReactivationReply"
@@ -33,20 +35,16 @@ class ReactivationBoardAdmin(AdminCommonAction, AdminCacheCleanPost):
         "set_visible",
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
     exclude = ("table_name",)
-
-    def get_actions(self, request):
-        actions = super(ReactivationBoardAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
 
     def save_model(self, request, obj, form, change):
         obj.table_name = obj._meta.db_table
         super().save_model(request, obj, form, change)
 
 
-class ReactivationReplyAdmin(AdminCommonAction, AdminCacheCleanReply):
+class ReactivationReplyAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanReplyMixin):
     list_per_page = 20
     cache_prefix = "blog:ReactivationReply"
 
@@ -61,12 +59,8 @@ class ReactivationReplyAdmin(AdminCommonAction, AdminCacheCleanReply):
         "set_visible",
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
-
-    def get_actions(self, request):
-        actions = super(ReactivationReplyAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
 
 
 board_admin_site.register(Reactivation, ReactivationBoardAdmin)

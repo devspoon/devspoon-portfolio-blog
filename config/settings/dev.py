@@ -113,7 +113,7 @@ GRAPH_MODELS = {
 # https://sophilabs.com/blog/configure-a-read-replica-database-in-django
 # https://urunimi.github.io/architecture/python/use-replica/
 
-DATABASE_ROUTERS = ["core.replica_router.ReplicationRouter"]
+DATABASE_ROUTERS = ["common.core.replica_router.ReplicationRouter"]
 
 DATABASES = {
     "default": {

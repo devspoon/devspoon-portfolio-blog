@@ -6,16 +6,18 @@ from rangefilter.filters import DateRangeFilter
 from blog.admin.common_admin import blog_admin_site
 from blog.models.blog import BlogPost
 from blog.models.blog_reply import BlogPostReply
-from common.components.admin.admin_components import (
-    AdminCacheCleanPost,
-    AdminCacheCleanReply,
-    AdminCommonAction,
+from common.mixin.admin.redis_cache_handler import (
+    AdminCacheCleanPostMixin,
+    AdminCacheCleanReplyMixin,
+    AdminCommonActionMixin,
 )
+from common.mixin.admin.actions import CustomActionsAdminMixin
+from common.mixin.admin.trim_html_tags import TrimHtmlTagsAdminMixin
 
 logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
 
 
-class BlogPostAdmin(AdminCommonAction, AdminCacheCleanPost):
+class BlogPostAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanPostMixin):
     list_per_page = 20
     cache_prefix = "blog:Blog"
     cache_reply_prefix = "blog:BlogReply"
@@ -33,23 +35,19 @@ class BlogPostAdmin(AdminCommonAction, AdminCacheCleanPost):
         "set_visible",
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
     filter_horizontal = ("tag_set",)
     date_hierarchy = "created_at"
     exclude = ("table_name",)
     # prepopulated_fields = {'slug' : ['title']}
 
-    def get_actions(self, request):
-        actions = super(BlogPostAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
-
     def save_model(self, request, obj, form, change):
         obj.table_name = obj._meta.db_table
         super().save_model(request, obj, form, change)
 
 
-class BlogPostReplyAdmin(AdminCommonAction, AdminCacheCleanReply):
+class BlogPostReplyAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanReplyMixin):
     list_per_page = 20
     cache_prefix = "blog:BlogReply"
 
@@ -64,12 +62,8 @@ class BlogPostReplyAdmin(AdminCommonAction, AdminCacheCleanReply):
         "set_visible",
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
-
-    def get_actions(self, request):
-        actions = super(BlogPostReplyAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
 
 
 blog_admin_site.register(BlogPost, BlogPostAdmin)

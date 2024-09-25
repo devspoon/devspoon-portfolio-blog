@@ -4,14 +4,16 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import AdminSite
 from django.utils.decorators import method_decorator
+from common.decorators.cache import index_cache_clean
 from django.utils.safestring import mark_safe
 from django_summernote.admin import SummernoteModelAdmin
 from django.utils.html import format_html
 from django.template.response import TemplateResponse
 from django.db import transaction
 from blog.models.blog import ProjectPost
-from common.components.admin.admin_components import AdminCacheClean
-from common.decorators.cache import index_cache_clean
+from common.mixin.admin.redis_cache_handler import AdminCacheCleanMixin
+from common.mixin.admin.actions import CustomActionsAdminMixin
+from common.mixin.admin.trim_html_tags import TrimHtmlTagsAdminMixin
 from portfolio.models import (
     AboutProjects,
     EducationStudy,
@@ -40,8 +42,10 @@ class ProfileSummaryInline(
 ):
     model = PortfolioSummary
 
+class CustomAdminMixin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCacheCleanMixin, SummernoteModelAdmin):
+    pass
 
-class PortfolioAdmin(AdminCacheClean, SummernoteModelAdmin):
+class PortfolioAdmin(CustomAdminMixin):
     cache_prefix = "portfolio"
     use_pk = False
 
@@ -83,12 +87,8 @@ class PortfolioAdmin(AdminCacheClean, SummernoteModelAdmin):
     actions = [
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
-
-    def get_actions(self, request):
-        actions = super(PortfolioAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
 
     def portfolio_image_1(self, obj):
         return mark_safe(
@@ -116,7 +116,7 @@ class PortfolioAdmin(AdminCacheClean, SummernoteModelAdmin):
     portfolio_image_3.short_description = "portfolio_image_preview_3"
 
 
-class PersonalInfoAdmin(AdminCacheClean, admin.ModelAdmin):
+class PersonalInfoAdmin(CustomAdminMixin):
     cache_prefix = "portfolio"
     use_pk = False
 
@@ -127,15 +127,11 @@ class PersonalInfoAdmin(AdminCacheClean, admin.ModelAdmin):
     actions = [
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
 
-    def get_actions(self, request):
-        actions = super(PersonalInfoAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
 
-
-class ProfileSummaryAdmin(AdminCacheClean, SummernoteModelAdmin):
+class ProfileSummaryAdmin(CustomAdminMixin):
     cache_prefix = "portfolio"
     use_pk = False
 
@@ -150,15 +146,11 @@ class ProfileSummaryAdmin(AdminCacheClean, SummernoteModelAdmin):
     actions = [
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
 
-    def get_actions(self, request):
-        actions = super(ProfileSummaryAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
 
-
-class WorkExperienceAdmin(AdminCacheClean, SummernoteModelAdmin):
+class WorkExperienceAdmin(CustomAdminMixin):
     cache_prefix = "portfolio"
     use_pk = False
 
@@ -189,51 +181,8 @@ class WorkExperienceAdmin(AdminCacheClean, SummernoteModelAdmin):
         "copy_selected_items",  # 새로운 복사 액션 추가
     ]
 
-    def copy_selected_items(self, request, queryset):
-        # 트랜잭션을 사용하여 데이터 일관성을 보장
-        with transaction.atomic():
-            for item in queryset:
-                # 기존 항목의 데이터를 복사하여 새 항목 생성
-                item.pk = None  # 기본 키를 None으로 설정하여 새 객체로 인식하게 함
-                item.title = f"[copy] - {item.title}"  # 제목에 "[copy] - " 추가
-                item.save()  # 새 항목 저장
 
-        self.message_user(request, "The selected items have been copied.")
-
-    copy_selected_items.short_description = "Copy selected items"
-
-    def get_actions(self, request):
-        actions = super(WorkExperienceAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
-
-    def get_cleaned_title(self, obj):
-        # HTML 태그를 제거하고 텍스트만 반환
-        return format_html(
-            obj.title
-        )  # 또는 obj.title.strip()으로 HTML 제거 가능, 만약 HTML 태그를 제거하고 싶다면, strip_tags를 사용
-
-    get_cleaned_title.short_description = "Title"  # Admin에서 표시될 제목
-
-    def changeform_view(self, request, object_id=None, form_url="", extra_context=None):
-        response = super().changeform_view(request, object_id, form_url, extra_context)
-
-        # response가 HttpResponseRedirect가 아닐 때만 context_data에 접근
-        if isinstance(response, TemplateResponse):
-            if object_id is not None:
-                # title에서 HTML 태그를 제거
-                if (
-                    "subtitle" in response.context_data
-                    and response.context_data["subtitle"]
-                ):
-                    response.context_data["subtitle"] = format_html(
-                        response.context_data["subtitle"]
-                    )
-
-        return response
-
-
-class EducationStudyAdmin(AdminCacheClean, SummernoteModelAdmin):
+class EducationStudyAdmin(CustomAdminMixin):
     cache_prefix = "portfolio"
     use_pk = False
 
@@ -248,15 +197,11 @@ class EducationStudyAdmin(AdminCacheClean, SummernoteModelAdmin):
     actions = [
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
 
-    def get_actions(self, request):
-        actions = super(EducationStudyAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
 
-
-class InterestedInAdmin(AdminCacheClean, SummernoteModelAdmin):
+class InterestedInAdmin(CustomAdminMixin):
     cache_prefix = "portfolio"
     use_pk = False
 
@@ -282,15 +227,11 @@ class InterestedInAdmin(AdminCacheClean, SummernoteModelAdmin):
     actions = [
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
 
-    def get_actions(self, request):
-        actions = super(InterestedInAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
 
-
-class AboutProjectsAdmin(AdminCacheClean, admin.ModelAdmin):
+class AboutProjectsAdmin(CustomAdminMixin):
     cache_prefix = "portfolio"
     use_pk = False
 
@@ -312,12 +253,9 @@ class AboutProjectsAdmin(AdminCacheClean, admin.ModelAdmin):
     actions = [
         "delete_all_cache",
         "delete_selected_items",
+        "copy_selected_items",
     ]
 
-    def get_actions(self, request):
-        actions = super(AboutProjectsAdmin, self).get_actions(request)
-        del actions["delete_selected"]
-        return actions
 
     @method_decorator(index_cache_clean)
     def delete_selected_items(self, request, queryset):

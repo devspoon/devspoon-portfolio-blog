@@ -3,8 +3,8 @@ import logging
 from django.conf import settings
 from django.contrib import admin
 from django.core.cache import cache
-from django.core.cache.utils import make_template_fragment_key
 from django.utils.decorators import method_decorator
+from common.decorators.cache import index_cache_clean
 from django_summernote.admin import SummernoteModelAdmin
 
 from common.components.django_redis_cache_components import dredis_cache_delete
@@ -13,7 +13,7 @@ from common.decorators.cache import index_cache_clean
 logger = logging.getLogger(getattr(settings, "COMMON_LOGGER", "django"))
 
 
-class AdminCommonAction(object):
+class AdminCommonActionMixin:
     def set_delete(self, request, queryset):
         queryset.update(is_deleted=True)
 
@@ -27,7 +27,7 @@ class AdminCommonAction(object):
         queryset.update(is_hidden=False)
 
 
-class AdminCacheClean(object):
+class AdminCacheCleanMixin:
     cache_prefix = ""
     use_pk = True
 
@@ -58,21 +58,21 @@ class AdminCacheClean(object):
         super().delete_model(request, obj)
 
 
-class AdminCacheCleanFixedKey(AdminCacheClean, SummernoteModelAdmin):
+class AdminCacheCleanFixedKeyMixin(AdminCacheCleanMixin, SummernoteModelAdmin):
     view_keys = ""
 
     def delete_cache(self):
         for key in self.view_keys:
             if cache.has_key(key):
                 cache.delete(key)
+                
+    def delete_all_cache(self, request, queryset):
+        self.delete_cache()
 
     def delete_selected_items(self, request, queryset):
         for obj in queryset:
             self.delete_cache()
             obj.delete()
-
-    def delete_all_cache(self, request, queryset):
-        self.delete_cache()
 
     def save_model(self, request, obj, form, change):
         self.delete_cache()
@@ -83,7 +83,7 @@ class AdminCacheCleanFixedKey(AdminCacheClean, SummernoteModelAdmin):
         super().delete_model(request, obj)
 
 
-class AdminCacheCleanPost(SummernoteModelAdmin):
+class AdminCacheCleanPostMixin(SummernoteModelAdmin):
     cache_reply_prefix = ""
     cache_prefix = ""
 
@@ -113,7 +113,7 @@ class AdminCacheCleanPost(SummernoteModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-class AdminCacheCleanReply(admin.ModelAdmin):
+class AdminCacheCleanReplyMixin(admin.ModelAdmin):
     cache_prefix = ""
 
     def delete_cache(self, prefix: str, pk: int = None):

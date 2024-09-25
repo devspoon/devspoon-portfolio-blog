@@ -80,8 +80,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_user_agents.middleware.UserAgentMiddleware",
     "allauth.account.middleware.AccountMiddleware",
-    "custom_middlewares.common.statistics.ConnectionMethodStatsMiddleware",
-    "custom_middlewares.common.statistics.ConnectionHardwareStatsMiddleware",
+    "custom_middlewares.middlewares.statistics.ConnectionMethodStatsMiddleware",
+    "custom_middlewares.middlewares.statistics.ConnectionHardwareStatsMiddleware",
 ]
 
 AUTHENTICATION_BACKENDS = [
