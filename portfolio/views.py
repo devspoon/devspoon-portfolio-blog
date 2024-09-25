@@ -80,17 +80,30 @@ class PortfolioView(TemplateView):
                 .first()
             )
             context["portfolio"] = portfolio
-            context["portfolio_summary"] = portfolio.portfolio_summary.filter(
-                language__in=lang
-            )
+
+            if portfolio is not None:
+                context["portfolio_summary"] = portfolio.portfolio_summary.filter(
+                    language__in=lang
+                )
+            else:
+                context["portfolio_summary"] = []  # 또는 None으로 설정
+
             caching_data = context.copy()
 
             [caching_data.pop(x, None) for x in ["view"]]
-            dredis_cache_set(
-                self.cache_prefix,
-                0,
-                **caching_data,
-            )
+            if caching_data:
+                logger.debug(
+                    f"redis cache - {self.__class__.__name__} caching_data exists"
+                )
+                dredis_cache_set(
+                    self.cache_prefix,
+                    0,
+                    **caching_data,
+                )
+            else:
+                logger.debug(
+                    f"redis cache - {self.__class__.__name__} caching_data not exists"
+                )
         logger.debug(f"final context : {context}")
         return context
 
@@ -141,11 +154,19 @@ class WorkExperienceJsonView(View):
             context = list(map(self.make_context, data))
             caching_data = {}
             caching_data["WorkExperience"] = context
-            dredis_cache_set(
-                self.cache_prefix,
-                0,
-                **caching_data,
-            )
+            if caching_data:
+                logger.debug(
+                    f"redis cache - {self.__class__.__name__} caching_data exists"
+                )
+                dredis_cache_set(
+                    self.cache_prefix,
+                    0,
+                    **caching_data,
+                )
+            else:
+                logger.debug(
+                    f"redis cache - {self.__class__.__name__} caching_data not exists"
+                )
         logger.debug(f"final context : {context}")
         return JsonResponse(context, safe=False)
 

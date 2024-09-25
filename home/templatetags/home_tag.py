@@ -34,12 +34,16 @@ def main_menu_tag():
         )
     else:
         main_menu = MainMenu.objects.all()
-        logger.debug(f"called database - main_menu_tag")
-        dredis_cache_set(
-            cache_prefix,
-            temp_pk,
-            main_menu=main_menu,
-        )
+        logger.debug("called database - main_menu_tag")
+        if main_menu.exists():
+            logger.debug("redis cache - main_menu_tag.exists")
+            dredis_cache_set(
+                cache_prefix,
+                temp_pk,
+                main_menu=main_menu,
+            )
+        else:
+            logger.debug(f"redis cache - main_menu_tag not exists")
 
     return main_menu
 
@@ -63,11 +67,15 @@ def site_info_tag():
         )
     else:
         site_info = SiteInfo.objects.first()
-        logger.debug(f"called database - site_info_tag")
-        dredis_cache_set(
-            cache_prefix,
-            temp_pk,
-            site_info=site_info,
-        )
+        logger.debug("called database - site_info_tag")
+        if site_info is not None:
+            logger.debug("redis cache - site_info_tag exists")
+            dredis_cache_set(
+                cache_prefix,
+                temp_pk,
+                site_info=site_info,
+            )
+        else:
+            logger.debug(f"redis cache - site_info_tag not exists")
 
     return site_info

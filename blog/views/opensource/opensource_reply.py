@@ -84,11 +84,20 @@ class OpenSourceReplyListJsonView(View):
             caching_data = {}
             caching_data[page] = results
             logger.debug(f"called database - {self.__class__.__name__}")
-            dredis_cache_set(
-                self.cache_prefix,
-                pk,
-                **caching_data,
-            )
+            if caching_data:
+                logger.debug(
+                    f"redis cache - {self.__class__.__name__} caching_data exists"
+                )
+                dredis_cache_set(
+                    self.cache_prefix,
+                    pk,
+                    **caching_data,
+                )
+            else:
+                logger.debug(
+                    f"redis cache - {self.__class__.__name__} caching_data not exists"
+                )
+
         logger.debug(f"final context : {results}")
         return JsonResponse(results, safe=False)
 

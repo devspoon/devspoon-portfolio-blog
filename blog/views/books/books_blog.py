@@ -67,11 +67,19 @@ class BooksDetailView(DetailView):
         else:
             queryset = super().get_queryset()
             logger.debug(f"called database - {self.__class__.__name__}")
-            dredis_cache_set(
-                self.cache_prefix,
-                self.kwargs.get("pk"),
-                get_queryset=queryset,
-            )
+            if queryset.exists():
+                logger.debug(
+                    f"redis cache - {self.__class__.__name__} queryset.exists"
+                )
+                dredis_cache_set(
+                    self.cache_prefix,
+                    self.kwargs.get("pk"),
+                    get_queryset=queryset,
+                )
+            else:
+                logger.debug(
+                    f"redis cache - {self.__class__.__name__} queryset not exists"
+                )
 
         return queryset
 
@@ -122,11 +130,19 @@ class BooksDetailView(DetailView):
 
             [caching_data.pop(x, None) for x in ["object", "board", "view"]]
             logger.debug(f"called database - {self.__class__.__name__}")
-            dredis_cache_set(
-                self.cache_prefix,
-                self.kwargs.get("pk"),
-                **caching_data,
-            )
+            if caching_data:
+                logger.debug(
+                    f"redis cache - {self.__class__.__name__} caching_data exists"
+                )
+                dredis_cache_set(
+                    self.cache_prefix,
+                    self.kwargs.get("pk"),
+                    **caching_data,
+                )
+            else:
+                logger.debug(
+                    f"redis cache - {self.__class__.__name__} caching_data not exists"
+                )
 
         logger.debug(f"final context : {context}")
         return context
