@@ -15,7 +15,7 @@ from utils.os.file_path_name_gen import (
 logger = logging.getLogger(getattr(settings, "PORTFOLIO_LOGGER", "django"))
 
 
-class PortfolioDefault(models.Model):
+class PortfolioMixin(models.Model):
     class Languages(models.TextChoices):
         KOREAN = "0", _("ko")
         ENGLISH = "1", _("en")
@@ -35,7 +35,7 @@ class PortfolioDefault(models.Model):
         abstract = True
 
 
-class Portfolio(PortfolioDefault):
+class Portfolio(PortfolioMixin):
     portfolio_cv_file = models.FileField(
         blank=True,
         upload_to=date_upload_to_for_file,
@@ -70,7 +70,7 @@ class Portfolio(PortfolioDefault):
         return "%s" % (self.pk)
 
 
-class PersonalInfo(PortfolioDefault):
+class PersonalInfo(PortfolioMixin):
     name = models.CharField(max_length=50, blank=False, verbose_name=_("Name"))
     country = models.CharField(max_length=50, blank=False, verbose_name=_("Country"))
     country_code_regex = RegexValidator(regex=r"^\+([0-9]{2,3})$")
@@ -118,7 +118,7 @@ class PersonalInfo(PortfolioDefault):
         return "%s" % (self.name)
 
 
-class PortfolioSummary(PortfolioDefault):
+class PortfolioSummary(PortfolioMixin):
     class Position(models.TextChoices):
         FRONT_END = "0", _("Front-End")
         BACK_END = "1", _("Back-End")
@@ -162,7 +162,7 @@ class PortfolioSummary(PortfolioDefault):
         return "%s" % (self.position)
 
 
-class WorkExperience(PortfolioDefault):
+class WorkExperience(PortfolioMixin):
     class Role(models.TextChoices):
         STARTUP_CEO = "0", _("Startup CEO")
         PROJECT_MANAGER = "1", _("Project Manager")
@@ -221,7 +221,7 @@ class WorkExperience(PortfolioDefault):
         return "%s" % (self.title)
 
 
-class EducationStudy(PortfolioDefault):
+class EducationStudy(PortfolioMixin):
     class TYPE(models.TextChoices):
         EDUCATION = "0", _("Education")
         STUDY = "1", _("Study")
@@ -259,7 +259,7 @@ class EducationStudy(PortfolioDefault):
         return "%s" % (self.title)
 
 
-class InterestedIn(PortfolioDefault):
+class InterestedIn(PortfolioMixin):
     icon = models.CharField(blank=False, max_length=50, verbose_name=_("Icon"))
     title = models.TextField(blank=False, verbose_name=_("Title"))
     content = models.TextField(blank=False, verbose_name=_("Content"))
@@ -273,7 +273,7 @@ class InterestedIn(PortfolioDefault):
         return "%s" % (self.pk)
 
 
-class AboutProjects(PortfolioDefault):
+class AboutProjects(PortfolioMixin):
     projectpost = models.OneToOneField(
         ProjectPost,
         null=True,
@@ -297,7 +297,7 @@ class AboutProjects(PortfolioDefault):
         return "%s" % (self.pk)
 
 
-class GetInTouchLog(PortfolioDefault):
+class GetInTouchLog(PortfolioMixin):
     name = models.CharField(blank=False, max_length=300, verbose_name=_("Name"))
     state = models.BooleanField(blank=False, default=True, verbose_name=_("State"))
     email = models.EmailField(max_length=128, blank=False, verbose_name=_("Email"))

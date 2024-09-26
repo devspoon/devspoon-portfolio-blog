@@ -12,7 +12,7 @@ from django.db import transaction
 
 from django.db import models
 
-class BoardReply(models.Model):
+class BoardReplyMixin(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     comment = models.TextField(default='', blank=False, verbose_name=_('Comment'))
     depth = models.SmallIntegerField(default=0, verbose_name=_('Reply depth'))
@@ -28,7 +28,7 @@ class BoardReply(models.Model):
         return self.comment
 
 
-class NoticeReply(BoardReply):
+class NoticeReply(BoardReplyMixin):
     board = models.ForeignKey('board.Notice', on_delete=models.CASCADE)
 
     class Meta:
@@ -38,7 +38,7 @@ class NoticeReply(BoardReply):
         ordering = [('group'),]
 
 
-class VisiterReply(BoardReply):
+class VisiterReply(BoardReplyMixin):
     board = models.ForeignKey('board.Visiter', on_delete=models.CASCADE)
 
     class Meta:
@@ -48,7 +48,7 @@ class VisiterReply(BoardReply):
         ordering = [('group'),]
 
 
-class ReactivationReply(BoardReply):
+class ReactivationReply(BoardReplyMixin):
     board = models.ForeignKey('board.Reactivation', on_delete=models.CASCADE)
 
     class Meta:

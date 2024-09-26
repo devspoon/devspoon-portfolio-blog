@@ -1,6 +1,6 @@
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
-from .models import ProjectPost, OnlineStudyPost, BlogPost, OpenSourcePost, BooksPost
+from .models import ProjectPostMixin, OnlineStudyPost, BlogPost, OpenSourcePost, BooksPost
 
 
 class ProjectPostListSitemap(Sitemap):
@@ -21,7 +21,7 @@ class ProjectPostSitemap(Sitemap):
     priority = 0.5
 
     def items(self):
-        return ProjectPost.objects.all()
+        return ProjectPostMixin.objects.all()
 
     def location(self, obj):
         return reverse(

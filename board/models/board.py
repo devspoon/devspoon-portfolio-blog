@@ -40,7 +40,7 @@ class ActivateDataManager(models.Manager):
         return self.get_queryset().data()
 
 
-class Board(models.Model):
+class BoardMixin(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author")
     )
@@ -71,7 +71,7 @@ class Board(models.Model):
         return self.title
 
 
-class Notice(Board):
+class Notice(BoardMixin):
     priority = models.SmallIntegerField(
         default=0, verbose_name=_("Priority")
     )  # it can made to access other board
@@ -90,7 +90,7 @@ class Notice(Board):
         return reverse("board:notice_detail", kwargs={"pk": self.pk})
 
 
-class Visiter(Board):
+class Visiter(BoardMixin):
     class Meta:
         default_manager_name = "objects"
         db_table = "visiter_board"
@@ -102,7 +102,7 @@ class Visiter(Board):
         return reverse("board:visiter_detail", kwargs={"pk": self.pk})
 
 
-class Reactivation(Board):
+class Reactivation(BoardMixin):
     class Meta:
         default_manager_name = "objects"
         db_table = "reactuvation_board"

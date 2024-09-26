@@ -48,7 +48,7 @@ class ActivateDataManager(models.Manager):
         return self.get_queryset().data()
 
 
-class Post(models.Model):
+class PostMixin(models.Model):
     class Difficulty(models.TextChoices):
         BEGINNER = "0", _("Beginner")
         INTERMEDIATE = "1", _("Intermediate")
@@ -132,11 +132,11 @@ class Post(models.Model):
             self.tag_set.add(tag)
 
 
-class ProjectPost(Post):
+class ProjectPost(PostMixin):
     role = models.CharField(
         max_length=15,
-        choices=Post.ProjectRole.choices,
-        default=Post.ProjectRole.OWNER,
+        choices=PostMixin.ProjectRole.choices,
+        default=PostMixin.ProjectRole.OWNER,
         verbose_name=_("Project Role"),
     )
     dev_lang = models.CharField(
@@ -145,8 +145,8 @@ class ProjectPost(Post):
     version = models.CharField(max_length=10, blank=False, verbose_name=_("Version"))
     branch = models.CharField(
         max_length=15,
-        choices=Post.Branch.choices,
-        default=Post.Branch.BACKEND,
+        choices=PostMixin.Branch.choices,
+        default=PostMixin.Branch.BACKEND,
         verbose_name=_("Project Branch"),
     )
     repository = models.URLField(blank=True, verbose_name=_("Repository"))
@@ -168,20 +168,20 @@ class ProjectPost(Post):
         return reverse("blog:project_detail", kwargs={"pk": self.pk})
 
 
-class OnlineStudyPost(Post):
+class OnlineStudyPost(PostMixin):
     dev_lang = models.CharField(
         max_length=20, blank=False, verbose_name=_("Development Language")
     )
     branch = models.CharField(
         max_length=15,
-        choices=Post.Branch.choices,
-        default=Post.Branch.BACKEND,
+        choices=PostMixin.Branch.choices,
+        default=PostMixin.Branch.BACKEND,
         verbose_name=_("Project Branch"),
     )
     difficulty_level = models.CharField(
         max_length=15,
-        choices=Post.Difficulty.choices,
-        default=Post.Difficulty.BEGINNER,
+        choices=PostMixin.Difficulty.choices,
+        default=PostMixin.Difficulty.BEGINNER,
         verbose_name=_("Difficulty Level"),
     )
     like_user_set = models.ManyToManyField(
@@ -202,7 +202,7 @@ class OnlineStudyPost(Post):
         return reverse("blog:online_study_detail", kwargs={"pk": self.pk})
 
 
-class BlogPost(Post):
+class BlogPost(PostMixin):
     like_user_set = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         blank=True,
@@ -221,11 +221,11 @@ class BlogPost(Post):
         return reverse("blog:blog_detail", kwargs={"pk": self.pk})
 
 
-class OpenSourcePost(Post):
+class OpenSourcePost(PostMixin):
     role = models.CharField(
         max_length=15,
-        choices=Post.ProjectRole.choices,
-        default=Post.ProjectRole.OWNER,
+        choices=PostMixin.ProjectRole.choices,
+        default=PostMixin.ProjectRole.OWNER,
         verbose_name=_("Project Role"),
     )
     dev_lang = models.CharField(
@@ -233,15 +233,15 @@ class OpenSourcePost(Post):
     )
     branch = models.CharField(
         max_length=15,
-        choices=Post.Branch.choices,
-        default=Post.Branch.BACKEND,
+        choices=PostMixin.Branch.choices,
+        default=PostMixin.Branch.BACKEND,
         verbose_name=_("Project Branch"),
     )
     repository = models.URLField(blank=True, verbose_name=_("Repository"))
     difficulty_level = models.CharField(
         max_length=15,
-        choices=Post.Difficulty.choices,
-        default=Post.Difficulty.BEGINNER,
+        choices=PostMixin.Difficulty.choices,
+        default=PostMixin.Difficulty.BEGINNER,
         verbose_name=_("Difficulty Level"),
     )
     like_user_set = models.ManyToManyField(
@@ -262,20 +262,20 @@ class OpenSourcePost(Post):
         return reverse("blog:opensource_detail", kwargs={"pk": self.pk})
 
 
-class BooksPost(Post):
+class BooksPost(PostMixin):
     dev_lang = models.CharField(
         max_length=20, blank=False, verbose_name=_("Development Language")
     )
     branch = models.CharField(
         max_length=15,
-        choices=Post.Branch.choices,
-        default=Post.Branch.BACKEND,
+        choices=PostMixin.Branch.choices,
+        default=PostMixin.Branch.BACKEND,
         verbose_name=_("Project Branch"),
     )
     difficulty_level = models.CharField(
         max_length=15,
-        choices=Post.Difficulty.choices,
-        default=Post.Difficulty.BEGINNER,
+        choices=PostMixin.Difficulty.choices,
+        default=PostMixin.Difficulty.BEGINNER,
         verbose_name=_("Difficulty Level"),
     )
     like_user_set = models.ManyToManyField(

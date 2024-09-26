@@ -20,7 +20,7 @@ from common.components.django_redis_cache_components import (
     dredis_cache_set,
 )
 
-from ...models.blog import ProjectPost
+from ...models.blog import ProjectPostMixin
 from ...models.blog_reply import ProjectPostReply
 
 logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
@@ -126,13 +126,13 @@ class ProjectReplyCreateJsonView(LoginRequiredMixin, View):
 
         if parent:
             group = parent.group
-            post = get_object_or_404(ProjectPost, pk=kwargs.get("pk"))
+            post = get_object_or_404(ProjectPostMixin, pk=kwargs.get("pk"))
         else:
             with transaction.atomic():
-                ProjectPost.objects.select_for_update().filter(
+                ProjectPostMixin.objects.select_for_update().filter(
                     pk=kwargs.get("pk")
                 ).update(last_group_num=F("last_group_num") + 1)
-                post = get_object_or_404(ProjectPost, pk=kwargs.get("pk"))
+                post = get_object_or_404(ProjectPostMixin, pk=kwargs.get("pk"))
             group = post.last_group_num
 
         with transaction.atomic():
@@ -144,7 +144,7 @@ class ProjectReplyCreateJsonView(LoginRequiredMixin, View):
                 parent=parent,
                 post=post,
             )
-            ProjectPost.objects.select_for_update().filter(pk=kwargs.get("pk")).update(
+            ProjectPostMixin.objects.select_for_update().filter(pk=kwargs.get("pk")).update(
                 reply_count=F("reply_count") + 1
             )
 

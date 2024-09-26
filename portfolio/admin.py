@@ -10,7 +10,7 @@ from django_summernote.admin import SummernoteModelAdmin
 from django.utils.html import format_html
 from django.template.response import TemplateResponse
 from django.db import transaction
-from blog.models.blog import ProjectPost
+from blog.models.blog import ProjectPostMixin
 from common.mixin.admin.redis_cache_handler import AdminCacheCleanMixin
 from common.mixin.admin.actions import CustomActionsAdminMixin
 from common.mixin.admin.trim_html_tags import TrimHtmlTagsAdminMixin
@@ -282,4 +282,4 @@ portfolio_admin_site.register(WorkExperience, WorkExperienceAdmin)
 portfolio_admin_site.register(EducationStudy, EducationStudyAdmin)
 portfolio_admin_site.register(InterestedIn, InterestedInAdmin)
 portfolio_admin_site.register(AboutProjects, AboutProjectsAdmin)
-portfolio_admin_site.register(ProjectPost, ProjectPostHiddenAdmin)
+portfolio_admin_site.register(ProjectPostMixin, ProjectPostHiddenAdmin)

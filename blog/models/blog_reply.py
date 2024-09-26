@@ -12,7 +12,7 @@ from django.utils.translation import gettext_lazy as _
 logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
 
 
-class BlogReply(models.Model):
+class BlogReplyMixin(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     comment = models.TextField(default="", blank=False, verbose_name=_("Comment"))
     depth = models.SmallIntegerField(default=0, verbose_name=_("Reply depth"))
@@ -35,7 +35,7 @@ class BlogReply(models.Model):
         return self.comment
 
 
-class ProjectPostReply(BlogReply):
+class ProjectPostReply(BlogReplyMixin):
     post = models.ForeignKey("blog.ProjectPost", on_delete=models.CASCADE)
 
     class Meta:
@@ -47,7 +47,7 @@ class ProjectPostReply(BlogReply):
         ]
 
 
-class OnlineStudyPostReply(BlogReply):
+class OnlineStudyPostReply(BlogReplyMixin):
     post = models.ForeignKey("blog.OnlineStudyPost", on_delete=models.CASCADE)
 
     class Meta:
@@ -59,7 +59,7 @@ class OnlineStudyPostReply(BlogReply):
         ]
 
 
-class BlogPostReply(BlogReply):
+class BlogPostReply(BlogReplyMixin):
     post = models.ForeignKey("blog.BlogPost", on_delete=models.CASCADE)
 
     class Meta:
@@ -71,7 +71,7 @@ class BlogPostReply(BlogReply):
         ]
 
 
-class OpenSourcePostReply(BlogReply):
+class OpenSourcePostReply(BlogReplyMixin):
     post = models.ForeignKey("blog.OpenSourcePost", on_delete=models.CASCADE)
 
     class Meta:
@@ -83,7 +83,7 @@ class OpenSourcePostReply(BlogReply):
         ]
 
 
-class BooksPostReply(BlogReply):
+class BooksPostReply(BlogReplyMixin):
     post = models.ForeignKey("blog.BooksPost", on_delete=models.CASCADE)
 
     class Meta:

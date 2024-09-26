@@ -9,7 +9,7 @@ from blog.models.blog import (
     BooksPost,
     OnlineStudyPost,
     OpenSourcePost,
-    ProjectPost,
+    ProjectPostMixin,
     Tag,
 )
 from board.models.board import Notice, Reactivation, Visiter
@@ -58,7 +58,7 @@ class Search:
         tag = Tag.objects.filter(tag=tag)
 
         # blog result
-        project_queryset = self.get_tag_search_query_set(ProjectPost, tag)
+        project_queryset = self.get_tag_search_query_set(ProjectPostMixin, tag)
         onlinestudy_queryset = self.get_tag_search_query_set(OnlineStudyPost, tag)
         blog_queryset = self.get_tag_search_query_set(BlogPost, tag)
         opensource_queryset = self.get_tag_search_query_set(OpenSourcePost, tag)
@@ -94,7 +94,7 @@ class Search:
         reactivation_queryset = self.get_keyword_search_query_set(Reactivation, keyword)
 
         # blog result
-        project_queryset = self.get_keyword_search_query_set(ProjectPost, keyword)
+        project_queryset = self.get_keyword_search_query_set(ProjectPostMixin, keyword)
         onlinestudy_queryset = self.get_keyword_search_query_set(
             OnlineStudyPost, keyword
         )
