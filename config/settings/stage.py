@@ -53,7 +53,7 @@ host = config("ALLOWED_HOSTS_IP")
 
 ALLOWED_HOSTS = host.split(",")
 
-DATABASE_ROUTERS = ["core.replica_router.ReplicationRouter"]
+DATABASE_ROUTERS = ["common.core.replica_router.ReplicationRouter"]
 
 DATABASES = {
     # "default": {
