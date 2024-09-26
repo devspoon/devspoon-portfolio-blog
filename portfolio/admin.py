@@ -42,8 +42,10 @@ class ProfileSummaryInline(
 ):
     model = PortfolioSummary
 
+
 class CustomAdminMixin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCacheCleanMixin, SummernoteModelAdmin):
-    pass
+    list_per_page = 20
+
 
 class PortfolioAdmin(CustomAdminMixin):
     cache_prefix = "portfolio"
