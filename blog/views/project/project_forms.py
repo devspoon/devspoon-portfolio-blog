@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django_summernote.widgets import SummernoteWidget
 
-from blog.models.blog import ProjectPostMixin
+from blog.models.blog import ProjectPost
 
 logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
 
@@ -35,7 +35,7 @@ class ProjectForm(forms.ModelForm):
             )
 
     class Meta:
-        model = ProjectPostMixin
+        model = ProjectPost
         fields = [
             "title",
             "role",

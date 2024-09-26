@@ -26,25 +26,25 @@ from common.components.django_redis_cache_components import (
 )
 from common.decorators.cache import index_cache_clean
 
-from ...models.blog import ProjectPostMixin
+from ...models.blog import ProjectPost
 from .project_forms import ProjectForm
 
 logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
 
 
 class ProjectListView(ListView):
-    model = ProjectPostMixin
+    model = ProjectPost
     template_name = "blog/blog_list.html"
     paginate_by = 10
     paginate_orphans = 1  # if last page has 1 item, it will add in last page.
     context_object_name = "board"
 
     def get_queryset(self):
-        return ProjectPostMixin.activate_objects.get_data()
+        return ProjectPost.activate_objects.get_data()
 
 
 class ProjectDetailView(DetailView):
-    model = ProjectPostMixin
+    model = ProjectPost
     template_name = "blog/project/project_detail.html"
     context_object_name = "board"
     cache_prefix = "blog:Project"
@@ -96,12 +96,12 @@ class ProjectDetailView(DetailView):
             context.update(queryset)
         else:
             pre_temp_queryset = (
-                ProjectPostMixin.objects.filter(pk__lt=context["board"].pk)
+                ProjectPost.objects.filter(pk__lt=context["board"].pk)
                 .order_by("-pk")
                 .first()
             )
             next_temp_queryset = (
-                ProjectPostMixin.objects.filter(pk__gt=context["board"].pk)
+                ProjectPost.objects.filter(pk__gt=context["board"].pk)
                 .order_by("pk")
                 .first()
             )
@@ -117,7 +117,7 @@ class ProjectDetailView(DetailView):
                 context["next_board"] = next_temp_queryset
 
             context["like_state"] = (
-                ProjectPostMixin.objects.filter(pk=self.kwargs.get("pk"))
+                ProjectPost.objects.filter(pk=self.kwargs.get("pk"))
                 .first()
                 .like_user_set.filter(pk=self.request.user.pk)
                 .exists()
@@ -148,7 +148,7 @@ class ProjectDetailView(DetailView):
 
 @method_decorator(index_cache_clean, name="dispatch")
 class ProjectCreateView(LoginRequiredMixin, CreateView):
-    model = ProjectPostMixin
+    model = ProjectPost
     template_name = "blog/project/project_edit.html"
     success_url = reverse_lazy("blog:project_list")
     form_class = ProjectForm
@@ -167,7 +167,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
 
 @method_decorator(index_cache_clean, name="dispatch")
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):
-    model = ProjectPostMixin
+    model = ProjectPost
     pk_url_kwarg = "pk"
     form_class = ProjectForm
     template_name = "blog/project/project_update.html"
@@ -196,7 +196,7 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
 
 @method_decorator(index_cache_clean, name="dispatch")
 class ProjectDeleteView(LoginRequiredMixin, View):
-    model = ProjectPostMixin
+    model = ProjectPost
     pk_url_kwarg = "pk"
     success_url = reverse_lazy("blog:project_list")
     login_url = reverse_lazy("users:login")
@@ -226,7 +226,7 @@ class ProjectDeleteView(LoginRequiredMixin, View):
 
 class ProjectLikeJsonView(LoginRequiredMixin, View):
     def get(self, request, pk):
-        post = get_object_or_404(ProjectPostMixin, pk=pk)
+        post = get_object_or_404(ProjectPost, pk=pk)
 
         with transaction.atomic():
             post_like = post.like_user_set.select_for_update().filter(
@@ -236,16 +236,16 @@ class ProjectLikeJsonView(LoginRequiredMixin, View):
             if post_like:  # there are field data already, not created
                 message = "Like canceled"
                 if post.like_count != 0:
-                    ProjectPostMixin.objects.filter(pk=pk).update(
+                    ProjectPost.objects.filter(pk=pk).update(
                         like_count=F("like_count") - 1
                     )
                     post.like_user_set.remove(self.request.user)
             else:
                 message = "Like"
-                ProjectPostMixin.objects.filter(pk=pk).update(like_count=F("like_count") + 1)
+                ProjectPost.objects.filter(pk=pk).update(like_count=F("like_count") + 1)
                 post.like_user_set.add(self.request.user)
 
-        post = ProjectPostMixin.objects.get(pk=pk)  # get latest post information
+        post = ProjectPost.objects.get(pk=pk)  # get latest post information
 
         context = {"like_count": post.like_count, "message": message}
 
@@ -255,7 +255,7 @@ class ProjectLikeJsonView(LoginRequiredMixin, View):
 class ProjectVisitJsonView(View):
     def get(self, request, pk):
         with transaction.atomic():
-            ProjectPostMixin.objects.filter(pk=pk).update(visit_count=F("visit_count") + 1)
+            ProjectPost.objects.filter(pk=pk).update(visit_count=F("visit_count") + 1)
             message = "visit count updated"
 
         context = {"message": message}

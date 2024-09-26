@@ -4,7 +4,7 @@ from django.conf import settings
 from rangefilter.filters import DateRangeFilter
 
 from blog.admin.common_admin import blog_admin_site
-from blog.models.blog import ProjectPostMixin
+from blog.models.blog import ProjectPost
 from blog.models.blog_reply import ProjectPostReply
 from common.mixin.admin.redis_cache_handler import (
     AdminCacheCleanPostMixin,
@@ -65,5 +65,5 @@ class ProjectPostReplyAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, Adm
     ]
 
 
-blog_admin_site.register(ProjectPostMixin, ProjectPostAdmin)
+blog_admin_site.register(ProjectPost, ProjectPostAdmin)
 blog_admin_site.register(ProjectPostReply, ProjectPostReplyAdmin)

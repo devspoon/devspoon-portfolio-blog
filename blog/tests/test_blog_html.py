@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
 
-from blog.models.blog import ProjectPostMixin
+from blog.models.blog import ProjectPost
 from users.models import User
 
 headers = {
@@ -49,7 +49,7 @@ def test_blog_project_create(staff):
         **headers,
     )
     assert response.status_code == 302
-    queryset = ProjectPostMixin.objects.filter(
+    queryset = ProjectPost.objects.filter(
         title="test",
         content="<p>hello<br></p>",
     )
@@ -77,7 +77,7 @@ def test_blog_project_update(staff):
         **headers,
     )
     assert response.status_code == 302
-    queryset = ProjectPostMixin.objects.filter(
+    queryset = ProjectPost.objects.filter(
         title="test",
     )
     assert "hello" in queryset.values()[0]["content"]
@@ -95,7 +95,7 @@ def test_blog_project_update(staff):
         },
         **headers,
     )
-    queryset = ProjectPostMixin.objects.filter(
+    queryset = ProjectPost.objects.filter(
         title="test",
     )
     assert "bye" in queryset.values()[0]["content"]
@@ -119,7 +119,7 @@ def test_blog_project_delete(staff):
         **headers,
     )
     assert response.status_code == 302
-    queryset = ProjectPostMixin.objects.filter(
+    queryset = ProjectPost.objects.filter(
         title="test",
     )
     assert queryset.exists()
@@ -128,7 +128,7 @@ def test_blog_project_delete(staff):
         path=url,
         **headers,
     )
-    queryset = ProjectPostMixin.objects.filter(
+    queryset = ProjectPost.objects.filter(
         title="test",
     )
     assert queryset[0].is_deleted is True
