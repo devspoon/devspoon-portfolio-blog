@@ -188,9 +188,10 @@ class EducationStudyAdmin(CustomAdminMixin):
     cache_prefix = "portfolio"
     use_pk = False
 
-    list_display = ["id", "title", "sort_num", "language", "created_at"]
+    list_display = ["id", "title", "type", "sort_num", "language", "created_at"]
     list_display_links = ["id", "title", "created_at"]
     list_editable = (
+        "type",
         "sort_num",
         "language",
     )
