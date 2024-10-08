@@ -208,8 +208,8 @@ class InterestedInAdmin(CustomAdminMixin):
     cache_prefix = "portfolio"
     use_pk = False
 
-    list_display = ["id", "title", "language", "created_at"]
-    list_display_links = ["id", "title"]
+    list_display = ["id", "get_cleaned_title", "language", "created_at"]
+    list_display_links = ["id", "get_cleaned_title"]
     list_editable = ("language",)
     fieldsets = [
         ("language", {"fields": ("language",)}),
