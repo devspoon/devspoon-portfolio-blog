@@ -140,7 +140,7 @@ class ProjectPost(PostMixin):
         verbose_name=_("Project Role"),
     )
     dev_lang = models.CharField(
-        max_length=20, blank=False, verbose_name=_("Development Language")
+        max_length=200, blank=False, verbose_name=_("Development Language")
     )
     version = models.CharField(max_length=10, blank=False, verbose_name=_("Version"))
     branch = models.CharField(
@@ -170,7 +170,7 @@ class ProjectPost(PostMixin):
 
 class OnlineStudyPost(PostMixin):
     dev_lang = models.CharField(
-        max_length=20, blank=False, verbose_name=_("Development Language")
+        max_length=200, blank=False, verbose_name=_("Development Language")
     )
     branch = models.CharField(
         max_length=15,
@@ -229,7 +229,7 @@ class OpenSourcePost(PostMixin):
         verbose_name=_("Project Role"),
     )
     dev_lang = models.CharField(
-        max_length=20, blank=False, verbose_name=_("Development Language")
+        max_length=200, blank=False, verbose_name=_("Development Language")
     )
     branch = models.CharField(
         max_length=15,
@@ -264,7 +264,7 @@ class OpenSourcePost(PostMixin):
 
 class BooksPost(PostMixin):
     dev_lang = models.CharField(
-        max_length=20, blank=False, verbose_name=_("Development Language")
+        max_length=200, blank=False, verbose_name=_("Development Language")
     )
     branch = models.CharField(
         max_length=15,
