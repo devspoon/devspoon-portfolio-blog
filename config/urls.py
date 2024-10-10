@@ -125,8 +125,6 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 else:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-if not settings.DEBUG:
     handler400 = "common.error.error_views.bad_request_page"
     handler403 = "common.error.error_views.permission_denied_page"
     handler404 = "common.error.error_views.page_not_found_page"
