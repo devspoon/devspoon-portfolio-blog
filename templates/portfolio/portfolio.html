@@ -165,7 +165,7 @@
                                         </div>
 
                                         <div class="col-lg-8 ol-md-8 ol-sm-8 educations-info-border">
-                                            <a href='{{item.class_link}}' target="_blank"><h4>{{item.title}}</h4></a>
+                                            <a href='{{item.class_link}}' target="_blank"><h4>{{item.title|safe}}</h4></a>
                                             {{item.content|safe}}
                                         </div>
                                     </div>
@@ -187,8 +187,8 @@
                                         </div>
 
                                         <div class="col-lg-8 ol-md-8 ol-sm-8 educations-info-border">
-                                            <a href='{{item.class_link}}' target="_blank"><h4>{{item.title}}</h4></a>
-                                            <p>{{item.content}}</p>
+                                            <a href='{{item.class_link}}' target="_blank"><h4>{{item.title|safe}}</h4></a>
+                                            <p>{{item.content|safe}}</p>
                                         </div>
                                     </div>
                                     <!-- About Info Item End -->
@@ -223,7 +223,7 @@
                             </div>
                             <div class="service--content">
                                 {{item.title|safe}}
-                                <p>{{item.content|safe}}}</p>
+                                <p>{{item.content|safe}}</p>
                             </div>
                         </div>
                         <!-- Service Item End -->
