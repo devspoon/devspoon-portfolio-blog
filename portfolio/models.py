@@ -242,7 +242,7 @@ class EducationStudy(PortfolioMixin):
         default=TYPE.STUDY,
         verbose_name=_("Type"),
     )
-    title = models.CharField(blank=False, max_length=50, verbose_name=_("Title"))
+    title = models.TextField(blank=False, verbose_name=_("Title"))
     content = models.TextField(blank=False, verbose_name=_("Content"))
     site_name = models.CharField(blank=True, max_length=50, verbose_name=_("Site Name"))
     class_link = models.URLField(blank=True, verbose_name=_("Site Link"))
