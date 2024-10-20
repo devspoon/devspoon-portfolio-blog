@@ -114,7 +114,8 @@
                                 <div class="nav-prev">
                                 <a href="{{board.id}}" id="nav-left">
                                     <span><i class="lni lni-arrow-left"></i> Older</span>
-                                    {{pre_board.title}} <br>{{pre_board|striptags|truncatechars:80 }}
+                                    {{pre_board.title}}
+                                    <p class="mb-0">{{pre_board.content|striptags|truncatechars:80 }}</p>
                                 </a>
                                 </div>
                             </div>
@@ -124,7 +125,8 @@
                                 <div class="nav-next">
                                 <a href="{{board.id}}" id="nav-right">
                                     <span>Newer <i class="lni lni-arrow-right"></i></span>
-                                    {{next_board.title}} <br>{{next_board|striptags|truncatechars:80 }}
+                                    {{next_board.title}}
+                                    <p class="mb-0">{{next_board.content|striptags|truncatechars:80 }}</p>
                                 </a>
                                 </div>
                             </div>

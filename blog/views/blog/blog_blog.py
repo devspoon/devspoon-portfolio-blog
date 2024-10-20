@@ -104,15 +104,8 @@ class BlogDetailView(DetailView):
                 .first()
             )
 
-            if not pre_temp_queryset:
-                context["pre_board"] = ""
-            else:
-                context["pre_board"] = pre_temp_queryset
-
-            if not pre_temp_queryset:
-                context["next_board"] = ""
-            else:
-                context["next_board"] = next_temp_queryset
+            context["pre_board"] = pre_temp_queryset if pre_temp_queryset else ""
+            context["next_board"] = next_temp_queryset if next_temp_queryset else ""
 
             context["like_state"] = (
                 BlogPost.objects.filter(pk=self.kwargs.get("pk"))

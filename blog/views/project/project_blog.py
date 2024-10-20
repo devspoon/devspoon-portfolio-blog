@@ -66,9 +66,7 @@ class ProjectDetailView(DetailView):
             queryset = super().get_queryset()
             logger.debug(f"called database - {self.__class__.__name__}")
             if queryset.exists():
-                logger.debug(
-                    f"redis cache - {self.__class__.__name__} queryset.exists"
-                )
+                logger.debug(f"redis cache - {self.__class__.__name__} queryset.exists")
                 dredis_cache_set(
                     self.cache_prefix,
                     self.kwargs.get("pk"),
@@ -106,15 +104,8 @@ class ProjectDetailView(DetailView):
                 .first()
             )
 
-            if not pre_temp_queryset:
-                context["pre_board"] = ""
-            else:
-                context["pre_board"] = pre_temp_queryset
-
-            if not pre_temp_queryset:
-                context["next_board"] = ""
-            else:
-                context["next_board"] = next_temp_queryset
+            context["pre_board"] = pre_temp_queryset if pre_temp_queryset else ""
+            context["next_board"] = next_temp_queryset if next_temp_queryset else ""
 
             context["like_state"] = (
                 ProjectPost.objects.filter(pk=self.kwargs.get("pk"))
@@ -131,7 +122,7 @@ class ProjectDetailView(DetailView):
             if caching_data:
                 logger.debug(
                     f"redis cache - {self.__class__.__name__} caching_data exists"
-					)
+                )
                 dredis_cache_set(
                     self.cache_prefix,
                     self.kwargs.get("pk"),
@@ -141,7 +132,7 @@ class ProjectDetailView(DetailView):
                 logger.debug(
                     f"redis cache - {self.__class__.__name__} caching_data not exists"
                 )
-                
+
         logger.debug(f"final context : {context}")
         return context
 
