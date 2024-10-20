@@ -10,6 +10,7 @@ from django_summernote.admin import SummernoteModelAdmin
 from django.utils.html import format_html
 from django.template.response import TemplateResponse
 from django.db import transaction
+from rangefilter.filters import DateRangeFilter
 from blog.models.blog import ProjectPost
 from common.mixin.admin.redis_cache_handler import AdminCacheCleanMixin
 from common.mixin.admin.actions import CustomActionsAdminMixin
@@ -188,6 +189,19 @@ class WorkExperienceAdmin(CustomAdminMixin):
         "copy_selected_items",  # 새로운 복사 액션 추가
     ]
 
+    # 필터 추가
+    list_filter = (
+        "role",
+        "color",
+        "language",
+        ("project_start_date", DateRangeFilter),
+    )
+
+    date_hierarchy = "project_start_date"
+
+    # 검색 기능 추가
+    search_fields = ("title",)  # 제목에 키워드 검색
+
 
 class EducationStudyAdmin(CustomAdminMixin):
     cache_prefix = "portfolio"
@@ -212,7 +226,10 @@ class EducationStudyAdmin(CustomAdminMixin):
     list_filter = (
         "type",
         "language",
+        ("created_at", DateRangeFilter),
     )
+
+    date_hierarchy = "created_at"
 
     # 검색 기능 추가
     search_fields = ("title",)  # 제목에 키워드 검색
