@@ -43,7 +43,12 @@ class ProfileSummaryInline(
     model = PortfolioSummary
 
 
-class CustomAdminMixin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCacheCleanMixin, SummernoteModelAdmin):
+class CustomAdminMixin(
+    CustomActionsAdminMixin,
+    TrimHtmlTagsAdminMixin,
+    AdminCacheCleanMixin,
+    SummernoteModelAdmin,
+):
     list_per_page = 20
 
 
@@ -203,6 +208,27 @@ class EducationStudyAdmin(CustomAdminMixin):
         "copy_selected_items",
     ]
 
+    # 필터 추가
+    list_filter = (
+        "type",
+        "language",
+    )
+
+    # 검색 기능 추가
+    search_fields = ("title",)  # 제목에 키워드 검색
+
+    # sort_num에 대해 필터링할 수 있도록 설정
+    def get_search_results(self, request, queryset, search_term):
+        queryset, use_distinct = super().get_search_results(
+            request, queryset, search_term
+        )
+
+        # sort_num 검색 추가
+        if search_term.isdigit():  # 숫자인 경우 sort_num 검색
+            queryset |= self.model.objects.filter(sort_num=search_term)
+
+        return queryset, use_distinct
+
 
 class InterestedInAdmin(CustomAdminMixin):
     cache_prefix = "portfolio"
@@ -258,7 +284,6 @@ class AboutProjectsAdmin(CustomAdminMixin):
         "delete_selected_items",
         "copy_selected_items",
     ]
-
 
     @method_decorator(index_cache_clean)
     def delete_selected_items(self, request, queryset):
