@@ -30,7 +30,7 @@ class BooksForm(forms.ModelForm):
         )
         if self.instance and self.instance.pk:
             self.fields["tag_set"].initial = "".join(
-                str(tag) for tag in self.instance.tag_set.all()
+                str(tag.tag) for tag in self.instance.tag_set.all()
             )
 
     class Meta:

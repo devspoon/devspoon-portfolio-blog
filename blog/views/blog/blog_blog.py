@@ -211,7 +211,8 @@ class BlogDeleteView(LoginRequiredMixin, View):
             self.cache_reply_prefix,
             kwargs.get("pk"),
         )
-        post.update(is_deleted=True)
+        post.is_deleted = True
+        post.save()
         return redirect(self.success_url)
 
 

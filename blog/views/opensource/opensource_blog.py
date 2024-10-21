@@ -212,7 +212,9 @@ class OpenSourceDeleteView(LoginRequiredMixin, View):
             self.cache_reply_prefix,
             kwargs.get("pk"),
         )
-        post.update(is_deleted=True)
+        # Update the is_deleted field and save the instance
+        post.is_deleted = True
+        post.save()  # Save the changes to the database
         return redirect(self.success_url)
 
 
