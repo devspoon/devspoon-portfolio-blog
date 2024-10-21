@@ -200,21 +200,21 @@ class BooksDeleteView(LoginRequiredMixin, View):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        # 객체를 가져오고, 없으면 404 에러 발생
         post = get_object_or_404(self.model, id=kwargs.get("pk"))
-        if not post:
-            raise Http404("Post not found")
+
+        # 권한 확인
         if self.request.user != post.author:
             raise PermissionDenied()
-        dredis_cache_delete(
-            self.cache_prefix,
-            kwargs.get("pk"),
-        )
-        dredis_cache_delete(
-            self.cache_reply_prefix,
-            kwargs.get("pk"),
-        )
+
+        # 캐시 삭제
+        dredis_cache_delete(self.cache_prefix, kwargs.get("pk"))
+        dredis_cache_delete(self.cache_reply_prefix, kwargs.get("pk"))
+
+        # 객체 삭제 처리
         post.is_deleted = True
         post.save()
+
         return redirect(self.success_url)
 
 
