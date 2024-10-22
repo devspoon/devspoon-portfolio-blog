@@ -34,7 +34,6 @@ class OpenSourceForm(forms.ModelForm):
             self.fields["tag_set"].initial = ",".join(
                 str(tag.tag) for tag in self.instance.tag_set.all()
             )
-            print("final tag !!!!!!!! : ", self.fields["tag_set"].initial)
 
     class Meta:
         model = OpenSourcePost

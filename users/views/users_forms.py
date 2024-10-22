@@ -87,7 +87,10 @@ class RegisterForm(forms.Form):
             return emailinfo.normalized, True
 
         except EmailNotValidError as e:
-            print(str(e))
+            logger.debug(
+                "EmailNotValidError :",
+                extra={"error : ": str(e)},
+            )
             return "", False
 
     def clean(self):
