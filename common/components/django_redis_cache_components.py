@@ -15,13 +15,16 @@ logger = logging.getLogger(getattr(settings, "COMMON_LOGGER", "django"))
 
 # django-redis cache set
 def dredis_cache_set(prefix: str, pk: int, **kwargs: dict) -> None:
-    logger.debug(f"kwargs : {kwargs}")
-    if 1 < len(kwargs):
-        logger.debug(f"kwargs length : {len(kwargs)}")
+    # kwargs를 가독성 있게 출력
+    kwargs_output = ', '.join([f"{key}: {value}" for key, value in kwargs.items()])
+    logger.debug(f"kwargs : {{{kwargs_output}}}")
+    
+    # kwargs가 하나 이상의 키를 가지고 있고, 첫 번째 키의 값이 존재하는지 확인
+    if kwargs and any(value is not None for value in kwargs.values()):
         for key, value in kwargs.items():
             redis_key = prefix + ":" + str(pk) + ":" + key
             logger.debug(f"redis key : {redis_key}")
-            logger.debug(f"redis value : {value}")
+            logger.debug(f"redis value : {value.__dict__}")
             result = cache.set(redis_key, value, timeout=CACHE_TTL, nx=False)
             logger.debug(f"cache.set result : {result}")
 

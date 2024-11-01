@@ -41,7 +41,7 @@ class OpenSourceListView(ListView):
     context_object_name = "board"
 
     def get_queryset(self):
-        return OpenSourcePost.activate_objects.get_data()
+        return OpenSourcePost.activate_objects.get_data().select_related('author')
 
 
 class OpenSourceDetailView(DetailView):

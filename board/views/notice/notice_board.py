@@ -38,7 +38,7 @@ class NoticeListView(ListView):
     context_object_name = "board"
 
     def get_queryset(self):
-        return Notice.activate_objects.get_data()
+        return Notice.activate_objects.get_data().select_related('author')
 
 
 class NoticeDetailView(DetailView):

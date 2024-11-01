@@ -38,7 +38,7 @@ class ReactivationListView(ListView):
     context_object_name = "board"
 
     def get_queryset(self):
-        return Reactivation.activate_objects.get_data()
+        return Reactivation.activate_objects.get_data().select_related('author')
 
 
 class ReactivationDetailView(DetailView):

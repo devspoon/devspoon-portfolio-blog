@@ -41,7 +41,7 @@ class OnlineStudyListView(ListView):
     context_object_name = "board"
 
     def get_queryset(self):
-        return OnlineStudyPost.activate_objects.get_data()
+        return OnlineStudyPost.activate_objects.get_data().select_related('author')
 
 
 class OnlineStudyDetailView(DetailView):

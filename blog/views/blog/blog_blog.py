@@ -40,7 +40,7 @@ class BlogListView(ListView):
     context_object_name = "board"
 
     def get_queryset(self):
-        return BlogPost.activate_objects.get_data()
+        return BlogPost.activate_objects.get_data().select_related('author')
 
 
 class BlogDetailView(DetailView):
