@@ -24,7 +24,10 @@ def dredis_cache_set(prefix: str, pk: int, **kwargs: dict) -> None:
         for key, value in kwargs.items():
             redis_key = prefix + ":" + str(pk) + ":" + key
             logger.debug(f"redis key : {redis_key}")
-            logger.debug(f"redis value : {value.__dict__}")
+            if hasattr(value, '__dict__'):
+                logger.debug(f"redis value : {value.__dict__}")
+            else:
+                logger.debug(f"redis value : {value}")
             result = cache.set(redis_key, value, timeout=CACHE_TTL, nx=False)
             logger.debug(f"cache.set result : {result}")
 
