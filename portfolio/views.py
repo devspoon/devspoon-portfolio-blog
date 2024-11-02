@@ -214,15 +214,13 @@ class GetInTouchView(View):
         msg_html = render_to_string(
             settings.TEMPLATE_DIR + self.email_template_get_in_touch, email_context
         )
-        subject_email = subject + " " + emailfrom
+        subject_email = subject + " - " + emailfrom
 
         send_mail(
             subject=subject_email,
-            recipient_list=[
-                emailto,
-            ],
             message=message,
             from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[settings.DEFAULT_FROM_EMAIL],
             html_message=msg_html,
             fail_silently=False,
         )
