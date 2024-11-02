@@ -55,13 +55,14 @@ class PortfolioView(TemplateView):
         context = super().get_context_data(**kwargs)
         lang = get_language_index()
         check_cached_key = dredis_cache_check_key(
-            self.cache_prefix + ":" + str(lang),
+            self.cache_prefix + ":" + str(lang[0]),
             0,
             "info",
         )
         if check_cached_key:
             logger.debug(f"called redis cache - {self.__class__.__name__}")
-            queryset = dredis_cache_get(self.cache_prefix, 0)
+            queryset = dredis_cache_get(self.cache_prefix + ":" + str(lang[0]),
+            0,)
             context.update(queryset)
         else:
             logger.debug(f"called database - {self.__class__.__name__}")
@@ -96,7 +97,7 @@ class PortfolioView(TemplateView):
                     f"redis cache - {self.__class__.__name__} caching_data exists"
                 )
                 dredis_cache_set(
-                    self.cache_prefix,
+                    self.cache_prefix + ":" + str(lang[0]),
                     0,
                     **caching_data,
                 )
@@ -213,16 +214,17 @@ class GetInTouchView(View):
         msg_html = render_to_string(
             settings.TEMPLATE_DIR + self.email_template_get_in_touch, email_context
         )
+        subject_email = subject + " " + emailfrom
 
         send_mail(
-            subject=subject,
+            subject=subject_email,
             recipient_list=[
                 emailto,
             ],
             message=message,
-            from_email=emailfrom,
+            from_email=settings.DEFAULT_FROM_EMAIL,
             html_message=msg_html,
-            fail_silently=True,
+            fail_silently=False,
         )
 
         GetInTouchLog.objects.create(

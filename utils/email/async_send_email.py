@@ -1,10 +1,14 @@
 import random
 import string
 import threading
+import logging
 
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail as sendmail
+
+# 로거 설정
+logger = logging.getLogger(__name__)
 
 
 class EmailThread(threading.Thread):
@@ -25,7 +29,18 @@ class EmailThread(threading.Thread):
         )
         if self.html:
             msg.attach_alternative(self.html, "text/html")
-        msg.send(self.fail_silently)
+        
+        try:
+            # 이메일 전송 시도
+            result = msg.send(self.fail_silently)
+            # 전송 결과 로그 기록
+            if result > 0:
+                logger.info(f"Email sent successfully to {self.recipient_list}.")
+            else:
+                logger.warning(f"Email not sent to {self.recipient_list}. No recipients were successfully sent.")
+        except Exception as e:
+            # 예외 발생 시 로그 기록
+            logger.error(f"Error sending email to {self.recipient_list}: {e}")
 
 
 def send_mail(

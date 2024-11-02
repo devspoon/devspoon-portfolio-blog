@@ -23,6 +23,7 @@ from portfolio.models import (
     Portfolio,
     PortfolioSummary,
     WorkExperience,
+    GetInTouchLog,
 )
 
 logger = logging.getLogger(getattr(settings, "PORTFOLIO_LOGGER", "django"))
@@ -315,6 +316,14 @@ class AboutProjectsAdmin(CustomAdminMixin):
         super().delete_model(request, obj)
 
 
+class GetInTouchLogAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'subject', 'state', 'created_at']
+    list_filter = ['state']
+    search_fields = ['name', 'email', 'subject']
+    ordering = ['-created_at']
+    readonly_fields = ['created_at']
+    
+
 class ProjectPostHiddenAdmin(admin.ModelAdmin):
     def get_model_perms(self, request):  # tric regist
         return {}
@@ -327,4 +336,5 @@ portfolio_admin_site.register(WorkExperience, WorkExperienceAdmin)
 portfolio_admin_site.register(EducationStudy, EducationStudyAdmin)
 portfolio_admin_site.register(InterestedIn, InterestedInAdmin)
 portfolio_admin_site.register(AboutProjects, AboutProjectsAdmin)
+portfolio_admin_site.register(GetInTouchLog, GetInTouchLogAdmin)
 portfolio_admin_site.register(ProjectPost, ProjectPostHiddenAdmin)

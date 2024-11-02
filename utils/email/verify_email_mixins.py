@@ -56,7 +56,7 @@ class VerifyEmailMixin:
             from_email=from_email,
             recipient_list=[user.email],
             html_message=msg_html,
-            fail_silently=True,
+            fail_silently=False,
         )
         result["sending_mail_num"] = 1
         return result
@@ -110,7 +110,7 @@ class VerifyEmailMixin:
             from_email=from_email,
             recipient_list=[user.email],
             html_message=msg_html,
-            fail_silently=True,
+            fail_silently=False,
         )
         result["sending_mail_num"] = 1
         return result
@@ -139,7 +139,7 @@ class VerifyEmailMixin:
             from_email=from_email,
             recipient_list=[user.email],
             html_message=msg_html,
-            fail_silently=True,
+            fail_silently=False,
         )
         result["sending_mail_num"] = 1
         return result
