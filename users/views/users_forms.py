@@ -75,6 +75,8 @@ class RegisterForm(forms.Form):
 
     def check_email_validation_with_dns(self, email: str) -> [str, bool]:
         try:
+            if email is None:
+                raise ValueError("Email is None type")
             logger.debug(
                 "check_email_validation_with_dns email :", extra={"email": email}
             )
@@ -86,9 +88,9 @@ class RegisterForm(forms.Form):
             )
             return emailinfo.normalized, True
 
-        except EmailNotValidError as e:
+        except (EmailNotValidError, ValueError) as e:
             logger.debug(
-                "EmailNotValidError :",
+                "Error :",
                 extra={"error : ": str(e)},
             )
             return "", False

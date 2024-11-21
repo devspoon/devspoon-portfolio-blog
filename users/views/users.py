@@ -270,11 +270,9 @@ class UserDeleteView(View):
 class VerificationView(View):
     def get(self, request):
         key = request.GET.get("key", "")
-
-        logger.info("VerificationView key :", extra={key})
-
         try:
             verification = UserVerification.objects.get(key=key)
+            logger.info("VerificationView key :", extra={key})
         except UserVerification.DoesNotExist:
             messages.warning(
                 self.request,
