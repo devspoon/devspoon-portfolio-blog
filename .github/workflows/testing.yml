@@ -132,7 +132,7 @@ jobs:
           mkdir release
           cp htmlcov.zip ./release
       - name: Upload coverage zip file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage zip file
           path: ./release
