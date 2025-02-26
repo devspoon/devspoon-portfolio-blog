@@ -4,7 +4,7 @@ migrations/
 .pytest_cache/
 
 # ipynb_checkpoints
-/.ipynb_checkpoints
+**/.ipynb_checkpoints
 
 # secure files
 .env
@@ -12,7 +12,7 @@ migrations/
 
 # log files
 logs/
-.log
+*.log
 
 # dist folder
 **/dist/
@@ -24,6 +24,6 @@ logs/
 **/silk/
 
 # media files
-media/*
+media/**
 !media/default/no_img-removebg-preview.png
 !media/default/no_img.png

@@ -12,27 +12,17 @@ from django.urls import reverse
 from django.utils import translation
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
-from email_validator import EmailNotValidError, caching_resolver, validate_email
+from email_validator import (EmailNotValidError, caching_resolver,
+                             validate_email)
 
 from common.components.django_redis_cache_components import (
-    dredis_cache_check_key,
-    dredis_cache_delete,
-    dredis_cache_get,
-    dredis_cache_set,
-)
-
+    dredis_cache_check_key, dredis_cache_delete, dredis_cache_get,
+    dredis_cache_set)
 # from django.core.mail import send_mail
 from utils.email.async_send_email import send_mail
 
-from .models import (
-    AboutProjects,
-    EducationStudy,
-    GetInTouchLog,
-    InterestedIn,
-    PersonalInfo,
-    Portfolio,
-    WorkExperience,
-)
+from .models import (AboutProjects, EducationStudy, GetInTouchLog,
+                     InterestedIn, PersonalInfo, Portfolio, WorkExperience)
 
 logger = logging.getLogger(getattr(settings, "PORTFOLIO_LOGGER", "django"))
 
@@ -214,7 +204,16 @@ class GetInTouchView(View):
         subject = request.POST.get("subject", "")
         message = request.POST.get("message", "")
 
-        _, rt = self.check_email_validation_with_dns(emailto)
+        logger.debug(
+                "inside GetInTouchView"
+            )
+
+        _, rt = self.check_email_validation_with_dns(emailfrom)
+
+        logger.debug(
+                f"inside GetInTouchView rf : {rt}"
+            )
+
         if not rt:
             logger.debug(
                 "The email failed validation. Please enter the email address you actually use",

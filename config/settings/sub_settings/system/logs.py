@@ -63,13 +63,14 @@ LOGGING = {
     "formatters": {
         "django.server": {
             "()": "django.utils.log.ServerFormatter",
-            "format": "[{server_time}] : {levelname} [{filename}:{name} -> {funcName} : {lineno}] {message}",
+            "format": "[{server_time}] : {levelname} [{filename}:{name} -> {funcName:5}() : {lineno}] {message}",
             "datefmt": "%d/%b/%Y %H:%M:%S",
             "style": "{",
         },
         "standard": {
-            "format": "[%(asctime)s] %(levelname)s [%(filename)s:%(name)s -> %(funcName)5s() : %(lineno)s] %(message)s",
+            "format": "[{asctime}] {levelname} [{filename}:{name} -> {funcName:5}() : {lineno}] {message}",
             "datefmt": "%d/%b/%Y %H:%M:%S",
+            "style": "{",
         },
     },
     # Handler
@@ -78,7 +79,6 @@ LOGGING = {
             "level": "DEBUG",
             "encoding": "utf-8",
             "class": "logging.handlers.RotatingFileHandler",
-            "filters": ["require_debug_false"],
             "filename": join(ROOT_DIR, "logs/logfile.log"),
             "maxBytes": 1024 * 1024 * 15,
             "backupCount": 30,
@@ -92,13 +92,12 @@ LOGGING = {
         },
         "django.server": {
             "level": "DEBUG",
-            "filters": ["require_debug_true", "require_debug_false"],
             "class": "logging.StreamHandler",
             "formatter": "django.server",
         },
         "mail_admins": {
             "level": "ERROR",
-            "filters": ["require_debug_true", "require_debug_false"],
+            "filters": ["require_debug_true"],
             "class": "django.utils.log.AdminEmailHandler",
             "formatter": "standard",
         },
@@ -150,9 +149,7 @@ LOGGING = {
             "propagate": False,
         },
         "portfolio": {
-            "handlers": [
-                "console",
-            ],
+            "handlers": ["console"],
             "level": "DEBUG",
             "propagate": False,
         },
