@@ -12,8 +12,6 @@ from django.urls import reverse
 from django.utils import translation
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
-from email_validator import (EmailNotValidError, caching_resolver,
-                             validate_email)
 from validate_email import validate_email
 from validate_email.exceptions import Error
 
@@ -171,9 +169,6 @@ class WorkExperienceJsonView(View):
         return JsonResponse(context, safe=False)
 
 
-resolver = caching_resolver(timeout=10)
-
-
 class GetInTouchView(View):
     email_template_get_in_touch = "/email/get_in_touch.html"
 
@@ -202,22 +197,18 @@ class GetInTouchView(View):
             if not is_valid:
                 raise Error("The email failed validation. Please enter the email address you actually use")
 
-            emailinfo = validate_email(
-                email, check_deliverability=True, dns_resolver=resolver
-            )
             logger.debug(
-                "GetInTouchView.emailinfo.normalized :",
-                extra={"normalized": emailinfo.normalized},
+                "GetInTouchView email validated"
             )
 
-            return emailinfo.normalized, True
+            return is_valid
 
-        except (Error, EmailNotValidError, ValueError) as e:
+        except (Error,  ValueError) as e:
             logger.debug(
                 "Error :",
                 extra={"GetInTouchView.error : ": str(e)},
             )
-            return "", False
+            return is_valid
 
     def post(self, request, *args, **kwargs):
         pattern = re.compile("^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
@@ -228,7 +219,7 @@ class GetInTouchView(View):
         subject = request.POST.get("subject", "")
         message = request.POST.get("message", "")
 
-        _, rt = self.check_email_validation_with_dns(emailfrom)
+        rt = self.check_email_validation_with_dns(emailfrom)
 
         if not rt:
             logger.debug(

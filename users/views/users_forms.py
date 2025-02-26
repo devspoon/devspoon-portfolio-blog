@@ -6,8 +6,6 @@ from captcha.widgets import (ReCaptchaV2Checkbox, ReCaptchaV2Invisible,
 from django import forms
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-from email_validator import (EmailNotValidError, caching_resolver,
-                             validate_email)
 from validate_email import validate_email
 from validate_email.exceptions import Error
 
@@ -18,9 +16,6 @@ from .validators import (LoginVerificationEmailValidator,
                          ResetPasswordEmailValidator)
 
 logger = logging.getLogger(getattr(settings, "USERS_LOGGER", "django"))
-
-resolver = caching_resolver(timeout=10)
-
 
 class RegisterForm(forms.Form):
     email = forms.EmailField(
@@ -79,7 +74,7 @@ class RegisterForm(forms.Form):
     def check_email_validation_with_dns(self, email: str) -> [str, bool]:
         try:
             if email is None:
-                raise ValueError("Email is None type")
+                return False
             logger.debug(
                 "check_email_validation_with_dns email :", extra={"email": email}
             )
@@ -99,20 +94,17 @@ class RegisterForm(forms.Form):
             if not is_valid:
                 raise Error("The email failed validation. Please enter the email address you actually use")
 
-            emailinfo = validate_email(
-                email, check_deliverability=True, dns_resolver=resolver
-            )
             logger.debug(
-                "emailinfo.normalized :", extra={"normalized": emailinfo.normalized}
+                "email validated"
             )
-            return emailinfo.normalized, True
+            return is_valid
 
-        except (Error, EmailNotValidError, ValueError) as e:
+        except (Error, ValueError) as e:
             logger.debug(
                 "Error :",
                 extra={"error : ": str(e)},
             )
-            return "", False
+            return is_valid
 
     def clean(self):
         cleaned_data = super(RegisterForm, self).clean()
@@ -120,7 +112,7 @@ class RegisterForm(forms.Form):
         password = cleaned_data.get("password")
         password_confirm = cleaned_data.get("password_confirm")
 
-        _, rt = self.check_email_validation_with_dns(email)
+        rt = self.check_email_validation_with_dns(email)
         if not rt:
             logger.debug(
                 "The email failed validation. Please enter the email address you actually use",
