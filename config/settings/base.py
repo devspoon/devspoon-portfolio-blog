@@ -20,11 +20,12 @@ from decouple import config
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
+from .sub_settings.email.sendgrid import *
+
 # from .sub_settings.email.sendinblue import *
 
 # from .sub_settings.email.mailgun import *
 
-from .sub_settings.email.sendgrid import *
 
 # from .sub_settings.email.aws_ses import *
 
@@ -200,3 +201,6 @@ PASSWORD_REPLACEMENT_CYCLE = 6
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 
 ACCOUNT_SIGNUP_REDIRECT_URL = "users:profile"
+
+SMTP_HOST=config("SMTP_HOST","devspoon.com")
+SMTP_FROM_ADDRESS=config("SMTP_FROM_ADDRESS","admin@devspoon.com")

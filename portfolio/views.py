@@ -14,6 +14,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
 from email_validator import (EmailNotValidError, caching_resolver,
                              validate_email)
+from validate_email import validate_email
+from validate_email.exceptions import Error
 
 from common.components.django_redis_cache_components import (
     dredis_cache_check_key, dredis_cache_delete, dredis_cache_get,
@@ -23,6 +25,10 @@ from utils.email.async_send_email import send_mail
 
 from .models import (AboutProjects, EducationStudy, GetInTouchLog,
                      InterestedIn, PersonalInfo, Portfolio, WorkExperience)
+
+      # 일반적인 이메일 유효성 오류의 기본 클래스                   # MX 레코드 없음 오류
+
+
 
 logger = logging.getLogger(getattr(settings, "PORTFOLIO_LOGGER", "django"))
 
@@ -174,11 +180,28 @@ class GetInTouchView(View):
     def check_email_validation_with_dns(self, email: str) -> [str, bool]:
         try:
             if email is None:
-                raise ValueError("Email is None type")
+                return "", False
             logger.debug(
                 "GetInTouchView.check_email_validation_with_dns email :",
                 extra={"email": email},
             )
+
+            is_valid = validate_email(
+                email_address=email,
+                check_format=True,          # 이메일 형식 검증
+                check_blacklist=True,       # 블랙리스트 도메인 검증
+                check_dns=True,             # DNS MX 레코드 검증
+                dns_timeout=10,             # DNS 타임아웃 10초
+                check_smtp=True,            # SMTP 연결 통한 실제 이메일 존재 여부 검증
+                smtp_timeout=10,            # SMTP 타임아웃 10초
+                smtp_helo_host=settings.SMTP_HOST,  # SMTP HELO 호스트명
+                smtp_from_address=settings.SMTP_FROM_ADDRESS,  # SMTP FROM 주소
+                smtp_skip_tls=False,        # TLS 사용
+                smtp_debug=False            # 디버그 출력 비활성화
+            )
+            if not is_valid:
+                raise Error("The email failed validation. Please enter the email address you actually use")
+
             emailinfo = validate_email(
                 email, check_deliverability=True, dns_resolver=resolver
             )
@@ -186,9 +209,10 @@ class GetInTouchView(View):
                 "GetInTouchView.emailinfo.normalized :",
                 extra={"normalized": emailinfo.normalized},
             )
+
             return emailinfo.normalized, True
 
-        except (EmailNotValidError, ValueError) as e:
+        except (Error, EmailNotValidError, ValueError) as e:
             logger.debug(
                 "Error :",
                 extra={"GetInTouchView.error : ": str(e)},
@@ -211,9 +235,8 @@ class GetInTouchView(View):
                 "The email failed validation. Please enter the email address you actually use",
                 extra={"email : ": emailto},
             )
-            raise ValueError(
-                "The email failed validation. Please enter the email address you actually use"
-            )
+            messages.error(request, "The email failed validation. Please enter the email address you actually use")
+            return redirect(reverse("portfolio:portfolio"))
 
         if not name:
             messages.error(self.request, "Name can't be empty.")
@@ -264,5 +287,50 @@ class GetInTouchView(View):
             subject=subject,
             message=message,
         )
+        messages.success(request, "Your email has been successfully delivered.")
+        return redirect(reverse("portfolio:portfolio"))
 
+        GetInTouchLog.objects.create(
+            name=name,
+            state=True,
+            email=emailfrom,
+            phone_number=number,
+            subject=subject,
+            message=message,
+        )
+        messages.success(request, "Your email has been successfully delivered.")
+        return redirect(reverse("portfolio:portfolio"))
+        return redirect(reverse("portfolio:portfolio"))
+
+        GetInTouchLog.objects.create(
+            name=name,
+            state=True,
+            email=emailfrom,
+            phone_number=number,
+            subject=subject,
+            message=message,
+        )
+        messages.success(request, "Your email has been successfully delivered.")
+        return redirect(reverse("portfolio:portfolio"))
+        return redirect(reverse("portfolio:portfolio"))
+
+        GetInTouchLog.objects.create(
+            name=name,
+            state=True,
+            email=emailfrom,
+            phone_number=number,
+            subject=subject,
+            message=message,
+        )
+        messages.success(request, "Your email has been successfully delivered.")
+        return redirect(reverse("portfolio:portfolio"))
+        GetInTouchLog.objects.create(
+            name=name,
+            state=True,
+            email=emailfrom,
+            phone_number=number,
+            subject=subject,
+            message=message,
+        )
+        messages.success(request, "Your email has been successfully delivered.")
         return redirect(reverse("portfolio:portfolio"))

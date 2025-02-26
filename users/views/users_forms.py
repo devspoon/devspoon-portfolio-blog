@@ -1,18 +1,21 @@
 import logging
 
+from captcha.fields import ReCaptchaField
+from captcha.widgets import (ReCaptchaV2Checkbox, ReCaptchaV2Invisible,
+                             ReCaptchaV3)
 from django import forms
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV2Invisible, ReCaptchaV3
-from email_validator import validate_email, EmailNotValidError, caching_resolver
+from email_validator import (EmailNotValidError, caching_resolver,
+                             validate_email)
+from validate_email import validate_email
+from validate_email.exceptions import Error
+
 from ..models import User, UserProfile
-from .validators import (
-    LoginVerificationEmailValidator,
-    RegisteredEmailValidator,
-    ResendVerificationEmailValidator,
-    ResetPasswordEmailValidator,
-)
+from .validators import (LoginVerificationEmailValidator,
+                         RegisteredEmailValidator,
+                         ResendVerificationEmailValidator,
+                         ResetPasswordEmailValidator)
 
 logger = logging.getLogger(getattr(settings, "USERS_LOGGER", "django"))
 
@@ -80,6 +83,22 @@ class RegisterForm(forms.Form):
             logger.debug(
                 "check_email_validation_with_dns email :", extra={"email": email}
             )
+            is_valid = validate_email(
+                email_address=email,
+                check_format=True,          # 이메일 형식 검증
+                check_blacklist=True,       # 블랙리스트 도메인 검증
+                check_dns=True,             # DNS MX 레코드 검증
+                dns_timeout=10,             # DNS 타임아웃 10초
+                check_smtp=True,            # SMTP 연결 통한 실제 이메일 존재 여부 검증
+                smtp_timeout=10,            # SMTP 타임아웃 10초
+                smtp_helo_host=settings.SMTP_HOST,  # SMTP HELO 호스트명
+                smtp_from_address=settings.SMTP_FROM_ADDRESS,  # SMTP FROM 주소
+                smtp_skip_tls=False,        # TLS 사용
+                smtp_debug=False            # 디버그 출력 비활성화
+            )
+            if not is_valid:
+                raise Error("The email failed validation. Please enter the email address you actually use")
+
             emailinfo = validate_email(
                 email, check_deliverability=True, dns_resolver=resolver
             )
@@ -88,7 +107,7 @@ class RegisterForm(forms.Form):
             )
             return emailinfo.normalized, True
 
-        except (EmailNotValidError, ValueError) as e:
+        except (Error, EmailNotValidError, ValueError) as e:
             logger.debug(
                 "Error :",
                 extra={"error : ": str(e)},
@@ -350,4 +369,5 @@ class ProfileForm(forms.ModelForm):
             user.set_password(self.cleaned_data["new_password"])
         if commit:
             user.save()
+        return user
         return user
