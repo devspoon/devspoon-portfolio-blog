@@ -204,15 +204,7 @@ class GetInTouchView(View):
         subject = request.POST.get("subject", "")
         message = request.POST.get("message", "")
 
-        logger.debug(
-                "inside GetInTouchView"
-            )
-
         _, rt = self.check_email_validation_with_dns(emailfrom)
-
-        logger.debug(
-                f"inside GetInTouchView rf : {rt}"
-            )
 
         if not rt:
             logger.debug(
