@@ -12,12 +12,13 @@ from django.urls import reverse
 from django.utils import translation
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
+from email_validator import EmailNotValidError, caching_resolver, validate_email
 
 from common.components.django_redis_cache_components import (
     dredis_cache_check_key,
+    dredis_cache_delete,
     dredis_cache_get,
     dredis_cache_set,
-    dredis_cache_delete,
 )
 
 # from django.core.mail import send_mail
@@ -61,8 +62,10 @@ class PortfolioView(TemplateView):
         )
         if check_cached_key:
             logger.debug(f"called redis cache - {self.__class__.__name__}")
-            queryset = dredis_cache_get(self.cache_prefix + ":" + str(lang[0]),
-            0,)
+            queryset = dredis_cache_get(
+                self.cache_prefix + ":" + str(lang[0]),
+                0,
+            )
             context.update(queryset)
         else:
             logger.debug(f"called database - {self.__class__.__name__}")
@@ -172,8 +175,35 @@ class WorkExperienceJsonView(View):
         return JsonResponse(context, safe=False)
 
 
+resolver = caching_resolver(timeout=10)
+
+
 class GetInTouchView(View):
     email_template_get_in_touch = "/email/get_in_touch.html"
+
+    def check_email_validation_with_dns(self, email: str) -> [str, bool]:
+        try:
+            if email is None:
+                raise ValueError("Email is None type")
+            logger.debug(
+                "GetInTouchView.check_email_validation_with_dns email :",
+                extra={"email": email},
+            )
+            emailinfo = validate_email(
+                email, check_deliverability=True, dns_resolver=resolver
+            )
+            logger.debug(
+                "GetInTouchView.emailinfo.normalized :",
+                extra={"normalized": emailinfo.normalized},
+            )
+            return emailinfo.normalized, True
+
+        except (EmailNotValidError, ValueError) as e:
+            logger.debug(
+                "Error :",
+                extra={"GetInTouchView.error : ": str(e)},
+            )
+            return "", False
 
     def post(self, request, *args, **kwargs):
         pattern = re.compile("^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
@@ -183,6 +213,16 @@ class GetInTouchView(View):
         number = request.POST.get("number", "")
         subject = request.POST.get("subject", "")
         message = request.POST.get("message", "")
+
+        _, rt = self.check_email_validation_with_dns(emailto)
+        if not rt:
+            logger.debug(
+                "The email failed validation. Please enter the email address you actually use",
+                extra={"email : ": emailto},
+            )
+            raise ValueError(
+                "The email failed validation. Please enter the email address you actually use"
+            )
 
         if not name:
             messages.error(self.request, "Name can't be empty.")
