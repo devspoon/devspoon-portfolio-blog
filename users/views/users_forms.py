@@ -84,7 +84,7 @@ class RegisterForm(forms.Form):
                 check_blacklist=True,       # 블랙리스트 도메인 검증
                 check_dns=True,             # DNS MX 레코드 검증
                 dns_timeout=10,             # DNS 타임아웃 10초
-                check_smtp=True,            # SMTP 연결 통한 실제 이메일 존재 여부 검증
+                check_smtp=False,            # SMTP 연결 통한 실제 이메일 존재 여부 검증
                 smtp_timeout=10,            # SMTP 타임아웃 10초
                 smtp_helo_host=settings.SMTP_HOST,  # SMTP HELO 호스트명
                 smtp_from_address=settings.SMTP_FROM_ADDRESS,  # SMTP FROM 주소
