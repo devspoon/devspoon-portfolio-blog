@@ -7,7 +7,7 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from validate_email import validate_email
-from validate_email.exceptions import Error
+from validate_email.exceptions import AddressFormatError, Error
 
 from ..models import User, UserProfile
 from .validators import (LoginVerificationEmailValidator,
@@ -78,6 +78,12 @@ class RegisterForm(forms.Form):
             logger.debug(
                 "check_email_validation_with_dns email :", extra={"email": email}
             )
+
+            _, domain = email.rsplit("@", 1)
+
+            if "test" in domain.lower():
+                raise AddressFormatError("Incorrect domain. Please enter the domain you actually use.")
+
             is_valid = validate_email(
                 email_address=email,
                 check_format=True,          # 이메일 형식 검증
@@ -361,5 +367,6 @@ class ProfileForm(forms.ModelForm):
             user.set_password(self.cleaned_data["new_password"])
         if commit:
             user.save()
+        return user
         return user
         return user

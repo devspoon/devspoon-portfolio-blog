@@ -14,11 +14,8 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import DeleteView, View
 
 from common.components.django_redis_cache_components import (
-    dredis_cache_check_key,
-    dredis_cache_delete,
-    dredis_cache_get,
-    dredis_cache_set,
-)
+    dredis_cache_check_key, dredis_cache_delete, dredis_cache_get,
+    dredis_cache_set)
 
 from ...models.blog import BlogPost
 from ...models.blog_reply import BlogPostReply

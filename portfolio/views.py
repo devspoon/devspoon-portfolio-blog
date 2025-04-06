@@ -13,7 +13,7 @@ from django.utils import translation
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
 from validate_email import validate_email
-from validate_email.exceptions import Error
+from validate_email.exceptions import AddressFormatError, Error
 
 from common.components.django_redis_cache_components import (
     dredis_cache_check_key, dredis_cache_delete, dredis_cache_get,
@@ -181,6 +181,11 @@ class GetInTouchView(View):
                 extra={"email": email},
             )
 
+            _, domain = email.rsplit("@", 1)
+
+            if "test" in domain.lower():
+                raise AddressFormatError("Incorrect domain. Please enter the domain you actually use.")
+
             is_valid = validate_email(
                 email_address=email,
                 check_format=True,          # 이메일 형식 검증
@@ -314,6 +319,17 @@ class GetInTouchView(View):
             message=message,
         )
         messages.success(request, "Your email has been successfully delivered.")
+        return redirect(reverse("portfolio:portfolio"))
+        GetInTouchLog.objects.create(
+            name=name,
+            state=True,
+            email=emailfrom,
+            phone_number=number,
+            subject=subject,
+            message=message,
+        )
+        messages.success(request, "Your email has been successfully delivered.")
+        return redirect(reverse("portfolio:portfolio"))
         return redirect(reverse("portfolio:portfolio"))
         GetInTouchLog.objects.create(
             name=name,
