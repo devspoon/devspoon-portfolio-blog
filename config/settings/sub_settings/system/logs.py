@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
@@ -46,6 +47,8 @@ issues : 윈도우 테스트시 debug level 출력 안됨, 파일 출력 안됨
          차후 버그 픽스
 """
 
+today_date = datetime.today().strftime("%Y-%m-%d")
+
 # DEFAULT_LOGGING = {
 LOGGING = {
     "version": 1,
@@ -79,7 +82,7 @@ LOGGING = {
             "level": "DEBUG",
             "encoding": "utf-8",
             "class": "logging.handlers.RotatingFileHandler",
-            "filename": join(ROOT_DIR, "logs/logfile.log"),
+            "filename": join(ROOT_DIR, f"logs/{today_date}.log"),
             "maxBytes": 1024 * 1024 * 15,
             "backupCount": 30,
             "formatter": "standard",
@@ -102,70 +105,77 @@ LOGGING = {
             "formatter": "standard",
         },
     },
+    "root": {
+        "handlers": ["file", "console"],
+        "level": "WARNING",
+    },
     # Logger
     "loggers": {
         "django": {
-            "handlers": ["console", "mail_admins"],
+            "handlers": ["console"],
             "level": "INFO",
+            "propagate": True,  # django 로거는 전파를 허용해야 합니다.
         },
         # # runserver 작업시 콘솔 출력
         "django.server": {
-            "handlers": ["django.server"],
+            "handlers": ["django.server", "file"],
             "level": "DEBUG",
-            "propagate": False,
+            "propagate": True,
         },
         # 요청 출력
         "django.request": {
             "handlers": ["console"],
             "level": "WARNING",
-            "propagate": False,
+            "propagate": True,
         },
         "common": {
             "handlers": [
                 "console",
             ],
-            "level": "DEBUG",
-            "propagate": False,
+            "level": "WARNING",
+            "propagate": True,
         },
         "home": {
             "handlers": [
                 "console",
             ],
-            "level": "DEBUG",
-            "propagate": False,
+            "level": "WARNING",
+            "propagate": True,
         },
         "blog": {
             "handlers": [
                 "console",
             ],
-            "level": "DEBUG",
-            "propagate": False,
+            "level": "WARNING",
+            "propagate": True,
         },
         "board": {
             "handlers": [
                 "console",
             ],
-            "level": "DEBUG",
-            "propagate": False,
+            "level": "WARNING",
+            "propagate": True,
         },
         "portfolio": {
-            "handlers": ["console"],
-            "level": "DEBUG",
-            "propagate": False,
+            "handlers": [
+                "console",
+            ],
+            "level": "WARNING",
+            "propagate": True,
         },
         "users": {
             "handlers": [
                 "console",
             ],
-            "level": "DEBUG",
-            "propagate": False,
+            "level": "WARNING",
+            "propagate": True,
         },
         "celery": {
             "handlers": [
                 "console",
             ],
-            "level": "DEBUG",
-            "propagate": False,
+            "level": "WARNING",
+            "propagate": True,
         },
     },
 }
