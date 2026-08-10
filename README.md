@@ -110,6 +110,19 @@ This project supports the development of personal homepages such as portfolios a
 
 - It is in the common folder of the custom_middlewares app.
 - There are two statistical functions: The first is "Connection Method Statistics", which collects the user's Windows, Mac, Android, etc., and the second is "Connection Hardware Statistics", which collects the user's Mobile, Tablet, PC, etc. You can check this information on the administrator page.
+- Both statistics tables aggregate by the `stat_date` column, which carries a unique constraint so a day can only ever have one row. Paths listed in `STATS_EXCLUDED_PATH_PREFIXES` (admin, static, media, robots.txt, sitemap) are not counted.
+- `access_guard.BlockSuspiciousPathMiddleware` returns an early 404 for scanner paths such as `*.php` and `/wp-admin/`, so they never reach the URL resolver or the statistics tables. It is a fallback for nginx, not a replacement. Tune it with `BLOCK_SUSPICIOUS_PATHS`, `SUSPICIOUS_PATH_RESPONSE_STATUS`, and `SUSPICIOUS_PATH_PATTERNS`.
+
+#### Maintenance command
+
+If the statistics tables already contain duplicate rows for the same day, merge them before relying on `stat_date`:
+
+```bash
+python manage.py dedupe_connection_stats --dry-run   # preview
+python manage.py dedupe_connection_stats             # sum duplicates, backfill stat_date
+```
+
+The command is idempotent. See `docs/ai-docs/reports/06-implementation-report.md` for the full deployment procedure.
 
 ### common
 

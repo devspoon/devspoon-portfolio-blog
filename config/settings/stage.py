@@ -8,6 +8,7 @@ from .sub_settings.system.logs import *
 from .sub_settings.http.cors import *
 from .sub_settings.oauth.allauth_default import *
 from .sub_settings.system.logs import *
+from .sub_settings.system.sentry import before_send
 
 from decouple import config
 
@@ -169,6 +170,8 @@ sentry_sdk.init(
     # If you wish to associate users to errors (assuming you are using
     # django.contrib.auth) you may enable sending PII data.
     send_default_pii=True,
+    # 스캐너 노이즈를 걸러 실제 장애만 남긴다.
+    before_send=before_send,
 )
 
 # Recaptcha Settings
@@ -178,6 +181,10 @@ RECAPTCHA_PUBLIC_KEY = config(
 RECAPTCHA_PRIVATE_KEY = config(
     "RECAPTCHA_PRIVATE_KEY", default="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
 )
+# 문의 폼 스팸 차단. RECAPTCHA_PUBLIC_KEY/PRIVATE_KEY가 실제 키여야 한다.
+# Google 테스트 키를 쓰면 captcha.recaptcha_test_key_error로 check가 실패한다.
+CONTACT_FORM_CAPTCHA = True
+
 # SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
 # RECAPTCHA_DOMAIN = "www.recaptcha.net"
 

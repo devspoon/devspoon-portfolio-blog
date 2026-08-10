@@ -6,6 +6,10 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from blog.models.blog import ProjectPost
+from portfolio.validators import (
+    PHONE_NUMBER_MAX_LENGTH,
+    korean_mobile_number_validator,
+)
 from utils.os.file_path_name_gen import (
     date_upload_to_for_file,
     date_upload_to_for_image,
@@ -298,15 +302,27 @@ class AboutProjects(PortfolioMixin):
 
 
 class GetInTouchLog(PortfolioMixin):
+    class MailStatus(models.TextChoices):
+        RECEIVED = "received", _("Received")
+        QUEUED = "queued", _("Queued")
+        SENT = "sent", _("Sent")
+        FAILED = "failed", _("Failed")
+
     name = models.CharField(blank=False, max_length=300, verbose_name=_("Name"))
+    # state: 문의가 정상 접수되어 저장되었는지 여부. 메일 발송 성공 여부가 아니다.
     state = models.BooleanField(blank=False, default=True, verbose_name=_("State"))
-    email = models.EmailField(max_length=128, blank=False, verbose_name=_("Email"))
-    phone_number_regex = RegexValidator(
-        regex=r"^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$"
-    )
-    phone_number = models.CharField(
-        validators=[phone_number_regex],
+    # status: 알림 메일의 발송 상태. 접수(state)와 발송 결과를 분리해 기록한다.
+    status = models.CharField(
         max_length=16,
+        choices=MailStatus.choices,
+        default=MailStatus.RECEIVED,
+        db_index=True,
+        verbose_name=_("Mail Status"),
+    )
+    email = models.EmailField(max_length=128, blank=False, verbose_name=_("Email"))
+    phone_number = models.CharField(
+        validators=[korean_mobile_number_validator],
+        max_length=PHONE_NUMBER_MAX_LENGTH,
         blank=True,
         verbose_name=_("Phone Number"),
     )

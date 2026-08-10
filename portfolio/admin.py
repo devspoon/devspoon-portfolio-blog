@@ -317,8 +317,9 @@ class AboutProjectsAdmin(CustomAdminMixin):
 
 
 class GetInTouchLogAdmin(admin.ModelAdmin):
-    list_display = ['name', 'email', 'subject', 'state', 'created_at']
-    list_filter = ['state']
+    # state는 접수 성공 여부, status는 알림 메일 발송 결과다.
+    list_display = ['name', 'email', 'subject', 'state', 'status', 'created_at']
+    list_filter = ['state', 'status']
     search_fields = ['name', 'email', 'subject']
     ordering = ['-created_at']
     readonly_fields = ['created_at']

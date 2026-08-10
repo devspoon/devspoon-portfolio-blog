@@ -99,6 +99,10 @@ SESSION_CACHE_ALIAS = "default"
 
 AUTH_USER_MODEL = "users.User"
 
+# 테스트는 외부 DNS/메일 벤더에 의존하지 않는다.
+EMAIL_DNS_VALIDATION = False
+EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+
 # reference blog : https://velog.io/@kim6515516/Django-silk-%EC%84%B1%EB%8A%A5-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC%EB%9F%AC
 # reference github : https://github.com/jazzband/django-silk
 
