@@ -1,5 +1,10 @@
 # Sentry Error Review
 
+갱신일: 2026-08-10
+
+> 이 문서는 조사 시점의 원인 분석이다. 각 이슈의 처리 결과는 문서 끝의 "처리 결과"와
+> [../reports/06-implementation-report.md](../reports/06-implementation-report.md)에 있다.
+
 ## 조사 범위
 
 검토 대상은 `docs/error`의 5개 Sentry export 문서와 현재 Django 코드다.
@@ -137,3 +142,25 @@ EmailThread(...).start()
 - 현재 `docs/error` 자체가 git 미추적 상태다. 문서화 및 구현 전 커밋 범위를 명확히 해야 한다.
 - 운영 DB에 이미 중복 데이터가 있으므로 코드만 수정하면 마이그레이션이 실패하거나 중복 문제가 남을 수 있다.
 - nginx 차단 없이 앱 코드만 수정하면 불필요한 요청량과 Sentry 노이즈가 계속 발생한다.
+
+## 처리 결과 (2026-08-10)
+
+| 이슈 | 처리 | 근거 |
+| --- | --- | --- |
+| PYTHON-DJANGO-7H `ConnectionHardwareStats.MultipleObjectsReturned` | 해결 | `stat_date` 유니크 제약 + `increment_daily_counter()` |
+| PYTHON-DJANGO-7G `ConnectionMethodStats.MultipleObjectsReturned` | 해결 | 위와 동일 |
+| PYTHON-DJANGO-7B `DataError value too long for varchar(16)` | 해결 | `GetInTouchForm`이 저장 전에 길이/형식을 거부 |
+| PYTHON-DJANGO-7C / 7D `Email 401 Unauthorized` | 코드 측면 해결 | 발송 결과를 `status`로 기록하고 사용자 안내를 분리. 계정/크레딧 점검은 운영 작업 |
+
+원인 분석 중 다음 두 가지는 실제 구현에서 수정됐다.
+
+- `check_email_validation_with_dns()`의 `is_valid` 미초기화: 로직을 `GetInTouchForm.clean_emailfrom()`으로 옮기며 해소했다.
+  더불어 DNS 타임아웃/네임서버 오류는 '검증 불가'로 보고 통과시키도록 분기를 나눴다. 이전 구현은 이를 '잘못된 주소'로 처리했다.
+- `post()` 하단의 도달 불가능한 중복 저장 코드 6블록: 전부 제거했다.
+
+`docs/error`의 git 추적 여부는 이번 작업에서 바꾸지 않았다.
+
+분석 당시에는 확인하지 못했던 사실 두 가지도 기록해 둔다.
+
+- 통계 모델의 마이그레이션은 `Meta.app_label = "home"` 때문에 `home/migrations/`에 생성된다.
+- 저장소에 `migrations/` 디렉터리가 없으면 인자 없는 `makemigrations`는 프로젝트 앱에 아무것도 만들지 않는다. 최초 1회는 앱 이름을 명시해야 한다.

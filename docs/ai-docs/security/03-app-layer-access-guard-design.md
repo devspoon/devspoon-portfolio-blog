@@ -1,5 +1,13 @@
 # App Layer Access Guard Design
 
+상태: **구현 완료** — 2026-08-10
+
+- 구현: `custom_middlewares/middlewares/access_guard.py`
+- 등록: `config/settings/base.py`의 `MIDDLEWARE`, `SecurityMiddleware` 바로 뒤
+- 테스트: `custom_middlewares/tests/test_access_guard.py`
+
+아래 설계안과 실제 구현의 차이는 문서 끝의 "구현과의 차이"에 정리했다.
+
 ## 목표
 
 nginx에서 놓친 비서비스 요청을 Django 애플리케이션 초입에서 2차로 차단한다. 이 방어선은 nginx의 대체물이 아니라 fallback이다.
@@ -110,3 +118,24 @@ Django의 `ALLOWED_HOSTS`는 이미 `config/settings/prod.py`에서 환경변수
 - `.php` 요청 시 `ConnectionMethodStats`와 `ConnectionHardwareStats`가 증가하지 않는다.
 - 정상 URL은 기존 응답을 유지한다.
 - `BLOCK_SUSPICIOUS_PATHS=False`일 때 차단이 비활성화된다.
+
+네 항목 모두 `custom_middlewares/tests/test_access_guard.py`에 구현됐다.
+조기 차단과 일반 404를 구분하기 위해, 차단 응답은 본문이 비어 있다는 점(`response.content == b""`)까지 검증한다.
+
+## 구현과의 차이
+
+- 차단 패턴에 자격증명/설정 파일 유출 스캔을 추가했다: `(^|/)\.(env|git|aws|ssh)(/|$)`
+- 차단 시 `blocked suspicious path` INFO 로그를 남긴다. 별도 metric 없이 차단량을 확인할 수 있다.
+- "통계 미들웨어와의 연계"에 적은 개선 사항도 함께 반영했다.
+  - `admin` 부분 문자열 대신 `STATS_EXCLUDED_PATH_PREFIXES` 기반 prefix 판정
+  - static/media/silk/robots/sitemap 제외
+  - 통계 DB 오류를 `DatabaseError`로 잡아 요청 실패로 번지지 않게 처리
+  - 봇은 현행 유지. 하드웨어 통계에 이미 `bot` 컬럼이 있어 별도 분리가 필요 없다.
+
+## Host 검증 처리 결과
+
+문서의 권장 순서 중 앱 계층 몫은 적용했다.
+
+- 별도 Host guard 미들웨어는 만들지 않았다. `request.get_host()` 호출 자체가 `DisallowedHost`를 발생시켜 얻는 것보다 잃는 게 많다.
+- 대신 `config/settings/sub_settings/system/sentry.py`의 `before_send`에서 `DisallowedHost`를 버린다.
+- nginx default server 차단과 `ALLOWED_HOSTS` 최소화는 운영 작업으로 남는다.

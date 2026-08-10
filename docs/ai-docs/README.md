@@ -2,6 +2,12 @@
 
 이 폴더는 `docs/error`의 Sentry 이슈를 Codex와 Claude가 함께 검토하고 후속 구현을 진행하기 위한 작업 문서 모음이다.
 
+## 진행 상태
+
+2026-08-10 기준 Phase 1~5 구현이 완료됐고 테스트는 115 passed / 1 skipped다.
+Phase 0(nginx)과 SendGrid 계정 점검은 운영 작업으로 남아 있다.
+구현 내용과 배포 절차는 [reports/06-implementation-report.md](reports/06-implementation-report.md)를 본다.
+
 ## 문서 구조
 
 - [reports/00-total-report.md](reports/00-total-report.md): 전체 요약, 우선순위, 승인/검토 포인트
@@ -10,6 +16,7 @@
 - [security/03-app-layer-access-guard-design.md](security/03-app-layer-access-guard-design.md): Django 애플리케이션 2차 접근 차단 설계
 - [plans/04-remediation-work-plan.md](plans/04-remediation-work-plan.md): 구현 작업 계획서
 - [handoff/05-agent-handoff.md](handoff/05-agent-handoff.md): Codex/Claude 공용 핸드오프 체크리스트
+- [reports/06-implementation-report.md](reports/06-implementation-report.md): 구현 결과, 검증 기록, 운영 배포 절차
 
 ## 기준 자료
 

@@ -1,6 +1,21 @@
 # Remediation Work Plan
 
+갱신일: 2026-08-10
+
+| Phase | 내용 | 상태 |
+| --- | --- | --- |
+| 0 | nginx 1차 차단 | 미적용 (운영 작업) |
+| 1 | Django 2차 차단 미들웨어 | 완료 |
+| 2 | 통계 중복 정리 및 모델 개선 | 코드 완료, 운영 DB 실행 대기 |
+| 3 | 문의 폼 검증 개선 | 완료 |
+| 4 | 메일 발송 실패 처리 | 코드 완료, SendGrid 계정 점검 대기 |
+| 5 | 관측 및 회귀 방지 | 완료 |
+
+구현 상세와 배포 절차는 [../reports/06-implementation-report.md](../reports/06-implementation-report.md)에 있다.
+
 ## Phase 0: 운영 차단
+
+상태: **미적용 (운영 작업)**
 
 담당 후보: 운영자 또는 배포 담당 에이전트
 
@@ -15,6 +30,8 @@
 - Sentry의 PHP 스캔 관련 이벤트가 감소한다.
 
 ## Phase 1: Django 2차 차단 미들웨어
+
+상태: **완료**
 
 담당 후보: Codex
 
@@ -37,6 +54,8 @@
 - 정상 URL의 기존 테스트가 통과한다.
 
 ## Phase 2: 통계 테이블 중복 정리 및 모델 개선
+
+상태: **코드 완료. 운영 DB에서 `dedupe_connection_stats` 실행이 남아 있다.**
 
 담당 후보: Claude 또는 Codex
 
@@ -78,6 +97,8 @@ stat_date = models.DateField(unique=True, db_index=True)
 
 ## Phase 3: 문의 폼 검증 개선
 
+상태: **완료**
+
 담당 후보: Codex
 
 1. `portfolio/forms.py`를 추가하거나 기존 패턴에 맞는 위치에 `GetInTouchForm`을 만든다.
@@ -104,6 +125,8 @@ stat_date = models.DateField(unique=True, db_index=True)
 
 ## Phase 4: 메일 발송 실패 처리
 
+상태: **코드 완료. 운영 SendGrid 계정 점검이 남아 있다.**
+
 담당 후보: Claude 또는 Codex
 
 1. 운영 SendGrid 상태를 확인한다.
@@ -126,6 +149,8 @@ stat_date = models.DateField(unique=True, db_index=True)
 - Sentry에 민감정보가 원문으로 남지 않는다.
 
 ## Phase 5: 관측 및 회귀 방지
+
+상태: **완료**
 
 1. Sentry ignore/filter 정책을 정리한다.
 2. PHP scan 차단량을 nginx access log 또는 별도 metric으로 집계할지 결정한다.

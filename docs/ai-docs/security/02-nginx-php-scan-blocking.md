@@ -1,5 +1,14 @@
 # Nginx PHP Scan Blocking
 
+상태: **미적용 (운영 작업 대기)** — 2026-08-10 기준
+
+이 저장소에는 nginx 설정 파일이 없어 코드로 반영할 수 없다.
+아래 설정을 운영 서버에 직접 적용해야 한다.
+
+앱 계층 2차 차단([03-app-layer-access-guard-design.md](03-app-layer-access-guard-design.md))은 이미 배포 가능한 상태다.
+따라서 nginx 적용 전에도 통계 DB write와 `MultipleObjectsReturned`는 발생하지 않는다.
+nginx 적용으로 추가로 얻는 것은 gunicorn까지 도달하는 트래픽량과 로그량 감소다.
+
 ## 목표
 
 PHP/WordPress/phpinfo 탐색 요청을 Django, gunicorn, Sentry까지 보내지 않고 nginx에서 1차로 종료한다.
