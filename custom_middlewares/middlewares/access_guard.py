@@ -35,6 +35,12 @@ class BlockSuspiciousPathMiddleware:
         self.get_response = get_response
         self.enabled = getattr(settings, "BLOCK_SUSPICIOUS_PATHS", True)
         self.status = getattr(settings, "SUSPICIOUS_PATH_RESPONSE_STATUS", 404)
+        # 차단은 정상 동작이라 기본은 INFO다. 다만 COMMON_LOGGER는 WARNING이라
+        # 기본 설정에서는 기록되지 않는다. 차단량을 로그로 집계해야 할 때
+        # 이 값을 "WARNING"으로 올린다.
+        self.log_level = logging.getLevelName(
+            getattr(settings, "SUSPICIOUS_PATH_LOG_LEVEL", "INFO")
+        )
         raw_patterns = getattr(
             settings,
             "SUSPICIOUS_PATH_PATTERNS",
@@ -46,8 +52,12 @@ class BlockSuspiciousPathMiddleware:
 
     def __call__(self, request):
         if self.enabled and self.is_suspicious_path(request.path_info):
-            logger.info(
-                "blocked suspicious path",
+            logger.log(
+                self.log_level,
+                "blocked suspicious path %s %s -> %s",
+                request.method,
+                request.path_info,
+                self.status,
                 extra={
                     "path": request.path_info,
                     "method": request.method,

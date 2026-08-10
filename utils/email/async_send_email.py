@@ -63,17 +63,22 @@ def send_mail_sync(
     except Exception as error:
         # 메일 벤더 인증/크레딧 문제 등 외부 요인이 대부분이다.
         logger.error(
-            "Error sending email",
+            "Error sending email to %s: %s",
+            masked,
+            error,
             extra={"recipients": masked, "error": str(error)},
         )
         return False
 
     if sent_count > 0:
-        logger.info("Email sent successfully", extra={"recipients": masked})
+        logger.info(
+            "Email sent successfully to %s", masked, extra={"recipients": masked}
+        )
         return True
 
     logger.warning(
-        "Email not sent. No recipients were successfully sent.",
+        "Email not sent to %s. No recipients were successfully sent.",
+        masked,
         extra={"recipients": masked},
     )
     return False

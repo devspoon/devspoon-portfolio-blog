@@ -75,7 +75,10 @@ class BaseStatsMiddleware:
                 self.record(request)
             except DatabaseError as error:
                 logger.warning(
-                    "failed to record connection stats",
+                    "failed to record connection stats in %s for %s: %s",
+                    self.__class__.__name__,
+                    request.path_info,
+                    error,
                     extra={
                         "middleware": self.__class__.__name__,
                         "path": request.path_info,

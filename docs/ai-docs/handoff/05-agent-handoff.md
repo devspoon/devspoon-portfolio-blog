@@ -6,7 +6,7 @@
 
 - `docs/error`에 Sentry export 5개가 있다.
 - `docs/error`는 현재 git 기준 미추적 상태로 보인다. 이번 작업에서 바꾸지 않았다.
-- 계획서 Phase 1~5의 코드 작업이 끝났다. 테스트는 123 passed / 1 skipped다.
+- 계획서 Phase 1~5의 코드 작업이 끝났다. 테스트는 151 passed / 1 skipped이고 sqlite와 PostgreSQL 양쪽에서 통과한다.
 - 남은 것은 운영 작업이다: nginx 차단 적용, 운영 DB 정리 실행, SendGrid 계정 점검.
 - 결과 정리는 [../reports/06-implementation-report.md](../reports/06-implementation-report.md)에 있다.
 
@@ -82,6 +82,7 @@ python manage.py makemigrations users blog board home portfolio custom_middlewar
 | `BLOCK_SUSPICIOUS_PATHS` | `True` | 탐색성 경로 차단 on/off |
 | `SUSPICIOUS_PATH_RESPONSE_STATUS` | `404` | 차단 응답 status |
 | `SUSPICIOUS_PATH_PATTERNS` | 기본 패턴 목록 | 차단 정규식 |
+| `SUSPICIOUS_PATH_LOG_LEVEL` | `"INFO"` | 차단 로그 레벨. 기본값은 common 로거(WARNING)에 걸려 기록되지 않는다 |
 | `STATS_EXCLUDED_PATH_PREFIXES` | admin/static/media/silk/robots/sitemap | 통계 제외 경로 |
 | `EMAIL_DNS_VALIDATION` | `True` (test는 `False`) | 문의 폼 이메일 DNS 검증 |
 | `EMAIL_DNS_VALIDATION_TIMEOUT` | `10` | DNS 조회 타임아웃(초) |

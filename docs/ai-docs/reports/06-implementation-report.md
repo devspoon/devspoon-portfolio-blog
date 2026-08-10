@@ -9,8 +9,9 @@
 [04-remediation-work-plan.md](../plans/04-remediation-work-plan.md)의 Phase 1~5를 코드로 구현했다.
 Phase 0(nginx)은 이 저장소에 설정 파일이 없어 운영 작업으로 남는다.
 
-테스트는 `pytest` 기준 **123 passed, 1 skipped**이다.
-작업 시작 시점의 기준선은 9 passed, 1 skipped였으므로 114건이 새로 추가되었다.
+테스트는 `pytest` 기준 **151 passed, 1 skipped**이다. sqlite와 운영과 같은 PostgreSQL 양쪽에서 통과한다.
+작업 시작 시점의 기준선은 9 passed, 1 skipped였으므로 142건이 새로 추가되었다.
+이 브랜치가 변경한 모듈은 모두 라인 커버리지 100%다.
 skip 1건은 이 작업과 무관한 기존 항목(`home.tests.test_home_html.test_home`)이다.
 
 `dev`, `test`, `stage`, `prod` 네 설정 모두 `manage.py check`에서 오류가 없다.
@@ -154,7 +155,12 @@ Django는 `unique=True`일 때 별도 인덱스를 만들지 않으므로 중복
 - 버리는 대상: `Http404`, `DisallowedHost`, `SuspiciousOperation` 예외와 `.php`/`wp-*`/`.env` 계열 URL에서 난 이벤트.
 - `config/settings/prod.py`와 `config/settings/stage.py`의 `sentry_sdk.init()`에 연결했다.
 
-차단량 집계는 별도 metric을 두지 않고 nginx access log와 미들웨어의 INFO 로그(`blocked suspicious path`)로 확인한다.
+차단량 집계는 별도 metric을 두지 않고 nginx access log와 미들웨어 로그(`blocked suspicious path`)로 확인한다.
+
+단, 기본 설정에서는 이 로그가 **남지 않는다.** 차단은 정상 동작이라 로그 레벨이 INFO인데
+`COMMON_LOGGER`("common") 로거가 WARNING이라 걸러진다.
+Django 로그로 차단량을 집계하려면 `SUSPICIOUS_PATH_LOG_LEVEL = "WARNING"`으로 올린다.
+E2E에서 올렸을 때 실제로 기록되는 것을 확인했다.
 
 테스트는 `pytest.ini`에 `portfolio`, `middlewares` 마커를 추가해 CI에서 자동 수집된다.
 
@@ -186,12 +192,46 @@ return render(request, "errors/error.html", context=context)   # 200으로 나�
 prod도 같은 형태로 맞췄다. static은 `STATIC_ROOT`(`ROOT_DIR/static`) 한 곳에서 서비스하고,
 이 디렉터리에는 이미 collectstatic 결과물(`admin/`, `silk/`, `summernote/` 등)이 들어 있다.
 
+### 에러 페이지 버그가 실제 장애를 가리고 있었다
+
+E2E 중에 `/users/login/`이 `SocialApp.DoesNotExist`로 크래시하는 것을 발견했다.
+템플릿이 google/kakao/naver provider를 참조하는데 해당 `SocialApp` row가 없어서다.
+이 브랜치는 `users/`를 건드리지 않았으므로 기존 문제다.
+
+중요한 것은 이 페이지가 **수정 전에는 HTTP 200으로 응답했다**는 점이다.
+
+| | 반환 status |
+| --- | --- |
+| 수정 전(`c9b0eae`) | **200** (본문에는 500이라고 적혀 있음) |
+| 수정 후 | **500** |
+
+즉 에러 페이지 버그가 실제 서버 오류를 가리고 있었다.
+배포하면 그동안 200으로 집계되던 실패가 제대로 5xx로 드러난다.
+**모니터링에 5xx가 갑자기 나타나더라도 새로 생긴 장애가 아니라 원래 있던 장애가 보이기 시작한 것일 수 있다.**
+운영의 `/users/login/`도 같은 상태인지 확인이 필요하다.
+
+### 로그에서 상세가 사라지던 문제
+
+PII 마스킹을 넣으면서 수신자와 오류 원인을 `extra=`로만 넘겼는데,
+프로젝트의 로그 포맷터는 `extra` 필드를 렌더하지 않는다.
+그 결과 파일 로그에는 `Error sending email`만 남고 **어느 주소로 왜 실패했는지가 사라졌다.**
+원래 코드보다 운영성이 나빠진 회귀였고 E2E에서 발견했다.
+
+마스킹된 값과 오류를 메시지 본문에 넣고 `extra`는 구조화 소비자(Sentry)용으로 유지하도록 고쳤다.
+
+```
+ERROR [async_send_email.py:...] Error sending email to ['a***n@devspoon.com']: [Errno 111] Connection refused
+```
+
+같은 이유로 `access_guard`, `statistics`, `forms`의 로그도 함께 고쳤다.
+
 ## 검증
 
 ### 테스트
 
 ```
-123 passed, 1 skipped
+151 passed, 1 skipped        # sqlite
+151 passed, 1 skipped        # postgresql 16
 ```
 
 새로 추가한 테스트 파일:
@@ -211,7 +251,7 @@ prod도 같은 형태로 맞췄다. static은 `STATIC_ROOT`(`ROOT_DIR/static`) �
 
 ### 마이그레이션 리허설
 
-실제 운영 업그레이드 순서를 sqlite로 재현해 검증했다.
+실제 운영 업그레이드 순서를 재현해 검증했다. sqlite와 **운영과 같은 PostgreSQL 16** 양쪽에서 수행했다.
 
 1. 변경 전(HEAD) 모델로 스키마를 만들고
 2. 같은 날짜 중복 row를 심고 (`2026-08-05` 2건, `2026-08-06` 3건)
@@ -224,6 +264,26 @@ prod도 같은 형태로 맞췄다. static은 `STATIC_ROOT`(`ROOT_DIR/static`) �
 - 날짜별 1 row로 병합됐고 카운트가 정확히 합산됐다. (`2026-08-05`: win 10+7 = 17)
 - DB 레벨 유니크 제약이 실제로 동작한다. (중복 INSERT 시 `UNIQUE constraint failed`)
 - 두 번째 실행은 아무것도 바꾸지 않았다.
+- PostgreSQL에서 `stat_date`에 **NULL을 여러 개 넣을 수 있음**을 직접 확인했다.
+  `stat_date`를 nullable로 두고 마이그레이션 1회로 끝내는 설계의 근거다.
+
+전체 테스트도 두 엔진에서 각각 통과한다(151 passed / 1 skipped).
+
+### 실제 서버 E2E
+
+`runserver`를 띄우고 PostgreSQL에 붙여 HTTP로 직접 확인했다.
+
+| 시나리오 | 결과 |
+| --- | --- |
+| `/wp.php`, `/site/phpinfo.php`, `/bbs/board.php?...`, `/wp-admin/`, `/.env`, `/xmlrpc.php` | 전부 404, 본문 **0바이트** |
+| 오탈자 URL(`/no-such-page`) | 404, 본문 15,920바이트 (에러 페이지 정상 렌더) |
+| 메인 페이지 `/` | 200. sqlite에서 막혀 skip되던 페이지가 운영 엔진에서는 정상이다 |
+| 16자 초과 전화번호 제출 | 302 redirect, **DB row 생성 안 됨** (DataError 재발 없음) |
+| 정상 문의 제출 | 저장 + `status=sent` + 메일 파일 생성, 수신자는 `DEFAULT_FROM_EMAIL` |
+| 메일 벤더 장애(연결 거부) 재현 | 문의는 저장되고 `status=failed`. 사용자에겐 지연 안내 |
+| captcha ON | `g-recaptcha` 위젯과 api.js 렌더, captcha 없는 제출은 저장되지 않음 |
+| `/robots.txt`, `/admin/home/`, 차단 경로 요청 | 통계 카운터 변화 없음 |
+| 로그 | 수신자가 `['a***n@devspoon.com']`로 마스킹되고 원문 노출 0건 |
 
 ### 확인된 마이그레이션 동작
 

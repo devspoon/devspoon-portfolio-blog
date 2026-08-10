@@ -4,7 +4,7 @@
 
 ## 진행 상태
 
-2026-08-10 기준 Phase 1~5 구현이 완료됐고 테스트는 123 passed / 1 skipped다.
+2026-08-10 기준 Phase 1~5 구현이 완료됐고 테스트는 151 passed / 1 skipped다(sqlite·PostgreSQL 양쪽).
 Phase 0(nginx)과 SendGrid 계정 점검은 운영 작업으로 남아 있다.
 구현 내용과 배포 절차는 [reports/06-implementation-report.md](reports/06-implementation-report.md)를 본다.
 

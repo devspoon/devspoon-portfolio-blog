@@ -113,7 +113,8 @@ class GetInTouchForm(forms.Form):
             )
         except DNS_INFRASTRUCTURE_ERRORS as error:
             logger.warning(
-                "email dns validation unavailable",
+                "email dns validation unavailable: %s",
+                error,
                 extra={"error": str(error)},
             )
             return email
@@ -121,7 +122,7 @@ class GetInTouchForm(forms.Form):
             # 이전 구현은 이 경로에서 초기화되지 않은 is_valid를 반환해
             # UnboundLocalError가 날 수 있었다.
             logger.debug(
-                "email validation failed", extra={"error": str(error)}
+                "email validation failed: %s", error, extra={"error": str(error)}
             )
             raise forms.ValidationError(INVALID_EMAIL_MESSAGE)
 

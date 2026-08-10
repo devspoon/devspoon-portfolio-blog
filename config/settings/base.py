@@ -211,6 +211,9 @@ SMTP_FROM_ADDRESS=config("SMTP_FROM_ADDRESS","admin@devspoon.com")
 # nginx가 1차로 끊는 것이 원칙이고, 아래 설정은 애플리케이션 fallback이다.
 BLOCK_SUSPICIOUS_PATHS = True
 SUSPICIOUS_PATH_RESPONSE_STATUS = 404
+# 차단은 정상 동작이라 INFO가 맞지만 COMMON_LOGGER가 WARNING이라 기록되지 않는다.
+# 차단량을 Django 로그로 집계하려면 "WARNING"으로 올린다.
+SUSPICIOUS_PATH_LOG_LEVEL = "INFO"
 
 # 접속 통계 집계에서 제외할 경로 prefix (custom_middlewares.middlewares.statistics)
 STATS_EXCLUDED_PATH_PREFIXES = [
