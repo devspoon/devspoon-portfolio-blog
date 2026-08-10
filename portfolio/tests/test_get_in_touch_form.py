@@ -134,3 +134,31 @@ def test_domain_without_mx_record_is_rejected():
 
         assert not form.is_valid()
         assert "emailfrom" in form.errors
+
+
+@override_settings(EMAIL_DNS_VALIDATION=True)
+def test_falsy_validation_result_is_rejected():
+    """validate_email이 예외 없이 False를 돌려주는 경로."""
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr("portfolio.forms.validate_email", lambda **kwargs: False)
+        form = GetInTouchForm(payload())
+
+        assert not form.is_valid()
+        assert "emailfrom" in form.errors
+
+
+@override_settings(EMAIL_DNS_VALIDATION=True)
+def test_dns_validation_runs_when_enabled():
+    calls = {}
+
+    def fake_validate(**kwargs):
+        calls.update(kwargs)
+        return True
+
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr("portfolio.forms.validate_email", fake_validate)
+        assert GetInTouchForm(payload()).is_valid()
+
+    assert calls["check_dns"] is True
+    assert calls["check_smtp"] is False
+    assert calls["email_address"] == "hong@example.com"

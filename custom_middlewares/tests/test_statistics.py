@@ -152,6 +152,65 @@ def test_database_error_does_not_break_the_request(client):
     assert response.status_code == 200
 
 
+@pytest.mark.parametrize(
+    "flags,expected",
+    [
+        ({"is_mobile": True}, "mobile"),
+        ({"is_tablet": True}, "tablet"),
+        ({"is_pc": True}, "pc"),
+        ({"is_bot": True}, "bot"),
+    ],
+)
+def test_hardware_field_resolution(flags, expected):
+    defaults = {
+        "is_mobile": False,
+        "is_tablet": False,
+        "is_pc": False,
+        "is_bot": False,
+    }
+    defaults.update(flags)
+
+    assert (
+        ConnectionHardwareStatsMiddleware.resolve_field(mock.Mock(**defaults))
+        == expected
+    )
+
+
+@pytest.mark.django_db
+def test_request_without_user_agent_header_is_not_counted_by_method_stats():
+    middleware = ConnectionMethodStatsMiddleware(lambda request: None)
+    request = mock.Mock(path_info="/portfolio/", META={})
+
+    middleware.record(request)
+
+    assert ConnectionMethodStats.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_request_without_user_agent_object_is_not_counted_by_hardware_stats():
+    middleware = ConnectionHardwareStatsMiddleware(lambda request: None)
+    request = mock.Mock(path_info="/portfolio/", spec=["path_info"])
+
+    middleware.record(request)
+
+    assert ConnectionHardwareStats.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_unclassifiable_user_agent_is_not_counted():
+    middleware = ConnectionHardwareStatsMiddleware(lambda request: None)
+    request = mock.Mock(
+        path_info="/portfolio/",
+        user_agent=mock.Mock(
+            is_mobile=False, is_tablet=False, is_pc=False, is_bot=False
+        ),
+    )
+
+    middleware.record(request)
+
+    assert ConnectionHardwareStats.objects.count() == 0
+
+
 def test_hardware_field_resolution_returns_none_for_unknown_agent():
     unknown = mock.Mock(
         is_mobile=False, is_tablet=False, is_pc=False, is_bot=False
