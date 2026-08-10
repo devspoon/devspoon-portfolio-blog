@@ -10,6 +10,7 @@ from .sub_settings.editor.summernote import *
 from .sub_settings.http.cors import *
 from .sub_settings.oauth.allauth_default import *
 from .sub_settings.system.logs import *
+from .sub_settings.system.sentry import before_send
 
 from decouple import config
 
@@ -170,6 +171,8 @@ sentry_sdk.init(
     # If you wish to associate users to errors (assuming you are using
     # django.contrib.auth) you may enable sending PII data.
     send_default_pii=True,
+    # 스캐너 노이즈를 걸러 실제 장애만 남긴다.
+    before_send=before_send,
 )
 
 # Recaptcha Settings
