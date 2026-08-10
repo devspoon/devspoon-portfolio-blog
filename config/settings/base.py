@@ -229,3 +229,7 @@ STATS_EXCLUDED_PATH_PREFIXES = [
 # 외부 DNS에 의존하므로 테스트 환경에서는 비활성화한다.
 EMAIL_DNS_VALIDATION = True
 EMAIL_DNS_VALIDATION_TIMEOUT = 10
+
+# 문의 폼 reCAPTCHA 사용 여부.
+# 검증이 Google API 호출을 동반하므로 실제 키가 있는 환경에서만 켠다.
+CONTACT_FORM_CAPTCHA = False

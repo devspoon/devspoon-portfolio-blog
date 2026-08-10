@@ -68,6 +68,21 @@ class GetInTouchForm(forms.Form):
         error_messages={"required": _("message can't be empty.")},
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # captcha는 설정으로 켠 환경에서만 붙인다. RECAPTCHA 키가 없는 환경과
+        # 외부 호출을 하면 안 되는 테스트에서 폼을 그대로 쓸 수 있어야 한다.
+        # 필드를 클래스 속성으로 두면 import 시점에 키를 요구하므로 여기서 만든다.
+        if getattr(settings, "CONTACT_FORM_CAPTCHA", False):
+            from captcha.fields import ReCaptchaField
+
+            self.fields["captcha"] = ReCaptchaField(
+                error_messages={
+                    "required": _("Please confirm that you are not a robot."),
+                }
+            )
+
     def clean_emailfrom(self) -> str:
         email = self.cleaned_data["emailfrom"]
         _local, domain = email.rsplit("@", 1)

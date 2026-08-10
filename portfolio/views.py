@@ -93,6 +93,11 @@ class PortfolioView(TemplateView):
                 logger.debug(
                     f"redis cache - {self.__class__.__name__} caching_data not exists"
                 )
+
+        # 캐시 저장이 끝난 뒤에 넣는다. 폼은 요청마다 새로 만들어야 하고
+        # 캐시에 들어가면 모든 방문자가 같은 인스턴스를 보게 된다.
+        context["get_in_touch_form"] = GetInTouchForm()
+
         logger.debug(f"final context : {context}")
         return context
 

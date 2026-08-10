@@ -370,6 +370,13 @@
                       </div>
                     </div>
                     <input type="hidden" id="emailto" name="emailto" value="{{info.office_email}}">
+                    {% if get_in_touch_form.captcha %}
+                    <div class="col-md-12">
+                      <div class="single-input">
+                        {{ get_in_touch_form.captcha }}
+                      </div>
+                    </div>
+                    {% endif %}
                     <div class="col-md-12">
                       <div class="form-button">
                         <button type="submit" class="btn btn-primary btn-lg col-12">{{_("Submit")}}<i class="lni lni-telegram-original"></i> </button>
