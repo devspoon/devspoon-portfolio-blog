@@ -116,6 +116,7 @@ stat_date = models.DateField(unique=True, db_index=True)
 4. `check_email_validation_with_dns()`의 `is_valid` 초기화 문제를 수정한다.
 5. 도달 불가능한 중복 코드를 제거한다.
 6. 스팸성 요청에 대해 rate limit 또는 captcha 적용을 검토한다. 이미 운영 `INSTALLED_APPS`에 `captcha`가 추가되어 있으므로 활용 가능성을 확인한다.
+   → `CONTACT_FORM_CAPTCHA` 설정으로 reCAPTCHA를 적용했다. prod/stage에서만 켠다. rate limit은 적용하지 않았다.
 
 완료 기준:
 

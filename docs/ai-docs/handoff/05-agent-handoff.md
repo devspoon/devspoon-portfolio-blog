@@ -6,7 +6,7 @@
 
 - `docs/error`에 Sentry export 5개가 있다.
 - `docs/error`는 현재 git 기준 미추적 상태로 보인다. 이번 작업에서 바꾸지 않았다.
-- 계획서 Phase 1~5의 코드 작업이 끝났다. 테스트는 115 passed / 1 skipped다.
+- 계획서 Phase 1~5의 코드 작업이 끝났다. 테스트는 123 passed / 1 skipped다.
 - 남은 것은 운영 작업이다: nginx 차단 적용, 운영 DB 정리 실행, SendGrid 계정 점검.
 - 결과 정리는 [../reports/06-implementation-report.md](../reports/06-implementation-report.md)에 있다.
 
@@ -28,7 +28,7 @@
 
 - 탐색성 경로 차단: `custom_middlewares/middlewares/access_guard.py`
 - 통계 정리 명령: `custom_middlewares/management/commands/dedupe_connection_stats.py`
-- 문의 폼: `portfolio/forms.py`
+- 문의 폼: `portfolio/forms.py` (reCAPTCHA 포함)
 - 전화번호 validator: `portfolio/validators.py`
 - Sentry 이벤트 필터: `config/settings/sub_settings/system/sentry.py`
 - 테스트: `custom_middlewares/tests/`, `portfolio/tests/`
@@ -57,7 +57,9 @@ python manage.py makemigrations users blog board home portfolio custom_middlewar
 ```
 
 7. `common/error/error_views.py`의 400/403/404/500 핸들러가 모두 HTTP 200을 반환하고 있었다. 함께 수정했다.
-8. `config/settings/prod.py`는 `manage.py check`에서 `staticfiles.E002`로 실패한다. 기존 문제이고 CD는 `stage` 설정을 쓴다.
+8. `config/settings/prod.py`가 `manage.py check`에서 `staticfiles.E002`로 실패하고 있었다.
+   `check`는 모든 관리 명령 앞에서 실행되므로 prod 설정으로는 `migrate`도 정리 명령도 돌릴 수 없었다.
+   `stage.py`와 같은 형태로 맞춰 해결했다. 네 설정 모두 `check` 오류가 없다.
 
 ## 결정된 항목
 
@@ -83,6 +85,7 @@ python manage.py makemigrations users blog board home portfolio custom_middlewar
 | `STATS_EXCLUDED_PATH_PREFIXES` | admin/static/media/silk/robots/sitemap | 통계 제외 경로 |
 | `EMAIL_DNS_VALIDATION` | `True` (test는 `False`) | 문의 폼 이메일 DNS 검증 |
 | `EMAIL_DNS_VALIDATION_TIMEOUT` | `10` | DNS 조회 타임아웃(초) |
+| `CONTACT_FORM_CAPTCHA` | `False` (prod/stage는 `True`) | 문의 폼 reCAPTCHA |
 
 ## 검증 명령
 

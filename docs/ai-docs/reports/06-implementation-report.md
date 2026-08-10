@@ -9,9 +9,11 @@
 [04-remediation-work-plan.md](../plans/04-remediation-work-plan.md)의 Phase 1~5를 코드로 구현했다.
 Phase 0(nginx)은 이 저장소에 설정 파일이 없어 운영 작업으로 남는다.
 
-테스트는 `pytest` 기준 **115 passed, 1 skipped**이다.
-작업 시작 시점의 기준선은 9 passed, 1 skipped였으므로 106건이 새로 추가되었다.
+테스트는 `pytest` 기준 **123 passed, 1 skipped**이다.
+작업 시작 시점의 기준선은 9 passed, 1 skipped였으므로 114건이 새로 추가되었다.
 skip 1건은 이 작업과 무관한 기존 항목(`home.tests.test_home_html.test_home`)이다.
+
+`dev`, `test`, `stage`, `prod` 네 설정 모두 `manage.py check`에서 오류가 없다.
 
 ## 확정된 결정
 
@@ -102,8 +104,21 @@ Django는 `unique=True`일 때 별도 인덱스를 만들지 않으므로 중복
 - 수신자는 hidden input `emailto`가 아니라 `settings.DEFAULT_FROM_EMAIL`로 고정된다는 점을 테스트로 고정했다.
 - `templates/portfolio/portfolio.html`의 입력 필드에 서버 정책과 같은 `maxlength`와 `required`를 추가했다.
 
-captcha 적용은 하지 않았다. `INSTALLED_APPS`에 `captcha`가 있으나 폼 검증만으로 이번 Sentry 이슈는 재발하지 않고,
-captcha 도입은 사용자 경험 변경이라 별도 결정이 필요하다.
+#### reCAPTCHA
+
+`django-recaptcha`를 문의 폼에 붙였다. `CONTACT_FORM_CAPTCHA` 설정으로 켜고 끄며, 기본값은 `False`다.
+`prod`와 `stage`에서만 켠다.
+
+- 필드는 클래스 속성이 아니라 `GetInTouchForm.__init__()`에서 만든다.
+  클래스 속성으로 두면 import 시점에 RECAPTCHA 키를 요구해서, 키가 없는 환경에서 폼을 쓸 수 없다.
+- 검증이 Google API 호출을 동반하므로 테스트에서는 꺼 두고, 켠 경로는 `captcha.fields.client.submit`을 mock해서 검증한다.
+- `PortfolioView`는 폼 인스턴스를 redis 캐시 저장이 끝난 뒤에 context에 넣는다.
+  캐시에 들어가면 모든 방문자가 같은 인스턴스를 보게 된다.
+- 템플릿은 `{% if get_in_touch_form.captcha %}`로 감싸 꺼진 환경에서는 아무것도 렌더하지 않는다.
+
+**운영 적용 시 주의.** `RECAPTCHA_PUBLIC_KEY` / `RECAPTCHA_PRIVATE_KEY`의 기본값은 Google 테스트 키다.
+테스트 키를 그대로 두면 `manage.py check`가 `captcha.recaptcha_test_key_error`로 실패한다.
+이는 이 작업 이전부터 있던 동작이고, 실제 키를 넣지 않은 채 배포되는 것을 막아주는 안전장치다.
 
 ### Phase 4: 메일 발송 실패 처리 (완료)
 
@@ -161,12 +176,22 @@ return render(request, "errors/error.html", context=context)   # 200으로 나�
 
 기존 테스트 `home.tests.test_error.test_error_404`는 본문의 "404 Error" 문자열만 검사해 이 문제를 잡지 못했다.
 
+### prod 설정의 `staticfiles.E002`
+
+`config/settings/prod.py`가 `STATICFILES_DIRS`에 `STATIC_ROOT`와 같은 경로를 넣고 있어 `manage.py check`가 실패했다.
+`check`는 모든 관리 명령 앞에서 실행되므로, prod 설정으로는 `migrate`도 `dedupe_connection_stats`도 돌릴 수 없었다.
+
+`stage.py`는 이미 같은 이유로 `STATICFILES_DIRS`를 주석 처리하고
+"static 파일을 한 곳에 모아서 서비스 할 경우 상위 STATICFILES_DIRS 변수는 불필요함"이라고 적어 두었다.
+prod도 같은 형태로 맞췄다. static은 `STATIC_ROOT`(`ROOT_DIR/static`) 한 곳에서 서비스하고,
+이 디렉터리에는 이미 collectstatic 결과물(`admin/`, `silk/`, `summernote/` 등)이 들어 있다.
+
 ## 검증
 
 ### 테스트
 
 ```
-115 passed, 1 skipped
+123 passed, 1 skipped
 ```
 
 새로 추가한 테스트 파일:
@@ -179,6 +204,7 @@ return render(request, "errors/error.html", context=context)   # 200으로 나�
 | `custom_middlewares/tests/test_sentry_filter.py` | 노이즈 이벤트 폐기, 실제 오류 보존 |
 | `portfolio/tests/test_get_in_touch_form.py` | 입력 정책, 전화번호 길이/형식, DNS 예외 분기 |
 | `portfolio/tests/test_get_in_touch_view.py` | 접수/발송 분리, DataError 재발 방지, 수신자 고정 |
+| `portfolio/tests/test_get_in_touch_captcha.py` | captcha 토글, 위젯 렌더, 검증 성공/실패 |
 | `portfolio/tests/test_email_sending.py` | 발송 결과 반환, PII 마스킹 |
 
 기존 `custom_middlewares/tests.py`와 `portfolio/tests.py`는 내용 없는 스텁이라 같은 이름의 패키지로 대체했다.
@@ -239,10 +265,10 @@ python manage.py dedupe_connection_stats --settings=config.settings.prod
 #    - gunicorn access log에 .php 요청이 사라졌는지
 ```
 
-`config/settings/prod.py`는 `manage.py check`에서 `staticfiles.E002`
-(`STATICFILES_DIRS`가 `STATIC_ROOT`를 포함) 오류가 난다.
-이 작업과 무관한 기존 문제이고 CD 파이프라인은 `config.settings.stage`를 쓴다.
-prod 설정으로 위 명령을 실행해야 한다면 `--skip-checks`를 붙이거나 static 설정을 먼저 정리한다.
+`config/settings/prod.py`의 `staticfiles.E002`(`STATICFILES_DIRS`가 `STATIC_ROOT`를 포함)는 함께 정리했다.
+`stage.py`가 이미 같은 이유로 `STATICFILES_DIRS`를 주석 처리해 두었기에 prod도 같은 형태로 맞췄다.
+static 파일은 `STATIC_ROOT`(`ROOT_DIR/static`) 한 곳에서 서비스하며, 이 디렉터리에는 이미 collectstatic 결과물이 들어 있다.
+이제 `--skip-checks` 없이 prod 설정으로 위 명령을 실행할 수 있다.
 
 ## 남은 작업
 
@@ -251,8 +277,7 @@ prod 설정으로 위 명령을 실행해야 한다면 `--skip-checks`를 붙이
 | nginx 차단 location 적용 | 운영자 | Phase 0 |
 | SendGrid API key / sender 인증 / 크레딧 점검 | 운영자 | Phase 4의 근본 원인 |
 | 운영 DB 백업 후 dedupe 실행 | 운영자 | 위 배포 절차 |
-| `staticfiles.E002` 정리 | 별도 이슈 | 기존 문제 |
-| 문의 폼 captcha 적용 여부 | 결정 필요 | 스팸이 계속되면 검토 |
+| RECAPTCHA 실제 키 설정 | 운영자 | 테스트 키면 `check`가 실패한다 |
 | 메일 발송의 Celery 이관 | 후속 | 아래 참고 |
 
 ### 동기 발송의 트레이드오프
