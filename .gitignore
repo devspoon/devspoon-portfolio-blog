@@ -14,6 +14,9 @@ migrations/
 logs/
 *.log
 
+# collectstatic 결과물 (STATIC_ROOT)
+staticfiles/
+
 # dist folder
 **/dist/
 
