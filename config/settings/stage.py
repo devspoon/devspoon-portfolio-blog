@@ -70,6 +70,9 @@ DATABASES = {
         "CHARSET": config("DEFAULT_DB_CHARSET", default="utf8mb4"),
         "OPTIONS": {"options": config("DEFAULT_DB_OPTIONS", default="")},
         "CONN_MAX_AGE": config("DEFAULT_DB_CONN_MAX_AGE", cast=int),
+        # 재사용 전 커넥션 생존 확인. 끊긴 커넥션이면 조용히 재연결한다.
+        # 없으면 서버가 끊은 캐시 커넥션을 그대로 재사용해 OperationalError가 난다.
+        "CONN_HEALTH_CHECKS": True,
     },
     "replica1": {
         "ENGINE": config("REPLICA1_DB_ENGINE", default="django.db.backends.mysql"),
@@ -81,6 +84,9 @@ DATABASES = {
         "CHARSET": config("REPLICA1_DB_CHARSET", default="utf8mb4"),
         "OPTIONS": {"options": config("REPLICA1_DB_OPTIONS", default="")},
         "CONN_MAX_AGE": config("REPLICA1_DB_CONN_MAX_AGE", cast=int),
+        # 재사용 전 커넥션 생존 확인. 끊긴 커넥션이면 조용히 재연결한다.
+        # 없으면 서버가 끊은 캐시 커넥션을 그대로 재사용해 OperationalError가 난다.
+        "CONN_HEALTH_CHECKS": True,
     },
 }
 
