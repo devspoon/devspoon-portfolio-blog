@@ -132,6 +132,9 @@ REDIS_CONNECTION = get_redis_connection()
 CACHE_TTL = 60 * 60 * 24
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"  # use only cache
 SESSION_CACHE_ALIAS = "default"
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 AUTH_USER_MODEL = "users.User"
 
@@ -165,6 +168,8 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600
 trusted_domain_list = config("CSRF_TRUSTED_ORIGINS")
 
 CSRF_TRUSTED_ORIGINS = trusted_domain_list.split(",")
+
+CSRF_FAILURE_VIEW = "common.error.error_views.csrf_failure"
 
 sentry_sdk.init(
     dsn=config("SENTRY_DNS"),
