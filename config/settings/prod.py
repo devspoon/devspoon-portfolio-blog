@@ -49,7 +49,7 @@ export DJANGO_SETTINGS_MODULE=config.settings.prod
 # https://sophilabs.com/blog/configure-a-read-replica-database-in-django
 # https://urunimi.github.io/architecture/python/use-replica/
 
-DEBUG = config("DEBUG_STATE")
+DEBUG = config("DEBUG_STATE", default=False, cast=bool)
 
 host = config("ALLOWED_HOSTS_IP")
 
@@ -150,8 +150,10 @@ STATICFILES_DIRS = [
 
 # static url로 접근했을 때 연결되는 위치 정의
 # static 파일을 한 곳에 모아서 서비스 할 경우 상위 STATICFILES_DIRS 변수는 불필요함
+# STATIC_ROOT는 collectstatic 명령으로 모든 static 파일이 모이는 대상 디렉토리
+# STATICFILES_DIRS와 다른 경로여야 함
 
-STATIC_ROOT = os.path.join(ROOT_DIR, "static")
+STATIC_ROOT = os.path.join(ROOT_DIR, "staticfiles")
 
 # python manage.py collectstatic
 
