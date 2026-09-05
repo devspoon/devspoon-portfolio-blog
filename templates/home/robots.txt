@@ -95,4 +95,4 @@ User-agent: *
 Allow:/
 Disallow: /admin
 
-Sitemap: http://domain/sitemap.xml
+Sitemap: https://www.devspoon.com/sitemap.xml
