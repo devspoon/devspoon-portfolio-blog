@@ -50,7 +50,7 @@ export DJANGO_SETTINGS_MODULE=config.settings.prod
 # https://sophilabs.com/blog/configure-a-read-replica-database-in-django
 # https://urunimi.github.io/architecture/python/use-replica/
 
-DEBUG = config("DEBUG_STATE")
+DEBUG = config("DEBUG_STATE", default=False, cast=bool)
 
 host = config("ALLOWED_HOSTS_IP")
 
@@ -73,6 +73,9 @@ DATABASES = {
         "CHARSET": config("DEFAULT_DB_CHARSET", default="utf8mb4"),
         "OPTIONS": {"options": config("DEFAULT_DB_OPTIONS", default="")},
         "CONN_MAX_AGE": config("DEFAULT_DB_CONN_MAX_AGE", cast=int),
+        # 재사용 전 커넥션 생존 확인. 끊긴 커넥션이면 조용히 재연결한다.
+        # 없으면 서버가 끊은 캐시 커넥션을 그대로 재사용해 OperationalError가 난다.
+        "CONN_HEALTH_CHECKS": True,
     },
     "replica1": {
         "ENGINE": config("REPLICA1_DB_ENGINE", default="django.db.backends.mysql"),
@@ -84,6 +87,9 @@ DATABASES = {
         "CHARSET": config("REPLICA1_DB_CHARSET", default="utf8mb4"),
         "OPTIONS": {"options": config("REPLICA1_DB_OPTIONS", default="")},
         "CONN_MAX_AGE": config("REPLICA1_DB_CONN_MAX_AGE", cast=int),
+        # 재사용 전 커넥션 생존 확인. 끊긴 커넥션이면 조용히 재연결한다.
+        # 없으면 서버가 끊은 캐시 커넥션을 그대로 재사용해 OperationalError가 난다.
+        "CONN_HEALTH_CHECKS": True,
     },
 }
 
@@ -127,6 +133,9 @@ REDIS_CONNECTION = get_redis_connection()
 CACHE_TTL = 60 * 60 * 24
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"  # use only cache
 SESSION_CACHE_ALIAS = "default"
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 AUTH_USER_MODEL = "users.User"
 
@@ -135,9 +144,9 @@ AUTH_USER_MODEL = "users.User"
 
 STATIC_URL = "/static/"
 STATIC_DIR = os.path.join(ROOT_DIR, "static")
-# STATICFILES_DIRS = [
-#     STATIC_DIR,
-# ]
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
 # OR
 # STATICFILES_DIRS = [
 #     BASE_DIR / 'static'
@@ -145,8 +154,10 @@ STATIC_DIR = os.path.join(ROOT_DIR, "static")
 
 # static url로 접근했을 때 연결되는 위치 정의
 # static 파일을 한 곳에 모아서 서비스 할 경우 상위 STATICFILES_DIRS 변수는 불필요함
+# STATIC_ROOT는 collectstatic 명령으로 모든 static 파일이 모이는 대상 디렉토리
+# STATICFILES_DIRS와 다른 경로여야 함
 
-STATIC_ROOT = os.path.join(ROOT_DIR, "static")
+STATIC_ROOT = os.path.join(ROOT_DIR, "staticfiles")
 
 # python manage.py collectstatic
 
@@ -158,6 +169,8 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600
 trusted_domain_list = config("CSRF_TRUSTED_ORIGINS")
 
 CSRF_TRUSTED_ORIGINS = trusted_domain_list.split(",")
+
+CSRF_FAILURE_VIEW = "common.error.error_views.csrf_failure"
 
 sentry_sdk.init(
     dsn=config("SENTRY_DNS"),
