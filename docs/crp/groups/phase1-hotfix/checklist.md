@@ -7,11 +7,11 @@
 - [x] **사용자 설계 승인**(ADR-001~005 Accepted, 2026-11-11)
 
 ## Round 1 — (sentry 브랜치 main 병합 후)
-- [ ] 선행: 브랜치를 sentry 브랜치가 병합된 main 위로 rebase
-- [ ] (F-004·F-005) 댓글 삭제 시그널 — 회귀 테스트, fail-on-revert
-- [ ] (F-001·F-002) 상세 뷰 요청자별 값 — 회귀 테스트, fail-on-revert, Redis 키 검사
-- [ ] (F-003·F-006) 댓글 목록 `user_auth`·N+1 — 회귀 테스트, fail-on-revert
-- [ ] (F-007) `isort` import 제거
+- [x] 선행: 브랜치를 sentry 브랜치가 병합된 main 위로 rebase(`merge/sentry-into-main` 0f25728)
+- [x] (F-004·F-005) 댓글 삭제 시그널 — 회귀 테스트 16개, fail-on-revert 확인(97320e4)
+- [x] (F-001·F-002) 상세 뷰 요청자별 값 — 회귀 테스트 18개, 수정 전 실패 확인, Redis 키 검사(8478f54)
+- [ ] (F-003·F-006) 댓글 목록 `user_auth`·N+1 — **보류: F-009 결정 대기**. 테스트 10개 작성·수정 전 실패 확인까지 완료
+- [x] (F-007) `isort` import 제거(95c0536)
 - [ ] GATE 3 인수 기준 전부 그린(CI 실제 실행)
 - [ ] 요구사항 회귀 0 — 불가침 제약 C-1~C-6 위반 없음
 - [ ] run-log 심각도 추세 갱신 + 수렴 판정

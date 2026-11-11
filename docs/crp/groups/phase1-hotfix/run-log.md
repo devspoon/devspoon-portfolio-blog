@@ -11,6 +11,17 @@
 - **수렴 판정:** `NOT CONVERGED`(설계 단계)
 - **잔여 위험 변화:** R-001~R-004 등록
 
+### Round 1 — 2026-11-11 (base SHA: `0f25728`, 병합 브랜치 `merge/sentry-into-main`)
+- **트리거:** 설계 승인(REQ-002) + 실행 환경 확정(REQ-003)
+- **환경:** WSL `devspoon-redis`(26379), `devspoon-postgres`(25432), worktree `.venv`(Django 4.2.19). pytest는 `config.settings.test`(SQLite + 같은 Redis)
+- **병합본 검증(0f25728):** 전체 pytest 152 passed / 1 skipped(기존 무조건 skip). runserver(dev): `/`·`/portfolio/`·`/blog/blog/` 200, static 200, `/wp.php`·`/.env`·`/wp-admin/…` 404, 통계 일자 row 1개 유지, 문의 폼 잘못된 전화번호는 저장 안 됨·정상 값은 `status=failed`(더미 SendGrid 키)로 저장
+- **GATE 통과:** 0 ■ 1 ■ 2 ■ 3 □(F-003·F-006 보류) 4 □ 5 □
+- **Fix 결과:** F-001·F-002·F-004·F-005·F-007 Fixed. 회귀 테스트 34개 통과, 수정 전 코드에서 전부 실패 확인
+- **신규 finding(실행 중 발견, 수정 안 함):** F-008(LOW), F-009(MED) — ledger 기록, 사용자 결정 대기
+- **측정:** 댓글 목록에서 댓글마다 반복되는 쿼리는 dev 기준 `blog_post` 조회 1개(`context.post`)
+- **전체 테스트:** 186 passed / 1 skipped
+- **수렴 판정:** `NOT CONVERGED`(F-003·F-006 Open)
+
 ## 작업 계획 (승인 후 실행 — 순서 고정)
 
 0. **선행 조건:** `docs/sentry-error-remediation-plan` 브랜치가 main에 로컬 병합되어야 한다(PR 미사용, C-6). 이 브랜치를 새 main 위로 다시 올린다(rebase). 테스트 기반(`conftest.py` 캐시 초기화)이 그 브랜치에 있기 때문이다.
@@ -40,3 +51,4 @@
 | Round | CRIT | HIGH | MED | LOW | 신규 Fix | 판정 |
 |---|---|---|---|---|---|---|
 | 0 | 4 | 1 | 2 | 0 | 7 | NOT CONVERGED(설계) |
+| 1 | 0 | 1 | 2 | 1 | 5 Fixed, 신규 2(F-008·F-009) | NOT CONVERGED(보류 2) |
