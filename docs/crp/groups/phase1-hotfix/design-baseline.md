@@ -28,6 +28,7 @@
 |---|---|---|---|---|---|
 | REQ-001 | 2026-11-11 | "django 코드 검수, redis 캐시와 N+1 검토" → "작업 순서 정리, 반드시 설계·계획 후 실행" → "1단계 설계를 PR #9 병합 전에 미리 작성" | 검수 결과 1단계(C1·C2·N1·M2 + 형제 버그)를 고치는 설계와 작업 계획을 문서로 남긴다. 코드는 PR #9 병합 후 승인을 받아 작성한다. | Active | charter INV-1~5, ADR-001~005 |
 | REQ-002 | 2026-11-11 | "1단계 설계 승인한다. PR은 사용하지 않는다. push는 차후 수동으로 요청하겠다. 커밋만 관리해줘." | ADR-001~005를 Accepted로 확정한다. GitHub PR을 쓰지 않는다. `docs/sentry-error-remediation-plan` 브랜치는 로컬 merge 커밋으로 main에 합치고(사용자 요청 시), 1단계는 그 main 위에서 구현한다. push는 사용자가 따로 요청한다. | Active | C-5, C-6, ADR-001~005 |
+| REQ-003 | 2026-11-11 | "runserver로 테스트가 가능하다. nginx·gunicorn 등 인프라는 고려할 게 없다. Redis만 docker 단일 컨테이너. sqlite가 아닌 DB가 필요하면 WSL 컨테이너 사용" → "권장안대로" | 검증 환경은 `runserver`(`config.settings.dev`) + WSL docker 컨테이너 2개(`devspoon-redis` 26379, `devspoon-postgres` 25432, 새 named volume)로 한다. nginx 차단·서버 배포 절차는 계획에서 뺀다. Python 가상환경은 worktree의 `.venv`에 `poetry.lock` 기준으로 만든다. 다른 프로젝트 컨테이너와 DB 백업 경로는 건드리지 않는다. | Active | C-7, run-log §로컬 적용·검증 절차 |
 
 ## 3. 설계 결정 기록 (ADR)
 
@@ -49,7 +50,9 @@
 - C-4: 2단계 범위(키 체계, SCAN, 무효화 시점, mixin 추출)는 건드리지 않는다. — REQ-001
 - C-5: 커밋까지만 하고 push·병합·배포는 하지 않는다. — 사용자 지시
 - C-6: GitHub PR을 쓰지 않는다. 브랜치 통합은 사용자가 요청할 때 로컬 merge 커밋으로 한다. — REQ-002
+- C-7: WSL의 기존 컨테이너(다른 프로젝트)와 로컬 DB 백업은 읽지도 바꾸지도 연결하지도 않는다. 검증용 컨테이너는 새 이름·새 포트·새 볼륨만 쓴다. — REQ-003
 
 ## 5. 변경 이력
 - v0.1 (2026-11-11): 최초 작성. 설계만 하고 코드는 아직 작성하지 않음.
 - v0.2 (2026-11-11): 사용자 설계 승인. ADR-001~005 Accepted. REQ-002(PR 미사용), C-6 추가.
+- v0.3 (2026-11-11): REQ-003(runserver + WSL 컨테이너 검증, 인프라 제외), C-7 추가.

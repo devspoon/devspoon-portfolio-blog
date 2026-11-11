@@ -21,15 +21,20 @@
 5. **검수:** 인수 기준 전부 확인, fail-on-revert 기록, run-log Round 1 작성
 6. **커밋:** 결함 묶음별로 커밋 4개(1~4단계). push는 하지 않는다
 
-## 배포 절차 (사용자가 직접 실행)
+## 로컬 적용·검증 절차 (REQ-003: runserver + WSL 컨테이너, 인프라 제외)
 
-1. 코드 반영
-2. 키 정리: 요청자별 값이 남은 키를 접두사 단위로 지운다. 세션이 같은 Redis DB에 있으므로 `FLUSHDB`는 쓰지 않는다.
+1. 코드 반영 후 `pytest` 전체 실행
+2. 키 정리(옛 캐시가 남아 있는 Redis일 때): 요청자별 값이 남은 키를 접두사 단위로 지운다. 세션이 같은 Redis DB에 있으므로 `FLUSHDB`는 쓰지 않는다.
    ```
    python manage.py shell -c "from django.core.cache import cache; [cache.delete_pattern(p) for p in ('blog:*:user_auth','blog:*:like_state','board:*:user_auth','blog:*Reply:*','board:*Reply:*')]"
    ```
    마지막 두 패턴은 첫 요청자 기준 `user_auth`가 들어 있는 댓글 목록 캐시다.
-3. 확인: 비로그인 상태로 글 상세를 열어 수정·삭제 버튼이 보이지 않는지, 다른 계정으로 좋아요 상태가 각자 다르게 보이는지 확인한다.
+3. `runserver`(`config.settings.dev`)로 확인한다.
+   - 작성자 로그인 창에서 상세 페이지를 먼저 열고, 시크릿 창(비로그인)과 다른 계정으로 같은 글을 연다 → 작성자에게만 수정·삭제 버튼
+   - A가 좋아요를 누른 뒤 B로 열기 → B는 좋아요 안 눌린 상태
+   - `redis-cli --scan --pattern "*user_auth*"` → 결과 없음
+   - 댓글 작성 후 삭제 → 성공, 댓글 수 1 감소
+   - A가 댓글 목록을 먼저 열고 B로 열기 → B에게 A 댓글의 수정·삭제 버튼 없음
 
 ## 심각도 추세
 | Round | CRIT | HIGH | MED | LOW | 신규 Fix | 판정 |
