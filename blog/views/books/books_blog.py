@@ -18,7 +18,6 @@ from django.views.generic import (
     UpdateView,
     View,
 )
-from isort import file
 
 from common.components.django_redis_cache_components import (
     dredis_cache_check_key,
