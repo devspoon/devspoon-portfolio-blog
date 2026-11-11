@@ -1,7 +1,7 @@
 import logging
 
 from django.conf import settings
-from django.db import models, transaction
+from django.db import models
 from django.db.models import F
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
@@ -105,9 +105,9 @@ def auto_delete_file_on_delete_for_blog(sender, instance=None, **kwargs):
         "BooksPostReply",
     )
     if sender.__name__ in list_of_models:  # this is the dynamic part you want
-        with transaction.atomic():
-            post = sender.objects.get(pk=instance.pk).post
-
-            if post.reply_count > 0:
-                post.reply_count = F("reply_count") - 1
-                post.save()
+        # post_delete 시점에는 행이 이미 지워져 있어 다시 조회하면 DoesNotExist로
+        # 삭제 전체가 롤백된다. 조건부 UPDATE 한 문장으로 줄이고 0 아래로 내려가지 않게 한다.
+        post_model = sender._meta.get_field("post").related_model
+        post_model.objects.filter(pk=instance.post_id, reply_count__gt=0).update(
+            reply_count=F("reply_count") - 1
+        )

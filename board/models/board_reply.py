@@ -8,7 +8,6 @@ from django.db.models.signals import pre_save, post_delete
 from django.urls import reverse
 
 from django.db.models import F
-from django.db import transaction
 
 from django.db import models
 
@@ -62,10 +61,9 @@ class ReactivationReply(BoardReplyMixin):
 def auto_delete_file_on_delete_for_board(sender, instance=None, **kwargs):
     list_of_models = ('NoticeReply', 'VisiterReply', 'ReactivationReply')
     if sender.__name__ in list_of_models: # this is the dynamic part you want
-
-        with transaction.atomic():
-            board = sender.objects.get(pk=instance.pk).board
-
-            if board.reply_count > 0 :
-                board.reply_count = F('reply_count') - 1
-                board.save()
+        # post_delete 시점에는 행이 이미 지워져 있어 다시 조회하면 DoesNotExist로
+        # 삭제 전체가 롤백된다. 조건부 UPDATE 한 문장으로 줄이고 0 아래로 내려가지 않게 한다.
+        board_model = sender._meta.get_field("board").related_model
+        board_model.objects.filter(pk=instance.board_id, reply_count__gt=0).update(
+            reply_count=F("reply_count") - 1
+        )
