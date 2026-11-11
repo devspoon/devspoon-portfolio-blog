@@ -161,8 +161,7 @@ class ReactivationDeleteView(LoginRequiredMixin, View):
     cache_prefix = "board:Reactivation"
     cache_reply_prefix = "board:ReactivationReply"
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         post = get_object_or_404(self.model, id=kwargs.get("pk"))
@@ -178,7 +177,8 @@ class ReactivationDeleteView(LoginRequiredMixin, View):
             self.cache_reply_prefix,
             kwargs.get("pk"),
         )
-        post.update(is_deleted=True)
+        post.is_deleted = True
+        post.save()
         return redirect(self.success_url)
 
 

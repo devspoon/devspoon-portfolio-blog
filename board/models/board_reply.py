@@ -8,7 +8,6 @@ from django.db.models.signals import pre_save, post_delete
 from django.urls import reverse
 
 from django.db.models import F
-from django.db import transaction
 
 from django.db import models
 
@@ -63,9 +62,7 @@ def auto_delete_file_on_delete_for_board(sender, instance=None, **kwargs):
     list_of_models = ('NoticeReply', 'VisiterReply', 'ReactivationReply')
     if sender.__name__ in list_of_models: # this is the dynamic part you want
 
-        with transaction.atomic():
-            board = sender.objects.get(pk=instance.pk).board
-
-            if board.reply_count > 0 :
-                board.reply_count = F('reply_count') - 1
-                board.save()
+        # the reply row is already deleted here, so update the parent without re-fetching it
+        sender.board.field.related_model.objects.filter(
+            pk=instance.board_id, reply_count__gt=0
+        ).update(reply_count=F('reply_count') - 1)

@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from common.mixin.views import StaffRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.db.models import F
@@ -115,7 +116,7 @@ class NoticeDetailView(DetailView):
         return context
 
 
-class NoticeCreateView(LoginRequiredMixin, CreateView):
+class NoticeCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
     model = Notice
     template_name = "board/notice/notice_edit.html"
     success_url = reverse_lazy("board:notice_list")
@@ -163,8 +164,7 @@ class NoticeDeleteView(LoginRequiredMixin, View):
     cache_prefix = "board:Notice"
     cache_reply_prefix = "board:NoticeReply"
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         post = get_object_or_404(self.model, id=kwargs.get("pk"))
@@ -180,7 +180,8 @@ class NoticeDeleteView(LoginRequiredMixin, View):
             self.cache_reply_prefix,
             kwargs.get("pk"),
         )
-        post.update(is_deleted=True)
+        post.is_deleted = True
+        post.save()
         return redirect(self.success_url)
 
 

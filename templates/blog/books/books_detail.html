@@ -38,7 +38,7 @@
                 <div class="post-details-content">
                     <div class="post-details-body">
                         <div class="content form-control">
-                            {{board.content|safe}}
+                            {{ board.content|sanitize_html }}
 
                         </div>
                         <div class="tags mb-3">
@@ -56,8 +56,8 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="d-flex justify-content-end" id="detail-button-group">
-                                        <a href="{{board.id}}" id="update-button"><button type="button" class="btn btn-outline-primary  me-3">Edit</button></a>
-                                        <a href="{{board.id}}" id="delete-button"><button type="button" class="btn btn-outline-danger ">Delete</button></a>
+                                        <a href="{% url 'blog:books_update' board.pk %}" class="btn btn-outline-primary me-3">Edit</a>
+                                        <form method="post" action="{% url 'blog:books_delete' board.pk %}">{% csrf_token %}<button type="submit" class="btn btn-outline-danger">Delete</button></form>
                                     </div>
                                 </div>
                             </div>

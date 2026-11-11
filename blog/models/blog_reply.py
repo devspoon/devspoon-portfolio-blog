@@ -1,7 +1,7 @@
 import logging
 
 from django.conf import settings
-from django.db import models, transaction
+from django.db import models
 from django.db.models import F
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
@@ -105,9 +105,7 @@ def auto_delete_file_on_delete_for_blog(sender, instance=None, **kwargs):
         "BooksPostReply",
     )
     if sender.__name__ in list_of_models:  # this is the dynamic part you want
-        with transaction.atomic():
-            post = sender.objects.get(pk=instance.pk).post
-
-            if post.reply_count > 0:
-                post.reply_count = F("reply_count") - 1
-                post.save()
+        # the reply row is already deleted here, so update the parent without re-fetching it
+        sender.post.field.related_model.objects.filter(
+            pk=instance.post_id, reply_count__gt=0
+        ).update(reply_count=F("reply_count") - 1)

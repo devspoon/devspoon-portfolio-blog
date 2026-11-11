@@ -12,4 +12,5 @@ def test_error_404(client):
     url = reverse("home:index") + "test.html"
     response = client.get(path=url, **headers)
     content = response.content.decode("utf-8")
+    assert response.status_code == 404
     assert "404 Error" in content

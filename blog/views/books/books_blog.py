@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from common.mixin.views import StaffRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.db.models import F, Q
@@ -140,7 +141,7 @@ class BooksDetailView(DetailView):
 
 
 @method_decorator(index_cache_clean, name="dispatch")
-class BooksCreateView(LoginRequiredMixin, CreateView):
+class BooksCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
     model = BooksPost
     template_name = "blog/books/books_edit.html"
     success_url = reverse_lazy("blog:books_list")
@@ -196,8 +197,7 @@ class BooksDeleteView(LoginRequiredMixin, View):
     cache_prefix = "blog:Books"
     cache_reply_prefix = "blog:BooksReply"
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         # 객체를 가져오고, 없으면 404 에러 발생
@@ -219,7 +219,7 @@ class BooksDeleteView(LoginRequiredMixin, View):
 
 
 class BooksLikeJsonView(LoginRequiredMixin, View):
-    def get(self, request, pk):
+    def post(self, request, pk):
         post = get_object_or_404(BooksPost, pk=pk)
 
         with transaction.atomic():

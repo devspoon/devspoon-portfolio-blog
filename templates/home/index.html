@@ -322,13 +322,13 @@
                     <div class="card-content content">
                         <h4 class="title">
                             {% if item.table == 'OnlineStudy' %}
-                            <a href="{% url 'blog:online_study_detail' item.pk %}">{{item.title|safe}}</a>
+                            <a href="{% url 'blog:online_study_detail' item.pk %}">{{ item.title }}</a>
                             {% elif item.table == 'Blog' %}
-                            <a href="{% url 'blog:blog_detail' item.pk %}">{{item.title|safe}}</a>
+                            <a href="{% url 'blog:blog_detail' item.pk %}">{{ item.title }}</a>
                             {% elif item.table == 'OpenSource' %}
-                            <a href="{% url 'blog:opensource_detail' item.pk %}">{{item.title|safe}}</a>
+                            <a href="{% url 'blog:opensource_detail' item.pk %}">{{ item.title }}</a>
                             {% else %}
-                            <a href="{% url 'blog:books_detail' item.pk %}">{{item.title|safe}}</a>
+                            <a href="{% url 'blog:books_detail' item.pk %}">{{ item.title }}</a>
                             {% endif %}
                             
                         </h4>

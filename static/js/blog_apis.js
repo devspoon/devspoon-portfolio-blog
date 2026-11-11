@@ -22,6 +22,16 @@ function range(start,end) {
     return array;
 }
 
+// reply data is user input: escape before building HTML strings
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 /*=====================================
 blog like event
 ======================================= */
@@ -39,7 +49,7 @@ if (likeToggler != null){
         const full_url = location.origin+'/'+url[1]+'/'+url[2]+'/like/json/'+url[4]+'/'
 
         try {
-            let res = await axios.get(full_url);
+            let res = await axios.post(full_url);
             likeCount.textContent=res.data.like_count;
             likeToggler.classList.toggle('clicked');
             likeTogglerDiv.setAttribute('onfocus','this.blur()');
@@ -199,18 +209,18 @@ function buildReplyStack(replies){
         // thembnail
         snippet += '<div class="author-info"> \n\
                        <div class="thumb"> \n\
-                        <img src="'+ replies[reply].thumbnail +'" alt="Image"> \n\
+                        <img src="'+ escapeHtml(replies[reply].thumbnail) +'" alt="Image"> \n\
                         </div>\n';
 
         // name
         snippet += '<div class="author-details reply-'+replies[reply].pk+'">\n\
                     <ul>\n\
-                        <li class="name" id="name">'+replies[reply].author+'</li>\n\
-                        <li class="meta-date ms-2" id="'+replies[reply].pk+'">'+replies[reply].created_at+'</li>\n\
+                        <li class="name" id="name">'+escapeHtml(replies[reply].author)+'</li>\n\
+                        <li class="meta-date ms-2" id="'+replies[reply].pk+'">'+escapeHtml(replies[reply].created_at)+'</li>\n\
                     </ul>\n';
 
         // comment
-        snippet += '<p>'+replies[reply].comment+'</p>\n';
+        snippet += '<p>'+escapeHtml(replies[reply].comment)+'</p>\n';
 
         //update, delete button
         if (replies[reply].user_auth)
@@ -326,7 +336,12 @@ async function deleteReplyBox(replyNum)
 {
     const full_url = location.href + 'reply/delete/'+replyNum+'/';
 
-    location.replace(full_url);
+    try {
+        await axios.post(full_url);
+        location.reload();
+    } catch (err) {
+        console.log('reply delete error : ', err);
+    }
 }
 
 

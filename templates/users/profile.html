@@ -188,7 +188,7 @@
                                             </div>
                                             <div class="row">
                                             <div class="col-sm-8 d-flex justify-content-end my-2">
-                                                <button type="button" class="btn btn-secondary " onclick="location.href='{% url 'users:user_delete' %}'; ">Delete Account</button>
+                                                <button type="submit" form="delete-account-form" class="btn btn-secondary">Delete Account</button>
                                             </div>
                                             <div class="col-sm-3 d-flex justify-content-end my-2">
                                                 <button class="btn btn-primary " type="submit">Save Changes</button>
@@ -199,6 +199,7 @@
                                         </div>
                                     </div>
                                 </form>
+                                <form id="delete-account-form" method="post" action="{% url 'users:user_delete' %}">{% csrf_token %}</form>
                             </div>
                         </div>
                     </div>

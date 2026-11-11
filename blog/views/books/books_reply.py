@@ -185,8 +185,7 @@ class BooksReplyDeleteView(LoginRequiredMixin, DeleteView):
     login_url = reverse_lazy("users:login")
     cache_prefix = "blog:BooksReply"
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         self.object = super().get_object()

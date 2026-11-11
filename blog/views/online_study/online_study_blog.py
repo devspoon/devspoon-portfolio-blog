@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from common.mixin.views import StaffRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.db.models import F, Q
@@ -137,7 +138,7 @@ class OnlineStudyDetailView(DetailView):
 
 
 @method_decorator(index_cache_clean, name="dispatch")
-class OnlineStudyCreateView(LoginRequiredMixin, CreateView):
+class OnlineStudyCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
     model = OnlineStudyPost
     template_name = "blog/online_study/online_study_edit.html"
     success_url = reverse_lazy("blog:online_study_list")
@@ -193,8 +194,7 @@ class OnlineStudyDeleteView(LoginRequiredMixin, View):
     cache_prefix = "blog:OnlineStudy"
     cache_reply_prefix = "blog:OnlineStudyReply"
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         # 객체를 가져오고, 없으면 404 에러 발생
@@ -216,7 +216,7 @@ class OnlineStudyDeleteView(LoginRequiredMixin, View):
 
 
 class OnlineStudyLikeJsonView(LoginRequiredMixin, View):
-    def get(self, request, pk):
+    def post(self, request, pk):
         post = get_object_or_404(OnlineStudyPost, pk=pk)
 
         with transaction.atomic():

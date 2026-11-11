@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from common.mixin.views import StaffRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.db.models import F, Q
@@ -138,7 +139,7 @@ class ProjectDetailView(DetailView):
 
 
 @method_decorator(index_cache_clean, name="dispatch")
-class ProjectCreateView(LoginRequiredMixin, CreateView):
+class ProjectCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
     model = ProjectPost
     template_name = "blog/project/project_edit.html"
     success_url = reverse_lazy("blog:project_list")
@@ -194,8 +195,7 @@ class ProjectDeleteView(LoginRequiredMixin, View):
     cache_prefix = "blog:Project"
     cache_reply_prefix = "blog:ProjectReply"
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         # 객체를 가져오고, 없으면 404 에러 발생
@@ -217,7 +217,7 @@ class ProjectDeleteView(LoginRequiredMixin, View):
 
 
 class ProjectLikeJsonView(LoginRequiredMixin, View):
-    def get(self, request, pk):
+    def post(self, request, pk):
         post = get_object_or_404(ProjectPost, pk=pk)
 
         with transaction.atomic():

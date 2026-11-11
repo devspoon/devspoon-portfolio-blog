@@ -8,7 +8,6 @@ window.addEventListener
 window.addEventListener('DOMContentLoaded', function()
 {
     const navi = document.querySelector('.navi-blog');
-    const detail_button_group = document.querySelector('#detail-button-group');
     const detail_nav_group = document.querySelector('#navigation-group');
     const list_th_title = document.querySelectorAll('#th-title');
 
@@ -20,18 +19,6 @@ window.addEventListener('DOMContentLoaded', function()
         pageTitle.innerText=pathName[2];
         navi.innerText=pathName[2];
         title.innerText=pathName[2];
-    }
-
-    if (detail_button_group != null)
-    {
-        const update_ = document.querySelector('#update-button');
-        const delete_ = document.querySelector('#delete-button');
-        const pk = update_.getAttribute('href');
-        let url = location.pathname.split('/');
-        const update_url = location.origin+'/'+url[1]+'/'+url[2]+'/update/'+pk+'/'
-        const delete_url = location.origin+'/'+url[1]+'/'+url[2]+'/delete/'+pk+'/'
-        update_.setAttribute('href',update_url);
-        delete_.setAttribute('href',delete_url);
     }
 
     if (detail_nav_group != null)
