@@ -27,16 +27,17 @@
 | Req-ID | 날짜 | 요청(원문 요약) | 도출된 요구사항 | 상태 | 연결 |
 |---|---|---|---|---|---|
 | REQ-001 | 2026-11-11 | "django 코드 검수, redis 캐시와 N+1 검토" → "작업 순서 정리, 반드시 설계·계획 후 실행" → "1단계 설계를 PR #9 병합 전에 미리 작성" | 검수 결과 1단계(C1·C2·N1·M2 + 형제 버그)를 고치는 설계와 작업 계획을 문서로 남긴다. 코드는 PR #9 병합 후 승인을 받아 작성한다. | Active | charter INV-1~5, ADR-001~005 |
+| REQ-002 | 2026-11-11 | "1단계 설계 승인한다. PR은 사용하지 않는다. push는 차후 수동으로 요청하겠다. 커밋만 관리해줘." | ADR-001~005를 Accepted로 확정한다. GitHub PR을 쓰지 않는다. `docs/sentry-error-remediation-plan` 브랜치는 로컬 merge 커밋으로 main에 합치고(사용자 요청 시), 1단계는 그 main 위에서 구현한다. push는 사용자가 따로 요청한다. | Active | C-5, C-6, ADR-001~005 |
 
 ## 3. 설계 결정 기록 (ADR)
 
 | ADR-ID | 날짜 | 결정 | 근거 | 상태 | supersedes |
 |---|---|---|---|---|---|
-| ADR-001 | 2026-11-11 | `user_auth`는 `request.user`가 아니라 **요청자가 작성자인지 나타내는 bool**로 바꾸고, 캐시 분기 **밖에서** 요청마다 계산한다. `like_state`도 요청마다 계산한다. | 템플릿 9개가 `{% if user_auth %}`만 쓰므로 템플릿은 그대로 두고 값만 바꾸면 된다. `AnonymousUser`가 참으로 평가돼 버튼이 모두에게 보이던 문제도 함께 사라진다. | Proposed | — |
-| ADR-002 | 2026-11-11 | 블로그 상세는 `pre_board`·`next_board`만 캐시하고, 캐시 존재 여부를 판단하는 기준 키를 `user_auth`에서 `pre_board`로 바꾼다. 요청자별 값은 캐시를 읽은 **뒤에** 덮어쓴다. | 배포 직후 Redis에 남아 있는 옛 `user_auth`·`like_state` 키를 읽더라도 요청자별 값이 덮어쓰므로 노출되지 않는다. | Proposed | — |
-| ADR-003 | 2026-11-11 | board 상세 뷰의 `get_context_data` 캐시 블록은 제거한다. | 이 블록이 캐시하던 것은 `user_auth` 하나뿐이었다. 제거하면 남는 캐시가 없다. | Proposed | — |
-| ADR-004 | 2026-11-11 | 댓글 목록은 `user_auth`를 빼고 캐시한다. 캐시에서 읽든 DB에서 읽든 응답 직전에 요청자 기준으로 `user_auth`를 붙인다. `post`/`board` 값은 `*_id`로 읽는다. | 캐시 재사용은 유지하면서 요청자별 값만 분리한다. `*_id`는 추가 쿼리가 없다. | Proposed | — |
-| ADR-005 | 2026-11-11 | 댓글 `post_delete` 시그널은 삭제된 행을 다시 조회하지 않고 `instance.post_id`(board는 `board_id`)로 `filter(pk=..., reply_count__gt=0).update(reply_count=F(...) - 1)`을 실행한다. | 지금은 `Collector.delete`의 atomic 블록 안에서 `DoesNotExist`가 나서 삭제 전체가 롤백된다. 조건부 UPDATE 한 문장이면 race 없이 음수도 막는다. | Proposed | — |
+| ADR-001 | 2026-11-11 | `user_auth`는 `request.user`가 아니라 **요청자가 작성자인지 나타내는 bool**로 바꾸고, 캐시 분기 **밖에서** 요청마다 계산한다. `like_state`도 요청마다 계산한다. | 템플릿 9개가 `{% if user_auth %}`만 쓰므로 템플릿은 그대로 두고 값만 바꾸면 된다. `AnonymousUser`가 참으로 평가돼 버튼이 모두에게 보이던 문제도 함께 사라진다. | Accepted | — |
+| ADR-002 | 2026-11-11 | 블로그 상세는 `pre_board`·`next_board`만 캐시하고, 캐시 존재 여부를 판단하는 기준 키를 `user_auth`에서 `pre_board`로 바꾼다. 요청자별 값은 캐시를 읽은 **뒤에** 덮어쓴다. | 배포 직후 Redis에 남아 있는 옛 `user_auth`·`like_state` 키를 읽더라도 요청자별 값이 덮어쓰므로 노출되지 않는다. | Accepted | — |
+| ADR-003 | 2026-11-11 | board 상세 뷰의 `get_context_data` 캐시 블록은 제거한다. | 이 블록이 캐시하던 것은 `user_auth` 하나뿐이었다. 제거하면 남는 캐시가 없다. | Accepted | — |
+| ADR-004 | 2026-11-11 | 댓글 목록은 `user_auth`를 빼고 캐시한다. 캐시에서 읽든 DB에서 읽든 응답 직전에 요청자 기준으로 `user_auth`를 붙인다. `post`/`board` 값은 `*_id`로 읽는다. | 캐시 재사용은 유지하면서 요청자별 값만 분리한다. `*_id`는 추가 쿼리가 없다. | Accepted | — |
+| ADR-005 | 2026-11-11 | 댓글 `post_delete` 시그널은 삭제된 행을 다시 조회하지 않고 `instance.post_id`(board는 `board_id`)로 `filter(pk=..., reply_count__gt=0).update(reply_count=F(...) - 1)`을 실행한다. | 지금은 `Collector.delete`의 atomic 블록 안에서 `DoesNotExist`가 나서 삭제 전체가 롤백된다. 조건부 UPDATE 한 문장이면 race 없이 음수도 막는다. | Accepted | — |
 
 > ADR은 사용자 승인 시 Accepted로 바꾼다.
 
@@ -47,6 +48,8 @@
 - C-3: migration을 만들지 않는다. 모델 필드·DB 스키마는 바꾸지 않는다. — REQ-001
 - C-4: 2단계 범위(키 체계, SCAN, 무효화 시점, mixin 추출)는 건드리지 않는다. — REQ-001
 - C-5: 커밋까지만 하고 push·병합·배포는 하지 않는다. — 사용자 지시
+- C-6: GitHub PR을 쓰지 않는다. 브랜치 통합은 사용자가 요청할 때 로컬 merge 커밋으로 한다. — REQ-002
 
 ## 5. 변경 이력
 - v0.1 (2026-11-11): 최초 작성. 설계만 하고 코드는 아직 작성하지 않음.
+- v0.2 (2026-11-11): 사용자 설계 승인. ADR-001~005 Accepted. REQ-002(PR 미사용), C-6 추가.

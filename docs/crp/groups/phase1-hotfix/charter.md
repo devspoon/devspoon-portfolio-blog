@@ -23,7 +23,7 @@
 ## 2. 계약
 ### 2-1. 지원 구성
 - 설정 `config.settings.test`와 실제 Redis(CI의 redis 5). django-redis 전용 API(`ttl`, `iter_keys`, `delete_pattern`)를 쓰므로 LocMem 캐시로 대체하지 않는다.
-- 전제: PR #9의 `conftest.py` 자동 캐시 초기화 fixture. **PR #9 병합 후 main을 기준으로 구현한다.**
+- 전제: `docs/sentry-error-remediation-plan` 브랜치의 `conftest.py` 자동 캐시 초기화 fixture. **그 브랜치를 main에 로컬 병합한 뒤 그 main을 기준으로 구현한다**(C-6).
 
 ### 2-2. 위협 모델
 - 방어한다: 한 방문자의 요청자별 값이 다른 방문자에게 보이는 것, User 객체가 Redis에 저장되는 것, 비로그인·비작성자에게 수정·삭제 버튼이 보이는 것.
@@ -43,7 +43,7 @@
 - `utils/email/sub_settings/` 같은 사용되지 않는 사본 정리
 
 ## 3. 인수 기준
-- [ ] 신규 테스트 2개 파일이 CI(현 main + PR #9 기준)에서 실제로 실행되고 통과한다. SKIP 0
+- [ ] 신규 테스트 2개 파일이 로컬 또는 CI(sentry 브랜치 병합 후 main 기준)에서 실제로 실행되고 통과한다. SKIP 0
 - [ ] 각 결함마다 회귀 테스트가 **수정 전 코드에서 실패**함을 확인한다(fail-on-revert). C2는 수정 전 `DoesNotExist`로 실패해야 한다.
 - [ ] INV-1·2 → 사용자 A(작성자)가 먼저 방문하고 사용자 B와 비로그인이 나중에 방문하는 순서로 8개 상세 URL을 parametrize한 테스트
 - [ ] INV-3 → 위 테스트 뒤 `cache.keys("*user_auth*")`, `cache.keys("*like_state*")`가 비어 있음
@@ -51,7 +51,7 @@
 - [ ] INV-5 → `django_assert_num_queries`로 댓글 1개일 때와 5개일 때 쿼리 수가 같음(블로그·board 각 1개 모델 이상)
 - [ ] M2 → `books_blog`, `online_study_blog` 모듈에 `isort` import 없음(`grep`), 기존 테스트 통과
 - [ ] 기존 전체 테스트 통과(회귀 0)
-- [ ] 불가침 제약 C-1~C-5 위반 없음
+- [ ] 불가침 제약 C-1~C-6 위반 없음
 
 ## 4. 변경 이력
 - v0.1 (2026-11-11): 최초 작성.
