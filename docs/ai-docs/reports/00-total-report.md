@@ -79,8 +79,8 @@
 ### 이메일 401 / Maximum credits exceeded
 
 - Sentry 문서:
-  - `Error sending email to ['[email]']: HTTP Error 401: Unauthorized.md`
-  - `Failed to send email, error: HTTP Error 401: Unauthorized, response body: ... Maximum credits exceeded ... .md`
+  - `SendGrid-401-Unauthorized.md`
+  - `SendGrid-401-Maximum-credits-exceeded.md`
 - 관련 코드:
   - `utils/email/async_send_email.py`
   - `config/settings/base.py`

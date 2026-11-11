@@ -108,8 +108,8 @@ Sentry 변수의 `params`에는 다음처럼 무작위 입력이 포함되어 �
 ## PYTHON-DJANGO-7C / 7D: Email 401 Unauthorized
 
 - 파일:
-  - `docs/error/Error sending email to ['[email]']: HTTP Error 401: Unauthorized.md`
-  - `docs/error/Failed to send email, error: HTTP Error 401: Unauthorized, response body: ... Maximum credits exceeded ... .md`
+  - `docs/error/SendGrid-401-Unauthorized.md`
+  - `docs/error/SendGrid-401-Maximum-credits-exceeded.md`
 - 발생일: 2026-07-12 11:28:05 UTC
 - 관련 코드:
   - `utils/email/async_send_email.py`

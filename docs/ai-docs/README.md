@@ -23,8 +23,8 @@ Phase 0(nginx)과 SendGrid 계정 점검은 운영 작업으로 남아 있다.
 - `docs/error/DataError.md`
 - `docs/error/ConnectionHardwareStats.MultipleObjectsReturned.md`
 - `docs/error/ConnectionMethodStats.MultipleObjectsReturned.md`
-- `docs/error/Error sending email to ['[email]']: HTTP Error 401: Unauthorized.md`
-- `docs/error/Failed to send email, error: HTTP Error 401: Unauthorized, response body: b'{"errors":[{"message":"Maximum credits exceeded","field":null,"help":null}]}'.md`
+- `docs/error/SendGrid-401-Unauthorized.md`
+- `docs/error/SendGrid-401-Maximum-credits-exceeded.md`
 
 ## 검토 기준
 
