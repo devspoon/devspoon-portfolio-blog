@@ -80,35 +80,12 @@ class ReactivationDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        check_cached_key = dredis_cache_check_key(
-            self.cache_prefix, self.kwargs.get("pk"), "user_auth"
+        # 요청자마다 다른 값은 공유 캐시에 넣지 않는다(C-1).
+        # 캐시에 남아 있는 옛 user_auth 값이 있어도 여기서 덮어쓴다.
+        user = self.request.user
+        context["user_auth"] = (
+            user.is_authenticated and user.pk == context["board"].author_id
         )
-        if check_cached_key:
-            logger.debug(f"called redis cache - {self.__class__.__name__}")
-            queryset = dredis_cache_get(
-                self.cache_prefix,
-                self.kwargs.get("pk"),
-            )
-            context.update(queryset)
-        else:
-            context["user_auth"] = self.request.user
-            caching_data = context.copy()
-
-            [caching_data.pop(x, None) for x in ["object", "board", "view"]]
-            logger.debug(f"called database - {self.__class__.__name__}")
-            if caching_data:
-                logger.debug(
-                    f"redis cache - {self.__class__.__name__} caching_data exists"
-                )
-                dredis_cache_set(
-                    self.cache_prefix,
-                    self.kwargs.get("pk"),
-                    **caching_data,
-                )
-            else:
-                logger.debug(
-                    f"redis cache - {self.__class__.__name__} caching_data not exists"
-                )
 
         return context
 

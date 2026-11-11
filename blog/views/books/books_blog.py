@@ -85,7 +85,7 @@ class BooksDetailView(DetailView):
         context = super().get_context_data(**kwargs)
 
         check_cached_key = dredis_cache_check_key(
-            self.cache_prefix, self.kwargs.get("pk"), "user_auth"
+            self.cache_prefix, self.kwargs.get("pk"), "pre_board"
         )
         if check_cached_key:
             logger.debug(f"called redis cache - {self.__class__.__name__}")
@@ -109,14 +109,6 @@ class BooksDetailView(DetailView):
             context["pre_board"] = pre_temp_queryset if pre_temp_queryset else ""
             context["next_board"] = next_temp_queryset if next_temp_queryset else ""
 
-            context["like_state"] = (
-                BooksPost.objects.filter(pk=self.kwargs.get("pk"))
-                .first()
-                .like_user_set.filter(pk=self.request.user.pk)
-                .exists()
-            )
-
-            context["user_auth"] = self.request.user
             caching_data = context.copy()
 
             [caching_data.pop(x, None) for x in ["object", "board", "view"]]
@@ -134,6 +126,17 @@ class BooksDetailView(DetailView):
                 logger.debug(
                     f"redis cache - {self.__class__.__name__} caching_data not exists"
                 )
+
+        # 요청자마다 다른 값은 공유 캐시에 넣지 않는다(C-1).
+        # 캐시에 남아 있는 옛 user_auth 값이 있어도 여기서 덮어쓴다.
+        user = self.request.user
+        context["user_auth"] = (
+            user.is_authenticated and user.pk == context["board"].author_id
+        )
+        context["like_state"] = (
+            user.is_authenticated
+            and context["board"].like_user_set.filter(pk=user.pk).exists()
+        )
 
         logger.debug(f"final context : {context}")
         return context
