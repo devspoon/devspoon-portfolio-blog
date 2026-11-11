@@ -16,13 +16,11 @@ class ConnectionMethodStatsAdmin(admin.ModelAdmin):
     )
 
     def changelist_view(self, request, extra_context=None):
-        stat_data = (
-            ConnectionMethodStats.objects.filter(
-                created_at__day=timezone.now().date().day
-            )
-            # .annotate()
-            .values("win", "mac", "iph", "android", "oth")
-        )
+        # created_at__day은 '일(day of month)'만 비교해 다른 달의 row까지 섞였다.
+        # 집계키인 stat_date로 오늘 row만 조회한다.
+        stat_data = ConnectionMethodStats.objects.filter(
+            stat_date=timezone.localdate()
+        ).values("win", "mac", "iph", "android", "oth")
 
         # data = newstats.objects.all()
         # newdata = serializers.serialize('json', list(data), fields=("win","mac","iph","android","oth"))
@@ -42,13 +40,11 @@ class ConnectionHardwareStatsAdmin(admin.ModelAdmin):
     )
 
     def changelist_view(self, request, extra_context=None):
-        stat_data = (
-            ConnectionHardwareStats.objects.filter(
-                created_at__day=timezone.now().date().day
-            )
-            # .annotate()
-            .values("mobile", "tablet", "pc", "bot")
-        )
+        # created_at__day은 '일(day of month)'만 비교해 다른 달의 row까지 섞였다.
+        # 집계키인 stat_date로 오늘 row만 조회한다.
+        stat_data = ConnectionHardwareStats.objects.filter(
+            stat_date=timezone.localdate()
+        ).values("mobile", "tablet", "pc", "bot")
 
         # data = newstats.objects.all()
         # newdata = serializers.serialize('json', list(data), fields=("mobile","tablet","pc","bot"))

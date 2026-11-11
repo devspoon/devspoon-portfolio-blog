@@ -30,3 +30,7 @@ staticfiles/
 media/**
 !media/default/no_img-removebg-preview.png
 !media/default/no_img.png
+
+# test coverage output
+.coverage
+htmlcov/

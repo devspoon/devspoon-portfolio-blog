@@ -1,5 +1,6 @@
 import factory
 import pytest
+from django.core.cache import cache
 from pytest_factoryboy import register
 
 from board.models.board import Notice
@@ -8,6 +9,18 @@ from users.tests.factories import FakeUserFactory, StaticUserFactory
 
 register(StaticUserFactory)
 register(FakeUserFactory)
+
+
+@pytest.fixture(autouse=True)
+def clear_redis_cache():
+    """테스트 DB와 달리 redis 캐시는 실행 사이에 초기화되지 않는다.
+
+    남은 키가 캐시 히트/미스 분기를 바꿔서 같은 테스트가 실행 순서와 이전
+    실행 결과에 따라 다른 코드 경로를 타게 된다. 매 테스트 전후로 비운다.
+    """
+    cache.clear()
+    yield
+    cache.clear()
 
 
 # help to use session scope with fixture of db and django_db

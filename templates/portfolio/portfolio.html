@@ -337,39 +337,46 @@
                     <div class="col-md-6">
                       <div class="single-input">
                         <label for="name">{{_("Name")}}</label>
-                        <input type="text" id="name" name="name" class="form-input" placeholder="Name">
+                        <input type="text" id="name" name="name" class="form-input" placeholder="Name" maxlength="300" required>
                         <i class="lni lni-user"></i>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="single-input">
                         <label for="email">{{_("Email")}}</label>
-                        <input type="email" id="emailfrom" name="emailfrom" class="form-input" placeholder="Email">
+                        <input type="email" id="emailfrom" name="emailfrom" class="form-input" placeholder="Email" maxlength="128" required>
                         <i class="lni lni-envelope"></i>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="single-input">
                         <label for="number">{{_("Number")}}</label>
-                        <input type="text" id="number" name="number" class="form-input" placeholder="Number">
+                        <input type="text" id="number" name="number" class="form-input" placeholder="Number" maxlength="16">
                         <i class="lni lni-phone"></i>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="single-input">
                         <label for="subject">{{_("Subject")}}</label>
-                        <input type="text" id="subject" name="subject" class="form-input" placeholder="Subject">
+                        <input type="text" id="subject" name="subject" class="form-input" placeholder="Subject" maxlength="300" required>
                         <i class="lni lni-text-format"></i>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="single-input">
                         <label for="message">{{_("Message")}}</label>
-                        <textarea name="message" id="message" class="form-input" placeholder="Message" rows="6"></textarea>
+                        <textarea name="message" id="message" class="form-input" placeholder="Message" rows="6" maxlength="5000" required></textarea>
                         <i class="lni lni-comments-alt"></i>
                       </div>
                     </div>
                     <input type="hidden" id="emailto" name="emailto" value="{{info.office_email}}">
+                    {% if get_in_touch_form.captcha %}
+                    <div class="col-md-12">
+                      <div class="single-input">
+                        {{ get_in_touch_form.captcha }}
+                      </div>
+                    </div>
+                    {% endif %}
                     <div class="col-md-12">
                       <div class="form-button">
                         <button type="submit" class="btn btn-primary btn-lg col-12">{{_("Submit")}}<i class="lni lni-telegram-original"></i> </button>

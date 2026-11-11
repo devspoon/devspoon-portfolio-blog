@@ -72,6 +72,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # nginx 차단을 통과한 탐색성 요청을 통계/URL resolver 이전에 끊는다
+    "custom_middlewares.middlewares.access_guard.BlockSuspiciousPathMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -204,3 +206,33 @@ ACCOUNT_SIGNUP_REDIRECT_URL = "users:profile"
 
 SMTP_HOST=config("SMTP_HOST","devspoon.com")
 SMTP_FROM_ADDRESS=config("SMTP_FROM_ADDRESS","admin@devspoon.com")
+
+# 탐색성 경로 차단 (custom_middlewares.middlewares.access_guard)
+# nginx가 1차로 끊는 것이 원칙이고, 아래 설정은 애플리케이션 fallback이다.
+BLOCK_SUSPICIOUS_PATHS = True
+SUSPICIOUS_PATH_RESPONSE_STATUS = 404
+# 차단은 정상 동작이라 INFO가 맞지만 COMMON_LOGGER가 WARNING이라 기록되지 않는다.
+# 차단량을 Django 로그로 집계하려면 "WARNING"으로 올린다.
+SUSPICIOUS_PATH_LOG_LEVEL = "INFO"
+
+# 접속 통계 집계에서 제외할 경로 prefix (custom_middlewares.middlewares.statistics)
+STATS_EXCLUDED_PATH_PREFIXES = [
+    "/admin/",
+    "/static/",
+    "/media/",
+    "/silk/",
+    "/__debug__/",
+    "/favicon.ico",
+    "/robots.txt",
+    "/sitemap.xml",
+    "/sitemap-",
+]
+
+# 문의 폼 이메일 DNS(MX) 검증 사용 여부.
+# 외부 DNS에 의존하므로 테스트 환경에서는 비활성화한다.
+EMAIL_DNS_VALIDATION = True
+EMAIL_DNS_VALIDATION_TIMEOUT = 10
+
+# 문의 폼 reCAPTCHA 사용 여부.
+# 검증이 Google API 호출을 동반하므로 실제 키가 있는 환경에서만 켠다.
+CONTACT_FORM_CAPTCHA = False
