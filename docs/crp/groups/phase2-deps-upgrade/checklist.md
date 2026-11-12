@@ -16,4 +16,4 @@
 - [x] 2-c ③ django-allauth 65.22.0(socialaccount extras) — INV-1~4 통과, F-003 Fixed, 소셜 로그인 시작 redirect 확인
 - [x] 2-c ④ sentry-sdk 2.74.0·debug-toolbar 8.0.0·extensions 4.1 — INV-1~4 통과. LoggingPanel 제거(라이브러리 요구), sentry `send_default_pii` 경고는 F-006 결정 대기
 - [x] 2-c ⑤ imagekit 6.1.1·mptt 0.21.1·anymail 15.2·rangefilter 0.15.0·uvicorn 0.54.0 — INV-1~4 통과, mptt·rangefilter admin 200, 썸네일 생성 확인
-- [ ] 마무리: outdated 목록 기록, 불가침 제약 C-1~C-6 위반 없음, 수렴 판정
+- [x] 마무리: 최상위 outdated는 Django(5.2 고정)뿐, 하위 48개는 F-007. 불가침 제약 C-1~C-6 위반 없음. 판정 NOT CONVERGED(INV-5가 F-005 결정 대기)

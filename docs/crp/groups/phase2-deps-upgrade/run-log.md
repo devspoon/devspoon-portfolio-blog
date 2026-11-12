@@ -34,6 +34,12 @@
 - **2-c ③ django-allauth 0.58 → 65.22.0 (F-003):** 처음 올리자 소셜 로그인 의존성(pyjwt·oauthlib 등)이 빠짐 → 65부터 extras로 분리된 것이라 `extras = ["socialaccount"]`로 지정(oauthlib 4.0.1·pyjwt 2.15.1). allauth 경고 `ACCOUNT_EMAIL_REQUIRED is deprecated` → `ACCOUNT_SIGNUP_FIELDS`로 같은 뜻 교체. 커스텀 어댑터(`pre_social_login`·`populate_user`)는 수정 불필요. `account` migration 0006~0009 dev DB 적용(R-005). check exit 0(allauth 경고 0), 우리 앱 No changes, pytest 212 passed / 1 skipped, runserver 점검표 통과, `/oauth/{google,kakao,naver}/login/` 302 → 각 provider 인증 URL, `/users/register/` 200
 - **2-c ④ sentry-sdk 1.45 → 2.74.0, django-debug-toolbar 4.4 → 8.0.0, django-extensions 3.2 → 4.1:** 이 묶음부터 `stage` 그룹도 설치해 sentry를 확인. sentry는 prod와 같은 옵션(`DjangoIntegration`, `traces_sample_rate`, `send_default_pii`, `before_send`)으로 DSN 없이 초기화 성공, `send_default_pii` deprecated 경고 → F-006. debug-toolbar 8은 `LoggingPanel`을 스스로 빼고 "설정에서 제거하라"는 경고를 냄 → dev 설정 패널 목록에서 제거(동작 변화 없음). check exit 0, 우리 앱 No changes, pytest 212 passed / 1 skipped, runserver 점검표 통과, 툴바 표시, `show_urls` 동작
 - **2-c ⑤ django-imagekit 5.0 → 6.1.1, django-mptt 0.15 → 0.21.1(+django-js-asset 5.0), django-anymail 10.3 → 15.2, django-admin-rangefilter 0.11 → 0.15.0, uvicorn 0.30 → 0.54.0:** 코드 변경 없음(rangefilter는 이미 `rangefilter.filters` 경로 사용). check exit 0, 우리 앱 No changes(mptt 모델 포함), pytest 212 passed / 1 skipped, runserver 점검표 통과. admin 메뉴(mptt 드래그 admin)·날짜 범위 필터 목록·사용자 목록 200. 댓글 목록의 작성자 썸네일 URL 요청 시 imagekit이 `media/CACHE/...`에 생성하고 200 `image/jpeg`로 서빙
+- **마무리:** `poetry show --outdated --top-level` → Django 5.2.19(최신 6.1.3)만 남음, 사유 ADR-007. 하위 의존성 48개 outdated(보안 관련 cryptography·pillow·urllib3·requests·certifi 포함) → F-007
+- **Fix 결과:** F-001·F-002·F-003 Fixed(각각 수정 전 실패 확인 또는 경고로 확정). 이번 라운드 테스트 2개 추가(212개)
+- **결정 대기(계약 밖·사용자에게 보이는 동작·개인정보):** F-004(`requirements/dev.txt`), F-005(URLField 기본 scheme, INV-5), F-006(sentry `send_default_pii`), F-007(하위 의존성)
+- **GATE 통과:** 0 ■ 1 ■ 2 ■ 3 □(INV-5 미완, F-005) 4 ■ 5 □
+- **수렴 판정:** `NOT CONVERGED` — Open Fix 0이지만 불변식 INV-5가 F-005 결정을 기다린다
+- **검사 범위의 한계:** CI 미실행(push 안 함). 운영 설정(prod·stage)으로는 runserver를 띄우지 않았다(인프라 범위 밖). 소셜 로그인은 provider redirect까지만 확인(실제 인증 콜백은 더미 키라 불가, R-004)
 
 ## 작업 계획 (승인 후 실행 — 순서 고정)
 
@@ -57,3 +63,4 @@
 | Round | CRIT | HIGH | MED | LOW | 신규 Fix | 판정 |
 |---|---|---|---|---|---|---|
 | 0 | 0 | 2 | 1 | 0 | 3 | NOT CONVERGED(설계) |
+| 1 | 0 | 0 | 1 | 3 | 3 Fixed(F-001~003), 결정 대기 4(F-004~007) | NOT CONVERGED(INV-5) |
