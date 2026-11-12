@@ -95,7 +95,7 @@ DATABASES = {
 INSTALLED_APPS += [
     "django_celery_beat",
     "django_celery_results",
-    "captcha",
+    "django_recaptcha",
 ]
 
 """
@@ -188,10 +188,10 @@ RECAPTCHA_PRIVATE_KEY = config(
     "RECAPTCHA_PRIVATE_KEY", default="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
 )
 # 문의 폼 스팸 차단. RECAPTCHA_PUBLIC_KEY/PRIVATE_KEY가 실제 키여야 한다.
-# Google 테스트 키를 쓰면 captcha.recaptcha_test_key_error로 check가 실패한다.
+# Google 테스트 키를 쓰면 django_recaptcha.recaptcha_test_key_error로 check가 실패한다.
 CONTACT_FORM_CAPTCHA = True
 
-# SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
+# SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
 # RECAPTCHA_DOMAIN = "www.recaptcha.net"
 
 # Celery Settings

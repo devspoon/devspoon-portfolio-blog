@@ -87,7 +87,7 @@ CACHES = {
 
 INSTALLED_APPS += [
     "silk",
-    "captcha",
+    "django_recaptcha",
 ]
 
 REDIS_CONNECTION = get_redis_connection()
@@ -134,5 +134,5 @@ RECAPTCHA_PUBLIC_KEY = config(
 RECAPTCHA_PRIVATE_KEY = config(
     "RECAPTCHA_PRIVATE_KEY", default="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
 )
-# SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
+# SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
 # RECAPTCHA_DOMAIN = "www.recaptcha.net"

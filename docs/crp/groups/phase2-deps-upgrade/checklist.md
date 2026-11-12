@@ -12,7 +12,7 @@
 - [x] 2-a 정리·저위험 — INV-1~4 통과
 - [x] 2-b Django 5.2 LTS — 4.2 경고 0건, 5.2.19로, INV-1~4 통과, F-001 Fixed. INV-5는 URLField 경고 1종(F-005) 결정 대기
 - [x] 2-c ① django-redis 7.0.0·redis-py 8.1.0 — INV-1~4 통과, 캐시 키·TTL·세션 저장 확인
-- [ ] 2-c ② django-recaptcha 4 — INV-1~4, F-002
+- [x] 2-c ② django-recaptcha 4.1.0 — INV-1~4 통과, F-002 Fixed, 가입 화면 캡차 위젯 확인
 - [ ] 2-c ③ django-allauth 65 — INV-1~4, F-003
 - [ ] 2-c ④ sentry 2·debug-toolbar 8·extensions 4 — INV-1~4
 - [ ] 2-c ⑤ imagekit·mptt·anymail·rangefilter·uvicorn — INV-1~4

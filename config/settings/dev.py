@@ -79,7 +79,7 @@ DEBUG_TOOLBAR_CONFIG = {
 INSTALLED_APPS += [
     # "silk",
     "django_extensions",
-    "captcha",
+    "django_recaptcha",
 ]
 
 # django-extentions로 ERP 만들때 해줘야 하는 설정
@@ -233,7 +233,7 @@ RECAPTCHA_PUBLIC_KEY = config(
 RECAPTCHA_PRIVATE_KEY = config(
     "RECAPTCHA_PRIVATE_KEY", default="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
 )
-# SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
+# SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
 # RECAPTCHA_DOMAIN = "www.recaptcha.net"
 
 # Celery Settings

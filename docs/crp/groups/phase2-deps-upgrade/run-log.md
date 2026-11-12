@@ -30,6 +30,7 @@
   - F-001 수정: `strip_tags`로 교체, 테스트 2개(수정 전 실패 확인). admin 블로그 글 목록·수정 화면 200, 부제목이 `Bold title`로 태그 제거됨
   - 검증: check exit 0, 우리 앱 No changes, pytest 212 passed / 1 skipped, runserver 점검표 통과
 - **2-c ① django-redis 5.4 → 7.0.0, redis-py 5.2.1 → 8.1.0:** 코드 변경 없음. check exit 0, 우리 앱 No changes, pytest 212 passed / 1 skipped, runserver 점검표 통과. Redis에서 상세 캐시 키(`pre_board`·`next_board`·`get_queryset`) TTL 약 24시간, 세션 키 저장 확인
+- **2-c ② django-recaptcha 3.0 → 4.1.0 (F-002):** 옛 `captcha` 패키지는 `--sync`로 제거. `INSTALLED_APPS` 4곳 `captcha`→`django_recaptcha`, import 3곳(`portfolio/forms.py`, `users/views/users_forms.py` 2줄), 테스트 mock 대상 `django_recaptcha.fields.client.submit`, 주석의 check ID `django_recaptcha.recaptcha_test_key_error`. check exit 0, 우리 앱 No changes, pytest 212 passed / 1 skipped(캡차 테스트 8개 포함), runserver 점검표 통과, `/users/register/` 200·`g-recaptcha` 위젯 표시
 
 ## 작업 계획 (승인 후 실행 — 순서 고정)
 

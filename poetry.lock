@@ -942,17 +942,20 @@ tests = ["coverage[toml]", "mock-django"]
 
 [[package]]
 name = "django-recaptcha"
-version = "3.0.0"
+version = "4.1.0"
 description = "Django recaptcha form field/widget app."
 optional = false
 python-versions = "*"
 files = [
-    {file = "django-recaptcha-3.0.0.tar.gz", hash = "sha256:253197051288923cae675d7eff91b619e3775311292a5dbaf27a8a55ffebc670"},
-    {file = "django_recaptcha-3.0.0-py3-none-any.whl", hash = "sha256:1aed69fd6ac8fd9e99e52665392ae6748f8b6339ace656fad779fe0c6c915a52"},
+    {file = "django_recaptcha-4.1.0-py3-none-any.whl", hash = "sha256:463aa65967e973de466b28ce8e8b6abb2faffb1ce0c7faa1bf0e5b041e0497cb"},
+    {file = "django_recaptcha-4.1.0.tar.gz", hash = "sha256:73097b958733f65b729d4e4630c51fc2bf147aca6f026017d18898dfc25cb4c5"},
 ]
 
 [package.dependencies]
 django = "*"
+
+[package.extras]
+testing = ["coveralls", "tox", "tox-gh-actions"]
 
 [[package]]
 name = "django-redis"
@@ -2281,4 +2284,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "a6c7e524a0c949dae51aa11e2733367aae91e221fd59489ac70445fd54f47c44"
+content-hash = "9e24f74ee35744c17b8add534705159c9fcc0ab0d0dfe35ba70c4615427b5027"

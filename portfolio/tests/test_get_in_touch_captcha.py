@@ -19,7 +19,7 @@ RECAPTCHA_KEYS = {
 
 
 def recaptcha_result(is_valid):
-    """captcha.client.submit()의 반환값을 흉내낸다. 네트워크를 타지 않는다."""
+    """django_recaptcha.client.submit()의 반환값을 흉내낸다. 네트워크를 타지 않는다."""
     return mock.Mock(is_valid=is_valid, error_codes=[], extra_data={})
 
 
@@ -51,7 +51,7 @@ def test_missing_captcha_response_is_rejected():
 @override_settings(CONTACT_FORM_CAPTCHA=True, **RECAPTCHA_KEYS)
 def test_failed_captcha_is_rejected():
     with mock.patch(
-        "captcha.fields.client.submit", return_value=recaptcha_result(False)
+        "django_recaptcha.fields.client.submit", return_value=recaptcha_result(False)
     ):
         form = GetInTouchForm(payload(**{"g-recaptcha-response": "token"}))
 
@@ -62,7 +62,7 @@ def test_failed_captcha_is_rejected():
 @override_settings(CONTACT_FORM_CAPTCHA=True, **RECAPTCHA_KEYS)
 def test_passing_captcha_is_accepted():
     with mock.patch(
-        "captcha.fields.client.submit", return_value=recaptcha_result(True)
+        "django_recaptcha.fields.client.submit", return_value=recaptcha_result(True)
     ):
         form = GetInTouchForm(payload(**{"g-recaptcha-response": "token"}))
 

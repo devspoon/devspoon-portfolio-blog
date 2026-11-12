@@ -75,7 +75,7 @@ class GetInTouchForm(forms.Form):
         # 외부 호출을 하면 안 되는 테스트에서 폼을 그대로 쓸 수 있어야 한다.
         # 필드를 클래스 속성으로 두면 import 시점에 키를 요구하므로 여기서 만든다.
         if getattr(settings, "CONTACT_FORM_CAPTCHA", False):
-            from captcha.fields import ReCaptchaField
+            from django_recaptcha.fields import ReCaptchaField
 
             self.fields["captcha"] = ReCaptchaField(
                 error_messages={
