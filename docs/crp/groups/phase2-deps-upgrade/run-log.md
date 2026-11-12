@@ -17,6 +17,13 @@
 - **변경:** ADR-007(5.2 LTS)이 ADR-001 대체, ADR-008(4.2→5.2 직행)이 ADR-002 대체. Django 6.0 단계 삭제, 서드파티 메이저 단계를 2-c로
 - **수렴 판정:** `NOT CONVERGED`(설계 단계)
 
+### Round 1 — 2026-11-12 (base SHA: `f095ff8`, 설계 승인 후 실행)
+- **기준선:** 우리 앱 `makemigrations --check` No changes, pytest 210 passed / 1 skipped. runserver 점검표에서 `/users/login/` 500 → 원인은 코드가 아니라 로컬 DB에 `SocialApp`(google·kakao·naver) 행이 없던 것(템플릿의 `provider_login_url`). 로컬 dev DB에만 더미 SocialApp 3개를 등록한 뒤 점검표 전부 통과
+- **2-a 정리·저위험:** Python `^3.12`, `testing.yml` 3.12, `django-nose`·`nose` 제거, `isort` dev 그룹(9.0.2), 같은 메이저 업데이트(celery 5.7, beat 2.9, results 2.6, cors 4.9, braces 1.17, sendgrid-v5 1.3.1, psycopg2 2.9.13, pymysql 1.2.4, bs4 4.15, email-validator 2.3, daphne 4.2.3, pytest-django 4.14, factoryboy 2.8.1, coverage 7.17.2). `poetry lock --no-update`로 바뀐 조건만 재해석. celery-results migration 3개 적용
+  - 검증: check exit 0, 우리 앱 No changes, pytest 210 passed / 1 skipped, runserver 점검표 통과
+  - 참고: 설치 직후 첫 `check`가 psycopg2 import 오류로 1회 실패했으나(같은 시점에 `migrate` 동시 실행) 재실행 2회 모두 통과, 재현 안 됨
+- **신규 finding:** F-004(LOW, `requirements/dev.txt`가 lock과 불일치) — 계획 밖, 결정 대기
+
 ## 작업 계획 (승인 후 실행 — 순서 고정)
 
 각 하위 단계는 같은 절차를 따른다.

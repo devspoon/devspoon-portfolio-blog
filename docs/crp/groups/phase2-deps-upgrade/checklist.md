@@ -5,11 +5,11 @@
 - [x] 업그레이드 대상·해석 가능 여부 조사, Django 릴리스 노트 대조
 - [x] 계약·불변식·인수 기준 작성(charter v0.1)
 - [x] 설계 수정(REQ-002): Django 목표 5.2 LTS — ADR-007·008
-- [ ] **사용자 설계 승인**(ADR-003~008)
+- [x] **사용자 설계 승인**(ADR-003~008 Accepted, 2026-11-12)
 
 ## Round 1 — (승인 후)
-- [ ] 0 기준선 확인
-- [ ] 2-a 정리·저위험 — INV-1~4
+- [x] 0 기준선 확인 — 우리 앱 No changes, 210 passed, runserver 점검표 통과(로컬 DB에 더미 SocialApp 3개 등록 후)
+- [x] 2-a 정리·저위험 — INV-1~4 통과
 - [ ] 2-b Django 5.2 LTS — 4.2 경고 점검, 5.2.19로, INV-1~5, F-001
 - [ ] 2-c ① django-redis 7 — INV-1~4
 - [ ] 2-c ② django-recaptcha 4 — INV-1~4, F-002
