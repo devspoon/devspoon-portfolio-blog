@@ -22,6 +22,16 @@
 - **수렴 판정:** `NOT CONVERGED` — 이번 범위의 Open Fix 0, INV-1~7 통과. 실행 중 발견한 F-011(LOW)·F-012(HIGH)가 사용자 결정 대기
 - **검사 범위의 한계:** CI 미실행(push 안 함). 게시판 댓글 admin은 실제 화면 POST가 아니라 `save_model`·`delete_model` 테스트로 확인(R-007). index 화면 렌더링은 테스트가 아니라 runserver(PostgreSQL)로만 확인(F-011)
 
+### Round 2 — 2026-11-12 (base SHA: `9bbb5b0`, REQ-003)
+- **트리거:** 사용자 "권장안대로 수정해줘"(F-011·F-012)
+- **형제 버그 검사:** 인스턴스에 `.update(`를 부르는 곳은 게시판 삭제 뷰 3곳뿐(`portfolio/tests`의 `data.update`는 dict)
+- **red:** 새 테스트 8개 중 게시판 삭제 3개 `AttributeError`, index 2개와 `test_cache_holds_no_visitor_values`(index 추가) 8개 `LIMIT/OFFSET not allowed in subqueries` — 수정 전 실패 확인. 다른 사람 삭제 403 테스트 3개는 보호 테스트로 통과
+- **수정:** F-012 `board/views/{notice,visiter,reactivation}/*_board.py`, F-011 `home/views/index.py`
+- **검증:** check exit 0, 우리 앱 No changes, pytest **360 passed / 1 skipped**. PostgreSQL(dev DB)에서 옛 union 쿼리와 새 방식의 (게시판, pk) 목록 동일 — dev DB에는 블로그 글 3개뿐이라 여러 게시판이 섞인 경우는 SQLite 테스트가 확인
+- **GATE 통과:** 0 ■ 1 ■ 2 ■ 3 ■ 4 ■ 5 ■
+- **수렴 판정:** `CONVERGED` — Open Fix 0, INV-1~7 통과, 인수 기준 충족, 요구사항 회귀 0
+- **검사 범위의 한계:** CI 미실행(push 안 함). 게시판 삭제는 테스트로만 확인(runserver 점검표에 없음). 잔여 위험 R-001~R-007
+
 ## 작업 계획 (승인 후 실행 — 순서 고정)
 
 각 하위 단계는 같은 절차를 따른다: 실패 테스트 먼저(red) → 수정(green) → `verify.sh`(INV-1~3) → 하위 단계별 커밋. 계획 밖 수정이 필요하면 고치기 전에 멈추고 묻는다.
@@ -42,3 +52,4 @@
 |---|---|---|---|---|---|---|
 | 0 | 0 | 4 | 3 | 3 | 10 | NOT CONVERGED(설계) |
 | 1 | 0 | 1 | 0 | 1 | 10 Fixed(F-001~010), 신규 2(F-011·F-012) 결정 대기 | NOT CONVERGED |
+| 2 | 0 | 0 | 0 | 0 | 2 Fixed(F-011·F-012) | CONVERGED |

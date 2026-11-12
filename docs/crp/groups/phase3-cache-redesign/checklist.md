@@ -18,3 +18,9 @@
 - [x] 6 정리
 - [x] 7 마무리
 - [x] 판정 NOT CONVERGED — 이번 범위 F-001~F-010 Fixed·불변식 통과, 실행 중 발견한 F-011·F-012 결정 대기
+
+## Round 2 — 2026-11-12 (REQ-003)
+- [x] F-012 게시판 삭제 — 실패 테스트 후 수정, 형제 버그 grep 3곳뿐
+- [x] F-011 index — 실패 테스트 후 수정, PostgreSQL 결과 동일
+- [x] 전체 검증 360 passed / 1 skipped, check·migration 통과
+- [x] 판정 CONVERGED
