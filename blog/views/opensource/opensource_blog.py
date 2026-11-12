@@ -8,7 +8,6 @@ from django.db.models import F, Q
 from django.http import JsonResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from django.shortcuts import redirect
 from django.views.generic import (
     CreateView,
@@ -19,13 +18,7 @@ from django.views.generic import (
     View,
 )
 
-from common.components.django_redis_cache_components import (
-    dredis_cache_check_key,
-    dredis_cache_delete,
-    dredis_cache_get,
-    dredis_cache_set,
-)
-from common.decorators.cache import index_cache_clean
+from common.mixin.views.post_detail import BlogPostDetailMixin
 
 from ...models.blog import OpenSourcePost
 from .opensource_forms import OpenSourceForm
@@ -44,104 +37,11 @@ class OpenSourceListView(ListView):
         return OpenSourcePost.activate_objects.get_data().select_related('author')
 
 
-class OpenSourceDetailView(DetailView):
+class OpenSourceDetailView(BlogPostDetailMixin, DetailView):
     model = OpenSourcePost
     template_name = "blog/opensource/opensource_detail.html"
-    context_object_name = "board"
-    cache_prefix = "blog:OpenSource"
-
-    def get_queryset(self):
-        check_cached_key = dredis_cache_check_key(
-            self.cache_prefix,
-            self.kwargs.get("pk"),
-            "get_queryset",
-        )
-        if check_cached_key:
-            logger.debug(f"called redis cache - {self.__class__.__name__}")
-            queryset = dredis_cache_get(
-                self.cache_prefix,
-                self.kwargs.get("pk"),
-                "get_queryset",
-            )
-        else:
-            queryset = super().get_queryset()
-            logger.debug(f"called database - {self.__class__.__name__}")
-            if queryset.exists():
-                logger.debug(f"redis cache - {self.__class__.__name__} queryset.exists")
-                dredis_cache_set(
-                    self.cache_prefix,
-                    self.kwargs.get("pk"),
-                    get_queryset=queryset,
-                )
-            else:
-                logger.debug(
-                    f"redis cache - {self.__class__.__name__} queryset not exists"
-                )
-
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        check_cached_key = dredis_cache_check_key(
-            self.cache_prefix, self.kwargs.get("pk"), "pre_board"
-        )
-        if check_cached_key:
-            logger.debug(f"called redis cache - {self.__class__.__name__}")
-            queryset = dredis_cache_get(
-                self.cache_prefix,
-                self.kwargs.get("pk"),
-            )
-            context.update(queryset)
-        else:
-            pre_temp_queryset = (
-                OpenSourcePost.objects.filter(pk__lt=context["board"].pk)
-                .order_by("-pk")
-                .first()
-            )
-            next_temp_queryset = (
-                OpenSourcePost.objects.filter(pk__gt=context["board"].pk)
-                .order_by("pk")
-                .first()
-            )
-
-            context["pre_board"] = pre_temp_queryset if pre_temp_queryset else ""
-            context["next_board"] = next_temp_queryset if next_temp_queryset else ""
-
-            caching_data = context.copy()
-
-            [caching_data.pop(x, None) for x in ["object", "board", "view"]]
-            logger.debug(f"called database - {self.__class__.__name__}")
-            if caching_data:
-                logger.debug(
-                    f"redis cache - {self.__class__.__name__} caching_data exists"
-                )
-                dredis_cache_set(
-                    self.cache_prefix,
-                    self.kwargs.get("pk"),
-                    **caching_data,
-                )
-            else:
-                logger.debug(
-                    f"redis cache - {self.__class__.__name__} caching_data not exists"
-                )
-
-        # 요청자마다 다른 값은 공유 캐시에 넣지 않는다(C-1).
-        # 캐시에 남아 있는 옛 user_auth 값이 있어도 여기서 덮어쓴다.
-        user = self.request.user
-        context["user_auth"] = (
-            user.is_authenticated and user.pk == context["board"].author_id
-        )
-        context["like_state"] = (
-            user.is_authenticated
-            and context["board"].like_user_set.filter(pk=user.pk).exists()
-        )
-
-        logger.debug(f"final context : {context}")
-        return context
 
 
-@method_decorator(index_cache_clean, name="dispatch")
 class OpenSourceCreateView(LoginRequiredMixin, CreateView):
     model = OpenSourcePost
     template_name = "blog/opensource/opensource_edit.html"
@@ -160,14 +60,12 @@ class OpenSourceCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-@method_decorator(index_cache_clean, name="dispatch")
 class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
     model = OpenSourcePost
     pk_url_kwarg = "pk"
     form_class = OpenSourceForm
     template_name = "blog/opensource/opensource_update.html"
     login_url = reverse_lazy("users:login")
-    cache_prefix = "blog:OpenSource"
 
     def get_success_url(self):
         return reverse_lazy("blog:opensource_detail", kwargs={"pk": self.object.pk})
@@ -181,22 +79,14 @@ class OpenSourceUpdateView(LoginRequiredMixin, UpdateView):
 
         data.tag_save(form.cleaned_data["tag_set"])
 
-        dredis_cache_delete(
-            self.cache_prefix,
-            self.kwargs.get("pk"),
-        )
-
         return super().form_valid(form)
 
 
-@method_decorator(index_cache_clean, name="dispatch")
 class OpenSourceDeleteView(LoginRequiredMixin, View):
     model = OpenSourcePost
     pk_url_kwarg = "pk"
     success_url = reverse_lazy("blog:opensource_list")
     login_url = reverse_lazy("users:login")
-    cache_prefix = "blog:OpenSource"
-    cache_reply_prefix = "blog:OpenSourceReply"
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -210,9 +100,6 @@ class OpenSourceDeleteView(LoginRequiredMixin, View):
             raise PermissionDenied()
 
         # 캐시 삭제
-        dredis_cache_delete(self.cache_prefix, kwargs.get("pk"))
-        dredis_cache_delete(self.cache_reply_prefix, kwargs.get("pk"))
-
         # 객체 삭제 처리
         post.is_deleted = True
         post.save()
