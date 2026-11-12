@@ -19,8 +19,6 @@ logger = logging.getLogger(getattr(settings, "BOARD_LOGGER", "django"))
 
 class VisiterBoardAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanPostMixin):
     list_per_page = 20
-    cache_prefix = "board:Visiter"
-    cache_reply_prefix = "board:VisiterReply"
 
     list_display = ["id", "author", "title", "is_deleted", "is_hidden"]
     list_display_links = ["id", "author", "title"]
@@ -46,7 +44,6 @@ class VisiterBoardAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCo
 
 class VisiterReplyAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanReplyMixin):
     list_per_page = 20
-    cache_prefix = "blog:VisiterReply"
 
     list_display = ["id", "author", "board"]
     list_display_links = ["id", "author"]

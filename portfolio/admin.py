@@ -3,8 +3,6 @@ import logging
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import AdminSite
-from django.utils.decorators import method_decorator
-from common.decorators.cache import index_cache_clean
 from django.utils.safestring import mark_safe
 from django_summernote.admin import SummernoteModelAdmin
 from django.utils.html import format_html
@@ -55,9 +53,6 @@ class CustomAdminMixin(
 
 
 class PortfolioAdmin(CustomAdminMixin):
-    cache_prefix = "portfolio"
-    use_pk = False
-
     list_display = [
         "id",
         "portfolio_image_1",
@@ -126,9 +121,6 @@ class PortfolioAdmin(CustomAdminMixin):
 
 
 class PersonalInfoAdmin(CustomAdminMixin):
-    cache_prefix = "portfolio"
-    use_pk = False
-
     list_display = ["id", "name", "language", "created_at"]
     list_display_links = ["id", "name"]
     list_editable = ("language",)
@@ -141,9 +133,6 @@ class PersonalInfoAdmin(CustomAdminMixin):
 
 
 class ProfileSummaryAdmin(CustomAdminMixin):
-    cache_prefix = "portfolio"
-    use_pk = False
-
     list_display = ["id", "position", "sort_num", "language", "skill", "created_at"]
     list_display_links = ["id", "position", "skill"]
     list_editable = (
@@ -160,9 +149,6 @@ class ProfileSummaryAdmin(CustomAdminMixin):
 
 
 class WorkExperienceAdmin(CustomAdminMixin):
-    cache_prefix = "portfolio"
-    use_pk = False
-
     list_display = [
         "id",
         "get_cleaned_title",
@@ -205,9 +191,6 @@ class WorkExperienceAdmin(CustomAdminMixin):
 
 
 class EducationStudyAdmin(CustomAdminMixin):
-    cache_prefix = "portfolio"
-    use_pk = False
-
     list_display = ["id", "title", "type", "sort_num", "language", "created_at"]
     list_display_links = ["id", "title", "created_at"]
     list_editable = (
@@ -249,9 +232,6 @@ class EducationStudyAdmin(CustomAdminMixin):
 
 
 class InterestedInAdmin(CustomAdminMixin):
-    cache_prefix = "portfolio"
-    use_pk = False
-
     list_display = ["id", "get_cleaned_title", "language", "created_at"]
     list_display_links = ["id", "get_cleaned_title"]
     list_editable = ("language",)
@@ -279,9 +259,6 @@ class InterestedInAdmin(CustomAdminMixin):
 
 
 class AboutProjectsAdmin(CustomAdminMixin):
-    cache_prefix = "portfolio"
-    use_pk = False
-
     list_display = [
         "id",
         "projectpost",
@@ -302,18 +279,6 @@ class AboutProjectsAdmin(CustomAdminMixin):
         "delete_selected_items",
         "copy_selected_items",
     ]
-
-    @method_decorator(index_cache_clean)
-    def delete_selected_items(self, request, queryset):
-        super().delete_selected_items(request, queryset)
-
-    @method_decorator(index_cache_clean)
-    def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
-
-    @method_decorator(index_cache_clean)
-    def delete_model(self, request, obj):
-        super().delete_model(request, obj)
 
 
 class GetInTouchLogAdmin(admin.ModelAdmin):

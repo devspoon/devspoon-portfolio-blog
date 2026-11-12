@@ -19,8 +19,6 @@ logger = logging.getLogger(getattr(settings, "BOARD_LOGGER", "django"))
 
 class NoticeBoardAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanPostMixin):
     list_per_page = 20
-    cache_prefix = "board:Notice"
-    cache_reply_prefix = "board:NoticeReply"
 
     list_display = ["id", "author", "title", "is_deleted", "is_hidden"]
     list_display_links = ["id", "author", "title"]
@@ -46,7 +44,6 @@ class NoticeBoardAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCom
 
 class NoticeReplyAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanReplyMixin):
     list_per_page = 20
-    cache_prefix = "blog:NoticeReply"
 
     list_display = ["id", "author", "board"]
     list_display_links = ["id", "author"]

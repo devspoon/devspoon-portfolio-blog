@@ -19,8 +19,6 @@ logger = logging.getLogger(getattr(settings, "BOARD_LOGGER", "django"))
 
 class ReactivationBoardAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanPostMixin):
     list_per_page = 20
-    cache_prefix = "board:Reactivation"
-    cache_reply_prefix = "board:ReactivationReply"
 
     list_display = ["id", "author", "title", "is_deleted", "is_hidden"]
     list_display_links = ["id", "author", "title"]
@@ -46,7 +44,6 @@ class ReactivationBoardAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, Ad
 
 class ReactivationReplyAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanReplyMixin):
     list_per_page = 20
-    cache_prefix = "blog:ReactivationReply"
 
     list_display = ["id", "author", "board"]
     list_display_links = ["id", "author"]

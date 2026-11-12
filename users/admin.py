@@ -378,8 +378,6 @@ class PolicyPagesAdmin(AdminCacheCleanFixedKeyMixin, admin.ModelAdmin):
     search_fields = ("id", "title")
     list_per_page = 20
 
-    view_keys = ""
-
     actions = [
         "delete_all_cache",
         "delete_selected_items",

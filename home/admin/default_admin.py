@@ -26,10 +26,6 @@ home_admin_site = HomeAdminSite(name="home_admin")
 
 
 class MainMenuAdmin(AdminCacheCleanFixedKeyMixin, DraggableMPTTAdmin):
-    view_keys = [
-        "home:main_menu:0:main_menu",
-    ]
-
     actions = [
         "delete_all_cache",
         "delete_selected_items",
@@ -44,10 +40,6 @@ class MainMenuAdmin(AdminCacheCleanFixedKeyMixin, DraggableMPTTAdmin):
 class SiteInfoAdmin(AdminCacheCleanFixedKeyMixin):
     list_display = [field.name for field in SiteInfo._meta.get_fields()]
     list_display_links = ["id", "phone_number", "office_email"]
-
-    view_keys = [
-        "home:site_info:0:site_info",
-    ]
 
     actions = [
         "delete_all_cache",

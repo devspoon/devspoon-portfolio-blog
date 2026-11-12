@@ -19,8 +19,6 @@ logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
 
 class ProjectPostAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanPostMixin):
     list_per_page = 20
-    cache_prefix = "blog:Project"
-    cache_reply_prefix = "blog:ProjectReply"
 
     list_display = ["id", "author", "title", "is_deleted", "is_hidden"]
     list_display_links = ["id", "author", "title"]
@@ -48,7 +46,6 @@ class ProjectPostAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCom
 
 class ProjectPostReplyAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanReplyMixin):
     list_per_page = 20
-    cache_prefix = "blog:ProjectReply"
 
     list_display = ["id", "author", "post"]
     list_display_links = ["id", "author"]
