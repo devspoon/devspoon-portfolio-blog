@@ -31,6 +31,7 @@
   - 검증: check exit 0, 우리 앱 No changes, pytest 212 passed / 1 skipped, runserver 점검표 통과
 - **2-c ① django-redis 5.4 → 7.0.0, redis-py 5.2.1 → 8.1.0:** 코드 변경 없음. check exit 0, 우리 앱 No changes, pytest 212 passed / 1 skipped, runserver 점검표 통과. Redis에서 상세 캐시 키(`pre_board`·`next_board`·`get_queryset`) TTL 약 24시간, 세션 키 저장 확인
 - **2-c ② django-recaptcha 3.0 → 4.1.0 (F-002):** 옛 `captcha` 패키지는 `--sync`로 제거. `INSTALLED_APPS` 4곳 `captcha`→`django_recaptcha`, import 3곳(`portfolio/forms.py`, `users/views/users_forms.py` 2줄), 테스트 mock 대상 `django_recaptcha.fields.client.submit`, 주석의 check ID `django_recaptcha.recaptcha_test_key_error`. check exit 0, 우리 앱 No changes, pytest 212 passed / 1 skipped(캡차 테스트 8개 포함), runserver 점검표 통과, `/users/register/` 200·`g-recaptcha` 위젯 표시
+- **2-c ③ django-allauth 0.58 → 65.22.0 (F-003):** 처음 올리자 소셜 로그인 의존성(pyjwt·oauthlib 등)이 빠짐 → 65부터 extras로 분리된 것이라 `extras = ["socialaccount"]`로 지정(oauthlib 4.0.1·pyjwt 2.15.1). allauth 경고 `ACCOUNT_EMAIL_REQUIRED is deprecated` → `ACCOUNT_SIGNUP_FIELDS`로 같은 뜻 교체. 커스텀 어댑터(`pre_social_login`·`populate_user`)는 수정 불필요. `account` migration 0006~0009 dev DB 적용(R-005). check exit 0(allauth 경고 0), 우리 앱 No changes, pytest 212 passed / 1 skipped, runserver 점검표 통과, `/oauth/{google,kakao,naver}/login/` 302 → 각 provider 인증 URL, `/users/register/` 200
 
 ## 작업 계획 (승인 후 실행 — 순서 고정)
 

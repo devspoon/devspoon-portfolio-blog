@@ -71,7 +71,9 @@ SOCIALACCOUNT_PROVIDERS = {
 
 # 소셜 로그인 할때마다 메일을 보내는 기본 기능을 끔 (메일 정보가 없을 수 있는 경우 대비, 기본 수집 정보가 아니라 동의에 따른 수집 정보임)
 # 비지니스앱으로 사업자 등록 번호와 함께 등록 하면 메일 정보 수집 가능함
-ACCOUNT_EMAIL_REQUIRED = False
+# allauth 65부터 ACCOUNT_EMAIL_REQUIRED 대신 이 설정을 쓴다. "email"에 *가 없으면 선택 입력이다
+# (이전 ACCOUNT_EMAIL_REQUIRED = False와 같은 뜻).
+ACCOUNT_SIGNUP_FIELDS = ["email", "username*", "password1*", "password2*"]
 
 # 확인 메일이 반복해서 전송되는 기능을 끔
 ACCOUNT_EMAIL_VERIFICATION = "none"
