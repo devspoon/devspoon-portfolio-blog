@@ -2,7 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
-from common.mixin.views import StaffRequiredMixin
+from common.mixin.views import VIEWER_KEYS, StaffRequiredMixin, apply_viewer_state
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.db.models import F, Q
@@ -122,7 +122,7 @@ class BooksDetailView(DetailView):
             context["user_auth"] = self.request.user
             caching_data = context.copy()
 
-            [caching_data.pop(x, None) for x in ["object", "board", "view"]]
+            [caching_data.pop(x, None) for x in ["object", "board", "view", *VIEWER_KEYS]]
             logger.debug(f"called database - {self.__class__.__name__}")
             if caching_data:
                 logger.debug(
@@ -138,6 +138,7 @@ class BooksDetailView(DetailView):
                     f"redis cache - {self.__class__.__name__} caching_data not exists"
                 )
 
+        apply_viewer_state(self.request, context)
         logger.debug(f"final context : {context}")
         return context
 
