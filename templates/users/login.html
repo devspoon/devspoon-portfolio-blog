@@ -37,7 +37,7 @@
                             {% endif %}
                             {% endfor %}
                             <div class="form-group text-right">
-                                <button class="btn btn-primary col-12">Login</button>
+                                <button type="submit" class="btn btn-primary col-12">Login</button>
                             </div>
                             <div class="form-group text-center pt-10">
                                 <span class="text-muted">Don't you have an account?</span> <a href="{% url 'users:register' %}">Create one</a>
@@ -52,13 +52,13 @@
                                 or
                             </div>
                             <a href="{% provider_login_url 'google' %}" class="btn col-12">
-                                <img src={% static 'images/btn_google_signin_dark_pressed_web.png' %} />
+                                <img src="{% static 'images/btn_google_signin_dark_pressed_web.png' %}" alt="Sign in with Google" />
                             </a>
                             <a href="{% provider_login_url 'kakao' %}" class="btn col-12">
-                                <img src={% static 'images/kakao_login_medium_narrow.png' %} />
+                                <img src="{% static 'images/kakao_login_medium_narrow.png' %}" alt="Sign in with Kakao" />
                             </a>
                             <a href="{% provider_login_url 'naver' %}" class="btn col-12">
-                                <img src={% static 'images/naver_btnW_official.png' %} />
+                                <img src="{% static 'images/naver_btnW_official.png' %}" alt="Sign in with Naver" />
                             </a>
                         </form>
                     </div>

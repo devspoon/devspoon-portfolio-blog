@@ -1,0 +1,81 @@
+{% extends "base/base.html" %}
+{% load public_tags %}
+{% comment %}
+Shared create/update form for blog and board posts. Children override `title` and `form_heading`.
+Update mode = the form is bound to a saved object (form.instance.pk); it shows current values and files.
+URLs are derived from the view name: "blog:project_update" / "blog:project_create" -> "blog:project".
+The heading stays an <h4>: theme CSS styles h4 by tag, so <h1> would change the look (CSS is phase 3).
+{% endcomment %}
+
+{% block content %}
+{% with url_base=request.resolver_match.view_name|cut:"_update"|cut:"_create" is_update=form.instance.pk %}
+    <!--====== REGISTER PART START ======-->
+    <section class="login first grey">
+        <div class="container">
+            <div class="box-wrapper col col-lg-10 mt-4">
+                <div class="box box-border">
+                    <div class="box-body">
+                        <h4>{% block form_heading %}{% endblock %}</h4>
+                        {% for message in messages %}
+                            <div class="alert {{ message.tags }} alert-auto-dismissible alert-dismissible notification-container text-center" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                        <form enctype="multipart/form-data" method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                            {% if field.name == 'content' %}
+                            <div class="form-group">
+                            {{ field|safe }}
+                            </div>
+                            {% else %}
+                            <div class="form-group">
+                                {% if field.field.widget.input_type == 'select' %}
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                <select class="form-select mb-3" name="{{ field.name }}" id="{{ field.id_for_label }}">
+                                    {% for item in field %}
+                                    {{ item }}
+                                    {% endfor %}
+                                </select>
+                                {% elif is_update %}
+                                    {% if field.label == 'file1' or field.label == 'file2' %}
+                                        {{ field.label }} :<a href="{{ field.url }}">{{ field.value|filename }}</a>
+                                    {% else %}
+                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {% endif %}
+                                    <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" value="{{ field.value }}"/>
+                                {% else %}
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {# create mode shows form initials, e.g. notice priority/sorting_sequence = 0 #}
+                                    <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" value="{{ field.initial|default_if_none:'' }}"/>
+                                {% endif %}
+                            </div>
+
+                            {% endif %}
+                            {% if field.errors %}
+                            <ol class="validation_error">
+                                {% for error in field.errors %}
+                                    <li><strong>{{ error|escape }}</strong></li>
+                                {% endfor %}
+                            </ol>
+                            {% endif %}
+                            {% endfor %}
+                            <div class="form-group text-right">
+                                <button type="submit" class="btn btn-primary col-12">Write</button>
+                            </div>
+                            <div class="form-group text-center pt-10">
+                                {% if is_update %}
+                                <a href="{% url url_base|add:'_detail' form.instance.pk %}">Cancel</a>
+                                {% else %}
+                                <a href="{% url url_base|add:'_list' %}">Cancel</a>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--====== REGISTER PART END ======-->
+{% endwith %}
+{% endblock %}

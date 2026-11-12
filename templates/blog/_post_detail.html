@@ -1,0 +1,121 @@
+{% extends "base/base.html" %}
+{% load public_tags %}
+{% comment %}
+Shared detail page for the five blog types. Children override `title` and `post_meta`.
+URLs are derived from the current view name: "blog:project_detail" -> "blog:project" + "_update" etc.
+{% endcomment %}
+
+{% block content %}
+{% with url_base=request.resolver_match.view_name|cut:"_detail" %}
+    <!--====== Blog Detail PART START ======-->
+    <section class="blog-details-area">
+        <div class="container">
+          <article class="row">
+            <header class="col-lg-8 m-auto text-center">
+              <h1 class="title">{{ board.title }}</h1>
+              {% block post_meta %}{% endblock %}
+              <div class="meta">
+                By
+                <a class="author" href="#" onclick="return false;">{{ board.author }}</a>
+                <a href="#" onclick="return false;"><time datetime="{{ board.created_at|date:'c' }}">{{ board.created_at|date:'Y-m-d H:i' }}</time></a>
+              </div>
+            </header>
+
+            <div class="col-lg-10 col-xl-8 m-auto">
+                <div class="post-details-content">
+                    <div class="post-details-body">
+                        <div class="content form-control">
+                            {{ board.content|sanitize_html }}
+                        </div>
+                        <div class="tags mb-3">
+                            <label for="tags">tags</label>
+                                <span id="tags" class="form-control">
+                                    {% for tag in board.tag_set.all %}
+                                        <a href="{% url 'home:search_queryset' %}?tag={{ tag }}">{{ tag }}</a>,
+                                    {% endfor %}
+                                </span>
+                        </div>
+                        {% if user_auth %}
+                        <div class="blog-button">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-end" id="detail-button-group">
+                                        <a href="{% url url_base|add:'_update' board.pk %}" class="btn btn-outline-primary me-3">Edit</a>
+                                        <form method="post" action="{% url url_base|add:'_delete' board.pk %}">{% csrf_token %}<button type="submit" class="btn btn-outline-danger">Delete</button></form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="blog-links mt-5">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    link 1 :
+                                    {% if board.link1 %}<a href="{{ board.link1 }}">{{ board.link1|urlizetrunc:30 }}</a> {% endif %}
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    link 2 :
+                                    {% if board.link2 %}<a href="{{ board.link2 }}">{{ board.link2|urlizetrunc:30 }}</a> {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="blog-files mt-5">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    file 1 :
+                                    {% if board.file1 %}<a href="{{ board.file1.url }}">{{ board.file1|filename }}</a> {% endif %}
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    file 2 :{% if board.file2 %}<a href="{{ board.file2.url }}">{{ board.file2|filename }}</a> {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="blog-like mt-5">
+                                <div class="col-12 text-center">
+                                    <div class="like"><h4>좋아요 <span class="like_count" id="like-count-37">{{ board.like_count }}</span>개</h4></div>
+                                </div>
+                                <div class="btn_container col-12 text-center mt-3">
+                                    <div class="like-btn" data-name="like"><h4><i class="lni lni-heart{% if like_state %} clicked{% endif %}"></i></h4>
+                                    </div>
+                                </div>
+                        </div>
+                        <nav class="blog-history-navigation" id="navigation-group" aria-label="Post navigation">
+                            <div class="row">
+                            {% if pre_board %}
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="nav-prev">
+                                <a href="{% url request.resolver_match.view_name pre_board.pk %}" id="nav-left">
+                                    <span><i class="lni lni-arrow-left"></i> Older</span>
+                                    {{ pre_board.title }}
+                                    <p class="mb-0">{{ pre_board.content|striptags|truncatechars:80 }}</p>
+                                </a>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if next_board %}
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="nav-next">
+                                <a href="{% url request.resolver_match.view_name next_board.pk %}" id="nav-right">
+                                    <span>Newer <i class="lni lni-arrow-right"></i></span>
+                                    {{ next_board.title }}
+                                    <p class="mb-0">{{ next_board.content|striptags|truncatechars:80 }}</p>
+                                </a>
+                                </div>
+                            </div>
+                            {% endif %}
+                            </div>
+                        </nav>
+
+                        {% include "base/reply.html" %}
+                        {% include "base/replies_pagination.html" %}
+
+                    </div>
+                </div>
+              </div>
+
+          </article>
+        </div>
+      </section>
+    <!--====== Blog Detail PART END ======-->
+{% endwith %}
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base/base.html" %}
+{% load public_tags %}
+{% comment %}
+Shared detail page for the three boards. Children override `title`.
+URLs are derived from the current view name: "board:notice_detail" -> "board:notice" + "_update" etc.
+{% endcomment %}
+
+{% block content %}
+{% with url_base=request.resolver_match.view_name|cut:"_detail" %}
+    <!--====== Blog Detail PART START ======-->
+    <section class="blog-details-area">
+        <div class="container">
+          <article class="row">
+            <header class="col-10 m-auto text-center">
+                <h1 class="title">{{ board.title }}</h1>
+                <div class="meta">
+                    By
+                    <a class="author" href="#" onclick="return false;">{{ board.author }}</a>
+                    <a href="#" onclick="return false;"><time datetime="{{ board.created_at|date:'c' }}">{{ board.created_at|date:'Y-m-d H:i' }}</time></a>
+                </div>
+            </header>
+
+                <div class="col-10 m-auto">
+                    <div class="post-details-content">
+                        <div class="post-details-body">
+
+                            <div class="content form-control">
+                                {{ board.content|sanitize_html }}
+                            </div>
+                            {% if user_auth %}
+                            <div class="blog-button">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-end" id="detail-button-group">
+                                            <a href="{% url url_base|add:'_update' board.pk %}" class="btn btn-outline-primary me-3">Edit</a>
+                                            <form method="post" action="{% url url_base|add:'_delete' board.pk %}">{% csrf_token %}<button type="submit" class="btn btn-outline-danger">Delete</button></form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            {% include "base/reply.html" %}
+                            {% include "base/replies_pagination.html" %}
+
+                        </div>
+                    </div>
+                </div>
+
+          </article>
+        </div>
+      </section>
+    <!--====== Blog Detail PART END ======-->
+{% endwith %}
+{% endblock %}

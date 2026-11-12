@@ -1,9 +1,10 @@
 {% extends "base/base.html" %}
 {% load static %}
 {% load blog_base_tag %}
-{% block title %}title{% endblock %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
+{% with url_base=request.resolver_match.view_name|cut:"_list" %}
 
     <!--== Start Page Title Area ==-->
     <section class="page-title-area">
@@ -11,12 +12,12 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-title-content text-center pb-lg-30 pb-80">
-                    <h2 class="title">blog title </h2>
+                    <h1 class="title">{{ page_title }}</h1>
                     <div class="bread-crumbs pb-1">
-                        <a href="{% url 'home:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active navi-blog">blog navi</span>
+                        <a href="{% url 'home:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active navi-blog">{{ page_title }}</span>
                     </div>
                     {% if request.user.is_staff %}
-                    <a href="create/" id="blog-list-write" class="btn btn-outline-success mt-2">write</a>
+                    <a href="{% url url_base|add:'_create' %}" id="blog-list-write" class="btn btn-outline-success mt-2">write</a>
                     {% endif %}
 
                 </div>
@@ -37,8 +38,8 @@
                 <!--== Start Blog Post Item ==-->
                     <div class="card-box">
                         <div class="card-img" >
-                            <a href="detail/{{item.pk}}/">
-                                <img src="{{item.title_image}}">
+                            <a href="{% url url_base|add:'_detail' item.pk %}">
+                                <img src="{{item.title_image}}" alt="{{ item.title }}">
                             </a>
                             <div class="product-action">
                                 <a href="{{item.repository}}"  class="share" title="Repository"><i class="lni lni-world"></i></a>
@@ -46,7 +47,7 @@
                         </div>
 
                         <div class="card-content">
-                            <h3 class="name"><i class="lni lni-github"></i> <a href="detail/{{item.pk}}/" >{{item.title}}</a></h3>
+                            <h3 class="name"><i class="lni lni-github"></i> <a href="{% url url_base|add:'_detail' item.pk %}">{{item.title}}</a></h3>
                             <span class="update">{{item.content|remove_styles|truncatechars:80}}</span>
                             <div class="project-info row justify-content-center ">
                                 <div class="col-6" >
@@ -113,4 +114,5 @@
     </section>
     <!--== End Blog Area Wrapper ==-->
 
-	{% endblock %}
+{% endwith %}
+{% endblock %}

@@ -7,13 +7,7 @@
         <ul class="page-numbers">
             {% if page_obj.has_previous %}
             <li>
-                {% if keyword %}
-                <a class="page-number prev" href="?page={{ page_obj.previous_page_number }}&&keyword={{keyword}}">
-                {% elif tag %}
-                <a class="page-number prev" href="?page={{ page_obj.previous_page_number }}&&tag={{tag}}">
-                {% else %}
-                <a class="page-number prev" href="?page={{ page_obj.previous_page_number }}">
-                {% endif %}
+                <a class="page-number prev" href="?page={{ page_obj.previous_page_number }}{% if keyword %}&&keyword={{ keyword }}{% elif tag %}&&tag={{ tag }}{% endif %}">
                 <ion-icon name="chevron-back-outline"></ion-icon>
                 </a>
             </li>
@@ -26,18 +20,8 @@
             {% endif %}
 
             {% for page in page_obj|slice_visible_pages %}
-                {% if page_obj.number == page %}
-                <li class="page-item active">
-                    {% else %}
-                <li class="page-item">
-                    {% endif %}
-                    {% if keyword %}
-                    <a class="page-link" href="?page={{ page }}&&keyword={{keyword}}">
-                    {% elif tag %}
-                    <a class="page-link" href="?page={{ page }}&&tag={{tag}}">
-                    {% else %}
-                    <a class="page-link" href="?page={{ page }}">
-                    {% endif %}
+                <li class="page-item{% if page_obj.number == page %} active{% endif %}">
+                    <a class="page-link" href="?page={{ page }}{% if keyword %}&&keyword={{ keyword }}{% elif tag %}&&tag={{ tag }}{% endif %}">
                         {{ page }}
                     </a>
                 </li>
@@ -45,13 +29,7 @@
 
             {% if page_obj.has_next %}
             <li>
-                {% if keyword %}
-                <a class="page-number next" href="?page={{ page_obj.next_page_number }}&&keyword={{keyword}}">
-                {% elif tag %}
-                <a class="page-number next" href="?page={{ page_obj.next_page_number }}&&tag={{tag}}">
-                {% else %}
-                <a class="page-number next" href="?page={{ page_obj.next_page_number }}">
-                {% endif %}
+                <a class="page-number next" href="?page={{ page_obj.next_page_number }}{% if keyword %}&&keyword={{ keyword }}{% elif tag %}&&tag={{ tag }}{% endif %}">
                     <ion-icon name="chevron-forward-outline"></ion-icon>
                 </a>
             </li>

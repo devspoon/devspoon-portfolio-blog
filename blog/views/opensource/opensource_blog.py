@@ -40,6 +40,8 @@ class OpenSourceListView(ListView):
     paginate_by = 10
     paginate_orphans = 1  # if last page has 1 item, it will add in last page.
     context_object_name = "board"
+    # same text the page showed before (was injected by blog.js from the URL)
+    extra_context = {"page_title": "opensource"}
 
     def get_queryset(self):
         return OpenSourcePost.activate_objects.get_data().select_related('author')

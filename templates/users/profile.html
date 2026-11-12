@@ -28,7 +28,7 @@
                                             <div class="mx-auto">
                                                 {% if object.photo_thumbnail %}
                                                 <div class="thumbnail d-flex justify-content-center align-items-center rounded">
-                                                    <img src="{{ object.photo_thumbnail.url }}">
+                                                    <img src="{{ object.photo_thumbnail.url }}" alt="Profile image">
                                                 </div>
                                                 {% else %}
                                                 <div class="thumbnail d-flex justify-content-center align-items-center rounded">
@@ -75,7 +75,6 @@
                                     </ul>
                                     <div class="tab-content pt-3">
                                         <div class="tab-pane active">
-                                        <form class="form" novalidate="">
                                             <div class="row">
                                             <div class="col">
                                                 <div class="row">
@@ -194,7 +193,6 @@
                                                 <button class="btn btn-primary " type="submit">Save Changes</button>
                                             </div>
                                             </div>
-                                        </form>
 
                                         </div>
                                     </div>

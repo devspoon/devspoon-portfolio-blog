@@ -16,6 +16,8 @@
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav">
                                 {% main_menu_tag as main_menu %}
+                                {# tags open/close across menu nodes on purpose; the rendered HTML is balanced #}
+                                {# djlint:off #}
                                 {% recursetree main_menu %}
                                 {% if node.is_root_node %}
                                 <li class="nav-item">
@@ -62,6 +64,7 @@
                                     {{ children }}
                                 {%  endif %}
                                 {% endrecursetree %}
+                                {# djlint:on #}
                             </ul>
                         </div>
                             <ul class="header-btn d-sm-flex">

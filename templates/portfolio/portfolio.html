@@ -257,7 +257,7 @@
                     <div class="card-box">
                         <div class="card-img">
                             <a href="{% url 'blog:project_detail' item.id %}">
-                                <img src="{{item.projectpost.title_image}}">
+                                <img src="{{item.projectpost.title_image}}" alt="{{ item.projectpost.title }}">
                             </a>
                             <div class="product-action">
                                 <a href="{{item.projectpost.repository}}"  class="share" title="Repository"><i class="lni lni-world"></i></a>

@@ -1,8 +1,9 @@
 {% extends "base/base.html" %}
 {% load static %}
-{% block title %}title{% endblock %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
+{% with url_base=request.resolver_match.view_name|cut:"_list" %}
 
     <!--== Start Page Title Area ==-->
     <section class="page-title-area">
@@ -10,9 +11,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-title-content text-center pb-lg-30 pb-80">
-                    <h2 class="title">board title </h2>
+                    <h1 class="title">{{ page_title }}</h1>
                     <div class="bread-crumbs pb-1">
-                        <a href="{% url 'home:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active navi-blog">board navi</span>
+                        <a href="{% url 'home:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active navi-blog">{{ page_title }}</span>
                     </div>
                 </div>
             </div>
@@ -39,8 +40,8 @@
                         {% for item in board %}
                         <tbody>
                           <tr>
-                            <td width="5%" class="th-number text-center tb-row" scope="row"><a href="{% url 'board:notice_detail' item.pk %}">{{item.pk}}</a></td>
-                            <td width="75%" class="th-title tb-row" > <a href="{{item.pk}}" id="th-title">{{item.title|striptags|truncatechars:80}}</a></td>
+                            <td width="5%" class="th-number text-center tb-row" scope="row"><a href="{% url url_base|add:'_detail' item.pk %}">{{item.pk}}</a></td>
+                            <td width="75%" class="th-title tb-row" > <a href="{% url url_base|add:'_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
                             <td width="15%" class="th-date text-center tb-row" >{{item.created_at|date:'Y/m/d H:i'}}</td>
                             <td width="5%" class="th-author text-center tb-row" >{{item.author}}</td>
                             <td width="5%" class="th-visiter text-center tb-row" >{{item.visit_count}}</td>
@@ -54,7 +55,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="d-flex justify-content-end">
-                                    <a href="javascript:void(0);" onclick="boardCreate('+replies[reply].pk+'); return false;"><button type="button" class="btn btn-outline-primary btn-sm me-3">Write</button></a>
+                                    <a href="{% url url_base|add:'_create' %}" class="btn btn-outline-primary btn-sm me-3">Write</a>
                                 </div>
                                 
                             </div>
@@ -74,4 +75,5 @@
     </section>
     <!--== End Blog Area Wrapper ==-->
 
-	{% endblock %}
+{% endwith %}
+{% endblock %}

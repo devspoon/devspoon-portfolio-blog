@@ -1,6 +1,7 @@
 {% extends "base/base.html" %}
 {% load static %}
-{% block title %}title{% endblock %}
+{% comment %}"queryset" is the text blog.js used to inject from the URL; kept so the page looks the same{% endcomment %}
+{% block title %}queryset{% endblock %}
 
 {% block content %}
 
@@ -10,9 +11,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-title-content text-center pb-lg-30 pb-80">
-                    <h2 class="title">board title </h2>
+                    <h1 class="title">queryset</h1>
                     <div class="bread-crumbs pb-1">
-                        <a href="{% url 'home:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active navi-blog">board navi</span>
+                        <a href="{% url 'home:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active navi-blog">queryset</span>
                     </div>
                 </div>
             </div>
