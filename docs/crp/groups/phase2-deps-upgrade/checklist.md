@@ -15,5 +15,5 @@
 - [x] 2-c ② django-recaptcha 4.1.0 — INV-1~4 통과, F-002 Fixed, 가입 화면 캡차 위젯 확인
 - [x] 2-c ③ django-allauth 65.22.0(socialaccount extras) — INV-1~4 통과, F-003 Fixed, 소셜 로그인 시작 redirect 확인
 - [x] 2-c ④ sentry-sdk 2.74.0·debug-toolbar 8.0.0·extensions 4.1 — INV-1~4 통과. LoggingPanel 제거(라이브러리 요구), sentry `send_default_pii` 경고는 F-006 결정 대기
-- [ ] 2-c ⑤ imagekit·mptt·anymail·rangefilter·uvicorn — INV-1~4
+- [x] 2-c ⑤ imagekit 6.1.1·mptt 0.21.1·anymail 15.2·rangefilter 0.15.0·uvicorn 0.54.0 — INV-1~4 통과, mptt·rangefilter admin 200, 썸네일 생성 확인
 - [ ] 마무리: outdated 목록 기록, 불가침 제약 C-1~C-6 위반 없음, 수렴 판정

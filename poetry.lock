@@ -708,13 +708,13 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-admin-rangefilter"
-version = "0.11.2"
+version = "0.15.0"
 description = "django-admin-rangefilter app, add the filter by a custom date range on the admin UI."
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 files = [
-    {file = "django-admin-rangefilter-0.11.2.tar.gz", hash = "sha256:0cccf83f2992eba54795e0c748184f4b9bce895c0dd5bb1556eab1950242b48f"},
-    {file = "django_admin_rangefilter-0.11.2-py2.py3-none-any.whl", hash = "sha256:d574a914c209671b6c8e3d218efc0fc32a917e6a65ad2bd36b4116be5c47f6cb"},
+    {file = "django_admin_rangefilter-0.15.0-py2.py3-none-any.whl", hash = "sha256:4e950d01b4d35915c47fc3f2eb23c097825774dd577871632cbd8fcce5f97363"},
+    {file = "django_admin_rangefilter-0.15.0.tar.gz", hash = "sha256:61d9f57715fd091d894e91fa9e1124013e006b645294a70cb2e9255a6e6403ae"},
 ]
 
 [[package]]
@@ -747,24 +747,27 @@ steam = ["python3-openid (>=3.0.8,<4)"]
 
 [[package]]
 name = "django-anymail"
-version = "10.3"
-description = "Django email backends and webhooks for Amazon SES, Brevo (Sendinblue),     MailerSend, Mailgun, Mailjet, Mandrill, Postal, Postmark, Resend,     SendGrid, SparkPost and Unisender Go"
+version = "15.2"
+description = "Django email backends and webhooks for Amazon SES, Brevo,  MailerSend, Mailgun, Mailjet, Mailtrap, Mandrill, Postal, Postmark, Resend,  Scaleway TEM, SendGrid, SparkPost, and Unisender Go  (EmailBackend, transactional email tracking and inbound email signals)"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.10"
 files = [
-    {file = "django_anymail-10.3-py3-none-any.whl", hash = "sha256:1e72f059e96930d3675d35fe4c61f82b138ae4a7fcb0337be39dcb4823f94a4f"},
-    {file = "django_anymail-10.3.tar.gz", hash = "sha256:35d8ec20b06000af3c1638492e32f416fd1a584f0a572cded03f1bc570169ed0"},
+    {file = "django_anymail-15.2-py3-none-any.whl", hash = "sha256:866ed547e9d3110210e6fad343a2311eead55dbd4d544195fb628d06ae25d737"},
+    {file = "django_anymail-15.2.tar.gz", hash = "sha256:65b26b1c99e6a09051b71b012ac4dfdd75a33aeb057315944dd9fb872cae57cf"},
 ]
 
 [package.dependencies]
-django = ">=2.0"
+django = ">=5.0"
+idna = "*"
 requests = ">=2.4.3"
 urllib3 = ">=1.25.0"
 
 [package.extras]
-amazon-ses = ["boto3"]
+amazon-ses = ["amazon-s3-encryption-client-python", "boto3 (>=1.43.6)"]
 postal = ["cryptography"]
 resend = ["svix"]
+sendgrid = ["cryptography"]
+uts46 = ["uts46"]
 
 [[package]]
 name = "django-appconf"
@@ -884,13 +887,13 @@ django = ">=4.2"
 
 [[package]]
 name = "django-imagekit"
-version = "5.0.0"
+version = "6.1.1"
 description = "Automated image processing for Django models."
 optional = false
-python-versions = "*"
+python-versions = ">=3.9"
 files = [
-    {file = "django-imagekit-5.0.0.tar.gz", hash = "sha256:aae9f74a8e9b6ceb5d15f7d8e266302901e76d9f532c78bd5135cb0fa206a6b0"},
-    {file = "django_imagekit-5.0.0-py3-none-any.whl", hash = "sha256:a8e77ed6549751026a51f961bb2cd5fda739be691496da8eecbe68ffb966c261"},
+    {file = "django_imagekit-6.1.1-py3-none-any.whl", hash = "sha256:211765099e1c435c2b1d4664621c7cdf91aa0a3394de8fc1053b89e468000d53"},
+    {file = "django_imagekit-6.1.1.tar.gz", hash = "sha256:3d254c163fda1aeb163ea2c79399f9892c12a0c2ce881059e450ad7fe930a017"},
 ]
 
 [package.dependencies]
@@ -901,16 +904,17 @@ pilkit = "*"
 async = ["django-celery (>=3.0)"]
 async-dramatiq = ["django-dramatiq (>=0.4.0)"]
 async-rq = ["django-rq (>=0.6.0)"]
+test = ["Pillow", "beautifulsoup4", "pytest", "pytest-cov", "pytest-django"]
 
 [[package]]
 name = "django-js-asset"
-version = "3.0.1"
+version = "5.0.0"
 description = "script tag with additional attributes for django.forms.Media"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "django_js_asset-3.0.1-py3-none-any.whl", hash = "sha256:0b7ee73c45ca65cccbcc2f60cbe8fbc87ff133b543c282cb64fe6c13d7ca4c10"},
-    {file = "django_js_asset-3.0.1.tar.gz", hash = "sha256:5ad51814edf38d28e6280e6ecad50ee40551363a2f6a6bfe93577dee793dc378"},
+    {file = "django_js_asset-5.0.0-py3-none-any.whl", hash = "sha256:d8de7e074dc8fa87e9354e642c0d78238f8967752a4617c2a2b9df752a86f5bf"},
+    {file = "django_js_asset-5.0.0.tar.gz", hash = "sha256:06ce0ab4746575ac62e3b91f1a6a5457e8bec8adbce44eb831074bf80d67ab40"},
 ]
 
 [package.dependencies]
@@ -921,20 +925,20 @@ tests = ["coverage"]
 
 [[package]]
 name = "django-mptt"
-version = "0.15.0"
+version = "0.21.1"
 description = "Utilities for implementing Modified Preorder Tree Traversal with your Django Models and working with trees of Model instances."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "django_mptt-0.15.0-py3-none-any.whl", hash = "sha256:2574c014b102a41c642be5921f59356b8437fc83c9866d97644c6a0c5dc8ccc1"},
-    {file = "django_mptt-0.15.0.tar.gz", hash = "sha256:0df19d5a55f34e73df58ee03fbe0d91807493de4bd3a09f6eb00fc62920035d9"},
+    {file = "django_mptt-0.21.1-py3-none-any.whl", hash = "sha256:6f4dc3d26f0e0422fb185698a03351e7200b2a1222969af879e383adc4c292b8"},
+    {file = "django_mptt-0.21.1.tar.gz", hash = "sha256:dda7e42bce6dc77bccef44c5c58263c435bf7b7272ea8534e194c355fc73c746"},
 ]
 
 [package.dependencies]
-django-js-asset = "*"
+django-js-asset = ">=4.0"
 
 [package.extras]
-tests = ["coverage[toml]", "mock-django"]
+tests = ["coverage[toml]", "mock-django", "model-bakery"]
 
 [[package]]
 name = "django-recaptcha"
@@ -2151,13 +2155,13 @@ ua-parser = ">=0.10.0"
 
 [[package]]
 name = "uvicorn"
-version = "0.30.6"
+version = "0.54.0"
 description = "The lightning-fast ASGI server."
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.10"
 files = [
-    {file = "uvicorn-0.30.6-py3-none-any.whl", hash = "sha256:65fd46fe3fda5bdc1b03b94eb634923ff18cd35b2f084813ea79d1f103f711b5"},
-    {file = "uvicorn-0.30.6.tar.gz", hash = "sha256:4b15decdda1e72be08209e860a1e10e92439ad5b97cf44cc945fcbee66fc5788"},
+    {file = "uvicorn-0.54.0-py3-none-any.whl", hash = "sha256:505bdb0f318731d45f1f712071fc781a8981f6847a31c902c9f5e652d4f67faf"},
+    {file = "uvicorn-0.54.0.tar.gz", hash = "sha256:a2e33cbfaa0306f8e6b0c13e0cb89d7d7a2da3e62b90c66e18c33d9807b28620"},
 ]
 
 [package.dependencies]
@@ -2165,7 +2169,7 @@ click = ">=7.0"
 h11 = ">=0.8"
 
 [package.extras]
-standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)", "pyyaml (>=5.1)", "uvloop (>=0.14.0,!=0.15.0,!=0.15.1)", "watchfiles (>=0.13)", "websockets (>=10.4)"]
+standard = ["httptools (>=0.8.0)", "python-dotenv (>=0.13)", "pyyaml (>=5.1)", "uvloop (>=0.15.1)", "watchfiles (>=0.20)", "websockets (>=13.0)"]
 
 [[package]]
 name = "vine"
@@ -2257,4 +2261,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "2ba33ce84adce07629ed870c0f716b22b19ed7b447ef444b913a5b11b76d7115"
+content-hash = "ddc04740ba8c27ceb78623180351c41d2958759ded02579ea343d22c73f441e4"
