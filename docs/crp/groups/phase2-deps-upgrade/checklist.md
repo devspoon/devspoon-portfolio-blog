@@ -11,7 +11,7 @@
 - [x] 0 기준선 확인 — 우리 앱 No changes, 210 passed, runserver 점검표 통과(로컬 DB에 더미 SocialApp 3개 등록 후)
 - [x] 2-a 정리·저위험 — INV-1~4 통과
 - [x] 2-b Django 5.2 LTS — 4.2 경고 0건, 5.2.19로, INV-1~4 통과, F-001 Fixed. INV-5는 URLField 경고 1종(F-005) 결정 대기
-- [ ] 2-c ① django-redis 7 — INV-1~4
+- [x] 2-c ① django-redis 7.0.0·redis-py 8.1.0 — INV-1~4 통과, 캐시 키·TTL·세션 저장 확인
 - [ ] 2-c ② django-recaptcha 4 — INV-1~4, F-002
 - [ ] 2-c ③ django-allauth 65 — INV-1~4, F-003
 - [ ] 2-c ④ sentry 2·debug-toolbar 8·extensions 4 — INV-1~4

@@ -29,6 +29,7 @@
   - ③ `RemovedInDjango60Warning`을 오류로: `forms.URLField` 기본 scheme 경고 1종만 발생(ModelForm·admin 폼). scheme 결정이 필요해 수정하지 않고 F-005로 기록
   - F-001 수정: `strip_tags`로 교체, 테스트 2개(수정 전 실패 확인). admin 블로그 글 목록·수정 화면 200, 부제목이 `Bold title`로 태그 제거됨
   - 검증: check exit 0, 우리 앱 No changes, pytest 212 passed / 1 skipped, runserver 점검표 통과
+- **2-c ① django-redis 5.4 → 7.0.0, redis-py 5.2.1 → 8.1.0:** 코드 변경 없음. check exit 0, 우리 앱 No changes, pytest 212 passed / 1 skipped, runserver 점검표 통과. Redis에서 상세 캐시 키(`pre_board`·`next_board`·`get_queryset`) TTL 약 24시간, 세션 키 저장 확인
 
 ## 작업 계획 (승인 후 실행 — 순서 고정)
 
