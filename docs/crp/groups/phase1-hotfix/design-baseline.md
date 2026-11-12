@@ -29,6 +29,7 @@
 | REQ-001 | 2026-11-11 | "django 코드 검수, redis 캐시와 N+1 검토" → "작업 순서 정리, 반드시 설계·계획 후 실행" → "1단계 설계를 PR #9 병합 전에 미리 작성" | 검수 결과 1단계(C1·C2·N1·M2 + 형제 버그)를 고치는 설계와 작업 계획을 문서로 남긴다. 코드는 PR #9 병합 후 승인을 받아 작성한다. | Active | charter INV-1~5, ADR-001~005 |
 | REQ-002 | 2026-11-11 | "1단계 설계 승인한다. PR은 사용하지 않는다. push는 차후 수동으로 요청하겠다. 커밋만 관리해줘." | ADR-001~005를 Accepted로 확정한다. GitHub PR을 쓰지 않는다. `docs/sentry-error-remediation-plan` 브랜치는 로컬 merge 커밋으로 main에 합치고(사용자 요청 시), 1단계는 그 main 위에서 구현한다. push는 사용자가 따로 요청한다. | Active | C-5, C-6, ADR-001~005 |
 | REQ-003 | 2026-11-11 | "runserver로 테스트가 가능하다. nginx·gunicorn 등 인프라는 고려할 게 없다. Redis만 docker 단일 컨테이너. sqlite가 아닌 DB가 필요하면 WSL 컨테이너 사용" → "권장안대로" | 검증 환경은 `runserver`(`config.settings.dev`) + WSL docker 컨테이너 2개(`devspoon-redis` 26379, `devspoon-postgres` 25432, 새 named volume)로 한다. nginx 차단·서버 배포 절차는 계획에서 뺀다. Python 가상환경은 worktree의 `.venv`에 `poetry.lock` 기준으로 만든다. 다른 프로젝트 컨테이너와 DB 백업 경로는 건드리지 않는다. | Active | C-7, run-log §로컬 적용·검증 절차 |
+| REQ-004 | 2026-11-12 | (F-009·F-008 결정) "권장안대로 진행해줘" | F-009: 댓글 작성자 판정을 사용자 id 기준으로 바꾼다(nickname≠username 작성자도 자기 댓글 버튼을 본다). F-008: 이번 범위에서 고치지 않고 2단계(H10 캐시 키 정규화)로 이관한다. | Active | ADR-006, ledger F-008·F-009, residual-risk R-006 |
 
 ## 3. 설계 결정 기록 (ADR)
 
@@ -39,6 +40,7 @@
 | ADR-003 | 2026-11-11 | board 상세 뷰의 `get_context_data` 캐시 블록은 제거한다. | 이 블록이 캐시하던 것은 `user_auth` 하나뿐이었다. 제거하면 남는 캐시가 없다. | Accepted | — |
 | ADR-004 | 2026-11-11 | 댓글 목록은 `user_auth`를 빼고 캐시한다. 캐시에서 읽든 DB에서 읽든 응답 직전에 요청자 기준으로 `user_auth`를 붙인다. `post`/`board` 값은 `*_id`로 읽는다. | 캐시 재사용은 유지하면서 요청자별 값만 분리한다. `*_id`는 추가 쿼리가 없다. | Accepted | — |
 | ADR-005 | 2026-11-11 | 댓글 `post_delete` 시그널은 삭제된 행을 다시 조회하지 않고 `instance.post_id`(board는 `board_id`)로 `filter(pk=..., reply_count__gt=0).update(reply_count=F(...) - 1)`을 실행한다. | 지금은 `Collector.delete`의 atomic 블록 안에서 `DoesNotExist`가 나서 삭제 전체가 롤백된다. 조건부 UPDATE 한 문장이면 race 없이 음수도 막는다. | Accepted | — |
+| ADR-006 | 2026-11-12 | 댓글 목록 캐시에는 `user_auth` 대신 `author_id`를 저장하고, 응답 직전에 `author_id`를 빼면서 `user_auth = 로그인 상태 and author_id == request.user.pk`를 붙인다. 응답 JSON의 필드 구성은 바뀌지 않는다. | 기존 판정 `str(author) == username`은 `User.__str__`이 nickname이라 틀린다(F-009). 옛 형식 캐시(`author_id` 없음)를 읽으면 `user_auth`가 모두 False가 되어 버튼이 잘못 보이는 일은 없다. | Accepted | ADR-004 일부(판정 기준) |
 
 > ADR은 사용자 승인 시 Accepted로 바꾼다.
 
@@ -56,3 +58,4 @@
 - v0.1 (2026-11-11): 최초 작성. 설계만 하고 코드는 아직 작성하지 않음.
 - v0.2 (2026-11-11): 사용자 설계 승인. ADR-001~005 Accepted. REQ-002(PR 미사용), C-6 추가.
 - v0.3 (2026-11-11): REQ-003(runserver + WSL 컨테이너 검증, 인프라 제외), C-7 추가.
+- v0.4 (2026-11-12): REQ-004, ADR-006(댓글 작성자 판정을 id 기준으로). F-008은 2단계로 이관.

@@ -22,6 +22,16 @@
 - **전체 테스트:** 186 passed / 1 skipped
 - **수렴 판정:** `NOT CONVERGED`(F-003·F-006 Open)
 
+### Round 2 — 2026-11-12 (base SHA: `814f09d`)
+- **트리거:** F-009·F-008 결정(REQ-004: F-009는 id 기준 판정, F-008은 2단계 이관)
+- **Fix 결과:** F-003·F-006·F-009 Fixed. 댓글 목록 회귀 테스트 24개, 수정 전 코드에서 24개 전부 실패 확인(fail-on-revert)
+- **테스트 안정화:** 쿼리 수 비교에서 django-silk의 확률적 정리 쿼리(`silk_*`, savepoint)를 제외. 같은 조건 반복 시 앱 쿼리 수는 항상 같음을 진단으로 확인
+- **runserver(dev, PostgreSQL):** 상세 수정 버튼은 작성자만(1/0/0), 댓글 `user_auth`는 nickname≠username 작성자도 true·다른 사람과 비로그인은 false, `author_id` 미노출, Redis `*user_auth*`·`*like_state*` 키 없음, 댓글 삭제 302 후 행 삭제·`reply_count` 1→0
+- **전체 테스트:** 210 passed / 1 skipped(기존 무조건 skip)
+- **GATE 통과:** 0 ■ 1 ■ 2 ■ 3 ■(로컬 실제 실행) 4 ■ 5 ■
+- **수렴 판정:** `CONVERGED` — 이 그룹 계약 범위에서 Open Fix 0, 인수 기준 통과, 불가침 제약 위반 0. 범위 밖 잔여 위험은 residual-risk R-001~R-006
+- **검사 범위의 한계:** CI는 돌리지 않았다(push 미사용). 정적 분석 도구가 설치돼 있지 않아 `py_compile`과 전체 테스트로 대신했다
+
 ## 작업 계획 (승인 후 실행 — 순서 고정)
 
 0. **선행 조건:** `docs/sentry-error-remediation-plan` 브랜치가 main에 로컬 병합되어야 한다(PR 미사용, C-6). 이 브랜치를 새 main 위로 다시 올린다(rebase). 테스트 기반(`conftest.py` 캐시 초기화)이 그 브랜치에 있기 때문이다.
@@ -52,3 +62,4 @@
 |---|---|---|---|---|---|---|
 | 0 | 4 | 1 | 2 | 0 | 7 | NOT CONVERGED(설계) |
 | 1 | 0 | 1 | 2 | 1 | 5 Fixed, 신규 2(F-008·F-009) | NOT CONVERGED(보류 2) |
+| 2 | 0 | 0 | 0 | 0 | 3 Fixed(F-003·F-006·F-009), F-008 2단계 이관 | CONVERGED |
