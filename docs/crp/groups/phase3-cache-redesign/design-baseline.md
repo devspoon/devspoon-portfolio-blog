@@ -23,19 +23,20 @@ Redis 캐시의 방식·위치·구현을 바로잡는다(첫 검수 요청의 �
 | Req-ID | 날짜 | 요청(원문 요약) | 도출된 요구사항 | 상태 | 연결 |
 |---|---|---|---|---|---|
 | REQ-001 | 2026-11-12 | "진행해줘"(다음 단계 = 3단계 캐시 재설계, 첫 검수 요청 "redis의 캐시 방법, 위치, 코드의 구현이 잘 되어 있는지") | 요청 경로에서 SCAN을 없애고, 캐시 조회를 키 1개·왕복 1회로, 무효화를 모든 쓰기 경로(뷰·admin 저장·admin 일괄 액션·mptt 이동)에서 커밋 뒤에 하게 한다. 삭제·숨김 글이 캐시나 이웃 글로 새지 않게 한다. 언어별 데이터가 섞이지 않게 한다. 댓글 목록 `?page` 오류(phase1 F-008)를 고친다. 같은 코드 16벌은 mixin으로 줄인다. | Active | ADR-001~008 |
+| REQ-002 | 2026-11-12 | "권장안대로 승인한다. 진행해줘" | D1-A: 삭제·숨김 글은 상세 URL·이웃 글에서 누구에게나 404(admin에서만 봄). D2-A: 상세 뷰 캐시를 없앤다. 설계 ADR-001~008과 작업 계획(run-log 0~7) 승인. | Active | ADR-005, ADR-006 |
 
 ## 3. 설계 결정 기록 (ADR)
 
 | ADR-ID | 날짜 | 결정 | 근거 | 상태 | supersedes |
 |---|---|---|---|---|---|
-| ADR-001 | 2026-11-12 | 새 키는 모두 `v2:` 이름공간으로 만든다(`v2:index`, `v2:replies:<app.model>:<post_pk>:...`, `v2:portfolio:<lang>`, `v2:home:main_menu` 등). 옛 키는 지우지 않고 TTL(24시간)로 사라지게 둔다. | 배포 때 키 정리 작업이 필요 없다. 세션이 같은 Redis DB에 있으므로 `FLUSHDB`·`cache.clear()`는 쓰지 않는다(C-7). | Proposed | — |
-| ADR-002 | 2026-11-12 | 읽기는 키 1개를 `cache.get` 1회로 한다(없으면 만들어 `cache.set`). `ttl` 확인(남은 시간 300초 미만이면 미스 처리)과 패턴 조회(`iter_keys`)를 없앤다. 여러 값을 묶는 화면(index·portfolio)은 dict 하나로 저장한다. QuerySet은 저장하기 전에 list로 평가한다. | 지금은 히트마다 `ttl`+`get` 2회, 상세·index·portfolio는 히트마다 전체 키 공간 SCAN(세션 키 포함)이다(F-002·F-003). | Proposed | — |
-| ADR-003 | 2026-11-12 | 무효화는 모델 시그널(`post_save`·`post_delete`)에서 `transaction.on_commit`으로 한다. 시그널이 안 걸리는 `queryset.update()` 경로(admin 삭제·숨김·복구 액션)는 그 액션 안에서 같은 무효화 함수를 부른다. 뷰·admin mixin·`index_cache_clean` 데코레이터에 흩어진 수동 삭제는 없앤다. | 지금은 admin 일괄 액션이 캐시를 안 지우고(F-004), 저장 전·커밋 전에 지워 경쟁 시 옛 값이 다시 캐시되며(F-005), 접두사 오타로 게시판 댓글 캐시가 안 지워지고(F-006), GET에도 index를 지운다(F-009). 한 곳에서 하면 경로가 늘어도 빠지지 않는다. | Proposed | — |
-| ADR-004 | 2026-11-12 | 댓글 목록은 글마다 버전 토큰 키(`v2:replies:<app.model>:<post_pk>:ver`)를 두고 페이지 키에 버전을 넣는다. 무효화는 버전 키를 지우는 것 하나다(옛 페이지 키는 TTL로 사라짐). `page`는 정수로 바꾸고 잘못된 값·1 미만은 1로 한다. 범위를 벗어난 페이지는 Paginator가 마지막 페이지로 맞춘 결과를 돌려주되 캐시하지 않는다. | SCAN 없이 그 글의 모든 페이지를 한 번에 무효화한다. 원본 문자열 키로 인한 키 오염과 `?page` 없을 때 500(phase1 F-008 → F-008)을 없앤다. 히트 비용은 `get` 2회(버전·페이지)다. | Proposed | — |
-| ADR-005 | 2026-11-12 | **(D2 결정 대기)** 권장 A: 상세 뷰의 캐시를 없앤다(`get_queryset`·이전/다음 글 캐시 제거). 상세는 pk 조회 1회 + 이웃 글 조회 2회(인덱스)로 DB에서 읽는다. | 지금 상세 캐시는 이점이 없다. 캐시에서 꺼낸 QuerySet에 DetailView가 `filter(pk=…)`를 다시 걸어 DB를 다시 조회하고, QuerySet은 pickle될 때 전부 평가되므로 글 하나마다 그 게시판 전체 행(본문 포함)이 Redis에 저장된다(F-001). 이웃 글 캐시는 이웃이 바뀌어도 지워지지 않는다(F-004). B(올바르게 다시 캐시)는 글·이웃·좋아요 변경마다 무효화가 필요해 복잡도에 비해 얻는 것이 작다. | Proposed | — |
-| ADR-006 | 2026-11-12 | **(D1 결정 대기)** 권장 A: 상세 URL과 이전/다음 글은 `activate_objects`(삭제·숨김 아님)만 보인다. 삭제·숨김 글은 누구에게나 404이고 admin에서만 본다. | 목록은 이미 `activate_objects`를 쓰는데 상세·이웃은 기본 manager라 삭제·숨김 글이 URL과 이웃 링크로 보인다(F-001). | Proposed | — |
-| ADR-007 | 2026-11-12 | index·portfolio·메뉴·사이트 정보는 키 1개씩 둔다. portfolio와 경력(WorkExperience) JSON은 언어별 키(`settings.LANGUAGES`의 코드)로 나누고, 무효화는 모든 언어 키를 `delete_many`로 지운다. portfolio의 "미스 때 `portfolio:*` 전체 삭제"는 없앤다. | 지금 경력 키에 언어가 없어 처음 요청한 언어 결과를 모두가 받고, admin은 첫 번째 언어 키만 지우며, 미스마다 SCAN 삭제가 돈다(F-007). | Proposed | — |
-| ADR-008 | 2026-11-12 | 같은 코드 묶음을 mixin으로 줄인다: 블로그 상세 5개 → `PostDetailMixin`(이웃 글·작성자·좋아요), 게시판 상세 3개는 그 mixin의 작성자 판정만 사용, 댓글 목록 8개 → `ReplyListJsonMixin`. URL·클래스 이름·JSON 형식은 그대로 둔다. 모든 호출부를 옮긴 뒤 `dredis_*` 함수와 `index_cache_clean`을 지운다. admin의 "캐시 전체 삭제" 액션은 그 영역의 `v2:` 접두사만 `delete_pattern`으로 지운다(관리자 수동 실행이라 SCAN 허용). | 같은 수정을 8번 반복하지 않게 한다(F-010). 남겨 두면 옛 방식이 다시 쓰인다. | Proposed | — |
+| ADR-001 | 2026-11-12 | 새 키는 모두 `v2:` 이름공간으로 만든다(`v2:index`, `v2:replies:<app.model>:<post_pk>:...`, `v2:portfolio:<lang>`, `v2:home:main_menu` 등). 옛 키는 지우지 않고 TTL(24시간)로 사라지게 둔다. | 배포 때 키 정리 작업이 필요 없다. 세션이 같은 Redis DB에 있으므로 `FLUSHDB`·`cache.clear()`는 쓰지 않는다(C-7). | Accepted | — |
+| ADR-002 | 2026-11-12 | 읽기는 키 1개를 `cache.get` 1회로 한다(없으면 만들어 `cache.set`). `ttl` 확인(남은 시간 300초 미만이면 미스 처리)과 패턴 조회(`iter_keys`)를 없앤다. 여러 값을 묶는 화면(index·portfolio)은 dict 하나로 저장한다. QuerySet은 저장하기 전에 list로 평가한다. | 지금은 히트마다 `ttl`+`get` 2회, 상세·index·portfolio는 히트마다 전체 키 공간 SCAN(세션 키 포함)이다(F-002·F-003). | Accepted | — |
+| ADR-003 | 2026-11-12 | 무효화는 모델 시그널(`post_save`·`post_delete`)에서 `transaction.on_commit`으로 한다. 시그널이 안 걸리는 `queryset.update()` 경로(admin 삭제·숨김·복구 액션)는 그 액션 안에서 같은 무효화 함수를 부른다. 뷰·admin mixin·`index_cache_clean` 데코레이터에 흩어진 수동 삭제는 없앤다. | 지금은 admin 일괄 액션이 캐시를 안 지우고(F-004), 저장 전·커밋 전에 지워 경쟁 시 옛 값이 다시 캐시되며(F-005), 접두사 오타로 게시판 댓글 캐시가 안 지워지고(F-006), GET에도 index를 지운다(F-009). 한 곳에서 하면 경로가 늘어도 빠지지 않는다. | Accepted | — |
+| ADR-004 | 2026-11-12 | 댓글 목록은 글마다 버전 토큰 키(`v2:replies:<app.model>:<post_pk>:ver`)를 두고 페이지 키에 버전을 넣는다. 무효화는 버전 키를 지우는 것 하나다(옛 페이지 키는 TTL로 사라짐). `page`는 정수로 바꾸고 잘못된 값·1 미만은 1로 한다. 범위를 벗어난 페이지는 Paginator가 마지막 페이지로 맞춘 결과를 돌려주되 캐시하지 않는다. | SCAN 없이 그 글의 모든 페이지를 한 번에 무효화한다. 원본 문자열 키로 인한 키 오염과 `?page` 없을 때 500(phase1 F-008 → F-008)을 없앤다. 히트 비용은 `get` 2회(버전·페이지)다. | Accepted | — |
+| ADR-005 | 2026-11-12 | (D2-A 승인) 상세 뷰의 캐시를 없앤다(`get_queryset`·이전/다음 글 캐시 제거). 상세는 pk 조회 1회 + 이웃 글 조회 2회(인덱스)로 DB에서 읽는다. | 지금 상세 캐시는 이점이 없다. 캐시에서 꺼낸 QuerySet에 DetailView가 `filter(pk=…)`를 다시 걸어 DB를 다시 조회하고, QuerySet은 pickle될 때 전부 평가되므로 글 하나마다 그 게시판 전체 행(본문 포함)이 Redis에 저장된다(F-001). 이웃 글 캐시는 이웃이 바뀌어도 지워지지 않는다(F-004). B(올바르게 다시 캐시)는 글·이웃·좋아요 변경마다 무효화가 필요해 복잡도에 비해 얻는 것이 작다. | Accepted | — |
+| ADR-006 | 2026-11-12 | (D1-A 승인) 상세 URL과 이전/다음 글은 `activate_objects`(삭제·숨김 아님)만 보인다. 삭제·숨김 글은 누구에게나 404이고 admin에서만 본다. | 목록은 이미 `activate_objects`를 쓰는데 상세·이웃은 기본 manager라 삭제·숨김 글이 URL과 이웃 링크로 보인다(F-001). | Accepted | — |
+| ADR-007 | 2026-11-12 | index·portfolio·메뉴·사이트 정보는 키 1개씩 둔다. portfolio와 경력(WorkExperience) JSON은 언어별 키(`settings.LANGUAGES`의 코드)로 나누고, 무효화는 모든 언어 키를 `delete_many`로 지운다. portfolio의 "미스 때 `portfolio:*` 전체 삭제"는 없앤다. | 지금 경력 키에 언어가 없어 처음 요청한 언어 결과를 모두가 받고, admin은 첫 번째 언어 키만 지우며, 미스마다 SCAN 삭제가 돈다(F-007). | Accepted | — |
+| ADR-008 | 2026-11-12 | 같은 코드 묶음을 mixin으로 줄인다: 블로그 상세 5개 → `PostDetailMixin`(이웃 글·작성자·좋아요), 게시판 상세 3개는 그 mixin의 작성자 판정만 사용, 댓글 목록 8개 → `ReplyListJsonMixin`. URL·클래스 이름·JSON 형식은 그대로 둔다. 모든 호출부를 옮긴 뒤 `dredis_*` 함수와 `index_cache_clean`을 지운다. admin의 "캐시 전체 삭제" 액션은 그 영역의 `v2:` 접두사만 `delete_pattern`으로 지운다(관리자 수동 실행이라 SCAN 허용). | 같은 수정을 8번 반복하지 않게 한다(F-010). 남겨 두면 옛 방식이 다시 쓰인다. | Accepted | — |
 
 ## 4. 불가침 제약
 
@@ -49,4 +50,5 @@ Redis 캐시의 방식·위치·구현을 바로잡는다(첫 검수 요청의 �
 
 ## 5. 변경 이력
 
+- v0.2 (2026-11-12): REQ-002. D1-A·D2-A 결정, ADR-001~008 Accepted.
 - v0.1 (2026-11-12): 최초 작성(REQ-001, ADR-001~008 Proposed, D1·D2 결정 대기).
