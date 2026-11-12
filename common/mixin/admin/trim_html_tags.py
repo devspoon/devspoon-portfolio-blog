@@ -1,13 +1,12 @@
-from django.utils.html import format_html
+from django.utils.html import strip_tags
 from django.template.response import TemplateResponse
 
 
 class TrimHtmlTagsAdminMixin:
     def get_cleaned_title(self, obj):
-        # HTML 태그를 제거하고 텍스트만 반환
-        return format_html(
-            obj.title
-        )  # 또는 obj.title.strip()으로 HTML 제거 가능, 만약 HTML 태그를 제거하고 싶다면, strip_tags를 사용
+        # HTML 태그를 제거하고 텍스트만 반환한다. 인자 없는 format_html은 문자열을
+        # 이스케이프 없이 안전 표시해 저장된 XSS가 되고, Django 6.0에서 제거된다.
+        return strip_tags(obj.title)
 
     get_cleaned_title.short_description = "Title"  # Admin에서 표시될 제목
 
@@ -22,7 +21,7 @@ class TrimHtmlTagsAdminMixin:
                     "subtitle" in response.context_data
                     and response.context_data["subtitle"]
                 ):
-                    response.context_data["subtitle"] = format_html(
+                    response.context_data["subtitle"] = strip_tags(
                         response.context_data["subtitle"]
                     )
 

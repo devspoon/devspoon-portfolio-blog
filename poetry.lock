@@ -91,20 +91,6 @@ files = [
 visualize = ["Twisted (>=16.1.1)", "graphviz (>0.5.1)"]
 
 [[package]]
-name = "autopep8"
-version = "2.3.2"
-description = "A tool that automatically formats Python code to conform to the PEP 8 style guide"
-optional = false
-python-versions = ">=3.9"
-files = [
-    {file = "autopep8-2.3.2-py2.py3-none-any.whl", hash = "sha256:ce8ad498672c845a0c3de2629c15b635ec2b05ef8177a6e7c91c74f3e9b51128"},
-    {file = "autopep8-2.3.2.tar.gz", hash = "sha256:89440a4f969197b69a995e4ce0661b031f455a9f776d2c5ba3dbd83466931758"},
-]
-
-[package.dependencies]
-pycodestyle = ">=2.12.0"
-
-[[package]]
 name = "beautifulsoup4"
 version = "4.15.0"
 description = "Screen-scraping library"
@@ -713,17 +699,17 @@ files = [
 
 [[package]]
 name = "django"
-version = "4.2.19"
+version = "5.2.19"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.10"
 files = [
-    {file = "Django-4.2.19-py3-none-any.whl", hash = "sha256:a104e13f219fc55996a4e416ef7d18ab4eeb44e0aa95174c192f16cda9f94e75"},
-    {file = "Django-4.2.19.tar.gz", hash = "sha256:6c833be4b0ca614f0a919472a1028a3bbdeb6f056fa04023aeb923346ba2c306"},
+    {file = "django-5.2.19-py3-none-any.whl", hash = "sha256:5965d974a5218a2b68a11dd1276434707f23886525c23f0598eccedaf4f4ca00"},
+    {file = "django-5.2.19.tar.gz", hash = "sha256:ad03d8abc51dbff95ebf34b27123cf0c26a3b62db7ba0cd520783686362533d1"},
 ]
 
 [package.dependencies]
-asgiref = ">=3.6.0,<4"
+asgiref = ">=3.8.1"
 sqlparse = ">=0.3.1"
 tzdata = {version = "*", markers = "sys_platform == \"win32\""}
 
@@ -1018,20 +1004,22 @@ sendgrid = ">=5.0.0"
 
 [[package]]
 name = "django-silk"
-version = "5.3.2"
+version = "5.6.0"
 description = "Silky smooth profiling for the Django Framework"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 files = [
-    {file = "django_silk-5.3.2-py3-none-any.whl", hash = "sha256:49f1caebfda28b1707f0cfef524e0476beb82b8c5e40f5ccff7f73a6b4f6d3ac"},
-    {file = "django_silk-5.3.2.tar.gz", hash = "sha256:b0db54eebedb8d16f572321bd6daccac0bd3f547ae2618bb45d96fe8fc02229d"},
+    {file = "django_silk-5.6.0-py3-none-any.whl", hash = "sha256:761300bde25b8ce3c381dc0710e82c792c099c0ee6558fad3165dc560a06dd48"},
+    {file = "django_silk-5.6.0.tar.gz", hash = "sha256:bb741fb8af45eba663e8ed832207d16ecd731496313311f6dfae5fe776bed38e"},
 ]
 
 [package.dependencies]
-autopep8 = "*"
-Django = ">=4.2"
+Django = ">=5.2"
 gprof2dot = ">=2017.09.19"
 sqlparse = "*"
+
+[package.extras]
+formatting = ["autopep8"]
 
 [[package]]
 name = "django-summernote"
@@ -1622,17 +1610,6 @@ files = [
 
 [package.dependencies]
 pyasn1 = ">=0.4.6,<0.7.0"
-
-[[package]]
-name = "pycodestyle"
-version = "2.12.1"
-description = "Python style guide checker"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "pycodestyle-2.12.1-py2.py3-none-any.whl", hash = "sha256:46f0fb92069a7c28ab7bb558f05bfc0110dac69a0cd23c61ea0040283a9d78b3"},
-    {file = "pycodestyle-2.12.1.tar.gz", hash = "sha256:6838eae08bbce4f6accd5d5572075c63626a15ee3e6f842df996bf62f6d73521"},
-]
 
 [[package]]
 name = "pycparser"
@@ -2296,4 +2273,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "9cf35ae9f5050a358d4d4e2fc100b59a2c96badbe9ad484545a66d43ece62049"
+content-hash = "30a54f19089835e26c4175ba756465cdc75b430a4613e27778a8ee5178035c5a"

@@ -23,6 +23,12 @@
   - 검증: check exit 0, 우리 앱 No changes, pytest 210 passed / 1 skipped, runserver 점검표 통과
   - 참고: 설치 직후 첫 `check`가 psycopg2 import 오류로 1회 실패했으나(같은 시점에 `migrate` 동시 실행) 재실행 2회 모두 통과, 재현 안 됨
 - **신규 finding:** F-004(LOW, `requirements/dev.txt`가 lock과 불일치) — 계획 밖, 결정 대기
+- **2-b Django 5.2 LTS:**
+  - ① 4.2에서 `RemovedInDjango50Warning`·`RemovedInDjango51Warning`을 오류로: pytest 210 passed, `check` 통과 — 해당 사용처 0건
+  - ② `Django = "~5.2"`(5.2.19), django-silk 5.6.0. 함께 빠진 것: autopep8·pycodestyle(silk 5.3의 하위 의존성). 우리 앱 No changes, 새 migration 없음
+  - ③ `RemovedInDjango60Warning`을 오류로: `forms.URLField` 기본 scheme 경고 1종만 발생(ModelForm·admin 폼). scheme 결정이 필요해 수정하지 않고 F-005로 기록
+  - F-001 수정: `strip_tags`로 교체, 테스트 2개(수정 전 실패 확인). admin 블로그 글 목록·수정 화면 200, 부제목이 `Bold title`로 태그 제거됨
+  - 검증: check exit 0, 우리 앱 No changes, pytest 212 passed / 1 skipped, runserver 점검표 통과
 
 ## 작업 계획 (승인 후 실행 — 순서 고정)
 
