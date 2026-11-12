@@ -42,9 +42,19 @@ class IndexView(TemplateView):
                 )
             )
 
-        latest = latest_of(OnlineStudyPost, "OnlineStudy").union(latest_of(BlogPost, "Blog"), all=False)
-        latest = latest.union(latest_of(OpenSourcePost, "OpenSource"), all=False)
-        latest = latest.union(latest_of(BooksPost, "Books"), all=False).order_by("created_at")[0:9]
+        # 게시판마다 3개씩 읽어 Python에서 합친다. 조각 쿼리의 union은 SQLite가 지원하지 않는다(phase3 F-011).
+        # 게시판 이름(table)이 달라 union의 중복 제거와 결과가 같다.
+        rows = [
+            row
+            for model, table in [
+                (OnlineStudyPost, "OnlineStudy"),
+                (BlogPost, "Blog"),
+                (OpenSourcePost, "OpenSource"),
+                (BooksPost, "Books"),
+            ]
+            for row in latest_of(model, table)
+        ]
+        latest = sorted(rows, key=lambda row: row["created_at"])[:9]
         projects = (
             AboutProjects.objects.all()
             .select_related("projectpost")

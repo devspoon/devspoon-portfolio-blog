@@ -433,7 +433,7 @@ def test_cache_holds_no_visitor_values(ns, name, post_model, reply_model, fk, ex
     post = make_post(post_model, author, extra)
     make_reply(reply_model, fk, post, author)
     client = logged_in(author)
-    for url in [detail_url(ns, name, post.pk), reply_list_url(ns, name, post.pk), "/portfolio/"]:
+    for url in [detail_url(ns, name, post.pk), reply_list_url(ns, name, post.pk), "/", "/portfolio/"]:
         client.get(url)
 
     for key in cache.keys("*"):
@@ -442,3 +442,73 @@ def test_cache_holds_no_visitor_values(ns, name, post_model, reply_model, fk, ex
         for item in _walk(cache.get(key)):
             assert not isinstance(item, User), key
             assert item not in ("user_auth", "like_state", "get_in_touch_form"), key
+
+
+# --- F-012: 게시판 글 삭제 ---
+
+
+@pytest.mark.parametrize("ns,name,post_model,reply_model,fk,extra", BOARD_BOARDS, ids=BOARD_IDS)
+def test_board_author_can_delete_a_post(ns, name, post_model, reply_model, fk, extra, author):
+    post = make_post(post_model, author, extra)
+
+    response = logged_in(author).post(reverse(f"{ns}:{name}_delete", kwargs={"pk": post.pk}))
+
+    assert response.status_code == 302
+    post.refresh_from_db()
+    assert post.is_deleted is True
+    assert Client().get(detail_url(ns, name, post.pk)).status_code == 404
+
+
+@pytest.mark.parametrize("ns,name,post_model,reply_model,fk,extra", BOARD_BOARDS, ids=BOARD_IDS)
+def test_board_post_cannot_be_deleted_by_someone_else(ns, name, post_model, reply_model, fk, extra, author):
+    post = make_post(post_model, author, extra)
+
+    response = logged_in(make_user("other")).post(reverse(f"{ns}:{name}_delete", kwargs={"pk": post.pk}))
+
+    assert response.status_code == 403
+    post.refresh_from_db()
+    assert post.is_deleted is False
+
+
+# --- F-011: index를 SQLite에서도 렌더링한다 ---
+
+
+def test_index_lists_the_oldest_nine_of_each_boards_latest_three(author):
+    # 지금 동작 그대로: 게시판 4종에서 각각 activate_objects 앞 3개를 고른 뒤 created_at 오름차순 9개.
+    base = datetime.datetime(2024, 1, 1, tzinfo=datetime.timezone.utc)
+    boards = [
+        (OnlineStudyPost, {"dev_lang": "python"}),
+        (BlogPost, {}),
+        (OpenSourcePost, {"dev_lang": "python"}),
+        (BooksPost, {"dev_lang": "python"}),
+    ]
+    for i, (model, extra) in enumerate(boards):
+        for j in range(4):
+            post = make_post(model, author, extra, title=f"{model.__name__}-{j}")
+            model.objects.filter(pk=post.pk).update(created_at=base + datetime.timedelta(days=j * 10 + i))
+    make_post(BlogPost, author, {}, title="deleted", is_deleted=True)
+    make_post(BlogPost, author, {}, title="hidden", is_hidden=True)
+
+    rows = []
+    for model, _ in boards:
+        rows += list(model.activate_objects.get_data()[:3].values("title", "created_at"))
+    expected = [row["title"] for row in sorted(rows, key=lambda r: r["created_at"])[:9]]
+
+    response = Client().get("/")
+
+    assert response.status_code == 200
+    assert [row["title"] for row in response.context["latest"]] == expected
+    assert len(expected) == 9
+    assert "deleted" not in expected and "hidden" not in expected
+
+
+def test_index_refreshes_after_a_post_write_and_never_scans(author, no_scan, django_capture_on_commit_callbacks):
+    client = Client()
+    assert [row["title"] for row in client.get("/").context["latest"]] == []
+
+    with django_capture_on_commit_callbacks(execute=True):
+        BlogPost.objects.create(author=author, title="new", content="c")
+    assert [row["title"] for row in client.get("/").context["latest"]] == ["new"]
+    assert [row["title"] for row in client.get("/").context["latest"]] == ["new"]  # 히트
+
+    assert no_scan == []
