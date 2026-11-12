@@ -68,12 +68,12 @@ class NoticeReplyListJsonView(View):
                         "depth": context.depth,
                         "group": context.group,
                         "parent": str(context.parent_id),
-                        "post": str(context.board.pk),
+                        "post": str(context.board_id),
                         "created_at": context.created_at.strftime(
                             "%Y-%m-%d %I:%M:%S %p"
                         ),
                         "thumbnail": str(context.author.photo_thumbnail.url),
-                        "user_auth": str(context.author) == str(request.user.username),
+                        "author_id": context.author_id,
                     },
                     pages.object_list,
                 )
@@ -96,6 +96,13 @@ class NoticeReplyListJsonView(View):
                 logger.debug(
                     f"redis cache - {self.__class__.__name__} caching_data not exists"
                 )
+
+        # 요청자마다 다른 값은 공유 캐시에 넣지 않는다(C-1). 작성자 판정은 사용자 id로 한다.
+        # author_id가 없는 옛 형식 캐시는 모두 False가 되어 버튼이 잘못 보이지 않는다.
+        user_pk = request.user.pk  # 비로그인이면 None
+        for reply in results[1:]:
+            author_id = reply.pop("author_id", None)
+            reply["user_auth"] = user_pk is not None and author_id == user_pk
 
         logger.debug(f"final context : {results}")
 

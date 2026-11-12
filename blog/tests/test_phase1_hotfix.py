@@ -4,7 +4,9 @@
 """
 import pytest
 from django.core.cache import cache
+from django.db import connection
 from django.test import Client
+from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 
 from blog.models.blog import (
@@ -138,3 +140,79 @@ def test_detail_does_not_cache_visitor_values(
 
     assert cache.keys("*user_auth*") == []
     assert cache.keys("*like_state*") == []
+
+
+# --- C1(댓글)·N1: 댓글 목록 (F-003·F-006·F-009, INV-1·INV-5, ADR-006) ---
+
+
+def reply_list_url(name, post):
+    # 화면 JS(static/js/blog_apis.js)는 항상 ?page=를 붙여 호출한다.
+    return reverse(f"blog:{name}_reply_list", kwargs={"pk": post.pk}) + "?page=1"
+
+
+@pytest.mark.parametrize("name,post_model,reply_model,extra", BOARDS, ids=BOARD_IDS)
+def test_reply_list_owner_flag_follows_the_visitor(
+    name, post_model, reply_model, extra, author, other
+):
+    post = post_model.objects.create(author=author, title="t", content="c", **extra)
+    reply_model.objects.create(author=author, comment="hi", post=post)
+    url = reply_list_url(name, post)
+
+    # 작성자가 먼저 불러 캐시를 채운다. 응답의 0번은 페이지 정보다.
+    assert logged_in(author).get(url).json()[1]["user_auth"] is True
+
+    assert logged_in(other).get(url).json()[1]["user_auth"] is False
+    assert Client().get(url).json()[1]["user_auth"] is False
+
+
+@pytest.mark.parametrize("name,post_model,reply_model,extra", BOARDS, ids=BOARD_IDS)
+def test_reply_list_owner_flag_does_not_depend_on_nickname(
+    name, post_model, reply_model, extra
+):
+    # User.__str__은 nickname이다. nickname이 username과 달라도 작성자로 판정해야 한다.
+    author = User.objects.create_user(
+        username="author-login",
+        email="author-login@example.com",
+        nickname="Author Nick",
+        password="password",
+        verified=True,
+    )
+    post = post_model.objects.create(author=author, title="t", content="c", **extra)
+    reply_model.objects.create(author=author, comment="hi", post=post)
+
+    reply = logged_in(author).get(reply_list_url(name, post)).json()[1]
+
+    assert reply["user_auth"] is True
+    # 판정용 내부 값은 응답에 노출하지 않는다.
+    assert "author_id" not in reply
+
+
+def count_queries(client, url):
+    with CaptureQueriesContext(connection) as queries:
+        response = client.get(url)
+    assert response.status_code == 200
+    # 테스트 설정에서 켜진 django-silk가 확률적으로 자기 테이블을 정리하는 쿼리는 뺀다.
+    return sum(
+        1
+        for query in queries.captured_queries
+        if "silk_" not in query["sql"] and "SAVEPOINT" not in query["sql"]
+    )
+
+
+@pytest.mark.parametrize("name,post_model,reply_model,extra", BOARDS, ids=BOARD_IDS)
+def test_reply_list_query_count_does_not_grow_with_replies(
+    name, post_model, reply_model, extra, author
+):
+    def post_with_replies(count):
+        post = post_model.objects.create(author=author, title="t", content="c", **extra)
+        for _ in range(count):
+            reply_model.objects.create(author=author, comment="hi", post=post)
+        return reply_list_url(name, post)
+
+    client = Client()
+    # 첫 요청은 일자별 통계 row를 만드는 INSERT가 섞이므로 제외한다.
+    count_queries(client, post_with_replies(0))
+
+    assert count_queries(client, post_with_replies(1)) == count_queries(
+        client, post_with_replies(5)
+    )
