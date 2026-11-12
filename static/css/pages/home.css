@@ -1,0 +1,31 @@
+/* home page (ADR-004: page styles live in the "pages" layer, tokens only — INV-1) */
+@layer pages {
+  .p-hero { padding-block: var(--sp-9) var(--sp-8); display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--sp-7); align-items: end; }
+  .p-hero h1 { font-size: var(--fs-7); font-weight: var(--fw-black); letter-spacing: -.045em; line-height: .95; margin: 0; }
+  .p-hero h1 span { display: block; color: var(--c-text-muted); font-weight: 400; font-size: var(--fs-5); letter-spacing: -.01em;
+      margin-top: var(--sp-4); line-height: 1.4; }
+  .p-hero__links { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-5); }
+
+  /* "now" list: the three newest posts, one dot per entry on a single accent rule */
+  .p-now { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--c-accent); }
+  .p-now li { padding: var(--sp-2) 0 var(--sp-2) var(--sp-5); position: relative; }
+  .p-now li::before { content: ""; position: absolute; left: -6px; top: 18px; width: 10px; height: 10px; border-radius: 50%;
+      background: var(--c-surface); border: 2px solid var(--c-accent); }
+  .p-now time { font-size: var(--fs-1); color: var(--c-text-muted); margin-right: var(--sp-2); }
+  .p-now .c-card__kind { display: inline-block; margin: 0; }
+  .p-now a { display: block; color: var(--c-text); text-decoration: none; font-weight: var(--fw-medium); }
+  .p-now a:hover { color: var(--c-accent-text); text-decoration: underline; }
+  @media (prefers-reduced-motion: no-preference) {
+    .p-now li { animation: p-rise var(--dur-base) var(--ease-out) both; }
+    .p-now li:nth-child(2) { animation-delay: 80ms; }
+    .p-now li:nth-child(3) { animation-delay: 160ms; }
+  }
+  @keyframes p-rise { from { opacity: 0; transform: translateY(6px); } }
+
+  .p-lede { color: var(--c-text-muted); max-width: var(--measure); margin-bottom: var(--sp-5); }
+  .p-lede p { margin: 0; }
+
+  @media (max-width: 991.98px) {
+    .p-hero { grid-template-columns: 1fr; padding-block: var(--sp-7); }
+  }
+}

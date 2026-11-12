@@ -66,6 +66,7 @@
          -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
   h1, h2, h3, h4 { font-weight: var(--fw-bold); line-height: var(--lh-tight); letter-spacing: -.02em; color: var(--c-text); }
   h1 { font-size: var(--fs-6); } h2 { font-size: var(--fs-5); } h3 { font-size: var(--fs-4); } h4 { font-size: var(--fs-3); }
+  p { color: inherit; }   /* outranks legacy `p { color }` rules (layer order beats specificity) */
   a { color: var(--c-accent-text); text-underline-offset: .2em; }
   a:hover { color: var(--c-accent-strong); }
   img, svg, video { max-width: 100%; height: auto; }
@@ -121,6 +122,7 @@
   .c-footer a { color: var(--c-footer-text); text-decoration: none; }
   .c-footer a:hover { color: var(--c-footer-strong); text-decoration: underline; }
   .c-footer .c-brand { color: var(--c-footer-strong); }
+  .c-footer .c-brand span { color: var(--c-accent); }   /* the footer is dark in both themes */
   .c-footer__legal { grid-column: 1 / -1; border-top: 1px solid var(--c-footer-line); padding-top: var(--sp-4); }
   @media (max-width: 767.98px) { .c-footer .l-wrap { grid-template-columns: 1fr; } }
 }
@@ -200,6 +202,9 @@
 
   /* buttons & forms: Bootstrap components fed by tokens */
   .btn { --bs-btn-font-weight: var(--fw-medium); --bs-btn-border-radius: var(--r-sm); }
+  /* Bootstrap sits in the lower "vendor" layer, so base `a { color }` would win on <a class="btn"> */
+  .btn { color: var(--bs-btn-color); }
+  .btn:hover { color: var(--bs-btn-hover-color); }
   .btn-primary { --bs-btn-bg: var(--c-accent-text); --bs-btn-border-color: var(--c-accent-text); --bs-btn-color: var(--c-on-accent);
       --bs-btn-hover-bg: var(--c-accent-strong); --bs-btn-hover-border-color: var(--c-accent-strong); --bs-btn-hover-color: var(--c-on-accent);
       --bs-btn-active-bg: var(--c-accent-strong); --bs-btn-active-border-color: var(--c-accent-strong);

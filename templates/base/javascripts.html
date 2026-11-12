@@ -1,6 +1,6 @@
 {% load static %}
-{# Transitional (until step 5): legacy page scripts. Global libraries that nothing used were removed:
-   AOS, WOW, glightbox, Selectr, noUiSlider, ionicons, tiny-slider, Summernote CDN (django-summernote loads its own in the form iframe). #}
+{% comment %}Transitional (until step 5): legacy page scripts. Global libraries that nothing used were removed:
+   AOS, WOW, glightbox, Selectr, noUiSlider, ionicons, tiny-slider, Summernote CDN (django-summernote loads its own in the form iframe).{% endcomment %}
 <script src="https://cdn.jsdelivr.net/npm/axios@1.7.9/dist/axios.min.js" defer></script>
 {% if 'portfolio' in request.path %}
 <script src="{% static 'js/portfolio.js' %}" defer></script>

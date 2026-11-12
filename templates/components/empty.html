@@ -1,0 +1,5 @@
+{% comment %}Empty state (ADR-005). Args: message, action_url + action_label (optional).{% endcomment %}
+<div class="c-empty">
+  <p class="mb-3">{{ message }}</p>
+  {% if action_url %}<a class="btn btn-outline-primary" href="{{ action_url }}">{{ action_label }}</a>{% endif %}
+</div>

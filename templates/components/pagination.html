@@ -1,0 +1,25 @@
+{% load i18n blog_base_tag ui_tags %}{% comment %}
+List pagination (ADR-005). Uses page_obj; keeps the keyword or tag filter of search pages.
+Hidden when there is a single page.
+{% endcomment %}
+{% if page_obj.paginator.num_pages > 1 %}
+<nav aria-label="{% trans 'Pagination' %}">
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if keyword %}&amp;keyword={{ keyword|urlencode }}{% elif tag %}&amp;tag={{ tag|urlencode }}{% endif %}">{% icon "chevron-left" label=_("Previous page") %}</a></li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">{% icon "chevron-left" %}</span></li>
+    {% endif %}
+    {% for page in page_obj|slice_visible_pages %}
+    <li class="page-item{% if page_obj.number == page %} active{% endif %}">
+      <a class="page-link" href="?page={{ page }}{% if keyword %}&amp;keyword={{ keyword|urlencode }}{% elif tag %}&amp;tag={{ tag|urlencode }}{% endif %}"{% if page_obj.number == page %} aria-current="page"{% endif %}>{{ page }}</a>
+    </li>
+    {% endfor %}
+    {% if page_obj.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if keyword %}&amp;keyword={{ keyword|urlencode }}{% elif tag %}&amp;tag={{ tag|urlencode }}{% endif %}">{% icon "chevron-right" label=_("Next page") %}</a></li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">{% icon "chevron-right" %}</span></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
