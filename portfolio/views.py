@@ -2,7 +2,6 @@ import logging
 
 from django.conf import settings
 from django.contrib import messages
-from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
@@ -11,8 +10,10 @@ from django.utils import translation
 from django.views.generic import TemplateView, View
 
 from common.components.django_redis_cache_components import (
-    dredis_cache_check_key, dredis_cache_delete, dredis_cache_get,
-    dredis_cache_set)
+    cached,
+    portfolio_key,
+    work_experience_key,
+)
 from utils.email.async_send_email import send_mail_sync
 
 from .forms import GetInTouchForm
@@ -20,8 +21,6 @@ from .models import (AboutProjects, EducationStudy, GetInTouchLog,
                      InterestedIn, PersonalInfo, Portfolio, WorkExperience)
 
 logger = logging.getLogger(getattr(settings, "PORTFOLIO_LOGGER", "django"))
-
-CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
 
 def get_language_index():
@@ -35,75 +34,42 @@ def get_language_index():
 # Create your views here.
 class PortfolioView(TemplateView):
     template_name = "portfolio/portfolio.html"
-    cache_prefix = "portfolio"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         lang = get_language_index()
-        check_cached_key = dredis_cache_check_key(
-            self.cache_prefix + ":" + str(lang[0]),
-            0,
-            "info",
-        )
-        if check_cached_key:
-            logger.debug(f"called redis cache - {self.__class__.__name__}")
-            queryset = dredis_cache_get(
-                self.cache_prefix + ":" + str(lang[0]),
-                0,
-            )
-            context.update(queryset)
-        else:
-            logger.debug(f"called database - {self.__class__.__name__}")
-            dredis_cache_delete(
-                self.cache_prefix,
-            )
-            context["info"] = PersonalInfo.objects.filter(language__in=lang).first()
-            context["study"] = EducationStudy.objects.filter(language__in=lang)
-            context["interested"] = InterestedIn.objects.filter(language__in=lang)
-            context["projects"] = AboutProjects.objects.select_related(
-                "projectpost"
-            ).select_related("projectpost__author")
-            portfolio = (
-                Portfolio.objects.filter(language__in=lang)
-                .prefetch_related("portfolio_summary")
-                .first()
-            )
-            context["portfolio"] = portfolio
-
-            if portfolio is not None:
-                context["portfolio_summary"] = portfolio.portfolio_summary.filter(
-                    language__in=lang
-                )
-            else:
-                context["portfolio_summary"] = []  # 또는 None으로 설정
-
-            caching_data = context.copy()
-
-            [caching_data.pop(x, None) for x in ["view"]]
-            if caching_data:
-                logger.debug(
-                    f"redis cache - {self.__class__.__name__} caching_data exists"
-                )
-                dredis_cache_set(
-                    self.cache_prefix + ":" + str(lang[0]),
-                    0,
-                    **caching_data,
-                )
-            else:
-                logger.debug(
-                    f"redis cache - {self.__class__.__name__} caching_data not exists"
-                )
-
-        # 캐시 저장이 끝난 뒤에 넣는다. 폼은 요청마다 새로 만들어야 하고
-        # 캐시에 들어가면 모든 방문자가 같은 인스턴스를 보게 된다.
+        # 언어별 키 1개. 무효화는 portfolio 모델 쓰기 뒤 common/cache_invalidation.py가 한다.
+        context.update(cached(portfolio_key(lang[0]), lambda: self.build_context(lang)))
+        # 폼은 요청마다 새로 만들어야 하므로 캐시에 넣지 않는다.
         context["get_in_touch_form"] = GetInTouchForm()
-
-        logger.debug(f"final context : {context}")
         return context
+
+    @staticmethod
+    def build_context(lang):
+        portfolio = (
+            Portfolio.objects.filter(language__in=lang)
+            .prefetch_related("portfolio_summary")
+            .first()
+        )
+        return {
+            "info": PersonalInfo.objects.filter(language__in=lang).first(),
+            "study": list(EducationStudy.objects.filter(language__in=lang)),
+            "interested": list(InterestedIn.objects.filter(language__in=lang)),
+            "projects": list(
+                AboutProjects.objects.select_related("projectpost").select_related(
+                    "projectpost__author"
+                )
+            ),
+            "portfolio": portfolio,
+            "portfolio_summary": (
+                list(portfolio.portfolio_summary.filter(language__in=lang))
+                if portfolio is not None
+                else []
+            ),
+        }
 
 
 class WorkExperienceJsonView(View):
-    cache_prefix = "portfolio"
 
     def make_context(self, data):
         if not data.project_end_date:
@@ -133,35 +99,15 @@ class WorkExperienceJsonView(View):
             }
 
     def get(self, request, *args, **kwargs):
-        check_cached_key = dredis_cache_check_key(
-            self.cache_prefix,
-            0,
-            "WorkExperience",
+        lang = get_language_index()
+        # 언어마다 다른 결과이므로 키에 언어를 넣는다(phase3 F-007).
+        context = cached(
+            work_experience_key(lang[0]),
+            lambda: [
+                self.make_context(data)
+                for data in WorkExperience.objects.filter(language__in=lang)
+            ],
         )
-        if check_cached_key:
-            logger.debug("called redis cache - WorkExperienceJsonView")
-            context = dredis_cache_get(self.cache_prefix, 0, "WorkExperience")
-        else:
-            logger.debug("called database - WorkExperienceJsonView")
-            lang = get_language_index()
-            data = WorkExperience.objects.filter(language__in=lang)
-            context = list(map(self.make_context, data))
-            caching_data = {}
-            caching_data["WorkExperience"] = context
-            if caching_data:
-                logger.debug(
-                    f"redis cache - {self.__class__.__name__} caching_data exists"
-                )
-                dredis_cache_set(
-                    self.cache_prefix,
-                    0,
-                    **caching_data,
-                )
-            else:
-                logger.debug(
-                    f"redis cache - {self.__class__.__name__} caching_data not exists"
-                )
-        logger.debug(f"final context : {context}")
         return JsonResponse(context, safe=False)
 
 
