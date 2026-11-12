@@ -9,6 +9,19 @@
 - **결함:** F-001~F-010 등록(HIGH 4, MED 3, LOW 3)
 - **수렴 판정:** `NOT CONVERGED`(설계 단계, D1·D2 결정 대기)
 
+### Round 1 — 2026-11-12 (base SHA: `a7fa41f`, REQ-002 승인 후 실행)
+- **0 기준선:** pytest 212 passed / 1 skipped. `redis-cli MONITOR`로 고정 요청 16개(8개 경로 × 미스·히트, `scanprobe.sh`) 동안 **SCAN 18 · TTL 10 · GET 40 · SET 2**. 댓글 목록 `?page` 없이 500(F-008 재현)
+- **1 보호 테스트:** `common/test_phase3_cache.py` 140개. 현재 코드에서 84개 실패(전부 F-001~F-010 증상), 56개 통과(유지할 동작: JSON 형식·요청자별 값 없음 등). 실행 중 F-011 발견(index는 SQLite에서 렌더링 불가) → index 테스트는 키 무효화로 바꾸고 읽기 경로는 runserver로 확인
+- **2 `b3adf1b`:** v2 키 함수, `common/cache_invalidation.py`(시그널 + `on_commit`, `HomeConfig.ready()`에서 연결), admin mixin 정리. 무효화 테스트 green, 게시판 댓글 admin `AttributeError` 사라짐
+- **3 `2bad1ef`:** `ReplyListJsonMixin` + 8개 뷰, 버전 토큰 키, `page` 정규화. 1단계 쿼리 수 테스트 포함 댓글 테스트 green
+- **4 `cc26066`:** `PostDetailMixin`·`BlogPostDetailMixin` + 8개 뷰, 상세 캐시 제거(D2-A), `activate_objects`(D1-A), 수동 삭제·`index_cache_clean` 제거. 실행 중 F-012 발견(게시판 삭제 뷰 `post.update` → 500), 범위 밖이라 기록만
+- **5 `c727c3e`:** index·portfolio·경력 JSON·메뉴·사이트 정보를 키 1개 읽기로, 언어별 키. 테스트 파일 커밋(전체 352 passed)
+- **6 `97b9c6b`:** `dredis_*`·`REDIS_CONN`·`redis_mode`·`common/decorators/cache.py` 삭제, admin의 `cache_prefix`·`cache_reply_prefix`·`use_pk`·`view_keys` 삭제. grep 0건
+- **7 마무리 검증:** check exit 0, 우리 앱 No changes, pytest **352 passed / 1 skipped**. runserver 점검표 전부 통과. 같은 고정 요청 16개에서 **SCAN 0 · TTL 0 · GET 70 · SET 4**(GET은 메뉴·사이트 정보 태그가 호출마다 1회씩 20·20, `django_user_agents` 16, 나머지 index·portfolio·경력·댓글 목록 버전·페이지). 상세·댓글 목록은 `?page` 없이도 200. PostgreSQL에서: admin 숨김 → index에서 바로 사라지고 상세 404, 공개 → 다시 보임, ORM 삭제 표시 → 404·index에서 사라짐, 경력 JSON `ko`·`en`이 각 언어 행만 반환하고 삭제가 두 언어에 바로 반영
+- **GATE 통과:** 0 ■ 1 ■ 2 ■ 3 ■ 4 ■ 5 □(계약 밖 신규 F-011·F-012 결정 대기)
+- **수렴 판정:** `NOT CONVERGED` — 이번 범위의 Open Fix 0, INV-1~7 통과. 실행 중 발견한 F-011(LOW)·F-012(HIGH)가 사용자 결정 대기
+- **검사 범위의 한계:** CI 미실행(push 안 함). 게시판 댓글 admin은 실제 화면 POST가 아니라 `save_model`·`delete_model` 테스트로 확인(R-007). index 화면 렌더링은 테스트가 아니라 runserver(PostgreSQL)로만 확인(F-011)
+
 ## 작업 계획 (승인 후 실행 — 순서 고정)
 
 각 하위 단계는 같은 절차를 따른다: 실패 테스트 먼저(red) → 수정(green) → `verify.sh`(INV-1~3) → 하위 단계별 커밋. 계획 밖 수정이 필요하면 고치기 전에 멈추고 묻는다.
@@ -28,3 +41,4 @@
 | Round | CRIT | HIGH | MED | LOW | 신규 Fix | 판정 |
 |---|---|---|---|---|---|---|
 | 0 | 0 | 4 | 3 | 3 | 10 | NOT CONVERGED(설계) |
+| 1 | 0 | 1 | 0 | 1 | 10 Fixed(F-001~010), 신규 2(F-011·F-012) 결정 대기 | NOT CONVERGED |

@@ -48,11 +48,12 @@
 - 세션 저장소 분리(7단계), GET→POST 전환·좋아요 race(5단계), 데이터 migration(4단계), 방문 수·좋아요 수 집계 방식 변경.
 
 ## 3. 인수 기준
-- [ ] F-001~F-010 Fixed, 각 수정에 수정 전 실패한 테스트가 있다
-- [ ] INV-1~7 통과
-- [ ] 요청 경로 코드에 `dredis_`·`iter_keys`·`delete_pattern`(admin 수동 액션 제외)·`index_cache_clean`이 남아 있지 않다(grep 0건)
-- [ ] runserver 점검표: 2단계 점검표 전부 + 삭제·숨김 글 상세 404(D1-A일 때) · 이웃 링크에 삭제 글 없음 · admin 숨김 액션 직후 index에서 사라짐 · 경력 JSON 언어별 · 댓글 목록 `?page` 없이 200 · 게시판 댓글 admin 저장 200 · `redis-cli MONITOR`로 점검표 요청 중 `SCAN` 0회
-- [ ] 불가침 제약 C-1~C-7 위반 없음
+- [x] F-001~F-010 Fixed, 각 수정에 수정 전 실패한 테스트가 있다
+- [x] INV-1~7 통과
+- [x] 요청 경로 코드에 `dredis_`·`iter_keys`·`delete_pattern`(admin 수동 액션 제외)·`index_cache_clean`이 남아 있지 않다(grep 0건)
+- [x] runserver 점검표: 2단계 점검표 전부 + 삭제·숨김 글 상세 404(D1-A일 때) · 이웃 링크에 삭제 글 없음 · admin 숨김 액션 직후 index에서 사라짐 · 경력 JSON 언어별 · 댓글 목록 `?page` 없이 200 · 게시판 댓글 admin 저장 200 · `redis-cli MONITOR`로 점검표 요청 중 `SCAN` 0회
+- [x] 불가침 제약 C-1~C-7 위반 없음
 
 ## 4. 변경 이력
+- v0.2 (2026-11-12): 인수 기준 충족(Round 1).
 - v0.1 (2026-11-12): 최초 작성.
