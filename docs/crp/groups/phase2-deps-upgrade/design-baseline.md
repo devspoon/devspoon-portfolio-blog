@@ -22,6 +22,7 @@
 |---|---|---|---|---|---|
 | REQ-001 | 2026-11-12 | "모든 패키지들을 최신화 하는 것을 허용한다" → U1~U3 "권장안대로 진행해줘" | 최상위 의존성 전부를 의존성 해석이 허용하는 최신으로 올린다. Python 최소 버전을 3.12로, CI(`testing.yml`)도 3.12로. 쓰지 않는 `django-nose` 제거, `isort`는 dev 그룹으로. | Active | ADR-003~008 |
 | REQ-002 | 2026-11-12 | "django는 5.2 LTS로 정의해서 설계 및 작업계획을 업데이트해줘" | Django 목표를 5.2 LTS로 고정한다(`~5.2`, 6.x로 올라가지 않음). 서드파티는 Django 5.2에서 해석되는 최신으로 올린다. Python 3.12·CI 3.12 결정(U2)은 유지한다. | Active | ADR-007, ADR-008 |
+| REQ-003 | 2026-11-12 | "권장대로 승인한다"(F-004~F-007 권장안) | F-005: `forms.URLField`의 scheme 없는 입력은 지금처럼 http로 해석한다(코드 변경 없음). https 전환은 Django 6.x로 올릴 때 정한다. F-006: sentry `send_default_pii`는 그대로 둔다. F-007: `poetry update`로 하위 의존성을 갱신하고 같은 검증을 한다. F-004: `requirements/dev.txt`를 lock에서 다시 만든다(권장안 두 가지 중 README 안내가 계속 동작하는 쪽을 Claude가 선택). | Active | ADR-009~012 |
 
 ## 3. 설계 결정 기록 (ADR)
 
@@ -35,6 +36,10 @@
 | ADR-006 | 2026-11-12 | 우리 앱의 모델 스키마는 바꾸지 않는다. 업그레이드 전후 `makemigrations --check --dry-run`이 우리 앱에 대해 "No changes"여야 한다. 서드파티 앱의 migration은 그대로 적용한다. | migration 파일을 저장소에 두지 않으므로(서버에서 생성) 업그레이드가 우리 스키마를 바꾸면 운영에서 예기치 않은 migration이 생긴다. `DEFAULT_AUTO_FIELD`는 이미 `BigAutoField`라 Django 6.0 기본값 변경의 영향이 없다. | Accepted | — |
 | ADR-007 | 2026-11-12 | **Django 목표는 5.2 LTS**로 하고 조건을 `~5.2`(5.2.x만)로 둔다. 현재 해석 결과 5.2.19. | 사용자 결정(REQ-002). 5.2는 LTS라 2028년 4월까지 보안 지원을 받는다. 임시 사본 해석에서 `~5.2` + 서드파티 최신 메이저(allauth 65.22, recaptcha 4.1, django-redis 7.0, sentry-sdk 2.74, debug-toolbar 8.0, silk 5.6, celery-beat 2.9, celery 5.7)가 모두 해석됨을 확인했다. | Accepted | ADR-001 |
 | ADR-008 | 2026-11-12 | 4.2 LTS → 5.2 LTS로 **한 번에** 올린다. 올리기 전에 4.2에서 `RemovedInDjango50Warning`·`RemovedInDjango51Warning`을 오류로 바꿔 pytest를 돌려 5.x에서 사라지는 사용처를 먼저 고친다. 5.2로 올린 뒤에는 `RemovedInDjango60Warning`을 오류로 바꿔 pytest가 통과하게 해 둔다(향후 6.x 이전 준비). | LTS→LTS 직행은 Django가 지원하는 경로이고, 중간 비 LTS(5.0·5.1)를 거칠 이유가 없다. 6.0 경고 정리는 F-001(admin XSS 여지)과 겹쳐 비용이 작다. 이 정리가 C-3 범위를 넘으면 기록만 하고 멈춘다. | Accepted | ADR-002 |
+| ADR-009 | 2026-11-12 | F-005: URLField 코드는 바꾸지 않는다. INV-5는 `forms.URLField` 기본 scheme 경고("The default scheme will be changed") 1종만 `-W ignore` 필터로 예외로 둔다. | 사용자 결정 "http 유지"(REQ-003). Django 5.2는 이미 http로 해석하므로 코드 변경 없이 충족된다. 모델 URLField 34개에 `assume_scheme`을 다는 일은 6.x 전환 때 http/https 결정과 함께 한다(R-006). | Accepted | — |
+| ADR-010 | 2026-11-12 | F-006: `send_default_pii=True`를 그대로 둔다. | 사용자 결정(REQ-003). Sentry로 보내는 개인정보 범위를 바꾸지 않는다. sentry-sdk 2.74에서는 deprecated 경고만 나고 동작은 같다(R-007). | Accepted | — |
+| ADR-011 | 2026-11-12 | F-007: `pyproject.toml` 조건은 그대로 두고 `poetry update`로 하위 의존성을 해석 가능한 최신으로 올린다. | 사용자 결정(REQ-003). cryptography·pillow·urllib3·requests·certifi 보안 패치 포함. 조건을 바꾸지 않으므로 최상위 버전은 그대로다. | Accepted | — |
+| ADR-012 | 2026-11-12 | F-004: `requirements/dev.txt`를 `poetry export --with dev --without-hashes`로 lock에서 다시 만든다. | README의 pip 설치 안내가 lock과 같은 버전을 설치하게 한다. 기본 그룹+dev 그룹은 README의 poetry 안내(`--without test,stage`)와 같은 범위다. | Accepted | — |
 
 ## 4. 불가침 제약
 
@@ -47,4 +52,5 @@
 
 ## 5. 변경 이력
 - v0.1 (2026-11-12): 최초 작성. 설계만, 패키지는 아직 바꾸지 않음.
+- v0.3 (2026-11-12): REQ-003. F-004~F-007 결정 반영(ADR-009~012). INV-5에 URLField 경고 예외(ADR-009).
 - v0.2 (2026-11-12): REQ-002. Django 목표를 5.2 LTS로(ADR-007이 ADR-001 대체), 4.2→5.2 직행(ADR-008이 ADR-002 대체). 2-c(Django 6.0) 단계 삭제.

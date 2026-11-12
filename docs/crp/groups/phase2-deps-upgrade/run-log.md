@@ -41,6 +41,19 @@
 - **수렴 판정:** `NOT CONVERGED` — Open Fix 0이지만 불변식 INV-5가 F-005 결정을 기다린다
 - **검사 범위의 한계:** CI 미실행(push 안 함). 운영 설정(prod·stage)으로는 runserver를 띄우지 않았다(인프라 범위 밖). 소셜 로그인은 provider redirect까지만 확인(실제 인증 콜백은 더미 키라 불가, R-004)
 
+### Round 2 — 2026-11-12 (base SHA: `fb33df7`, REQ-003 결정 반영)
+- **트리거:** 사용자 "권장대로 승인한다"(F-004~F-007)
+- **F-007:** `poetry update` — 하위 의존성 갱신 51·추가 6(markupsafe, werkzeug, pygments, msgpack, ujson, cbor2)·제거 4(pyasn1, pyasn1-modules, setuptools, starkbank-ecdsa). 메이저 변경: cryptography 44→50, pillow 11→13, pytest 8→9, soupsieve 2→4, zope-interface 7→8, twisted 24→26 등. `--with dev,test,stage --sync`로 설치
+  - 검증: check exit 0, 우리 앱 No changes, pytest 212 passed / 1 skipped, runserver 점검표 통과. 추가로 `/oauth/{google,kakao,naver}/login/` 302 → provider, imagekit 썸네일 50×50 JPEG 생성(pillow 13.0.0), sentry 2.74 prod 옵션 초기화 성공
+  - 남은 outdated: Django 5.2.19(ADR-007), cron-descriptor 1.4.5·filelock 3.32.7·python-dateutil 2.9.0.post0(상위 패키지의 버전 상한 때문에 해석이 허용하지 않음)
+- **F-005:** 코드 변경 없음. `-W error::...RemovedInDjango60Warning -W "ignore:The default scheme will be changed:...RemovedInDjango60Warning"`로 pytest 212 passed / 1 skipped(필터 없이는 실패하던 경고라 예외가 그 1종에만 걸림)
+- **F-004:** `poetry export --with dev --without-hashes -f requirements.txt -o requirements/dev.txt`(97줄). `pip install --dry-run -r requirements/dev.txt` exit 0
+- **F-006:** 변경 없음, R-007
+- **참고(범위 밖, 기록만):** `fabfile.py:24`가 저장소에 없는 `requirements/prod.txt`를 쓴다. 인프라 파일이라 건드리지 않음
+- **GATE 통과:** 0 ■ 1 ■ 2 ■ 3 ■ 4 ■ 5 ■
+- **수렴 판정:** `CONVERGED` — Open Fix 0, INV-1~5 통과, 인수 기준 충족, 요구사항 회귀 0
+- **검사 범위의 한계:** CI 미실행(push 안 함). prod·stage 설정으로 runserver를 띄우지 않음. 소셜 로그인은 provider redirect까지만(R-004)
+
 ## 작업 계획 (승인 후 실행 — 순서 고정)
 
 각 하위 단계는 같은 절차를 따른다.
@@ -64,3 +77,4 @@
 |---|---|---|---|---|---|---|
 | 0 | 0 | 2 | 1 | 0 | 3 | NOT CONVERGED(설계) |
 | 1 | 0 | 0 | 1 | 3 | 3 Fixed(F-001~003), 결정 대기 4(F-004~007) | NOT CONVERGED(INV-5) |
+| 2 | 0 | 0 | 0 | 0 | 2 Fixed(F-004·007), 2 Accepted(F-005·006) | CONVERGED |

@@ -35,17 +35,18 @@
 - INV-2: 각 하위 단계 후 `manage.py check --settings=config.settings.dev`에 ERROR가 없다.
 - INV-3: 각 하위 단계 후 우리 앱(users blog board home portfolio custom_middlewares)에 대해 `makemigrations --check --dry-run`이 "No changes".
 - INV-4: 각 하위 단계 후 runserver 점검표(§3)가 통과한다.
-- INV-5: 2-b 시작 전(4.2) `-W error::django.utils.deprecation.RemovedInDjango50Warning -W error::django.utils.deprecation.RemovedInDjango51Warning`로, 2-b 완료 후(5.2) `-W error::django.utils.deprecation.RemovedInDjango60Warning`로 pytest가 통과한다(ADR-008).
+- INV-5: 2-b 시작 전(4.2) `-W error::django.utils.deprecation.RemovedInDjango50Warning -W error::django.utils.deprecation.RemovedInDjango51Warning`로, 2-b 완료 후(5.2) `-W error::django.utils.deprecation.RemovedInDjango60Warning`로 pytest가 통과한다(ADR-008). 단 `forms.URLField` 기본 scheme 경고 1종은 `-W "ignore:The default scheme will be changed:django.utils.deprecation.RemovedInDjango60Warning"`로 예외로 둔다(ADR-009, R-006).
 ### 2-4. 비목표
 - 새 기능 도입, 새 Django 기능으로의 리팩토링(예: async 뷰), 오래된 패키지 교체(교체가 필요해지면 멈추고 묻는다), psycopg2→psycopg3 전환.
 
 ## 3. 인수 기준
-- [ ] 2-a~2-c 각각: INV-1~4 확인 후 커밋 1개 이상
-- [ ] 2-b 끝: INV-5 통과
-- [ ] 최종: `poetry show --outdated --top-level`에 남은 항목은 Django(5.2 LTS 고정, ADR-007)처럼 사유가 기록된 것뿐
-- [ ] runserver 점검표: `/`·`/portfolio/`·`/blog/blog/` 200 · static 200 · `/wp.php` 404 · admin 로그인 페이지 200 · 로그인 페이지(allauth) 200 · 문의 폼 제출(잘못된 값 거절·정상 값 저장) · 상세 수정 버튼은 작성자만 · 댓글 작성·삭제 · Redis에 `*user_auth*` 키 없음
-- [ ] 불가침 제약 C-1~C-6 위반 없음
+- [x] 2-a~2-c 각각: INV-1~4 확인 후 커밋 1개 이상
+- [x] 2-b 끝: INV-5 통과
+- [x] 최종: `poetry show --outdated --top-level`에 남은 항목은 Django(5.2 LTS 고정, ADR-007)처럼 사유가 기록된 것뿐
+- [x] runserver 점검표: `/`·`/portfolio/`·`/blog/blog/` 200 · static 200 · `/wp.php` 404 · admin 로그인 페이지 200 · 로그인 페이지(allauth) 200 · 문의 폼 제출(잘못된 값 거절·정상 값 저장) · 상세 수정 버튼은 작성자만 · 댓글 작성·삭제 · Redis에 `*user_auth*` 키 없음
+- [x] 불가침 제약 C-1~C-6 위반 없음
 
 ## 4. 변경 이력
 - v0.1 (2026-11-12): 최초 작성.
+- v0.3 (2026-11-12): INV-5에 URLField scheme 경고 예외(ADR-009). 인수 기준 전부 충족.
 - v0.2 (2026-11-12): Django 목표 5.2 LTS(ADR-007). 2-c(Django 6.0) 삭제, 서드파티 메이저를 2-c로. INV-5에 4.2 경고 점검 추가(ADR-008).
