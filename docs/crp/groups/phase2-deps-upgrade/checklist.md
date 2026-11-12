@@ -14,6 +14,6 @@
 - [x] 2-c ① django-redis 7.0.0·redis-py 8.1.0 — INV-1~4 통과, 캐시 키·TTL·세션 저장 확인
 - [x] 2-c ② django-recaptcha 4.1.0 — INV-1~4 통과, F-002 Fixed, 가입 화면 캡차 위젯 확인
 - [x] 2-c ③ django-allauth 65.22.0(socialaccount extras) — INV-1~4 통과, F-003 Fixed, 소셜 로그인 시작 redirect 확인
-- [ ] 2-c ④ sentry 2·debug-toolbar 8·extensions 4 — INV-1~4
+- [x] 2-c ④ sentry-sdk 2.74.0·debug-toolbar 8.0.0·extensions 4.1 — INV-1~4 통과. LoggingPanel 제거(라이브러리 요구), sentry `send_default_pii` 경고는 F-006 결정 대기
 - [ ] 2-c ⑤ imagekit·mptt·anymail·rangefilter·uvicorn — INV-1~4
 - [ ] 마무리: outdated 목록 기록, 불가침 제약 C-1~C-6 위반 없음, 수렴 판정
