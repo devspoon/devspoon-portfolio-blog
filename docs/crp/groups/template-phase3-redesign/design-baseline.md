@@ -39,6 +39,7 @@ devspoon은 한 개발자의 **포트폴리오 + 기술 블로그(5종) + 게시
 | ADR-012 | **검증 도구**: 테스트=pytest(WSL), 상호작용=Playwright MCP, 시각 리뷰=WSL Playwright 전체 화면 촬영(전·후 비교는 회귀가 아닌 리뷰 자료), 접근성=axe-core + chrome-devtools a11y, 성능=Lighthouse(chrome-devtools MCP 또는 WSL), 템플릿=djLint, 보안=security-review | 설치된 MCP·스킬 활용 | Accepted |
 | ADR-013 | impeccable 엔진(detect 등) 실행 허용 — WSL(Linux 바이너리, sha256 검증)에서 실행. 편집 훅(`hooks on`) 등록은 별도 승인 | 사용자 결정 2026-11-12 | Accepted |
 | ADR-014 | shadcn(React+Tailwind) 미사용 — 잘못 설치된 파일 삭제 완료 | 사용자 결정, C-4·비목표와 일치 | Accepted |
+| ADR-015 | Bootstrap(및 모든 외부 CSS)은 `@import url(...) layer(vendor)`로 vendor 층에 넣는다. `<link>`로 층 밖에 두면 모든 `@layer` 규칙을 이긴다 | 시안 1차에서 제목 크기·링크 색이 무시되는 현상으로 확인 | Accepted |
 
 ## 4. 불가침 제약
 - C-1: 승인 전 코드 편집 금지, 실행 중 계획 이탈은 수정 전 질문, push는 사용자만
