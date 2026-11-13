@@ -22,7 +22,7 @@ DOM is built from <template> clones + textContent only (XSS contract C-2).
     <input type="hidden" name="parent" value="">
     <label class="form-label" for="comment">{% trans "Leave a comment" %}</label>
     <p class="form-text mt-0 mb-2" data-replying hidden></p>
-    <textarea class="form-control" id="comment" name="comment" rows="4" required></textarea>
+    <textarea class="form-control" id="comment" name="comment" rows="4" maxlength="3000" required></textarea>
     <div class="d-flex gap-2 justify-content-end mt-2">
       <button type="button" class="btn btn-quiet" data-action="cancel-reply" hidden>{% trans "Cancel" %}</button>
       <button type="submit" class="btn btn-primary">{% trans "Post comment" %}</button>
@@ -53,7 +53,7 @@ DOM is built from <template> clones + textContent only (XSS contract C-2).
   </template>
   <template data-edit-tpl>
     <div class="c-comment__edit">
-      <textarea class="form-control" rows="3" aria-label="{% trans 'Edit comment' %}"></textarea>
+      <textarea class="form-control" rows="3" maxlength="3000" aria-label="{% trans 'Edit comment' %}"></textarea>
       <div class="d-flex gap-2 justify-content-end mt-2">
         <button type="button" class="btn btn-quiet btn-sm" data-action="edit-cancel">{% trans "Cancel" %}</button>
         <button type="button" class="btn btn-primary btn-sm" data-action="edit-save">{% trans "Save" %}</button>

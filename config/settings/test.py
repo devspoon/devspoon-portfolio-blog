@@ -67,6 +67,12 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "test_db.sqlite3",
     },
+    # 라우터는 테스트에서 꺼져 있다. replica 테스트만 이 별칭을 요청하고 라우터를 켠다.
+    # 별도 DB라 행이 없다: "항상 늦은 replica"(phase5 ADR-001).
+    "replica1": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "test_replica_db.sqlite3",
+    },
 }
 
 CACHES = {

@@ -4,6 +4,8 @@ from django.conf import settings
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 
+from common.core.replica_router import read_primary
+
 CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
 
@@ -38,9 +40,11 @@ def cached(key: str, build):
     """key를 읽고, 없으면 build() 결과를 저장해 돌려준다. None은 저장하지 않는다."""
     value = cache.get(key)
     if value is None:
-        value = build()
-        if value is not None:
-            cache.set(key, value, timeout=CACHE_TTL)
+        # 무효화 직후 늦은 replica에서 채우면 옛 값이 TTL 동안 남는다. 채울 때는 primary에서 읽는다.
+        with read_primary():
+            value = build()
+            if value is not None:
+                cache.set(key, value, timeout=CACHE_TTL)
     return value
 
 

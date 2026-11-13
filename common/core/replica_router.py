@@ -1,8 +1,37 @@
 import logging
+from contextlib import contextmanager
+from contextvars import ContextVar
 
 from django.conf import settings
 
 logger = logging.getLogger(getattr(settings, "COMMON_LOGGER", "django"))
+
+# True인 동안 읽기를 default(primary)에서 한다. 쓰기 직후의 읽기가 늦은 replica의 옛 값을 보지 않게 한다(phase5 ADR-001).
+_read_primary = ContextVar("read_primary", default=False)
+
+
+@contextmanager
+def read_primary():
+    token = _read_primary.set(True)
+    try:
+        yield
+    finally:
+        _read_primary.reset(token)
+
+
+class PrimaryForWritesMiddleware:
+    """상태 변경 요청(POST 등)은 요청 안의 모든 읽기를 primary에서 한다. GET은 그대로 replica."""
+
+    SAFE_METHODS = {"GET", "HEAD", "OPTIONS", "TRACE"}
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if request.method in self.SAFE_METHODS:
+            return self.get_response(request)
+        with read_primary():
+            return self.get_response(request)
 
 
 class ReplicationRouter:
@@ -14,6 +43,8 @@ class ReplicationRouter:
         """
         # return random.choice([key for key in settings.DATABASES]) # for All database
         # return random.choice(['replica1', 'replica2']) # for replica database
+        if _read_primary.get():
+            return "default"
         return "replica1"
 
     def db_for_write(self, model, **hints):

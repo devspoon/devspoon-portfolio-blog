@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 
 from common.components.django_redis_cache_components import CACHE_TTL, reply_page_key
+from common.core.replica_router import read_primary
 
 
 def page_number(value) -> int:
@@ -31,7 +32,9 @@ class ReplyListJsonMixin:
         results = cache.get(key)
         if results is None:
             replies = self.reply_model.objects.filter(**{fk: pk}).select_related("author")
-            pages = Paginator(replies, self.the_number_of_replies).get_page(page)
+            with read_primary():  # 캐시를 채우는 읽기는 primary에서(cached()와 같은 이유)
+                pages = Paginator(replies, self.the_number_of_replies).get_page(page)
+                object_list = list(pages.object_list)
             results = [{"number": pages.number, "num_pages": pages.paginator.num_pages}] + [
                 {
                     "pk": reply.pk,
@@ -45,7 +48,7 @@ class ReplyListJsonMixin:
                     "thumbnail": str(reply.author.photo_thumbnail.url),
                     "author_id": reply.author_id,
                 }
-                for reply in pages.object_list
+                for reply in object_list
             ]
             # 범위 밖 페이지는 Paginator가 마지막 페이지로 맞춘 결과라 그 페이지 번호로 캐시하지 않는다.
             if pages.number == page:

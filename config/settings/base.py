@@ -72,6 +72,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # 상태 변경 요청의 읽기는 primary에서(phase5 ADR-001). 라우터가 없는 설정에서는 영향 없음
+    "common.core.replica_router.PrimaryForWritesMiddleware",
     # nginx 차단을 통과한 탐색성 요청을 통계/URL resolver 이전에 끊는다
     "custom_middlewares.middlewares.access_guard.BlockSuspiciousPathMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
