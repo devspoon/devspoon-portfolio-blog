@@ -51,6 +51,12 @@
 - **다음:** 레거시 CSS를 쓰는 페이지 0개 → 6단계에서 legacy.css·style.css·custom.css·responsive.css 삭제 가능. 이미지 삭제는 사용자 확인 후
 - **잔여 위험 변화:** R-002·R-006 해소, R-010·R-011 추가
 
+### Round 4 — 2026-11-13 (base SHA: `61776e9`) — 6단계 정리(CSS·옛 vendor)
+- **삭제(참조 0건 확인):** css/legacy.css·style.css(+map)·custom.css·responsive.css, static/vendors/(13MB: animate·bootstrap 구버전·icons·litebox·nouislider·selectr·slider), js/main.js,
+  base의 legacy_css 블록과 페이지별 빈 오버라이드, app.css의 `legacy` 층과 이를 누르던 `p{color:inherit}`
+- **보류(사용자 확인 대기):** static/images 중 코드 참조 0건 53개·12.3MB(목록: job tmp unused_images.txt). DB 본문이 /static/images 경로를 쓸 수 있어 삭제 전 확인
+- **검증:** pytest 154 passed·1 skipped / 8개 페이지 응답 정상, legacy.css·axios·blog_apis 로드 0건
+
 ## 심각도 추세 (수렴이 보이게)
 | Round | CRIT | HIGH | MED | LOW | 신규 Fix | 판정 |
 |---|---|---|---|---|---|---|

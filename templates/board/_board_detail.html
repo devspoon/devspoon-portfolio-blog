@@ -6,7 +6,6 @@ URLs are derived from the current view name: "board:notice_detail" -> "board:not
 Visit count and comments run on js/modules/post.js + comments.js.
 {% endcomment %}
 {% block title %}{{ board.title }} | devspoon{% endblock %}
-{% block legacy_css %}{% endblock %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/post.css' %}">{% endblock %}
 {% block extra_js %}
 <script type="module" src="{% static 'js/modules/post.js' %}"></script>
