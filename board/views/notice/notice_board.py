@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from common.mixin.views import StaffRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.db.models import F
@@ -31,6 +32,8 @@ class NoticeListView(ListView):
     paginate_by = 10
     paginate_orphans = 1  # if last page has 1 item, it will add in last page.
     context_object_name = "board"
+    # same text the page showed before (was injected by blog.js from the URL)
+    extra_context = {"page_title": "notice"}
 
     def get_queryset(self):
         return Notice.activate_objects.get_data().select_related('author')
@@ -41,7 +44,7 @@ class NoticeDetailView(PostDetailMixin, DetailView):
     template_name = "board/notice/notice_detail.html"
 
 
-class NoticeCreateView(LoginRequiredMixin, CreateView):
+class NoticeCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
     model = Notice
     template_name = "board/notice/notice_edit.html"
     success_url = reverse_lazy("board:notice_list")
@@ -80,8 +83,7 @@ class NoticeDeleteView(LoginRequiredMixin, View):
     success_url = reverse_lazy("board:notice_list")
     login_url = reverse_lazy("users:login")
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         post = get_object_or_404(self.model, id=kwargs.get("pk"))

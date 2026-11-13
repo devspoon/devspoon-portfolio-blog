@@ -131,7 +131,7 @@ def test_duplicate_like_rows_are_rejected_by_the_database(ns, name, model, extra
 
 
 def like(client, ns, name, pk):
-    response = client.get(reverse(f"{ns}:{name}_like", kwargs={"pk": pk}))
+    response = client.post(reverse(f"{ns}:{name}_like", kwargs={"pk": pk}))  # POST 전용(template-phase1 ADR-001)
     assert response.status_code == 200
     return response.json()
 

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ko" data-bs-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>시안 A — 엔지니어링 노트 · devspoon</title>
+<!-- sketch only: pinned CDNs. Production self-hosts these files. -->
+<style>/* vendor CSS must sit inside a layer, or it beats every layered rule */
+@layer vendor, tokens, base, components, pages;
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css") layer(vendor);
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<style>
+@layer vendor, tokens, base, components, pages;
+
+@layer tokens {
+  :root {
+    --c-bg: #F6F7F9; --c-surface: #FFFFFF; --c-text: #1D2433; --c-text-muted: #5A6478;
+    --c-line: #E2E5EB; --c-accent: #E8505B; --c-accent-text: #C23A44; --c-accent-soft: #FCE9EA;
+    --c-code-bg: #0F172A; --c-code-text: #E2E8F0;
+    --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", "D2Coding", ui-monospace, monospace;
+    --fs-1: .8125rem; --fs-2: .9375rem; --fs-3: 1.0625rem; --fs-4: 1.3125rem;
+    --fs-5: clamp(1.5rem, 1.2rem + 1.2vw, 2rem); --fs-6: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+    --fs-7: clamp(2.75rem, 1.6rem + 5vw, 5.5rem);
+    --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 96px;
+    --r-sm: 6px; --r-md: 12px; --r-pill: 999px;
+    --sh-1: 0 1px 2px rgb(29 36 51 / .06), 0 4px 12px rgb(29 36 51 / .06);
+    --dur-fast: 120ms; --dur-base: 200ms; --ease-out: cubic-bezier(.2, .7, .2, 1);
+    --bs-body-font-family: var(--font-sans); --bs-body-color: var(--c-text); --bs-body-bg: var(--c-bg);
+    --bs-link-color-rgb: 194, 58, 68; --bs-border-color: var(--c-line); --bs-border-radius: var(--r-sm);
+  }
+  [data-bs-theme="dark"] {
+    --c-bg: #161B26; --c-surface: #1D2330; --c-text: #E7EAF0; --c-text-muted: #A3ACBD;
+    --c-line: #2A3140; --c-accent: #F06A73; --c-accent-text: #F58A91; --c-accent-soft: #3A2228;
+    --sh-1: 0 1px 2px rgb(0 0 0 / .3);
+    --bs-link-color-rgb: 245, 138, 145;
+  }
+  @media (prefers-reduced-motion: reduce) { :root { --dur-fast: 0ms; --dur-base: 0ms; } }
+}
+
+@layer pages {
+  /* the one bold thing: name as type + a real "now" log */
+  .p-hero { padding-block: var(--sp-9) var(--sp-8); display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--sp-7); align-items: end; }
+  .p-hero h1 { font-size: var(--fs-7); font-weight: 820; letter-spacing: -.045em; line-height: .95; margin: 0; }
+  .p-hero h1 span { display: block; color: var(--c-text-muted); font-weight: 400; font-size: var(--fs-5); letter-spacing: -.01em; margin-top: var(--sp-4); line-height: 1.4; }
+  .p-now { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--c-accent); }
+  .p-now li { padding: var(--sp-2) 0 var(--sp-2) var(--sp-5); position: relative; }
+  .p-now li::before { content: ""; position: absolute; left: -6px; top: 18px; width: 10px; height: 10px; border-radius: 50%; background: var(--c-surface); border: 2px solid var(--c-accent); }
+  .p-now time { font-size: var(--fs-1); color: var(--c-text-muted); margin-right: var(--sp-2); }
+  .p-now .kind { font-size: var(--fs-1); color: var(--c-accent-text); font-weight: 600; display: inline-block; margin-right: var(--sp-2); }
+  .p-now .kind + * { display: block; }
+  @media (prefers-reduced-motion: no-preference) { .p-now li { animation: rise var(--dur-base) var(--ease-out) both; } .p-now li:nth-child(2) { animation-delay: 80ms; } .p-now li:nth-child(3) { animation-delay: 160ms; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(6px); } }
+  section { padding-block: var(--sp-7); }
+  @media (max-width: 767.98px) {
+    .p-hero { grid-template-columns: 1fr; padding-block: var(--sp-7); }
+    .c-card--post { grid-template-columns: 1fr; gap: var(--sp-1); }
+    .c-nav { display: none; }
+  }
+}
+</style>
+<link rel="stylesheet" href="components.css">
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header class="c-header">
+  <div class="wrap">
+    <a class="c-brand" href="#">dev<span>spoon</span></a>
+    <nav class="c-nav" aria-label="주요 메뉴">
+      <a href="#" aria-current="page">홈</a><a href="#">포트폴리오</a><a href="#">글</a><a href="#">게시판</a>
+    </nav>
+    <button class="c-icon-btn" type="button" aria-label="다크 모드 전환" onclick="document.documentElement.dataset.bsTheme = document.documentElement.dataset.bsTheme === 'dark' ? 'light' : 'dark'"><i class="bi bi-moon-stars"></i></button>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section class="p-hero" aria-labelledby="hero-title">
+    <h1 id="hero-title">devspoon<span>Django·FastAPI 백엔드를 만들고, 만든 과정을 기록합니다.</span></h1>
+    <ol class="p-now" aria-label="최근 작업">
+      <li><time datetime="2026-11-08">2026-11-08</time><span class="kind">프로젝트</span>Django와 Vue.js 기반 이커머스</li>
+      <li><time datetime="2026-11-02">2026-11-02</time><span class="kind">글</span>RabbitMQ 재시도 큐를 설계하며 배운 것</li>
+      <li><time datetime="2026-10-27">2026-10-27</time><span class="kind">공부 중</span>GA4 예측 마케팅 분석</li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="posts">
+    <div class="c-section-head"><h2 id="posts">최근 글</h2><a href="#">전체 보기</a></div>
+    <article class="c-card c-card--post">
+      <time datetime="2026-11-02">2026.11.02</time>
+      <div><span class="kind">블로그</span>
+        <h3 class="c-card__title"><a href="#">RabbitMQ 재시도 큐를 설계하며 배운 것</a></h3>
+        <p class="c-card__excerpt">dead-letter exchange와 TTL로 지수 백오프를 만들고, 멱등 키로 중복 처리를 막은 과정을 정리했습니다.</p>
+        <div class="c-meta"><span><i class="bi bi-eye"></i>128</span><span><i class="bi bi-heart"></i>12</span><span><i class="bi bi-chat"></i>3</span><span class="c-tag">rabbitmq</span></div>
+      </div>
+    </article>
+    <article class="c-card c-card--post">
+      <time datetime="2026-10-21">2026.10.21</time>
+      <div><span class="kind">온라인 스터디</span>
+        <h3 class="c-card__title"><a href="#">Redis 고급: 스트림과 컨슈머 그룹</a></h3>
+        <p class="c-card__excerpt">XADD·XREADGROUP으로 작업 큐를 만들고 미확인 메시지를 회수하는 방법.</p>
+        <div class="c-meta"><span><i class="bi bi-eye"></i>94</span><span><i class="bi bi-heart"></i>7</span><span class="c-tag">redis</span></div>
+      </div>
+    </article>
+  </section>
+
+  <section aria-labelledby="projects">
+    <div class="c-section-head"><h2 id="projects">프로젝트</h2><a href="#">전체 보기</a></div>
+    <div class="row g-4">
+      <div class="col-md-6"><article class="c-card c-card--project">
+        <div class="c-thumb" role="img" aria-label="Django와 Vue.js 기반 이커머스 화면 자리표시"><span>Django와 Vue.js 기반 이커머스</span></div>
+        <div class="body"><h3 class="c-card__title"><a href="#">Django와 Vue.js 기반 이커머스</a></h3>
+          <p class="c-card__excerpt">주문·결제·재고를 분리한 서비스 구조, Celery로 비동기 처리.</p>
+          <div class="c-meta"><span>Python</span><span>v1.2.0</span><span>소유자</span></div></div>
+      </article></div>
+      <div class="col-md-6"><article class="c-card c-card--project">
+        <div class="c-thumb" role="img" aria-label="추천 시스템 화면 자리표시"><span>추천 시스템</span></div>
+        <div class="body"><h3 class="c-card__title"><a href="#">추천 시스템</a></h3>
+          <p class="c-card__excerpt">구매 이력 기반 협업 필터링과 실시간 갱신.</p>
+          <div class="c-meta"><span>Python</span><span>v0.4.0</span><span>기여자</span></div></div>
+      </article></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="topics">
+    <div class="c-section-head"><h2 id="topics">공부 중인 것</h2></div>
+    <div class="row g-3">
+      <div class="col-sm-6 col-lg-3"><div class="c-card c-card--topic"><h3 class="c-card__title">FastAPI</h3><p class="status mb-0">비동기 API 설계</p></div></div>
+      <div class="col-sm-6 col-lg-3"><div class="c-card c-card--topic"><h3 class="c-card__title">Vue.js</h3><p class="status mb-0">컴포지션 API</p></div></div>
+      <div class="col-sm-6 col-lg-3"><div class="c-card c-card--topic"><h3 class="c-card__title">Redis 고급</h3><p class="status mb-0">스트림·클러스터</p></div></div>
+      <div class="col-sm-6 col-lg-3"><div class="c-card c-card--topic"><h3 class="c-card__title">TTS·STT</h3><p class="status mb-0">음성 파이프라인</p></div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="article">
+    <div class="c-section-head"><h2 id="article">글 본문 미리보기</h2></div>
+    <div class="c-prose">
+      <p>재시도는 실패를 숨기는 장치가 아니라 <strong>실패를 늦추는 장치</strong>입니다. 재시도 횟수와 간격을 큐 단위로 고정하면 운영 중 조정이 어렵습니다.</p>
+      <h2>지연 큐 구성</h2>
+      <pre><code>channel.queue_declare(
+    queue="orders.retry.30s",
+    arguments={"x-message-ttl": 30_000, "x-dead-letter-exchange": "orders"},
+)</code></pre>
+      <p>멱등 키는 <code>order_id</code>와 이벤트 버전을 합쳐 만듭니다.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="form">
+    <div class="c-section-head"><h2 id="form">댓글 남기기</h2></div>
+    <form class="c-card" style="max-width: 640px" onsubmit="return false">
+      <label class="form-label" for="comment">댓글</label>
+      <textarea class="form-control mb-3" id="comment" rows="3" placeholder="질문이나 의견을 적어 주세요"></textarea>
+      <button class="btn btn-primary" type="submit">댓글 등록</button>
+    </form>
+  </section>
+</main>
+
+<footer class="wrap py-5 muted" style="font-size: var(--fs-2)">© 2026 devspoon. 이 사이트의 글과 코드는 직접 작성했습니다.</footer>
+</body>
+</html>

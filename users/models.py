@@ -204,12 +204,12 @@ class User(AbstractUser):
                 auth_email.delete()
             logger.debug("socialaccount, auth_email are deleted")
 
-        if self.photo_thumbnail.path:
+        # the default image and its thumbnail folder are shared by every user
+        is_default = self.profile_image.name == self._meta.get_field("profile_image").default
+        if self.profile_image and not is_default:
             dir, _ = os.path.split(self.photo_thumbnail.path)
             if os.path.exists(dir):
                 shutil.rmtree(dir)
-
-        if self.profile_image:
             self.profile_image.delete()
         self.is_deleted = True
         self.is_active = False
@@ -221,7 +221,7 @@ class User(AbstractUser):
         self.password = ""
         self.deleted_at = timezone.now()
         self.save()
-        self.userprofile.delete()
+        UserProfile.objects.filter(user=self).delete()
 
     def set_deactivate(self):
         self.is_active = False

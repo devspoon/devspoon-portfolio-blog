@@ -1,87 +1,38 @@
 {% extends "base/base.html" %}
-{% load static %}
-{% block title %}title{% endblock %}
+{% load i18n %}
+{% comment %}Search results across blogs and boards: post rows (ADR-005); `board_type` (the model name, phase4 F-001) picks the detail URL and kind label.{% endcomment %}
+{% block title %}{% trans "Search" %} | devspoon{% endblock %}
+{% block legacy_css %}{% endblock %}
+{% block legacy_js %}{% endblock %}
 
 {% block content %}
+<div class="l-wrap">
+  <header class="c-page-head">
+    <nav aria-label="{% trans 'Breadcrumb' %}">
+      <ol class="breadcrumb c-breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home:index' %}">{% trans "Home" %}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{% trans "Search" %}</li>
+      </ol>
+    </nav>
+    <h1>{% if keyword %}{% blocktrans %}Results for “{{ keyword }}”{% endblocktrans %}{% elif tag %}{% blocktrans %}Posts tagged “{{ tag }}”{% endblocktrans %}{% else %}{% trans "Search" %}{% endif %}</h1>
+  </header>
 
-    <!--== Start Page Title Area ==-->
-    <section class="page-title-area">
-        <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="page-title-content text-center pb-lg-30 pb-80">
-                    <h2 class="title">board title </h2>
-                    <div class="bread-crumbs pb-1">
-                        <a href="{% url 'home:index' %}">Home<span class="breadcrumb-sep">/</span></a><span class="active navi-blog">board navi</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-    </section>
-    <!--== End Page Title Area ==-->
+  <div>
+    {% for item in board %}
+      {% if item.board_type == "Notice" %}{% url 'board:notice_detail' item.pk as u %}{% trans "Notice" as k %}
+      {% elif item.board_type == "Visiter" %}{% url 'board:visiter_detail' item.pk as u %}{% trans "Guestbook" as k %}
+      {% elif item.board_type == "Reactivation" %}{% url 'board:reactivation_detail' item.pk as u %}{% trans "Reactivation" as k %}
+      {% elif item.board_type == "ProjectPost" %}{% url 'blog:project_detail' item.pk as u %}{% trans "Project" as k %}
+      {% elif item.board_type == "OnlineStudyPost" %}{% url 'blog:online_study_detail' item.pk as u %}{% trans "Online study" as k %}
+      {% elif item.board_type == "BlogPost" %}{% url 'blog:blog_detail' item.pk as u %}{% trans "Blog" as k %}
+      {% elif item.board_type == "OpenSourcePost" %}{% url 'blog:opensource_detail' item.pk as u %}{% trans "Open source" as k %}
+      {% else %}{% url 'blog:books_detail' item.pk as u %}{% trans "Books" as k %}{% endif %}
+      {% include "components/card_post.html" with post=item url=u kind=k h=2 %}
+    {% empty %}
+      {% trans "Nothing matched. Try another word or tag." as m %}{% include "components/empty.html" with message=m %}
+    {% endfor %}
+  </div>
 
-    <!--== Start Blog Area Wrapper ==-->
-    <section class="blog-grid-area pb-1">
-        <div class="container">
-            <div class="row ">
-                <div class="col-10 m-auto">
-                    <table class="table table-hover board-table">
-                        <thead>
-                          <tr>
-                            <th width="5%" class="th-number text-center" scope="col">Number</th>
-                            <th width="65%" class="th-title" scope="col">Title</th>
-                            <th width="15%" class="th-date text-center" scope="col">Date</th>
-                            <th width="5%" class="th-visiter text-center" scope="col">Author</th>
-                            <th width="5%" class="th-visiter text-center" scope="col">Visiter</th>
-                          </tr>
-                        </thead>
-                        {% for item in board %}
-                        <tbody>
-                          <tr>
-                            <td width="5%" class="th-number text-center tb-row fs-6" scope="row">{{item.pk}}</td>
-                            {% if item.board_type == 'Notice'%}
-                            <td width="65%" class="th-title tb-row fs-6" > <a href="{% url 'board:notice_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
-                            {% endif  %}
-                            {% if item.board_type == 'Visiter'%}
-                            <td width="65%" class="th-title tb-row" > <a href="{% url 'board:visiter_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
-                            {% endif  %}
-                            {% if item.board_type == 'Reactivation'%}
-                            <td width="65%" class="th-title tb-row" > <a href="{% url 'board:reactivation_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
-                            {% endif  %}
-                            {% if item.board_type == 'ProjectPost'%}
-                            <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:project_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
-                            {% endif  %}
-                            {% if item.board_type == 'OnlineStudyPost'%}
-                            <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:online_study_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
-                            {% endif  %}
-                            {% if item.board_type == 'BlogPost'%}
-                            <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:blog_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
-                            {% endif  %}
-                            {% if item.board_type == 'OpenSourcePost'%}
-                            <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:opensource_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
-                            {% endif  %}
-                            {% if item.board_type == 'BooksPost'%}
-                            <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:books_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
-                            {% endif  %}
-                            <td width="15%" class="th-date text-center tb-row" >{{item.created_at|date:'Y/m/d H:i'}}</td>
-                            <td width="5%" class="th-author text-center tb-row" >{{item.author__username}}</td>
-                            <td width="5%" class="th-visiter text-center tb-row" >{{item.visit_count}}</td>
-                          </tr>
-                        </tbody>
-                        {% endfor %}
-
-                      </table>
-                </div>
-
-
-                {% for item in board %}
-                {% endfor %}
-
-                {% include "base/pagenation.html" %}
-            </div>
-        </div>
-    </section>
-    <!--== End Blog Area Wrapper ==-->
-
-	{% endblock %}
+  {% include "components/pagination.html" %}
+</div>
+{% endblock %}

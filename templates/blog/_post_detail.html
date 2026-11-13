@@ -1,0 +1,94 @@
+{% extends "base/base.html" %}
+{% load static i18n public_tags ui_tags %}
+{% comment %}
+Shared detail page for the five blog types. Children only set `title`.
+URLs are derived from the current view name: "blog:project_detail" -> "blog:project" + "_update" etc.
+Transitional until step 5: comments (base/reply.html) and the like button still run on legacy JS and CSS;
+keep the hooks .like-btn / .lni-heart / .like_count.
+{% endcomment %}
+{% block title %}{{ board.title }} | devspoon{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/post.css' %}">{% endblock %}
+
+{% block content %}
+{% with url_base=request.resolver_match.view_name|cut:"_detail" %}
+<article class="l-wrap p-post">
+  <header class="p-post__head">
+    <nav aria-label="{% trans 'Breadcrumb' %}">
+      <ol class="breadcrumb c-breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home:index' %}">{% trans "Home" %}</a></li>
+        <li class="breadcrumb-item"><a href="{% url url_base|add:'_list' %}">{{ url_base|cut:"blog:" }}</a></li>
+      </ol>
+    </nav>
+    <h1>{{ board.title }}</h1>
+    <div class="c-meta p-post__byline">
+      <span>{{ board.author }}</span>
+      <time datetime="{{ board.created_at|date:'c' }}">{{ board.created_at|date:'Y.m.d H:i' }}</time>
+    </div>
+    {% include "components/meta.html" with post=board %}
+    {% if board.dev_lang or board.branch or board.version or board.role or board.difficulty_level or board.repository %}
+    <dl class="p-post__facts">
+      {% if board.dev_lang %}<div><dt>{% trans "Language" %}</dt><dd>{{ board.dev_lang }}</dd></div>{% endif %}
+      {% if board.branch %}<div><dt>{% trans "Branch" %}</dt><dd>{{ board.get_branch_display }}</dd></div>{% endif %}
+      {% if board.version %}<div><dt>{% trans "Version" %}</dt><dd>{{ board.version }}</dd></div>{% endif %}
+      {% if board.role %}<div><dt>{% trans "Role" %}</dt><dd>{{ board.get_role_display }}</dd></div>{% endif %}
+      {% if board.difficulty_level %}<div><dt>{% trans "Difficulty" %}</dt><dd>{{ board.get_difficulty_level_display }}</dd></div>{% endif %}
+      {% if board.repository %}<div><dt>{% trans "Repository" %}</dt><dd><a href="{{ board.repository }}" rel="noopener">{{ board.repository|truncatechars:50 }}</a></dd></div>{% endif %}
+    </dl>
+    {% endif %}
+  </header>
+
+  <div class="c-prose p-post__body">
+    {{ board.content|sanitize_html }}
+  </div>
+
+  {% include "components/tag_list.html" with tags=board.tag_set.all %}
+
+  {% if board.link1 or board.link2 or board.file1 or board.file2 %}
+  <section class="p-post__attach" aria-labelledby="attachments">
+    <h2 id="attachments">{% trans "Links and files" %}</h2>
+    <ul>
+      {% if board.link1 %}<li>{% icon "link-45deg" %}<a href="{{ board.link1 }}" rel="noopener">{{ board.link1|truncatechars:60 }}</a></li>{% endif %}
+      {% if board.link2 %}<li>{% icon "link-45deg" %}<a href="{{ board.link2 }}" rel="noopener">{{ board.link2|truncatechars:60 }}</a></li>{% endif %}
+      {% if board.file1 %}<li>{% icon "paperclip" %}<a href="{{ board.file1.url }}">{{ board.file1|filename }}</a></li>{% endif %}
+      {% if board.file2 %}<li>{% icon "paperclip" %}<a href="{{ board.file2.url }}">{{ board.file2|filename }}</a></li>{% endif %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <div class="p-post__actions">
+    <div class="like-btn" data-name="like">
+      <button type="button" class="btn btn-outline-primary p-like lni-heart{% if like_state %} clicked{% endif %}">
+        <span class="p-like__off">{% icon "heart" %}</span><span class="p-like__on">{% icon "heart-fill" %}</span>
+        {% trans "Like" %} <span class="like_count" id="like-count-{{ board.pk }}">{{ board.like_count }}</span>
+      </button>
+    </div>
+    {% if user_auth %}
+    <div class="d-flex gap-2" id="detail-button-group">
+      <a href="{% url url_base|add:'_update' board.pk %}" class="btn btn-quiet">{% icon "pencil" %} {% trans "Edit" %}</a>
+      <form method="post" action="{% url url_base|add:'_delete' board.pk %}">{% csrf_token %}<button type="submit" class="btn btn-quiet p-post__danger">{% icon "trash" %} {% trans "Delete" %}</button></form>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if pre_board or next_board %}
+  <nav class="p-post__nav" id="navigation-group" aria-label="{% trans 'Post navigation' %}">
+    {% if pre_board %}
+    <a class="c-card" href="{% url request.resolver_match.view_name pre_board.pk %}" id="nav-left" rel="prev">
+      <span class="c-card__kind">{% icon "arrow-left" %} {% trans "Older" %}</span>{{ pre_board.title }}
+    </a>
+    {% endif %}
+    {% if next_board %}
+    <a class="c-card p-post__next" href="{% url request.resolver_match.view_name next_board.pk %}" id="nav-right" rel="next">
+      <span class="c-card__kind">{% trans "Newer" %} {% icon "arrow-right" %}</span>{{ next_board.title }}
+    </a>
+    {% endif %}
+  </nav>
+  {% endif %}
+
+  <div class="p-post__comments">
+    {% include "base/reply.html" %}
+    {% include "base/replies_pagination.html" %}
+  </div>
+</article>
+{% endwith %}
+{% endblock %}

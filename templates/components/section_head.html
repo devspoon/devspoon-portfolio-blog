@@ -1,0 +1,8 @@
+{% comment %}Section heading (ADR-005). Args: id, title, desc (optional), action_url + action_label (optional).{% endcomment %}
+<div class="c-section-head">
+  <div>
+    <h2 id="{{ id }}">{{ title }}</h2>
+    {% if desc %}<p>{{ desc }}</p>{% endif %}
+  </div>
+  {% if action_url %}<a class="c-section-head__action" href="{{ action_url }}">{{ action_label }}</a>{% endif %}
+</div>

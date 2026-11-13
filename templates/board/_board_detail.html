@@ -1,0 +1,46 @@
+{% extends "base/base.html" %}
+{% load static i18n public_tags ui_tags %}
+{% comment %}
+Shared detail page for the three boards; same layout as blog posts (css/pages/post.css).
+URLs are derived from the current view name: "board:notice_detail" -> "board:notice" + "_update" etc.
+Transitional until step 5: comments (base/reply.html) still run on legacy JS and CSS.
+{% endcomment %}
+{% block title %}{{ board.title }} | devspoon{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/post.css' %}">{% endblock %}
+
+{% block content %}
+{% with url_base=request.resolver_match.view_name|cut:"_detail" %}
+<article class="l-wrap p-post">
+  <header class="p-post__head">
+    <nav aria-label="{% trans 'Breadcrumb' %}">
+      <ol class="breadcrumb c-breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home:index' %}">{% trans "Home" %}</a></li>
+        <li class="breadcrumb-item"><a href="{% url url_base|add:'_list' %}">{{ url_base|cut:"board:" }}</a></li>
+      </ol>
+    </nav>
+    <h1>{{ board.title }}</h1>
+    <div class="c-meta p-post__byline">
+      <span>{{ board.author }}</span>
+      <time datetime="{{ board.created_at|date:'c' }}">{{ board.created_at|date:'Y.m.d H:i' }}</time>
+    </div>
+    {% include "components/meta.html" with post=board %}
+  </header>
+
+  <div class="c-prose p-post__body">
+    {{ board.content|sanitize_html }}
+  </div>
+
+  {% if user_auth %}
+  <div class="p-post__actions justify-content-end" id="detail-button-group">
+    <a href="{% url url_base|add:'_update' board.pk %}" class="btn btn-quiet">{% icon "pencil" %} {% trans "Edit" %}</a>
+    <form method="post" action="{% url url_base|add:'_delete' board.pk %}">{% csrf_token %}<button type="submit" class="btn btn-quiet p-post__danger">{% icon "trash" %} {% trans "Delete" %}</button></form>
+  </div>
+  {% endif %}
+
+  <div class="p-post__comments">
+    {% include "base/reply.html" %}
+    {% include "base/replies_pagination.html" %}
+  </div>
+</article>
+{% endwith %}
+{% endblock %}

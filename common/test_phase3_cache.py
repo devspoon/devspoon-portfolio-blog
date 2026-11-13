@@ -288,6 +288,8 @@ def test_post_write_through_orm_invalidates_index_after_commit(
 def test_opening_the_create_form_does_not_touch_the_cache(
     ns, name, post_model, reply_model, fk, extra, author, monkeypatch
 ):
+    author.is_staff = True  # 블로그 작성은 staff만(template-phase1 ADR-004)
+    author.save()
     client = logged_in(author)
     deleted = []
     monkeypatch.setattr(RedisCache, "delete_pattern", lambda self, *a, **k: deleted.append(a))
@@ -473,8 +475,8 @@ def test_board_post_cannot_be_deleted_by_someone_else(ns, name, post_model, repl
 # --- F-011: index를 SQLite에서도 렌더링한다 ---
 
 
-def test_index_lists_the_oldest_nine_of_each_boards_latest_three(author):
-    # 지금 동작 그대로: 게시판 4종에서 각각 activate_objects 앞 3개를 고른 뒤 created_at 오름차순 9개.
+def test_index_lists_the_newest_nine_of_each_boards_first_three(author):
+    # 게시판 4종에서 각각 activate_objects 앞 3개를 고른 뒤 created_at 최신순 9개(template-phase3 STOP 2 결정).
     base = datetime.datetime(2024, 1, 1, tzinfo=datetime.timezone.utc)
     boards = [
         (OnlineStudyPost, {"dev_lang": "python"}),
@@ -492,7 +494,7 @@ def test_index_lists_the_oldest_nine_of_each_boards_latest_three(author):
     rows = []
     for model, _ in boards:
         rows += list(model.activate_objects.get_data()[:3].values("title", "created_at"))
-    expected = [row["title"] for row in sorted(rows, key=lambda r: r["created_at"])[:9]]
+    expected = [row["title"] for row in sorted(rows, key=lambda r: r["created_at"], reverse=True)[:9]]
 
     response = Client().get("/")
 
@@ -512,3 +514,22 @@ def test_index_refreshes_after_a_post_write_and_never_scans(author, no_scan, dja
     assert [row["title"] for row in client.get("/").context["latest"]] == ["new"]  # 히트
 
     assert no_scan == []
+
+
+# --- 통합(phase5a): portfolio 기술 스택 그림은 글·태그가 바뀌면 갱신된다 ---
+
+
+def test_portfolio_stack_refreshes_after_tagging_and_hiding_a_post(author, django_capture_on_commit_callbacks):
+    from blog.models.blog import Tag
+
+    client = Client()
+    post = BlogPost.objects.create(author=author, title="t", content="c")
+    assert client.get("/portfolio/").context["stack"]["django"] == 0  # 캐시됨
+
+    with django_capture_on_commit_callbacks(execute=True):
+        post.tag_set.add(Tag.objects.create(tag="django"))  # 글 저장 뒤에 태그가 붙는다
+    assert client.get("/portfolio/").context["stack"]["django"] == 1
+
+    with django_capture_on_commit_callbacks(execute=True):
+        _blog_admin().set_hidden(None, BlogPost.objects.filter(pk=post.pk))
+    assert client.get("/portfolio/").context["stack"]["django"] == 0

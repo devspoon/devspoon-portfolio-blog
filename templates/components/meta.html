@@ -1,0 +1,8 @@
+{% load i18n ui_tags %}{% comment %}
+Counts line shared by cards and detail pages. Args: post. Missing counts (e.g. like_count in .values() dicts) are skipped.
+{% endcomment %}
+<div class="c-meta">
+  {% if post.visit_count is not None %}<span>{% icon "eye" %}<span class="visually-hidden">{% trans "Views" %}</span>{{ post.visit_count }}</span>{% endif %}
+  {% if post.like_count is not None %}<span>{% icon "heart" %}<span class="visually-hidden">{% trans "Likes" %}</span>{{ post.like_count }}</span>{% endif %}
+  {% if post.reply_count is not None %}<span>{% icon "chat" %}<span class="visually-hidden">{% trans "Comments" %}</span>{{ post.reply_count }}</span>{% endif %}
+</div>

@@ -1,136 +1,84 @@
-{% load static %}
-{% load mptt_tags %}
-{% load home_tag %}
-{% load i18n %}
+{% load i18n home_tag ui_tags %}
+{% main_menu_tag as main_menu %}
+<header class="c-header">
+  <div class="l-wrap c-header__bar">
+    <a class="c-brand" href="{% url 'home:index' %}">dev<span>spoon</span></a>
 
+    <nav aria-label="{% trans 'Main menu' %}" class="ms-auto">
+      <ul class="c-nav">
+        {% for node in main_menu %}{% if node.is_root_node %}
+        {% if node.is_leaf_node %}
+        <li><a href="{% if node.menu_path %}{% url node.menu_path %}{% else %}{{ node.menu_link }}{% endif %}"
+               {% if node.menu_path and request.resolver_match.view_name == node.menu_path %}aria-current="page"{% endif %}>{{ node.menu_name }}</a></li>
+        {% else %}
+        <li class="dropdown">
+          <button type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ node.menu_name }} {% icon "chevron-down" %}</button>
+          <ul class="dropdown-menu">
+            {% for child in main_menu %}{% if child.parent_id == node.pk %}
+            <li><a class="dropdown-item" href="{% if child.menu_path %}{% url child.menu_path %}{% else %}{{ child.menu_link }}{% endif %}">{{ child.menu_name }}</a></li>
+            {% endif %}{% endfor %}
+          </ul>
+        </li>
+        {% endif %}
+        {% endif %}{% endfor %}
+      </ul>
+    </nav>
 
-<header class="header_area">
-    <div id="header_navbar" class="header_navbar">
-        <div class="container position-relative">
-            <div class="row align-items-center">
-                <div class="row">
-                    <nav class="navbar navbar-expand-lg">
-                        <a class="navbar-brand" href="{% url 'home:index' %}">
-                            <img id="logo" src={% static 'images/logo.png' %} alt="Logo">
-                        </a>
-                        <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
-                            <ul id="nav" class="navbar-nav">
-                                {% main_menu_tag as main_menu %}
-                                {% recursetree main_menu %}
-                                {% if node.is_root_node %}
-                                <li class="nav-item">
-                                        <a class="page-scroll" data-toggle="collapse" data-target="#{{node.pk}}" aria-controls="{{node.pk}}"
-                                            aria-expanded="false" aria-label="Toggle navigation"
-                                            {% if node.menu_path %}
-                                            href="{% url node.menu_path %}"
-                                            {% elif node.menu_link  %}
-                                                href="{{node.menu_link}}"
-                                            {% endif %}
-                                            >{{node.menu_name}}
-                                            <div class="sub-nav-toggler">
-                                                <span></span>
-                                            </div>
-                                        </a>
-                                            {% if not node.is_leaf_node %}
-                                            <ul class="dropdown-menu sub-menu collapse" id="{{ node.pk }}">
-                                            {% elif node.is_leaf_node %}
-                                            </li>
-                                            {% endif %}
-                                {% elif node.is_child_node and node.level == 1%}
-                                    {% if node.menu_path  %}
-                                    <li class="nav-item">
-                                        <a class="page-scroll" href="{% url node.menu_path %}">{{ node.menu_name }}</a>
-                                    </li>
-                                    {% elif node.menu_link  %}
-                                    <li class="nav-item">
-                                        <a class="page-scroll" href="{{ node.menu_link }}">{{ node.menu_name }}</a>
-                                    </li>
-                                    {% else %}
-                                    <li class="nav-item">
-                                        <a class="page-scroll">{{ node.menu_name }} </a>
-                                    </li>
-                                    {% endif %}
-
-                                    {% if not node.get_next_sibling %}
-                                        </ul>
-                                    </li>
-                                    {% endif %}
-
-                                {%  endif %}
-
-                                {% if not node.is_leaf_node %}
-                                    {{ children }}
-                                {%  endif %}
-                                {% endrecursetree %}
-                            </ul>
-                        </div>
-                            <ul class="header-btn d-sm-flex">
-                                {% if request.user.is_authenticated %}
-
-                                <li>
-                                    <a href="#" onclick="return false;" class="main-btn account-btn">
-                                        <span class="d-md-none"><i class="lni lni-user"></i></span>
-                                        <span class="d-none d-md-block">
-                                            {% if request.session.username %} {{request.session.username}}
-                                            {% else %} {{request.session.email}}
-                                            {% endif %}
-                                        </span>
-                                    </a>
-                                    <ul class="dropdown-nav">
-                                        <li><a href="{% url 'home:index' %}">Favorite Post</a></li>
-                                        <li><a href="{% url 'users:profile' %}">Profile Settings</a></li>
-                                        <li><a href="{% url 'users:logout' %}">LogOut</a></li>
-                                    </ul>
-                                </li>
-                                {% endif %}
-
-                                {% if not request.user.is_authenticated %}
-                                <li>
-                                    <a href="{% url 'users:login' %}" class="main-btn btn-hover login d-block">Login</a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'users:register' %}" class="main-btn btn-hover d-none d-md-block">Register</a>
-                                </li>
-                                {% endif %}
-                            </ul>
-                            <div class="canvas_open d-lg-none">
-                                <a href="#" onclick="return false;"><ion-icon name="menu-outline"></ion-icon></a>
-                            </div>
-                        </div>
-                    </nav> <!-- navbar -->
-                    <div class="d-flex justify-content-center align-items-center">
-                        <div class="col-8">
-                            <form action="{% url 'home:search_queryset' %}" method="get" id="search_form">
-                                {% csrf_token %}
-                                <div class="input-group justify-content-center mt-2">
-                                    <input type="search" class="form-control rounded" name="keyword" placeholder="Search..." aria-label="Search" aria-describedby="search-addon" />
-                                    <button type="submit" form="search_form" class="btn btn-outline-primary search-btn">search</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div>
-                            <form class='row g-3' action="{% url 'set_language' %}" method="post">
-                                {% csrf_token %}
-                                <div class="col-auto">
-                                    <select class="form-select form-select-sm" aria-label="Default select example" name="language" >
-                                        {% get_current_language as LANGUAGE_CODE %}
-                                        {% get_available_languages as LANGUAGES %}
-                                        {% get_language_info_list for LANGUAGES as languages %}
-                                        {% for language in languages %}
-                                            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected {% endif %}>
-                                                {{ language.code  }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="col-auto">
-                                <input class="btn btn-outline-secondary btn-sm" type="submit" value="Switch">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- row -->
-        </div> <!-- container -->
-    </div> <!-- header navbar -->
+    <div class="c-header__tools">
+      <form class="c-search" action="{% url 'home:search_queryset' %}" method="get" role="search">
+        <label class="visually-hidden" for="site-search">{% trans "Search" %}</label>
+        <input class="form-control form-control-sm" id="site-search" type="search" name="keyword" placeholder="{% trans 'Search posts' %}">
+      </form>
+      <form class="c-lang" action="{% url 'set_language' %}" method="post">
+        {% csrf_token %}
+        {% get_current_language as LANGUAGE_CODE %}{% get_available_languages as LANGUAGES %}
+        <label class="visually-hidden" for="site-lang">{% trans "Language" %}</label>
+        <select class="form-select form-select-sm" id="site-lang" name="language" data-autosubmit>
+          {% for code, name in LANGUAGES %}<option value="{{ code }}"{% if code == LANGUAGE_CODE %} selected{% endif %}>{{ code }}</option>{% endfor %}
+        </select>
+        <noscript><button class="btn btn-sm btn-quiet" type="submit">{% trans "Change" %}</button></noscript>
+      </form>
+      <button class="c-icon-btn" type="button" data-theme-toggle aria-label="{% trans 'Toggle dark mode' %}">{% icon "moon-stars" %}</button>
+      {% if request.user.is_authenticated %}
+      <div class="dropdown">
+        <button class="c-icon-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{% trans 'Account' %}">{% icon "person" %}</button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><span class="dropdown-item-text text-body-secondary">{% firstof request.session.username request.session.email request.user %}</span></li>
+          <li><a class="dropdown-item" href="{% url 'users:profile' %}">{% trans "Profile settings" %}</a></li>
+          <li><a class="dropdown-item" href="{% url 'users:logout' %}">{% trans "Log out" %}</a></li>
+        </ul>
+      </div>
+      {% else %}
+      <a class="btn btn-sm btn-outline-primary" href="{% url 'users:login' %}">{% trans "Log in" %}</a>
+      {% endif %}
+      <button class="c-icon-btn c-menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobile-nav" aria-controls="mobile-nav" aria-label="{% trans 'Open menu' %}">{% icon "list" %}</button>
+    </div>
+  </div>
 </header>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="mobile-nav" aria-labelledby="mobile-nav-title">
+  <div class="offcanvas-header">
+    <h2 class="offcanvas-title h4" id="mobile-nav-title">{% trans "Menu" %}</h2>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="{% trans 'Close menu' %}"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form class="mb-4" action="{% url 'home:search_queryset' %}" method="get" role="search">
+      <label class="visually-hidden" for="mobile-search">{% trans "Search" %}</label>
+      <input class="form-control" id="mobile-search" type="search" name="keyword" placeholder="{% trans 'Search posts' %}">
+    </form>
+    <ul class="c-mobile-nav">
+      {% for node in main_menu %}{% if node.is_root_node %}
+      <li>
+        {% if node.is_leaf_node %}
+        <a href="{% if node.menu_path %}{% url node.menu_path %}{% else %}{{ node.menu_link }}{% endif %}">{{ node.menu_name }}</a>
+        {% else %}
+        <span class="d-block py-2 fw-bold">{{ node.menu_name }}</span>
+        <ul>{% for child in main_menu %}{% if child.parent_id == node.pk %}
+          <li><a href="{% if child.menu_path %}{% url child.menu_path %}{% else %}{{ child.menu_link }}{% endif %}">{{ child.menu_name }}</a></li>
+        {% endif %}{% endfor %}</ul>
+        {% endif %}
+      </li>
+      {% endif %}{% endfor %}
+    </ul>
+  </div>
+</div>

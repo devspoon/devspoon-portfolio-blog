@@ -1,103 +1,26 @@
-{% extends "base/base.html" %}
-{% load static %}
+{% extends "components/auth_layout.html" %}
 {% load i18n %}
-{% block title %}register{% endblock %}
-
-{% block content %}
-
-	<!--====== REGISTER PART START ======-->
-    <section class="login first grey">
-        <div class="container">
-
-            {% for page in policy_pages %}
-            <div class="row justify-content-md-center">
-                <div class="col col-lg-6 text-center mt-2 border">
-                <h4 class="my-2">{{page.title}}</h4>
-                    <div class="policy-box overflow-auto my-3">
-                    <textarea cols="50" rows="15" wrap="hard">{{page.content}}</textarea>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-
-
-            {% comment %} <div class="row justify-content-md-center">
-                <div class="policy-notice col col-lg-6 text-center mt-2 border">
-                    <div class="overflow-auto my-3">
-                    * By signing up, you signify that you have read and
-                    agree to all of the above policies.
-                    </div>
-                </div>
-            </div> {% endcomment %}
-
-            <div class="box-wrapper col col-lg-6 mt-4">
-                <div class="box box-border">
-                    <div class="box-body">
-                        <h4>Register</h4>
-                        {% for message in messages %}
-                            <div class="alert {{ message.tags }} alert-auto-dismissible alert-dismissible notification-container text-center" role="alert">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                        <form enctype="multipart/form-data" method="post">
-                            <div class="form-group">
-                                {% csrf_token %}
-                                {% for field in form %}
-                                    {% if field.field.widget.input_type == "checkbox" %}
-                                        {% if field.name == "is_privacy_policy" %}
-                                        <div class="col-12">
-                                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                            <div class="d-flex justify-content-center">
-                                                <a href="{% url 'home:privacy_policy' %}" class="col-10 mb-0">{{field.help_text}}</a>
-                                                <input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" name="{{ field.name }}" class="col-2 mb-0" />
-                                            </div>
-                                        {% else %}
-                                        <div class="col-12 mt-2">
-                                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                            <div class="d-flex justify-content-center">
-                                                <a href="{% url 'home:terms_of_service' %}"  class="col-10 mb-0">{{field.help_text}}</a>
-                                                <input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" name="{{ field.name }}" class="col-2 mb-0" />
-                                            </div>
-                                        {% endif %}
-                                    {% elif field.label == "Captcha" %}
-                                        {{field}}
-                                    {% else %}
-                                    <div class="col-12">
-                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                        <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" />
-                                    {% endif %}
-                                    {% if field.errors %}
-                                    <ol class="validation_error">
-                                        {% for error in field.errors %}
-                                            <li><strong>{{ error|escape }}</strong></li>
-                                        {% endfor %}
-                                    </ol>
-                                    {% endif %}
-                                </div>
-                                {% endfor %}
-                                {% comment %} <div class="form-group text-center pt-10">
-                                    <span class="text-muted"><a href="{% url 'home:privacy_policy' %}">{% trans "Privacy Policy" %}</a></span>
-                                </div>
-                                <div class="form-group text-center pt-10">
-                                    <span class="text-muted"><a href="{% url 'home:terms_of_service' %}">{% trans "Terms of Service" %}</a></span>
-                                </div> {% endcomment %}
-                                <div class="form-group text-right mt-3">
-                                    <button class="btn btn-primary col-12">Register</button>
-                                </div>
-                            </div>
-                            <div class="form-group text-center pt-10">
-                                <span class="text-muted">have an account? or Social account?</span> <a href="{% url 'users:login' %}">Login</a>
-                            </div>
-                            <div class="form-group text-center pt-10">
-                                <span class="text-muted">Did you not receive a verification email?</span> <a href="{% url 'users:resend_verification_email' %}">Resend Email</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-	<!--====== REGISTER PART END ======-->
-
+{% block title %}{% trans "Create account" %} | devspoon{% endblock %}
+{% block auth_before %}
+{% for page in policy_pages %}
+<section class="c-panel c-panel--narrow mb-3" aria-labelledby="policy-{{ forloop.counter }}">
+  <h2 class="h5" id="policy-{{ forloop.counter }}">{{ page.title }}</h2>
+  {# focusable so keyboard users can scroll it #}
+  <div class="c-scrollbox" tabindex="0" role="region" aria-labelledby="policy-{{ forloop.counter }}">{{ page.content|linebreaksbr }}</div>
+</section>
+{% endfor %}
+{% endblock %}
+{% block auth_heading %}{% trans "Create account" %}{% endblock %}
+{% block fields %}
+{% for field in form %}
+  {% if field.name == "is_privacy_policy" %}{% url 'home:privacy_policy' as help_url %}{% else %}{% url 'home:terms_of_service' as help_url %}{% endif %}
+  {% include "components/form_field.html" %}
+{% endfor %}
+{% endblock %}
+{% block submit_label %}{% trans "Create account" %}{% endblock %}
+{% block auth_links %}
+<ul class="c-auth-links">
+  <li>{% trans "Already have an account, or a social account?" %} <a href="{% url 'users:login' %}">{% trans "Log in" %}</a></li>
+  <li>{% trans "No verification email?" %} <a href="{% url 'users:resend_verification_email' %}">{% trans "Resend it" %}</a></li>
+</ul>
 {% endblock %}

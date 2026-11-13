@@ -98,8 +98,7 @@ class VisiterReplyDeleteView(LoginRequiredMixin, DeleteView):
     pk_url_kwarg = "reply_pk"
     login_url = reverse_lazy("users:login")
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         self.object = super().get_object()

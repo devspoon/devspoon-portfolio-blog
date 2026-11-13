@@ -261,8 +261,10 @@ class LogoutView(View):
         return redirect(reverse("home:index"))
 
 
-class UserDeleteView(View):
-    def get(self, request, *args, **kwargs):
+class UserDeleteView(LoginRequiredMixin, View):
+    login_url = reverse_lazy("users:login")
+
+    def post(self, request, *args, **kwargs):
         User.objects.get(id=request.user.pk).set_delete()
         return redirect(reverse("users:login"))
 

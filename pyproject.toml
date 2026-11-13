@@ -30,6 +30,7 @@ python-gettext = "^5.0"
 uvicorn = "^0.54.0"
 daphne = "^4.2.3"
 py3-validate-email = "^1.0.5.post2"
+nh3 = "^0.3.7"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -40,6 +41,7 @@ django-silk = "^5.6.0"
 celery = "^5.7.0"
 django-celery-beat = "^2.9.0"
 django-celery-results = "^2.6.0"
+djlint = "~1.36"
 
 
 [tool.poetry.group.test.dependencies]
@@ -54,6 +56,15 @@ celery = "^5.7.0"
 django-celery-beat = "^2.9.0"
 django-celery-results = "^2.6.0"
 sentry-sdk = "^2.74.0"
+
+
+[tool.djlint]
+# Lint template structure (unclosed tags, nested links/buttons, duplicate attributes, alt, button type).
+# Pure formatting rules are ignored; mail templates need inline styles, admin templates follow Django's.
+# usage: djlint templates --lint
+profile = "django"
+extend_exclude = "templates/admin,templates/email"
+ignore = "T001,T003,T032,T045,H006,H008,H014,H020,H021,H029,H030,H031"
 
 
 [build-system]

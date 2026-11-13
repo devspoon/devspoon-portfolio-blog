@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from common.mixin.views import StaffRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.db.models import F, Q
@@ -32,6 +33,8 @@ class BooksListView(ListView):
     paginate_by = 10
     paginate_orphans = 1  # if last page has 1 item, it will add in last page.
     context_object_name = "board"
+    # same text the page showed before (was injected by blog.js from the URL)
+    extra_context = {"page_title": "books"}
 
     def get_queryset(self):
         return BooksPost.activate_objects.get_data().select_related('author')
@@ -42,7 +45,7 @@ class BooksDetailView(BlogPostDetailMixin, DetailView):
     template_name = "blog/books/books_detail.html"
 
 
-class BooksCreateView(LoginRequiredMixin, CreateView):
+class BooksCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
     model = BooksPost
     template_name = "blog/books/books_edit.html"
     success_url = reverse_lazy("blog:books_list")
@@ -87,8 +90,7 @@ class BooksDeleteView(LoginRequiredMixin, View):
     success_url = reverse_lazy("blog:books_list")
     login_url = reverse_lazy("users:login")
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         # 객체를 가져오고, 없으면 404 에러 발생
@@ -107,7 +109,7 @@ class BooksDeleteView(LoginRequiredMixin, View):
 
 
 class BooksLikeJsonView(LoginRequiredMixin, View):
-    def get(self, request, pk):
+    def post(self, request, pk):
         with transaction.atomic():
             # 글 행을 잠가 같은 글의 토글을 순서대로 처리한다. 좋아요 행은 없을 수 있어 잠금 대상이 못 된다(phase4 F-003).
             post = get_object_or_404(BooksPost.objects.select_for_update(), pk=pk)

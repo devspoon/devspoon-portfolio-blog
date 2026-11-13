@@ -1,0 +1,59 @@
+{% extends "base/base.html" %}
+{% load i18n public_tags %}
+{% comment %}
+Shared create/update form for blog and board posts. Children override `title` and `form_heading`.
+Update mode = the form is bound to a saved object (form.instance.pk); it shows current values and files.
+URLs are derived from the view name: "blog:project_update" / "blog:project_create" -> "blog:project".
+{% endcomment %}
+{% block legacy_css %}{% endblock %}
+{% block legacy_js %}{% endblock %}
+
+{% block content %}
+{% with url_base=request.resolver_match.view_name|cut:"_update"|cut:"_create" is_update=form.instance.pk %}
+<div class="l-wrap l-section">
+  <div class="c-panel">
+    <h1 class="h2 mb-4">{% block form_heading %}{% endblock %}</h1>
+    {% for message in messages %}
+      <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %}" role="alert">{{ message }}</div>
+    {% endfor %}
+    <form enctype="multipart/form-data" method="post">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="mb-3">
+        {% if field.name == 'content' %}
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field|safe }}
+        {% elif field.field.widget.input_type == 'select' %}
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          <select class="form-select" name="{{ field.name }}" id="{{ field.id_for_label }}">
+            {% for item in field %}{{ item }}{% endfor %}
+          </select>
+        {% elif is_update %}
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {% if field.label == 'file1' or field.label == 'file2' %}{% if field.value %}<div class="form-text mb-1">{% trans "Current file" %}: <a href="{{ field.url }}">{{ field.value|filename }}</a></div>{% endif %}{% endif %}
+          <input type="{{ field.field.widget.input_type }}" class="form-control{% if field.errors %} is-invalid{% endif %}" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" value="{{ field.value }}"{% if field.errors %} aria-describedby="{{ field.id_for_label }}-error"{% endif %}/>
+        {% else %}
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {# create mode shows form initials, e.g. notice priority/sorting_sequence = 0 #}
+          <input type="{{ field.field.widget.input_type }}" class="form-control{% if field.errors %} is-invalid{% endif %}" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" value="{{ field.initial|default_if_none:'' }}"{% if field.errors %} aria-describedby="{{ field.id_for_label }}-error"{% endif %}/>
+        {% endif %}
+        {% if field.errors %}
+        <ul class="invalid-feedback d-block list-unstyled mb-0" id="{{ field.id_for_label }}-error">
+          {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      {% endfor %}
+      <div class="d-flex gap-2 justify-content-end mt-4">
+        {% if is_update %}
+        <a class="btn btn-quiet" href="{% url url_base|add:'_detail' form.instance.pk %}">{% trans "Cancel" %}</a>
+        {% else %}
+        <a class="btn btn-quiet" href="{% url url_base|add:'_list' %}">{% trans "Cancel" %}</a>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">{% trans "Write" %}</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endwith %}
+{% endblock %}

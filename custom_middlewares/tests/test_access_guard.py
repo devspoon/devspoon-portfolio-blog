@@ -70,7 +70,7 @@ def test_unknown_normal_path_still_renders_error_page(client):
     response = client.get("/does-not-exist.html", **HEADERS)
 
     assert response.status_code == 404
-    assert b"404 Error" in response.content
+    assert b"<title>404 | devspoon</title>" in response.content  # 새 에러 화면(template-phase3)
 
 
 @pytest.mark.middlewares

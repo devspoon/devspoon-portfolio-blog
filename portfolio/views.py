@@ -7,8 +7,11 @@ from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import translation
+from django.db.models import Count, Q
+from django.db.models.functions import Lower, Trim
 from django.views.generic import TemplateView, View
 
+from blog.models.blog import Tag
 from common.components.django_redis_cache_components import (
     cached,
     portfolio_key,
@@ -21,6 +24,26 @@ from .models import (AboutProjects, EducationStudy, GetInTouchLog,
                      InterestedIn, PersonalInfo, Portfolio, WorkExperience)
 
 logger = logging.getLogger(getattr(settings, "PORTFOLIO_LOGGER", "django"))
+
+
+# Tech-stack diagram nodes (ADR-016), in diagram order; each node shows how many visible posts carry the tag.
+STACK = ("django", "fastapi", "redis", "celery", "rabbitmq", "mysql")
+_POST_RELATIONS = ("blogpost", "projectpost", "onlinestudypost", "opensourcepost", "bookspost")
+
+
+def stack_counts():
+    """{tag: visible post count} for STACK; tags match case- and space-insensitively."""
+    rows = (
+        Tag.objects.annotate(name=Lower(Trim("tag")))
+        .filter(name__in=STACK)
+        .values("name")
+        .annotate(n=sum(
+            Count(rel, distinct=True, filter=Q(**{f"{rel}__is_deleted": False, f"{rel}__is_hidden": False}))
+            for rel in _POST_RELATIONS
+        ))
+    )
+    counts = {row["name"]: row["n"] for row in rows}
+    return {name: counts.get(name, 0) for name in STACK}
 
 
 def get_language_index():
@@ -61,6 +84,9 @@ class PortfolioView(TemplateView):
                 )
             ),
             "portfolio": portfolio,
+            "stack": stack_counts(),
+            # 서버에서 그리는 경력 타임라인(WorkExperienceJsonView와 같은 행)
+            "experience": list(WorkExperience.objects.filter(language__in=lang)),
             "portfolio_summary": (
                 list(portfolio.portfolio_summary.filter(language__in=lang))
                 if portfolio is not None

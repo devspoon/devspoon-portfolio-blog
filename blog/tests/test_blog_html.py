@@ -124,7 +124,7 @@ def test_blog_project_delete(staff):
     )
     assert queryset.exists()
     url = reverse("blog:project_delete", kwargs={"pk": queryset.values()[0]["id"]})
-    response = staff.get(
+    response = staff.post(
         path=url,
         **headers,
     )

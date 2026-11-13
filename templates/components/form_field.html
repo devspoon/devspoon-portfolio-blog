@@ -1,0 +1,24 @@
+{% comment %}
+One form field (ADR-005). Args: field, help_url (optional link for a checkbox's help text).
+Passwords are never echoed back; other inputs keep their value after a failed submit.
+{% endcomment %}
+<div class="mb-3">
+  {% if field.field.widget.input_type == "checkbox" %}
+  <div class="form-check">
+    <input class="form-check-input{% if field.errors %} is-invalid{% endif %}" type="checkbox" id="{{ field.id_for_label }}" name="{{ field.name }}"{% if field.value %} checked{% endif %}{% if field.errors %} aria-describedby="{{ field.id_for_label }}-error"{% endif %}>
+    <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+    {% if field.help_text %}<div class="form-text">{% if help_url %}<a href="{{ help_url }}">{{ field.help_text }}</a>{% else %}{{ field.help_text }}{% endif %}</div>{% endif %}
+  </div>
+  {% elif field.label == "Captcha" %}
+  <span class="form-label d-block">{{ field.label }}</span>
+  {{ field }}
+  {% else %}
+  <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+  <input type="{{ field.field.widget.input_type }}" class="form-control{% if field.errors %} is-invalid{% endif %}" id="{{ field.id_for_label }}" name="{{ field.name }}" placeholder="{{ field.help_text }}"{% if field.field.widget.input_type != "password" and field.value %} value="{{ field.value }}"{% endif %}{% if field.errors %} aria-describedby="{{ field.id_for_label }}-error"{% endif %}>
+  {% endif %}
+  {% if field.errors %}
+  <ul class="invalid-feedback d-block list-unstyled mb-0" id="{{ field.id_for_label }}-error">
+    {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+</div>

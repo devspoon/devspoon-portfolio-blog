@@ -8,7 +8,7 @@ invalidate_queryset()을 직접 부른다. 연결은 HomeConfig.ready()에서 �
 from django.apps import apps
 from django.core.cache import cache
 from django.db import transaction
-from django.db.models.signals import post_delete, post_save
+from django.db.models.signals import m2m_changed, post_delete, post_save
 from mptt.signals import node_moved
 
 from common.components.django_redis_cache_components import (
@@ -29,7 +29,15 @@ INDEX_MODELS = {
     "blog.ProjectPost",
     "portfolio.AboutProjects",
 }
-# portfolio 화면·경력 JSON에 나오는 모델(프로젝트 목록이 ProjectPost 제목을 보여 준다)
+# portfolio 화면·경력 JSON에 나오는 모델. 프로젝트 목록이 ProjectPost 제목을, 기술 스택 그림이
+# 블로그 글 5종의 공개 글 수(태그별)를 보여 준다.
+BLOG_POST_MODELS = {
+    "blog.BlogPost",
+    "blog.BooksPost",
+    "blog.OnlineStudyPost",
+    "blog.OpenSourcePost",
+    "blog.ProjectPost",
+}
 PORTFOLIO_MODELS = {
     "portfolio.Portfolio",
     "portfolio.PersonalInfo",
@@ -38,8 +46,7 @@ PORTFOLIO_MODELS = {
     "portfolio.EducationStudy",
     "portfolio.InterestedIn",
     "portfolio.AboutProjects",
-    "blog.ProjectPost",
-}
+} | BLOG_POST_MODELS
 FIXED_KEYS = {
     "home.MainMenu": MAIN_MENU_KEY,
     "home.SiteInfo": SITE_INFO_KEY,
@@ -122,3 +129,12 @@ def connect():
         post_delete.connect(_on_write, sender=model, dispatch_uid=uid)
     # mptt 드래그 이동은 save()를 거치지 않는다.
     node_moved.connect(_on_write, sender=apps.get_model("home.MainMenu"), dispatch_uid="cache-invalidation:menu-move")
+    # 태그는 글을 저장한 뒤 tag_set에 붙는다. 기술 스택 그림(portfolio)의 태그별 글 수가 바뀐다.
+    for label in BLOG_POST_MODELS:
+        through = apps.get_model(label).tag_set.through
+        m2m_changed.connect(_on_tags_changed, sender=through, dispatch_uid=f"cache-invalidation:tags:{label}")
+
+
+def _on_tags_changed(sender, instance, action, **kwargs):
+    if action in ("post_add", "post_remove", "post_clear"):
+        invalidate(apps.get_model("portfolio.PersonalInfo"))  # portfolio 키 전체(언어별)

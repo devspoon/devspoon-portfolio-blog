@@ -31,7 +31,6 @@ class IndexView(TemplateView):
                 .annotate(table=Value(table))
                 .values(
                     "pk",
-                    "author",
                     "title",
                     "content",
                     "title_image",
@@ -54,7 +53,8 @@ class IndexView(TemplateView):
             ]
             for row in latest_of(model, table)
         ]
-        latest = sorted(rows, key=lambda row: row["created_at"])[:9]
+        # 최신 글부터(template-phase3 STOP 2 결정)
+        latest = sorted(rows, key=lambda row: row["created_at"], reverse=True)[:9]
         projects = (
             AboutProjects.objects.all()
             .select_related("projectpost")

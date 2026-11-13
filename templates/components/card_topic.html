@@ -1,0 +1,5 @@
+{% comment %}Topic card (ADR-005). Args: title, text, h (heading level, default 3).{% endcomment %}
+<div class="c-card c-card--topic">
+  <h{{ h|default:3 }} class="c-card__title">{{ title }}</h{{ h|default:3 }}>
+  <p>{{ text }}</p>
+</div>

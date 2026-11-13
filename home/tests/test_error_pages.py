@@ -52,4 +52,4 @@ def test_unknown_url_answers_404_end_to_end(client):
     response = client.get("/no-such-page-here/")
 
     assert response.status_code == 404
-    assert b"404 Error" in response.content
+    assert b"<title>404 | devspoon</title>" in response.content  # 새 에러 화면(template-phase3)
