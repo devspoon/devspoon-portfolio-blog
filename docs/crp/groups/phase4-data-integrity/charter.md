@@ -34,12 +34,13 @@
 - `table_name` 컬럼 삭제(스키마 변경 최소화), 좋아요 GET→POST(5단계), 태그 검색 페이지 나눔(6단계 M4).
 
 ## 3. 인수 기준
-- [ ] F-001~F-003 Fixed, 각 수정에 수정 전 실패한 테스트가 있다
-- [ ] INV-1~5 통과
-- [ ] dev DB(PostgreSQL)에서: 중복 좋아요를 만들어 `--dry-run` → 실행 → 재실행(변경 0) → `makemigrations blog`·`migrate` 성공 → 이후 중복 삽입이 `IntegrityError`
-- [ ] runserver: 검색 결과에 admin·ORM으로 만든 글의 링크가 나온다, 좋아요 토글 정상
-- [ ] deploy.md 작성
-- [ ] 불가침 제약 C-1~C-7 위반 없음
+- [x] F-001~F-003 Fixed, 각 수정에 수정 전 실패한 테스트가 있다
+- [x] INV-1~5 통과
+- [x] dev DB(PostgreSQL)에서: 중복 좋아요를 만들어 `--dry-run` → 실행 → 재실행(변경 0) → `makemigrations blog`·`migrate` 성공 → 이후 중복 삽입이 `IntegrityError`
+- [x] runserver: 검색 결과에 admin·ORM으로 만든 글의 링크가 나온다, 좋아요 토글 정상
+- [x] deploy.md 작성
+- [x] 불가침 제약 C-1~C-7 위반 없음
 
 ## 4. 변경 이력
+- v0.2 (2026-11-13): 인수 기준 충족(Round 1).
 - v0.1 (2026-11-13): 최초 작성.
