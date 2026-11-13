@@ -1,446 +1,179 @@
 {% extends "base/base.html" %}
-{% load static %}
-{% load i18n %}
-{% load portfolio_base_tag %}
-{% block title %}portfolio{% endblock %}
+{% load static i18n portfolio_base_tag ui_tags %}
+{% comment %}
+Portfolio. The timeline is rendered on the server (it was built in portfolio.js); the stack diagram is ADR-016.
+summary/content/title fields marked |safe are admin-authored (portfolio admin), not visitor input.
+{% endcomment %}
+{% block title %}{% trans "Portfolio" %} | devspoon{% endblock %}
+{% block legacy_css %}{% endblock %}
+{% block legacy_js %}{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/portfolio.css' %}">{% endblock %}
+
 {% block content %}
-    {% if messages %}
-    <!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">{% trans "Get In Touch Messages" %}</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                {% for message in messages %}
-                <h6>{{ message }}</h6>
-                {% endfor %}
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
-            </div>
-          </div>
-        </div>
+{% url 'home:search_queryset' as search_url %}
+<div class="l-wrap">
+  {% for message in messages %}
+  <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} mt-4" role="alert">{{ message }}</div>
+  {% endfor %}
+
+  <section class="p-port-hero" aria-labelledby="about">
+    <div>
+      <h1 id="about">{% trans "About me" %}</h1>
+      <div class="p-port-hero__summary">{{ portfolio.summary|safe }}</div>
+      {% if portfolio.portfolio_cv_file %}
+      <a href="{{ portfolio.portfolio_cv_file.url }}" class="btn btn-primary mt-3" download>{% icon "download" %} {% trans "Download CV" %}</a>
+      {% endif %}
+    </div>
+
+    <figure class="p-stack-wrap" aria-labelledby="stack-title">
+      <figcaption id="stack-title">{% trans "Main stack and how it connects, with the number of posts on each" %}</figcaption>
+      <svg class="p-stack" viewBox="0 0 520 300" aria-labelledby="stack-title">
+        <path class="p-stack__wire" d="M150 70 H260 M150 70 V230 H260 M390 70 H420 V150 M390 230 H420 V150 M150 150 H260"/>
+        <a class="p-stack__node" href="{{ search_url }}?tag=django" aria-label="Django, {{ stack.django|default:0 }}"><rect x="20" y="45" width="130" height="50" rx="6"/><text x="38" y="75">Django</text><text class="p-stack__count" x="132" y="75" text-anchor="end">{{ stack.django }}</text></a>
+        <a class="p-stack__node" href="{{ search_url }}?tag=fastapi" aria-label="FastAPI, {{ stack.fastapi|default:0 }}"><rect x="20" y="125" width="130" height="50" rx="6"/><text x="38" y="155">FastAPI</text><text class="p-stack__count" x="132" y="155" text-anchor="end">{{ stack.fastapi }}</text></a>
+        <a class="p-stack__node" href="{{ search_url }}?tag=redis" aria-label="Redis, {{ stack.redis|default:0 }}"><rect x="260" y="45" width="130" height="50" rx="6"/><text x="278" y="75">Redis</text><text class="p-stack__count" x="372" y="75" text-anchor="end">{{ stack.redis }}</text></a>
+        <a class="p-stack__node" href="{{ search_url }}?tag=celery" aria-label="Celery, {{ stack.celery|default:0 }}"><rect x="260" y="125" width="130" height="50" rx="6"/><text x="278" y="155">Celery</text><text class="p-stack__count" x="372" y="155" text-anchor="end">{{ stack.celery }}</text></a>
+        <a class="p-stack__node" href="{{ search_url }}?tag=rabbitmq" aria-label="RabbitMQ, {{ stack.rabbitmq|default:0 }}"><rect x="260" y="205" width="130" height="50" rx="6"/><text x="278" y="235">RabbitMQ</text><text class="p-stack__count" x="372" y="235" text-anchor="end">{{ stack.rabbitmq }}</text></a>
+        <a class="p-stack__node" href="{{ search_url }}?tag=mysql" aria-label="MySQL, {{ stack.mysql|default:0 }}"><rect x="420" y="125" width="90" height="50" rx="6"/><text x="434" y="155">MySQL</text><text class="p-stack__count" x="498" y="155" text-anchor="end">{{ stack.mysql }}</text></a>
+      </svg>
+      {# small screens: the same links as a list (the SVG is hidden there) #}
+      <ul class="p-stack-list">
+        <li><a href="{{ search_url }}?tag=django">Django</a> <span>{% blocktrans count n=stack.django|default:0 %}{{ n }} post{% plural %}{{ n }} posts{% endblocktrans %}</span></li>
+        <li><a href="{{ search_url }}?tag=fastapi">FastAPI</a> <span>{% blocktrans count n=stack.fastapi|default:0 %}{{ n }} post{% plural %}{{ n }} posts{% endblocktrans %}</span></li>
+        <li><a href="{{ search_url }}?tag=redis">Redis</a> <span>{% blocktrans count n=stack.redis|default:0 %}{{ n }} post{% plural %}{{ n }} posts{% endblocktrans %}</span></li>
+        <li><a href="{{ search_url }}?tag=celery">Celery</a> <span>{% blocktrans count n=stack.celery|default:0 %}{{ n }} post{% plural %}{{ n }} posts{% endblocktrans %}</span></li>
+        <li><a href="{{ search_url }}?tag=rabbitmq">RabbitMQ</a> <span>{% blocktrans count n=stack.rabbitmq|default:0 %}{{ n }} post{% plural %}{{ n }} posts{% endblocktrans %}</span></li>
+        <li><a href="{{ search_url }}?tag=mysql">MySQL</a> <span>{% blocktrans count n=stack.mysql|default:0 %}{{ n }} post{% plural %}{{ n }} posts{% endblocktrans %}</span></li>
+      </ul>
+    </figure>
+  </section>
+
+  {% if portfolio_summary %}
+  <section class="l-section" aria-labelledby="roles">
+    {% trans "Roles" as t %}{% include "components/section_head.html" with id="roles" title=t %}
+    <ul class="nav nav-tabs" role="tablist">
+      {% for item in portfolio_summary %}
+      <li class="nav-item" role="presentation">
+        <button class="nav-link{% if forloop.first %} active{% endif %}" id="role-tab-{{ forloop.counter }}" data-bs-toggle="tab" data-bs-target="#role-{{ forloop.counter }}" type="button" role="tab" aria-controls="role-{{ forloop.counter }}" aria-selected="{{ forloop.first|yesno:'true,false' }}">{{ item.get_position_display }}</button>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="tab-content p-roles">
+      {% for item in portfolio_summary %}
+      <div class="tab-pane fade{% if forloop.first %} show active{% endif %}" id="role-{{ forloop.counter }}" role="tabpanel" aria-labelledby="role-tab-{{ forloop.counter }}" tabindex="0">
+        <div class="c-prose">{{ item.content|safe }}</div>
+        {% include "components/tag_list.html" with tags=item.skill|split_comma %}
       </div>
-    {% endif %}
-	<!--====== About Me PART START ======-->
-    <section class="about-me section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-sm-12">
-                    <div class="about-left about-box">
-                        <div class="section-title align-left">
-                            {% trans "<h3>WHO <strong>AM I</strong>?</h3>" %}
-                            {{portfolio.summary|safe}}
-                            {% if portfolio.portfolio_cv_file %}
-                            <a href="{{portfolio.portfolio_cv_file.url}}" class="btn btn-outline-danger" download>{{_("DOWNLOAD MY CV")}}</a>
-                            {% endif %}
-                            <!-- Button trigger modal -->
-                        </div>
-                        <div class="about-tab wow fadeInUp" data-wow-delay=".4s">
-                            <!-- Nav Tab  -->
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                {% for item in portfolio_summary %}
-                                    {% if item.sort_num == 1 %}
-                                    <li class="nav-item" role="presentation"><a class="nav-link active" id="{{item.get_position_display}}-tab" data-bs-toggle="tab" data-bs-target="#{{item.get_position_display}}"
-                                        role="tab" aria-controls="{{item.get_position_display}}" aria-selected="false">{{item.get_position_display}}</a></li>
-                                    {% else %}
-                                    <li class="nav-item" role="presentation"><a class="nav-link" id="{{item.get_position_display}}-tab" data-bs-toggle="tab" data-bs-target="#{{item.get_position_display}}"
-                                        role="tab" aria-controls="{{item.get_position_display}}" aria-selected="false">{{item.get_position_display}}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                            <!--/ End Nav Tab -->
-                            <div class="tab-content" id="myTabContent">
-                                {% for item in portfolio_summary %}
-                                    {% if item.sort_num == 1 %}
-                                        <div class="tab-pane fade show active" id="{{item.get_position_display}}" role="tabpanel" aria-labelledby="{{item.get_position_display}}-tab">
-                                    {% else %}
-                                        <div class="tab-pane fade show " id="{{item.get_position_display}}" role="tabpanel" aria-labelledby="{{item.get_position_display}}-tab">
-                                    {% endif %}
-                                            <div class="tab-content">
-                                                {{item.content|safe}}
-                                                <ul>
-                                                    {% for item in item.skill|split_comma %}
-                                                        <li><i class="lni lni-checkmark-circle"></i> {{item}}</li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-12">
-                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-indicators">
-                          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                        </div>
-                        <div class="carousel-inner">
-                            {% if portfolio.portfolio_image1 %}
-                            <div class="carousel-item active " data-bs-interval="3500">
-                                <img src="{{portfolio.portfolio_image1.url}}" class="d-block w-100" alt="{% get_verbose_name portfolio 'portfolio_image1' %}" />
-                            </div>
-                            {% endif %}
-                            {% if portfolio.portfolio_image2 %}
-                            <div class="carousel-item" data-bs-interval="3500">
-                                <img src="{{portfolio.portfolio_image2.url}}" class="d-block w-100" alt="{% get_verbose_name portfolio 'portfolio_image2' %}" />
-                            </div>
-                            {% endif %}
-                            {% if portfolio.portfolio_image3 %}
-                            <div class="carousel-item" data-bs-interval="3500">
-                                <img src="{{portfolio.portfolio_image3.url}}" class="d-block w-100" alt="{% get_verbose_name portfolio 'portfolio_image3' %}" />
-                            </div>
-                            {% endif %}
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Next</span>
-                        </button>
-                      </div>
-                </div>
-            </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if portfolio.portfolio_image1 or portfolio.portfolio_image2 or portfolio.portfolio_image3 %}
+  <section class="l-section p-gallery" aria-label="{% trans 'Photos' %}">
+    {% if portfolio.portfolio_image1 %}<img src="{{ portfolio.portfolio_image1.url }}" alt="{% get_verbose_name portfolio 'portfolio_image1' %}" loading="lazy">{% endif %}
+    {% if portfolio.portfolio_image2 %}<img src="{{ portfolio.portfolio_image2.url }}" alt="{% get_verbose_name portfolio 'portfolio_image2' %}" loading="lazy">{% endif %}
+    {% if portfolio.portfolio_image3 %}<img src="{{ portfolio.portfolio_image3.url }}" alt="{% get_verbose_name portfolio 'portfolio_image3' %}" loading="lazy">{% endif %}
+  </section>
+  {% endif %}
+
+  <section class="l-section" aria-labelledby="experience">
+    {% trans "Work Experience" as t %}{% include "components/section_head.html" with id="experience" title=t %}
+    {% regroup experience by project_start_date.year as years %}
+    {% for year in years %}
+    <div class="p-year">
+      <h3 class="p-year__label">{{ year.grouper }}</h3>
+      <div class="row g-3">
+        {% for item in year.list %}
+        <div class="col-md-6 col-lg-4">
+          <article class="c-card c-card--timeline h-100">
+            <span class="c-card__kind">{{ item.get_role_display }}</span>
+            <h4 class="c-card__title">{{ item.title }}</h4>
+            <p class="c-meta mt-0"><time datetime="{{ item.project_start_date|date:'Y-m-d' }}">{{ item.project_start_date|date:'Y.m' }}</time>{% if item.project_end_date %}<span aria-hidden="true">–</span><time datetime="{{ item.project_end_date|date:'Y-m-d' }}">{{ item.project_end_date|date:'Y.m' }}</time>{% endif %}</p>
+            <p class="mb-2">{{ item.summary }}</p>
+            <details class="p-details"><summary>{% trans "Details" %}</summary><div class="c-prose">{{ item.content|safe }}</div></details>
+          </article>
         </div>
-    </section>
-	<!--====== About Me PART END ======-->
+        {% endfor %}
+      </div>
+    </div>
+    {% empty %}
+    {% trans "No experience entries yet." as m %}{% include "components/empty.html" with message=m %}
+    {% endfor %}
+  </section>
 
-    <!--====== Experiences PART START ======-->
-    <section class="experience timeline_area section_padding_130">
-        <div class="container" >
-            <div class="row justify-content-center">
-                <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
-                    <div class="text-center section-title mb-60">
-                        {% blocktrans %}
-                        <h1>Work Experience</h1>
-                        <p>It shows experiences related to startup, planning, development, and marketing by color.</p>
-                        {% endblocktrans %}
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <!-- Timeline Area-->
-                    <div class="apland-timeline-area">
+  {% if study %}
+  <section class="l-section" aria-labelledby="study">
+    {% trans "Education & Study" as t %}{% trans "Learning history through online/offline sites or technical books." as d %}
+    {% include "components/section_head.html" with id="study" title=t desc=d %}
+    <div class="row g-4">
+      <div class="col-md-6">
+        <h3 class="h4">{% trans "Courses" %}</h3>
+        {% for item in study %}{% if item.type == '0' %}{% include "portfolio/_study_item.html" %}{% endif %}{% endfor %}
+      </div>
+      <div class="col-md-6">
+        <h3 class="h4">{% trans "Books" %}</h3>
+        {% for item in study %}{% if item.type == '1' %}{% include "portfolio/_study_item.html" %}{% endif %}{% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--====== Experiences PART END ======-->
+  {% if interested %}
+  <section class="l-section" aria-labelledby="interests">
+    {% trans "What I am interested in" as t %}{% include "components/section_head.html" with id="interests" title=t %}
+    <div class="row g-3">
+      {% for item in interested %}
+      <div class="col-sm-6 col-lg-4">
+        <div class="c-card c-card--topic"><div class="c-card__title">{{ item.title|striptags }}</div><div class="c-prose">{{ item.content|safe }}</div></div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
 
-    <!--====== Educations PART START ======-->
-    <section class="educations section">
-        <div class="container" data-aos="fade-up"
-     data-aos-anchor-placement="top-bottom">
-            <div class="row">
-                <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
-                    <div class="text-center section-title mb-60">
-                        {% blocktrans %}
-                        <h1>Education & Study</h1>
-                        <p>Learning history through online/offline sites or technical books.</p>
-                        {% endblocktrans %}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="educations-info-wrapper">
-                            {% trans "<h3><strong>EDU</strong>CATION</h3>" %}
-                            {% for item in study%}
-                                {% if item.type == '0' %}
-                                    <!-- About Info Item Start -->
-                                    <div class="educations-info-item row">
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <p>{{item.study_start_date|date:'Y-m-d'}}-{{item.study_end_date|date:'Y/m/d'}}</p>
-                                            <h6><strong>{{item.site_name}}</strong></h6>
-                                        </div>
+  <section class="l-section" aria-labelledby="projects">
+    {% trans "About Projects" as t %}{% include "components/section_head.html" with id="projects" title=t %}
+    <div class="row g-4">
+      {% for item in projects %}
+      <div class="col-md-6 col-lg-4">
+        {% url 'blog:project_detail' item.projectpost.pk as u %}
+        {% include "components/card_project.html" with post=item.projectpost url=u %}
+      </div>
+      {% empty %}
+      <div class="col-12">{% trans "No projects yet." as m %}{% include "components/empty.html" with message=m %}</div>
+      {% endfor %}
+    </div>
+  </section>
 
-                                        <div class="col-lg-8 ol-md-8 ol-sm-8 educations-info-border">
-                                            <a href='{{item.class_link}}' target="_blank"><h4>{{item.title|safe}}</h4></a>
-                                            {{item.content|safe}}
-                                        </div>
-                                    </div>
-                                    <!-- About Info Item End -->
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="educations-info-wrapper">
-                            {% trans "<h3><strong>SKILL</strong>-BOOKS</h3>" %}
-                            {% for item in study%}
-                                {% if item.type == '1' %}
-                                    <!-- About Info Item Start -->
-                                    <div class="educations-info-item row">
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <p>{{item.study_start_date|date:'Y-m-d'}}-{{item.study_end_date|date:'Y/m/d'}}</p>
-                                            <h6><strong>{{item.site_name}}</strong></h6>
-                                        </div>
-
-                                        <div class="col-lg-8 ol-md-8 ol-sm-8 educations-info-border">
-                                            <a href='{{item.class_link}}' target="_blank"><h4>{{item.title|safe}}</h4></a>
-                                            <p>{{item.content|safe}}</p>
-                                        </div>
-                                    </div>
-                                    <!-- About Info Item End -->
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--====== Educations PART END ======-->
-
-    <!--====== Interesting PART START ======-->
-    <section class="interesting section">
-        <div class="container" data-aos="fade-up"
-     data-aos-anchor-placement="top-bottom">
-            <div class="row">
-                <!-- Section Title Start -->
-                <div class="section--title">
-                    <h2><strong>{% trans "WHAT I AM INTERESTED IN" %}</strong></h2>
-                </div>
-                <!-- Section Title End -->
-
-                <div class="row row-eq-height">
-                    {% for item in interested %}
-                        <!-- Service Item Start -->
-                        <div class="col-md-4 col-sm-6 service--item">
-                            <div class="service--icon">
-                                {% comment %} <i class="lni lni-cloud-network"></i> {% endcomment %}
-                                {{item.icon|safe}}
-                            </div>
-                            <div class="service--content">
-                                {{item.title|safe}}
-                                <p>{{item.content|safe}}</p>
-                            </div>
-                        </div>
-                        <!-- Service Item End -->
-                    {% endfor %}
-
-
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--====== Interesting PART END ======-->
-
-    <!--====== Project PART START ======-->
-    <section class="latest-product-area py-5 pb-110">
-        <div class="container" data-aos="fade-up"
-     data-aos-anchor-placement="top-bottom">
-            <div class="row">
-                <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
-                    <div class="text-center section-title mb-60">
-                        {% blocktrans %}
-                        <h1>About Projects</h1>
-                        <p>Open source, teaching/learning projects created and operated by teams or individuals.</p>
-                        {% endblocktrans %}
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                {% for item in projects %}
-                <div class="col-xl-4 col-lg-6 col-md-6">
-                    <div class="card-box">
-                        <div class="card-img">
-                            <a href="{% url 'blog:project_detail' item.id %}">
-                                <img src="{{item.projectpost.title_image}}" alt="{{ item.projectpost.title }}">
-                            </a>
-                            <div class="product-action">
-                                <a href="{{item.projectpost.repository}}"  class="share" title="Repository"><i class="lni lni-world"></i></a>
-                            </div>
-                        </div>
-
-                        <div class="card-content">
-                            <h3 class="name"><i class="lni lni-github"></i> <a href="{% url 'blog:project_detail' item.id %}" >{{item.projectpost.title}}</a></h3>
-                            <span class="update">{{item.projectpost.content|safe|truncatechars:80}}</span>
-                            <div class="project-info row justify-content-center ">
-                                <div class="col-6" >
-                                    <i class="lni lni-calendar"></i> {{item.projectpost.created_at|date:'Y-m-d H:i'}}
-                                </div>
-                                {% if item.projectpost.dev_lang %}
-                                <div class="col-6" >
-                                    <i class="lni lni-bookmark"></i> {{item.projectpost.dev_lang}}
-                                </div>
-                                {% endif %}
-
-                                {% if item.projectpost.branch %}
-                                <div class="col-6" >
-                                    <i class="lni lni-layers"></i> {{item.projectpost.get_branch_display}}
-                                </div>
-                                {% endif %}
-
-                                {% if item.projectpost.role %}
-                                <div class="col-6" >
-                                    <i class="lni lni-folder"></i> {{item.projectpost.get_role_display}}
-                                </div>
-                                {% endif %}
-
-                                {% if item.projectpost.version %}
-                                <div class="col-6" >
-                                    <i class="lni lni-tag"></i> {{item.projectpost.version}}
-                                </div>
-                                {% endif %}
-
-                                {% if item.projectpost.repository %}
-                                <div class="col-6" >
-                                    <i class="lni lni-tag"></i> <a ref='{{item.projectpost.repository}}'>Repository</a>
-                                </div>
-                                {% endif %}
-
-                                <div class="col-6" >
-                                    <i class="lni lni-heart"></i> {{item.projectpost.like_count}}
-                                </div>
-                                <div class="col-6" >
-                                    <i class="lni lni-comments-reply"></i> {{item.projectpost.reply_count}}
-                                </div>
-                                <div class="col-6" >
-                                    <i class="lni lni-user"></i> {{item.projectpost.visit_count}}
-                                </div>
-                                <div class="col-6" >
-                                    <i class="lni lni-pencil-alt"></i> {{item.projectpost.author}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-    <!--====== Project PART END ======-->
-
-    {% if info.get_in_touch is True %}
-    <!--====== Contact PART START ======-->
-    <section class="contact py-5 pb-110">
-        <div class="container" data-aos="fade-up"
-     data-aos-anchor-placement="top-bottom">
-          <div class="row">
-            <div class="col-lg-7">
-              <div class="contact-form-wrapper">
-                <form action="{% url 'portfolio:mail' %}" method="POST">
-                {% csrf_token %}
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="single-input">
-                        <label for="name">{{_("Name")}}</label>
-                        <input type="text" id="name" name="name" class="form-input" placeholder="Name">
-                        <i class="lni lni-user"></i>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="single-input">
-                        <label for="email">{{_("Email")}}</label>
-                        <input type="email" id="emailfrom" name="emailfrom" class="form-input" placeholder="Email">
-                        <i class="lni lni-envelope"></i>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="single-input">
-                        <label for="number">{{_("Number")}}</label>
-                        <input type="text" id="number" name="number" class="form-input" placeholder="Number">
-                        <i class="lni lni-phone"></i>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="single-input">
-                        <label for="subject">{{_("Subject")}}</label>
-                        <input type="text" id="subject" name="subject" class="form-input" placeholder="Subject">
-                        <i class="lni lni-text-format"></i>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="single-input">
-                        <label for="message">{{_("Message")}}</label>
-                        <textarea name="message" id="message" class="form-input" placeholder="Message" rows="6"></textarea>
-                        <i class="lni lni-comments-alt"></i>
-                      </div>
-                    </div>
-                    <input type="hidden" id="emailto" name="emailto" value="{{info.office_email}}">
-                    <div class="col-md-12">
-                      <div class="form-button">
-                        <button type="submit" class="btn btn-primary btn-lg col-12">{{_("Submit")}}<i class="lni lni-telegram-original"></i> </button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-
-            </div>
-
-            <div class="col-lg-5 order-first order-lg-last">
-              <div class="left-wrapper">
-                <div class="section-title mb-40">
-                    {% blocktrans %}
-                  <h3 class="mb-15">Get in touch</h3>
-                  <p>If you'd like to collaborate on something cool or share your thoughts, please get in touch! Cheerful, joyful, happy things are all good!</p>
-                  {% endblocktrans %}
-                </div>
-                <div class="row">
-                {% if info.phone_number %}
-                  <div class="col-lg-12 col-md-6">
-                    <div class="single-item">
-                      <div class="icon">
-                        <i class="lni lni-mobile"></i>
-                      </div>
-                      <div class="text">
-                        <p>
-                            {% if info.country_code %}
-                            {{info.country_code}}
-                            {% endif %}
-                            {{info.phone_number}}</p>
-                      </div>
-                    </div>
-                  </div>
-                {% endif %}
-                {% if info.office_phone_number %}
-                  <div class="col-lg-12 col-md-6">
-                    <div class="single-item">
-                      <div class="icon">
-                        <i class="lni lni-phone"></i>
-                      </div>
-                      <div class="text">
-                        <p>
-                            {% if info.country_code %}
-                            {{info.country_code}}
-                            {% endif %}
-                            {{info.office_phone_number}}</p>
-                      </div>
-                    </div>
-                  </div>
-                  {% endif %}
-                  {% if info.office_email %}
-                  <div class="col-lg-12 col-md-6">
-                    <div class="single-item">
-                      <div class="icon">
-                        <i class="lni lni-envelope"></i>
-                      </div>
-                      <div class="text">
-                        <p>{{info.office_email}}</p>
-                      </div>
-                    </div>
-                  </div>
-                  {% endif %}
-                </div>
-              </div>
-            </div>
+  {% if info.get_in_touch is True %}
+  <section class="l-section" aria-labelledby="contact">
+    {% trans "Get in touch" as t %}{% trans "If you'd like to collaborate on something or share your thoughts, send a message." as d %}
+    {% include "components/section_head.html" with id="contact" title=t desc=d %}
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <form class="c-panel" action="{% url 'portfolio:mail' %}" method="post">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label" for="name">{% trans "Name" %}</label><input class="form-control" type="text" id="name" name="name" autocomplete="name"></div>
+            <div class="col-md-6"><label class="form-label" for="emailfrom">{% trans "Email" %}</label><input class="form-control" type="email" id="emailfrom" name="emailfrom" autocomplete="email"></div>
+            <div class="col-md-6"><label class="form-label" for="number">{% trans "Phone" %}</label><input class="form-control" type="tel" id="number" name="number" autocomplete="tel"></div>
+            <div class="col-md-6"><label class="form-label" for="subject">{% trans "Subject" %}</label><input class="form-control" type="text" id="subject" name="subject"></div>
+            <div class="col-12"><label class="form-label" for="message">{% trans "Message" %}</label><textarea class="form-control" id="message" name="message" rows="6"></textarea></div>
           </div>
-        </div>
-      </section>
-    <!--====== Contact PART END ======-->
-    {% endif %}
-
-	{% endblock %}
+          <input type="hidden" id="emailto" name="emailto" value="{{ info.office_email }}">
+          <button type="submit" class="btn btn-primary mt-3">{% icon "send" %} {% trans "Send message" %}</button>
+        </form>
+      </div>
+      <div class="col-lg-5">
+        <ul class="p-contact">
+          {% if info.phone_number %}<li>{% icon "phone" %}<span>{% if info.country_code %}{{ info.country_code }} {% endif %}{{ info.phone_number }}</span></li>{% endif %}
+          {% if info.office_phone_number %}<li>{% icon "telephone" %}<span>{% if info.country_code %}{{ info.country_code }} {% endif %}{{ info.office_phone_number }}</span></li>{% endif %}
+          {% if info.office_email %}<li>{% icon "envelope" %}<a href="mailto:{{ info.office_email }}">{{ info.office_email }}</a></li>{% endif %}
+        </ul>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

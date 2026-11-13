@@ -15,6 +15,10 @@ from django.views.generic import TemplateView, View
 from validate_email import validate_email
 from validate_email.exceptions import AddressFormatError, Error
 
+from django.db.models import Count, Q
+from django.db.models.functions import Lower, Trim
+
+from blog.models.blog import Tag
 from common.components.django_redis_cache_components import (
     dredis_cache_check_key, dredis_cache_delete, dredis_cache_get,
     dredis_cache_set)
@@ -31,6 +35,26 @@ from .models import (AboutProjects, EducationStudy, GetInTouchLog,
 logger = logging.getLogger(getattr(settings, "PORTFOLIO_LOGGER", "django"))
 
 CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
+
+
+# Tech-stack diagram nodes (ADR-016), in diagram order; each node shows how many visible posts carry the tag.
+STACK = ("django", "fastapi", "redis", "celery", "rabbitmq", "mysql")
+_POST_RELATIONS = ("blogpost", "projectpost", "onlinestudypost", "opensourcepost", "bookspost")
+
+
+def stack_counts():
+    """{tag: visible post count} for STACK; tags match case- and space-insensitively."""
+    rows = (
+        Tag.objects.annotate(name=Lower(Trim("tag")))
+        .filter(name__in=STACK)
+        .values("name")
+        .annotate(n=sum(
+            Count(rel, distinct=True, filter=Q(**{f"{rel}__is_deleted": False, f"{rel}__is_hidden": False}))
+            for rel in _POST_RELATIONS
+        ))
+    )
+    counts = {row["name"]: row["n"] for row in rows}
+    return {name: counts.get(name, 0) for name in STACK}
 
 
 def get_language_index():
@@ -78,6 +102,9 @@ class PortfolioView(TemplateView):
                 .first()
             )
             context["portfolio"] = portfolio
+            context["stack"] = stack_counts()
+            # server-rendered timeline (same rows as WorkExperienceJsonView)
+            context["experience"] = list(WorkExperience.objects.filter(language__in=lang))
 
             if portfolio is not None:
                 context["portfolio_summary"] = portfolio.portfolio_summary.filter(

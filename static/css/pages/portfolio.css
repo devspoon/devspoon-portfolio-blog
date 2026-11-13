@@ -1,0 +1,49 @@
+/* portfolio page (ADR-004: "pages" layer, tokens only — INV-1; stack diagram ADR-016) */
+@layer pages {
+  .p-port-hero { display: grid; grid-template-columns: 1fr 1.1fr; gap: var(--sp-7); align-items: center; padding-block: var(--sp-8) var(--sp-6); }
+  .p-port-hero h1 { font-size: var(--fs-7); font-weight: var(--fw-black); letter-spacing: -.045em; line-height: .95; margin: 0 0 var(--sp-4); }
+  .p-port-hero__summary { color: var(--c-text-muted); max-width: var(--measure); }
+
+  /* stack diagram: SVG on wide screens, the same links as a list on small ones */
+  .p-stack-wrap { margin: 0; }
+  .p-stack-wrap figcaption { font-size: var(--fs-1); color: var(--c-text-muted); margin-bottom: var(--sp-2); }
+  .p-stack { width: 100%; height: auto; display: block; }
+  .p-stack__wire { stroke: var(--c-accent); stroke-width: 1.5; fill: none; stroke-dasharray: 4 4; }
+  .p-stack__node rect { fill: var(--c-surface); stroke: var(--c-line); stroke-width: 1.5; transition: stroke var(--dur-fast) var(--ease-out); }
+  .p-stack__node { text-decoration: none; }
+  .p-stack__node text { fill: var(--c-text); font: 600 15px var(--font-sans); }
+  .p-stack__node .p-stack__count { fill: var(--c-accent-text); font-weight: 500; font-size: 12px; }
+  .p-stack__node:hover rect, .p-stack__node:focus-visible rect { stroke: var(--c-accent); }
+  .p-stack__node:focus-visible { outline: none; }
+  .p-stack-list { display: none; list-style: none; padding: 0; margin: 0; border-left: 2px solid var(--c-accent); }
+  .p-stack-list li { display: flex; justify-content: space-between; gap: var(--sp-3); padding: var(--sp-2) 0 var(--sp-2) var(--sp-4);
+      border-bottom: 1px solid var(--c-line); }
+  .p-stack-list a { font-weight: var(--fw-medium); color: var(--c-text); }
+  .p-stack-list span { color: var(--c-text-muted); font-size: var(--fs-2); }
+
+  .p-roles { padding-top: var(--sp-5); }
+  .nav-tabs { --bs-nav-tabs-border-color: var(--c-line); --bs-nav-tabs-link-active-color: var(--c-text);
+      --bs-nav-tabs-link-active-bg: var(--c-surface); --bs-nav-tabs-link-active-border-color: var(--c-line) var(--c-line) var(--c-surface);
+      --bs-nav-link-color: var(--c-text-muted); --bs-nav-link-hover-color: var(--c-accent-text); }
+
+  .p-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--sp-4); }
+  .p-gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-md); border: 1px solid var(--c-line); }
+
+  .p-year { display: grid; grid-template-columns: 6rem 1fr; gap: var(--sp-5); padding-block: var(--sp-4); border-top: 1px solid var(--c-line); }
+  .p-year__label { font-size: var(--fs-4); font-variant-numeric: tabular-nums; color: var(--c-text-muted); margin: 0; padding-top: var(--sp-4); }
+  .p-details summary { cursor: pointer; color: var(--c-accent-text); font-size: var(--fs-2); }
+  .p-details[open] summary { margin-bottom: var(--sp-2); }
+  .p-details .c-prose { font-size: var(--fs-2); }
+
+  .p-contact { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--sp-3); }
+  .p-contact li { display: flex; align-items: center; gap: var(--sp-3); }
+  .p-contact .icon { color: var(--c-accent-text); font-size: var(--fs-4); }
+
+  @media (max-width: 767.98px) {
+    .p-port-hero { grid-template-columns: 1fr; padding-block: var(--sp-7) var(--sp-5); }
+    .p-stack { display: none; }
+    .p-stack-list { display: block; }
+    .p-year { grid-template-columns: 1fr; gap: var(--sp-2); }
+    .p-year__label { padding-top: 0; }
+  }
+}
