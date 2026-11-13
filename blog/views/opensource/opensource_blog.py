@@ -109,32 +109,20 @@ class OpenSourceDeleteView(LoginRequiredMixin, View):
 
 class OpenSourceLikeJsonView(LoginRequiredMixin, View):
     def get(self, request, pk):
-        post = get_object_or_404(OpenSourcePost, pk=pk)
-
         with transaction.atomic():
-            post_like = post.like_user_set.select_for_update().filter(
-                pk=self.request.user.pk
-            )
-
-            if post_like:  # there are field data already, not created
+            # 글 행을 잠가 같은 글의 토글을 순서대로 처리한다. 좋아요 행은 없을 수 있어 잠금 대상이 못 된다(phase4 F-003).
+            post = get_object_or_404(OpenSourcePost.objects.select_for_update(), pk=pk)
+            if post.like_user_set.filter(pk=request.user.pk).exists():
+                post.like_user_set.remove(request.user)
                 message = "Like canceled"
-                if post.like_count != 0:
-                    OpenSourcePost.objects.filter(pk=pk).update(
-                        like_count=F("like_count") - 1
-                    )
-                    post.like_user_set.remove(self.request.user)
             else:
+                post.like_user_set.add(request.user)
                 message = "Like"
-                OpenSourcePost.objects.filter(pk=pk).update(
-                    like_count=F("like_count") + 1
-                )
-                post.like_user_set.add(self.request.user)
+            # 증감 대신 실제 행 수로 맞춘다. 옛 중복으로 어긋난 값도 여기서 바로잡힌다.
+            like_count = post.like_user_set.count()
+            OpenSourcePost.objects.filter(pk=pk).update(like_count=like_count)
 
-        post = OpenSourcePost.objects.get(pk=pk)  # get latest post information
-
-        context = {"like_count": post.like_count, "message": message}
-
-        return JsonResponse(context, safe=True)
+        return JsonResponse({"like_count": like_count, "message": message}, safe=True)
 
 
 class OpenSourceVisitJsonView(View):

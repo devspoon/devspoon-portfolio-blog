@@ -19,6 +19,9 @@ class ProjectLike(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(fields=["users", "projects"], name="unique_projectlike_user_post"),
+        ]
 
 
 class OnlineStudyLike(models.Model):
@@ -33,6 +36,9 @@ class OnlineStudyLike(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(fields=["users", "online_study"], name="unique_onlinestudylike_user_post"),
+        ]
 
 
 class BlogLike(models.Model):
@@ -47,6 +53,9 @@ class BlogLike(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(fields=["users", "blogs"], name="unique_bloglike_user_post"),
+        ]
 
 
 class OpenSourceLike(models.Model):
@@ -61,6 +70,9 @@ class OpenSourceLike(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(fields=["users", "open_sources"], name="unique_opensourcelike_user_post"),
+        ]
 
 
 class BooksLike(models.Model):
@@ -75,3 +87,6 @@ class BooksLike(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(fields=["users", "books"], name="unique_bookslike_user_post"),
+        ]
