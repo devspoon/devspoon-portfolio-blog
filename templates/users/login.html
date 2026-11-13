@@ -1,71 +1,19 @@
-{% extends "base/base.html" %}
-{% load static %}
-
-{% load socialaccount %}
-
-{% block title %}login{% endblock %}
-
-{% block content %}
-{% providers_media_js %}
-
-	<!--====== LOGIN PART START ======-->
-    <section class="login first grey">
-        <div class="container">
-            <div class="box-wrapper col col-lg-6">
-                <div class="box box-border">
-                    <div class="box-body">
-                        <h4>Login</h4>
-                        {% for message in messages %}
-                            <div class="alert {{ message.tags }} alert-auto-dismissible alert-dismissible notification-container text-center" role="alert">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-
-                        <form enctype="multipart/form-data" method="post">
-                            {% csrf_token %}
-                            {% for field in form %}
-                            <div class="form-group">
-                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.help_text }}" name="{{ field.name }}" />
-                            </div>
-                            {% if field.errors %}
-                            <ol class="validation_error">
-                                {% for error in field.errors %}
-                                    <li><strong>{{ error|escape }}</strong></li>
-                                {% endfor %}
-                            </ol>
-                            {% endif %}
-                            {% endfor %}
-                            <div class="form-group text-right">
-                                <button type="submit" class="btn btn-primary col-12">Login</button>
-                            </div>
-                            <div class="form-group text-center pt-10">
-                                <span class="text-muted">Don't you have an account?</span> <a href="{% url 'users:register' %}">Create one</a>
-                            </div>
-                            <div class="form-group text-center pt-10">
-                                <span class="text-muted">Forgot your password?</span> <a href="{% url 'users:forget_password' %}">Reset Password</a>
-                            </div>
-                            <div class="form-group text-center pt-10">
-                                <span class="text-muted">Did you not receive a verification email?</span> <a href="{% url 'users:resend_verification_email' %}">Resend Email</a>
-                            </div>
-                            <div class="title-line">
-                                or
-                            </div>
-                            <a href="{% provider_login_url 'google' %}" class="btn col-12">
-                                <img src="{% static 'images/btn_google_signin_dark_pressed_web.png' %}" alt="Sign in with Google" />
-                            </a>
-                            <a href="{% provider_login_url 'kakao' %}" class="btn col-12">
-                                <img src="{% static 'images/kakao_login_medium_narrow.png' %}" alt="Sign in with Kakao" />
-                            </a>
-                            <a href="{% provider_login_url 'naver' %}" class="btn col-12">
-                                <img src="{% static 'images/naver_btnW_official.png' %}" alt="Sign in with Naver" />
-                            </a>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-	<!--====== LOGIN PART END ======-->
-
+{% extends "components/auth_layout.html" %}
+{% load static i18n socialaccount %}
+{% block title %}{% trans "Log in" %} | devspoon{% endblock %}
+{% block auth_before %}{% providers_media_js %}{% endblock %}
+{% block auth_heading %}{% trans "Log in" %}{% endblock %}
+{% block submit_label %}{% trans "Log in" %}{% endblock %}
+{% block auth_links %}
+<ul class="c-auth-links">
+  <li>{% trans "No account yet?" %} <a href="{% url 'users:register' %}">{% trans "Create one" %}</a></li>
+  <li>{% trans "Forgot your password?" %} <a href="{% url 'users:forget_password' %}">{% trans "Reset password" %}</a></li>
+  <li>{% trans "No verification email?" %} <a href="{% url 'users:resend_verification_email' %}">{% trans "Resend it" %}</a></li>
+</ul>
+<p class="c-divider">{% trans "or" %}</p>
+<div class="c-social">
+  <a href="{% provider_login_url 'google' %}"><img src="{% static 'images/btn_google_signin_dark_pressed_web.png' %}" alt="{% trans 'Sign in with Google' %}"></a>
+  <a href="{% provider_login_url 'kakao' %}"><img src="{% static 'images/kakao_login_medium_narrow.png' %}" alt="{% trans 'Sign in with Kakao' %}"></a>
+  <a href="{% provider_login_url 'naver' %}"><img src="{% static 'images/naver_btnW_official.png' %}" alt="{% trans 'Sign in with Naver' %}"></a>
+</div>
 {% endblock %}

@@ -1,0 +1,9 @@
+/* profile settings page (ADR-004: "pages" layer, tokens only — INV-1) */
+@layer pages {
+  .p-profile { max-width: 44rem; margin-inline: auto; }
+  .p-profile__head { display: flex; align-items: center; gap: var(--sp-4); margin-bottom: var(--sp-5); }
+  .p-profile__photo { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; flex: none; display: grid; place-items: center;
+      background: var(--c-accent-soft); color: var(--c-accent-text); font-size: var(--fs-6); font-weight: var(--fw-bold); }
+  .p-profile__section { padding-top: var(--sp-5); margin-top: var(--sp-5); border-top: 1px solid var(--c-line); }
+  .p-profile__danger { --bs-btn-color: var(--c-danger); --bs-btn-hover-color: var(--c-danger); }
+}
