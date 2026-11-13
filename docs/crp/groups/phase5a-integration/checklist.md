@@ -9,3 +9,12 @@
 - [x] 전체 테스트 545 passed / 1 skipped, check·migration 통과
 - [x] runserver: 점검표·좋아요 동시 요청·정적 파일·주요 화면·SCAN 0
 - [x] 판정 CONVERGED
+
+## Round 2 — 2026-11-13
+- [x] 댓글 JSON B안 결정 기록(REQ-002, ADR-007)
+- [x] 그쪽 `37a296e`까지 병합, 충돌 8개 해결
+- [x] `comments.js`·`comments.html`·그쪽 테스트를 B안으로(F-007)
+- [x] 지워진 정적 파일 참조 검사
+- [x] pytest 548 passed / 1 skipped, check·이쪽 앱 migration 통과
+- [x] runserver: 점검표·`author_id` 비공개·정적 파일·좋아요 동시 요청·SCAN 0
+- [x] 판정 CONVERGED

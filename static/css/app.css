@@ -1,6 +1,6 @@
 /* devspoon design system — direction A "engineering notes" (docs/design, ADR-016).
    Layer order is the cascade contract: later layers win, unlayered CSS would beat all of them (ADR-015). */
-@layer vendor, legacy, tokens, base, layout, components, pages, utilities;
+@layer vendor, tokens, base, layout, components, pages, utilities;
 @import url("../vendor/bootstrap-5.3.8/bootstrap.min.css") layer(vendor);
 
 /* ---------------------------------------------------------------- tokens (INV-1: values live only here) */
@@ -69,7 +69,6 @@
   /* Bootstrap's .h1–.h6 live in the lower vendor layer and would lose to the element rules above */
   .h1 { font-size: var(--fs-6); } .h2 { font-size: var(--fs-5); } .h3 { font-size: var(--fs-4); }
   .h4, .h5, .h6 { font-size: var(--fs-3); }
-  p { color: inherit; }   /* outranks legacy `p { color }` rules (layer order beats specificity) */
   a { color: var(--c-accent-text); text-underline-offset: .2em; }
   a:hover { color: var(--c-accent-strong); }
   img, svg, video { max-width: 100%; height: auto; }
@@ -224,6 +223,24 @@
   .c-panel--narrow { max-width: 30rem; margin-inline: auto; }
   .c-scrollbox { max-height: 14rem; overflow: auto; font-size: var(--fs-2); color: var(--c-text-muted);
       padding: var(--sp-3); border: 1px solid var(--c-line); border-radius: var(--r-sm); background: var(--c-bg); }
+
+  /* comment thread (components/comments.html): nesting is shown by a rule on the left, not by shrinking boxes */
+  .c-comments h2 { font-size: var(--fs-4); margin-bottom: var(--sp-4); }
+  .c-comments__list, .c-comment__children { list-style: none; padding: 0; margin: 0; }
+  .c-comment__children:not(:empty) { margin-left: var(--sp-5); padding-left: var(--sp-4); border-left: 2px solid var(--c-line); }
+  .c-comment__box { padding-block: var(--sp-4); border-bottom: 1px solid var(--c-line); }
+  .c-comment__head { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-2); }
+  .c-comment__head time { color: var(--c-text-muted); font-size: var(--fs-1); }
+  .c-comment__avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+  .c-comment__body { margin: var(--sp-2) 0 0; white-space: pre-line; overflow-wrap: anywhere; }
+  .c-comment__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); margin-top: var(--sp-2); }
+  .c-comment__danger { --bs-btn-color: var(--c-danger); --bs-btn-hover-color: var(--c-danger); }
+  .c-comment__edit { margin-top: var(--sp-2); }
+  .c-comment .c-comment-form { margin-block: var(--sp-3); }
+  .c-comment-form { margin-top: var(--sp-5); }
+  .c-comments__status:empty { display: none; }
+  .c-comments__status { color: var(--c-danger); font-size: var(--fs-2); }
+  .c-comments__login { margin-top: var(--sp-5); color: var(--c-text-muted); }
 
   /* auth pages: secondary links, "or" divider, social sign-in images */
   .c-auth-links { list-style: none; padding: 0; margin: var(--sp-5) 0 0; display: grid; gap: var(--sp-2);

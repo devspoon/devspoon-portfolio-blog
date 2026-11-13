@@ -7,14 +7,17 @@
 | ID | 항목 | Severity | 왜 비범위인가(계약 근거) | 수용일 | 재평가 조건 |
 |---|---|---|---|---|---|
 | R-001 | 홈 `latest`가 `order_by("created_at")` 오름차순 → 가장 오래된 9건 선택, `.values("author")`는 pk | MED | 뷰 로직(디자인 범위 밖). 템플릿은 `dictsortreversed`로 표시 순서만 보정, 작성자는 홈에 표시 안 함 | 2026-11-12 | **해소 2026-11-13** — 최신순 정렬, 미사용 author 제거 |
-| R-002 | 상세 댓글 UI(레거시 JS 문자열 조립): Save 버튼 대비 4.22, `javascript:` 페이지 링크(SEO crawlable-anchors) | LOW | 5단계 JS 재작성 범위(comments.html + `<template>`) | 2026-11-12 | 5단계 완료 시 재측정 |
+| R-002 | 상세 댓글 UI(레거시 JS 문자열 조립): Save 버튼 대비 4.22, `javascript:` 페이지 링크(SEO crawlable-anchors) | LOW | 5단계 JS 재작성 범위(comments.html + `<template>`) | 2026-11-12 | **해소 2026-11-13** — 상세 A100·SEO100 |
+| R-010 | 댓글은 group 오름차순이라 10개를 넘으면 새 댓글이 마지막 페이지에 놓여, 작성 직후 1페이지에서 안 보임 | LOW | 서버 정렬은 기존 동작(레거시 JS도 동일), 정렬 변경은 계획 밖 | 2026-11-13 | 최신 댓글 우선 정렬 또는 작성 후 마지막 페이지 이동을 승인하면 |
+| R-011 | 스크린샷 환경(SQLite)에서 방문 집계·댓글 목록 동시 요청이 간헐적 500, media 미제공으로 아바타 404 → Lighthouse BP 96(콘솔 오류) | LOW | 테스트 환경 한정(단독 호출은 200, 운영은 MySQL·S3). 아바타는 로드 실패 시 숨김 처리 | 2026-11-13 | 운영 DB 환경에서 재측정 |
 | R-003 | 본문(사용자 작성 Summernote HTML) 이미지에 alt 없음 → Lighthouse image-alt | LOW | 콘텐츠 문제. sanitizer 변경은 계획 밖 | 2026-11-12 | **해소 2026-11-13** — sanitize_html이 alt 없는 img에 `alt=""` |
 | R-004 | 새 UI 문자열(영어 msgid)이 .po 미번역 → 한국어 화면에 영어 노출 | MED | 문자열이 4b까지 계속 바뀜 | 2026-11-12 | 7단계에서 makemessages + 번역 |
 | R-005 | 레거시 CSS가 남은 페이지(상세 포함)에서 헤더 검색창 패딩 등 누수 | LOW | 6단계 legacy.css 삭제로 해소 | 2026-11-12 | 4b·6단계 |
 | R-007 | 로그인 소셜 버튼 이미지(구글·카카오·네이버) 저해상도 → Lighthouse BP 96(image-size-responsive) | LOW | 각 사의 공식 2x 버튼 이미지 교체 필요(외부 자산, 계획 밖) | 2026-11-13 | 공식 고해상도 이미지를 받을 때 |
 | R-008 | 포트폴리오 스택 연결도 숫자는 포트폴리오 캐시에 함께 저장 → 새 글의 태그가 캐시 TTL 동안 반영 안 됨 | LOW | 포트폴리오 캐시 정책 그대로 사용(관리자 저장 시 무효화) | 2026-11-13 | 실시간 숫자가 필요해지면 |
 | R-009 | `WorkExperienceJsonView`(/portfolio/json/)는 화면에서 더 쓰지 않지만 URL은 남김 | LOW | URL 제거는 계획 밖(외부 사용 여부 미확인) | 2026-11-13 | 6단계 정리 때 제거 여부 확인 |
-| R-006 | 좋아요 버튼 `aria-pressed` 없음(레거시 JS가 `.clicked`만 토글) | LOW | 5단계 like.js에서 상태 동기화 | 2026-11-12 | 5단계 |
+| R-012 | 삭제한 static 이미지 54개를 **운영 DB** 본문이 `/static/images/...`로 링크했는지는 확인 못 함(접근 가능한 로컬 DB는 포트폴리오·메뉴 테이블이 비어 있음) | LOW | 운영 DB 접근 불가. 로컬 DB·코드·git 기록은 참조 0건 | 2026-11-13 | 배포 후 404가 보이면 `git checkout e4ab312 -- static/images/<파일>`로 복구 |
+| R-006 | 좋아요 버튼 `aria-pressed` 없음(레거시 JS가 `.clicked`만 토글) | LOW | 5단계 like.js에서 상태 동기화 | 2026-11-12 | **해소 2026-11-13** — post.js가 aria-pressed 토글 |
 
 <!--
 예: "입력 X 가 비표준 형식이면 깨질 수 있음" → 계약 2-4 비목표라 Accepted.

@@ -146,7 +146,7 @@ def test_detail_does_not_cache_visitor_values(
 
 
 def reply_list_url(name, post):
-    # 화면 JS(static/js/blog_apis.js)는 항상 ?page=를 붙여 호출한다.
+    # 화면 JS(static/js/modules/comments.js)는 항상 ?page=를 붙여 호출한다.
     return reverse(f"blog:{name}_reply_list", kwargs={"pk": post.pk}) + "?page=1"
 
 

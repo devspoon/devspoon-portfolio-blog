@@ -3,14 +3,18 @@
 {% comment %}
 Shared detail page for the three boards; same layout as blog posts (css/pages/post.css).
 URLs are derived from the current view name: "board:notice_detail" -> "board:notice" + "_update" etc.
-Transitional until step 5: comments (base/reply.html) still run on legacy JS and CSS.
+Visit count and comments run on js/modules/post.js + comments.js.
 {% endcomment %}
 {% block title %}{{ board.title }} | devspoon{% endblock %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/post.css' %}">{% endblock %}
+{% block extra_js %}
+<script type="module" src="{% static 'js/modules/post.js' %}"></script>
+<script type="module" src="{% static 'js/modules/comments.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 {% with url_base=request.resolver_match.view_name|cut:"_detail" %}
-<article class="l-wrap p-post">
+<article class="l-wrap p-post" data-visit-url="{% url url_base|add:'_visit' board.pk %}">
   <header class="p-post__head">
     <nav aria-label="{% trans 'Breadcrumb' %}">
       <ol class="breadcrumb c-breadcrumb">
@@ -37,10 +41,7 @@ Transitional until step 5: comments (base/reply.html) still run on legacy JS and
   </div>
   {% endif %}
 
-  <div class="p-post__comments">
-    {% include "base/reply.html" %}
-    {% include "base/replies_pagination.html" %}
-  </div>
+  {% include "components/comments.html" %}
 </article>
 {% endwith %}
 {% endblock %}

@@ -5,8 +5,6 @@ Shared create/update form for blog and board posts. Children override `title` an
 Update mode = the form is bound to a saved object (form.instance.pk); it shows current values and files.
 URLs are derived from the view name: "blog:project_update" / "blog:project_create" -> "blog:project".
 {% endcomment %}
-{% block legacy_css %}{% endblock %}
-{% block legacy_js %}{% endblock %}
 
 {% block content %}
 {% with url_base=request.resolver_match.view_name|cut:"_update"|cut:"_create" is_update=form.instance.pk %}

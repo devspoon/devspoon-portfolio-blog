@@ -1,5 +1,0 @@
-/* Transitional (step 2 → step 6): the old theme CSS, inside the "legacy" layer declared in app.css.
-   Every design-system layer beats it, so rebuilt pages are unaffected; pages not yet rebuilt keep working.
-   Delete this file and the legacy_css block in base.html when the last page is rebuilt. */
-@import url("style.css") layer(legacy);
-@import url("custom.css") layer(legacy);
