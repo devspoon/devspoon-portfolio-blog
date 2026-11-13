@@ -1,4 +1,5 @@
 {% extends "base/post_form.html" %}
+{% load i18n %}
 
-{% block title %}notice{% endblock %}
-{% block form_heading %}Notice{% endblock %}
+{% block title %}{% trans "Edit" %}: {% trans "Notice" %}{% endblock %}
+{% block form_heading %}{% trans "Notice" %}{% endblock %}

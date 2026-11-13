@@ -61,6 +61,35 @@
   남은 5개: 소셜 로그인 버튼 3, 파비콘, logo.png(og/twitter 이미지). 삭제 파일은 git 기록에서 복구 가능
 - **검증:** pytest 154 passed·1 skipped / 8개 페이지 응답 정상, legacy.css·axios·blog_apis 로드 0건
 
+### Round 5 — 2026-11-13 (base SHA: `37a296e`) — 7단계 검증·번역
+- **트리거:** 사용자 "진행해줘" → 승인된 계획 7단계
+- **번역(R-004):** `makemessages -l ko`(gettext는 우분투 공식 패키지를 홈 폴더에 풀어 사용, 시스템 미설치).
+  fuzzy 58개는 엉뚱한 옛 번역이 붙어 전부 새로 번역 → 397/404 번역(미번역 7 = fast-api·vue.js·OS 이름 등 기술 용어).
+  `msgfmt --check` 통과. 함께 고침: 글 폼 제목·탭 제목 16개 템플릿 `{% trans %}`, 회원가입 등 폼 라벨 `_()`.
+  한국어 요청 시 남은 영어는 DB 메뉴 이름·시드 글 본문뿐(번역 파일 대상 아님)
+- **발견·수정:** axe serious — Summernote iframe `title` 없음(글 폼 3종) → `templates/django_summernote/widget_iframe.html`
+  덮어쓰기(0.8.20.0 원본과 title만 다름). moderate — 약관 2쪽 h1 없음 → 제목 h1 추가.
+  회귀 테스트 7개(fail-on-revert: 되돌리면 7 failed, 복원 7 passed). `post_form.html` 분기마다 반복된 label 1개로
+- **검증:** pytest 156 passed·1 skipped / axe 22쪽 × 라이트·다크 × 360·1366 위반 0 /
+  전송량 CSS+JS+폰트 983~994KB(기준 2,379KB, -59%, 목표 ≤1,190KB 통과. 이 중 491KB는 Google 애널리틱스) /
+  INV-1 색 리터럴 0 / 미사용 CSS 클래스 0.9%(1/114) / djLint 구조 규칙: H025 1건은 if 블록 안에서 짝이 맞는 오탐 /
+  보안: 브랜치 diff의 `|safe`·`mark_safe`·`format_html`은 계약 범위(관리자 입력·nh3 후처리·자동 이스케이프), 신규 취약점 0
+- **Lighthouse 모바일(성능 포함, CLI 12.6.1):**
+  | 페이지 | 압축 없음(runserver) P·A·BP·SEO | gzip 프록시 P |
+  |---|---|---|
+  | 홈 | 78·100·100·100 | 85 |
+  | 블로그 목록 | 70·100·96·100 | 96 |
+  | 블로그 상세 | 79·100·93·100 | 측정 실패(NO_NAVSTART) |
+  | 공지 목록 | 76·100·100·100 | 84 |
+  | 공지 상세 | 77·100·93·100 | 88 |
+  | 로그인 | 77·100·96·100 | 96 |
+  | 포트폴리오 | 74·100·96·100 | 95 |
+  성능 ≥90 **미달**. 원인: 정적 파일 무압축(316KB), Bootstrap CSS 대부분 미사용(219KB), 애널리틱스 긴 작업,
+  LCP 렌더링 지연 ~2.4초(렌더링 차단 CSS + 웹폰트 교체), 홈 CLS 0.097(글꼴 교체로 `.p-now` 밀림). BP 93~96은 R-007·R-011
+- **범위 밖 발견(보고만):** `config/settings/sub_settings/cloud/aws.py`에 AWS 접근 키·비밀 키 평문(2022 첫 커밋부터 git, 어디서도 import 안 함) — R-014
+- **수렴 판정:** `NOT CONVERGED` — 성능 인수 기준 미달(R-013), 스크린샷 세트 사용자 확인 대기(STOP ③)
+- **잔여 위험 변화:** R-004 해소, R-013·R-014 추가
+
 ## 심각도 추세 (수렴이 보이게)
 | Round | CRIT | HIGH | MED | LOW | 신규 Fix | 판정 |
 |---|---|---|---|---|---|---|

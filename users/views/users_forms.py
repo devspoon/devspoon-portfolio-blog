@@ -19,28 +19,28 @@ logger = logging.getLogger(getattr(settings, "USERS_LOGGER", "django"))
 
 class RegisterForm(forms.Form):
     email = forms.EmailField(
-        label="Email",
+        label=_("Email"),
         widget=forms.EmailInput(attrs={"autofocus": True}),
         validators=(forms.EmailField.default_validators + [RegisteredEmailValidator()]),
         help_text=_("Enter email address"),
         required=True,
     )
     password = forms.CharField(
-        label="Password",
+        label=_("Password"),
         min_length=8,
         widget=forms.PasswordInput,
         help_text=_("Enter between 8"),
         required=True,
     )
     password_confirm = forms.CharField(
-        label="Password Confirm",
+        label=_("Password Confirm"),
         min_length=8,
         widget=forms.PasswordInput,
         help_text=_("Enter the same password"),
         required=True,
     )
     username = forms.CharField(
-        label="User Name",
+        label=_("User Name"),
         min_length=4,
         max_length=20,
         help_text=_("Enter between 4 and 20 character"),
@@ -48,23 +48,23 @@ class RegisterForm(forms.Form):
     )
 
     nickname = forms.CharField(
-        label="Nick Name",
+        label=_("Nick Name"),
         min_length=4,
         max_length=20,
         help_text=_("Enter between 4 and 20 character"),
         required=True,
     )
 
-    profile_image = forms.ImageField(label="Profile Image", required=False)
+    profile_image = forms.ImageField(label=_("Profile Image"), required=False)
 
     is_privacy_policy = forms.BooleanField(
-        label="Privacy Policy (Click on the text below)",
+        label=_("Privacy Policy (Click on the text below)"),
         help_text=_("To sign up, you must read and agree to the linked policy."),
         required=True,
     )
 
     is_terms_of_service = forms.BooleanField(
-        label="Terms of Service (Click on the text below)",
+        label=_("Terms of Service (Click on the text below)"),
         help_text=_("To sign up, you must read and agree to the linked policy."),
         required=True,
     )
@@ -149,7 +149,7 @@ class RegisterForm(forms.Form):
 
 class ResendVerificationEmailForm(forms.Form):
     email = forms.EmailField(
-        label="Email",
+        label=_("Email"),
         widget=forms.EmailInput(attrs={"autofocus": True}),
         validators=(
             forms.EmailField.default_validators + [ResendVerificationEmailValidator()]
@@ -161,7 +161,7 @@ class ResendVerificationEmailForm(forms.Form):
 
 class LoginForm(forms.Form):
     email = forms.EmailField(
-        label="Email",
+        label=_("Email"),
         widget=forms.EmailInput(attrs={"autofocus": True}),
         validators=(
             forms.EmailField.default_validators + [LoginVerificationEmailValidator()]
@@ -170,7 +170,7 @@ class LoginForm(forms.Form):
         required=True,
     )
     password = forms.CharField(
-        label="Password",
+        label=_("Password"),
         min_length=8,
         max_length=20,
         widget=forms.PasswordInput,
@@ -196,7 +196,7 @@ class LoginForm(forms.Form):
 
 class ResetPasswordForm(forms.Form):
     email = forms.EmailField(
-        label="Email",
+        label=_("Email"),
         widget=forms.EmailInput(attrs={"autofocus": True}),
         validators=(
             forms.EmailField.default_validators + [ResetPasswordEmailValidator()]
@@ -208,7 +208,7 @@ class ResetPasswordForm(forms.Form):
 
 class UpdatePasswordForm(forms.Form):
     new_password = forms.CharField(
-        label="Password",
+        label=_("Password"),
         min_length=8,
         max_length=20,
         widget=forms.PasswordInput,
@@ -216,7 +216,7 @@ class UpdatePasswordForm(forms.Form):
         required=True,
     )
     new_password_confirm = forms.CharField(
-        label="Password confirm",
+        label=_("Password confirm"),
         min_length=8,
         max_length=20,
         widget=forms.PasswordInput,
@@ -240,7 +240,7 @@ class UpdatePasswordForm(forms.Form):
 
 class ReplacePasswordForm(forms.Form):
     old_password = forms.CharField(
-        label="Old Password",
+        label=_("Old Password"),
         min_length=8,
         max_length=20,
         widget=forms.PasswordInput,
@@ -248,7 +248,7 @@ class ReplacePasswordForm(forms.Form):
         required=True,
     )
     new_password = forms.CharField(
-        label="Password",
+        label=_("Password"),
         min_length=8,
         max_length=20,
         widget=forms.PasswordInput,
@@ -256,7 +256,7 @@ class ReplacePasswordForm(forms.Form):
         required=True,
     )
     new_password_confirm = forms.CharField(
-        label="Password confirm",
+        label=_("Password confirm"),
         min_length=8,
         max_length=20,
         widget=forms.PasswordInput,
@@ -280,7 +280,7 @@ class ReplacePasswordForm(forms.Form):
 
 class ProfileForm(forms.ModelForm):
     password = forms.CharField(
-        label="Old Password",
+        label=_("Old Password"),
         min_length=8,
         max_length=20,
         help_text=_("Enter old password"),
@@ -289,7 +289,7 @@ class ProfileForm(forms.ModelForm):
     )
 
     new_password = forms.CharField(
-        label="New Password",
+        label=_("New Password"),
         min_length=8,
         max_length=20,
         help_text=_("Enter new password"),
@@ -298,7 +298,7 @@ class ProfileForm(forms.ModelForm):
     )
 
     new_password_confirm = forms.CharField(
-        label="Password confirm",
+        label=_("Password confirm"),
         min_length=8,
         max_length=20,
         widget=forms.PasswordInput,
@@ -307,7 +307,7 @@ class ProfileForm(forms.ModelForm):
     )
 
     email_notifications = forms.BooleanField(
-        label="Email notifications", widget=forms.CheckboxInput, required=False
+        label=_("Email notifications"), widget=forms.CheckboxInput, required=False
     )
 
     class Meta:

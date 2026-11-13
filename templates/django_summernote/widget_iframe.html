@@ -1,0 +1,19 @@
+{% load i18n %}{% comment %}
+Override of django-summernote 0.8.20.0 widget_iframe.html: identical except the iframe gets a title
+(axe frame-title, WCAG 4.1.2). Re-check against the package template when upgrading django-summernote.
+{% endcomment %}<script>
+var settings_{{ id_safe }} = {{ settings|safe }};
+</script>
+<style>
+iframe.note-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw!important;
+  height: 100vh!important;
+  z-index: 4000;
+}
+</style>
+<div class="summernote-div" {{ flat_attrs }} width="{{ width }}" height="{{ height }}">
+  <iframe id="{{ id }}_iframe" src="{{ src }}" frameborder="0" width="{{ width }}" height="{{ height }}" title="{% trans 'Post editor' %}"></iframe>
+</div>

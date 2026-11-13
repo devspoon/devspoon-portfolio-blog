@@ -37,15 +37,16 @@
 - 백엔드 기능 추가(검색 고도화, 새 페이지). Django 버전 업그레이드는 트랙 B(ADR-010)
 
 ## 3. 인수 기준
-- [ ] Lighthouse(모바일, 대표 6페이지): Performance ≥ 90, Accessibility ≥ 95, Best Practices ≥ 95, SEO ≥ 95
-- [ ] axe-core: critical·serious 위반 0 (전 페이지)
-- [ ] 전송량: 첫 화면 CSS+JS+폰트 합계가 현재 대비 50% 이상 감소(기준선 측정값 대비)
-- [ ] INV-1 검사 스크립트: 토큰 파일 밖 색 리터럴 0
-- [ ] 미사용 CSS 클래스 비율 ≤ 5%(css_usage 스크립트)
-- [ ] pytest 전체 통과(WSL), djLint 구조 규칙 위반 0(새로 쓴 템플릿)
-- [ ] 다크/라이트 × 360·768·1366 폭 스크린샷 리뷰 세트 사용자 확인
-- [ ] security-review 신규 취약점 0
-- [ ] 콘솔 오류 0(전 페이지, Playwright MCP)
+> 2026-11-13 측정 결과는 run-log Round 5.
+- [ ] Lighthouse(모바일, 대표 6페이지): Performance ≥ 90, Accessibility ≥ 95, Best Practices ≥ 95, SEO ≥ 95 — **A100·SEO100 통과, BP 93~100(R-007·R-011), P 70~79 / gzip 84~96 미달(R-013)**
+- [x] axe-core: critical·serious 위반 0 (전 페이지) — 22쪽 × 2테마 × 2폭, 모든 영향도 0
+- [x] 전송량: 첫 화면 CSS+JS+폰트 합계가 현재 대비 50% 이상 감소(기준선 측정값 대비) — 2,379KB → 983~994KB(-59%)
+- [x] INV-1 검사 스크립트: 토큰 파일 밖 색 리터럴 0
+- [x] 미사용 CSS 클래스 비율 ≤ 5%(css_usage 스크립트) — 0.9%
+- [x] pytest 전체 통과(WSL), djLint 구조 규칙 위반 0(새로 쓴 템플릿) — 156 passed·1 skipped, H025 1건 오탐(if 블록 안 짝 맞음)
+- [ ] 다크/라이트 × 360·768·1366 폭 스크린샷 리뷰 세트 사용자 확인 — STOP ③
+- [x] security-review 신규 취약점 0 (범위 밖 기존 키 노출은 R-014)
+- [ ] 콘솔 오류 0(전 페이지, Playwright MCP) — 상세 2쪽 방문 집계 500 1건(테스트 환경 SQLite, R-011)
 
 ## 4. 변경 이력
 - v0.1 (2026-11-12): 최초 작성.
