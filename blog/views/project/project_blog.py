@@ -111,14 +111,15 @@ class ProjectLikeJsonView(LoginRequiredMixin, View):
         with transaction.atomic():
             # 글 행을 잠가 같은 글의 토글을 순서대로 처리한다. 좋아요 행은 없을 수 있어 잠금 대상이 못 된다(phase4 F-003).
             post = get_object_or_404(ProjectPost.objects.select_for_update(), pk=pk)
-            if post.like_user_set.filter(pk=request.user.pk).exists():
+            # 라우터가 읽기를 replica로 보내므로, 잠근 트랜잭션 안의 읽기는 default에서 한다.
+            if post.like_user_set.using("default").filter(pk=request.user.pk).exists():
                 post.like_user_set.remove(request.user)
                 message = "Like canceled"
             else:
                 post.like_user_set.add(request.user)
                 message = "Like"
             # 증감 대신 실제 행 수로 맞춘다. 옛 중복으로 어긋난 값도 여기서 바로잡힌다.
-            like_count = post.like_user_set.count()
+            like_count = post.like_user_set.using("default").count()
             ProjectPost.objects.filter(pk=pk).update(like_count=like_count)
 
         return JsonResponse({"like_count": like_count, "message": message}, safe=True)
