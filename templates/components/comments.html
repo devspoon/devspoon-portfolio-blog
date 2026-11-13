@@ -1,0 +1,63 @@
+{% load i18n %}{% comment %}
+Comment thread for blog and board detail pages (ADR-005, ADR-008). Rendered by js/modules/comments.js:
+the list JSON is cached per post+page and viewer-neutral, so "is this mine" is decided here from data-viewer.
+Create and delete are plain form posts (the views redirect back); edit and paging use fetch.
+DOM is built from <template> clones + textContent only (XSS contract C-2).
+{% endcomment %}
+<section class="c-comments" aria-labelledby="comments-title" data-comments
+         data-list-url="{{ request.path }}reply/json/" data-update-url="{{ request.path }}reply/json/update/"
+         data-delete-url="{{ request.path }}reply/delete/" data-viewer="{{ request.user.pk|default:'' }}"
+         data-t-prev="{% trans 'Previous page' %}" data-t-next="{% trans 'Next page' %}" data-t-pages="{% trans 'Comment pages' %}"
+         data-t-error="{% trans 'Something went wrong. Reload the page and try again.' %}"
+         data-t-replying="{% trans 'Replying to' %}">
+  <h2 id="comments-title">{% blocktrans count n=board.reply_count %}{{ n }} comment{% plural %}{{ n }} comments{% endblocktrans %}</h2>
+  <ol class="c-comments__list" data-comments-list></ol>
+  <div data-comments-pages></div>
+  <p class="c-comments__status" role="status" data-comments-status></p>
+
+  {% if request.user.is_authenticated %}
+  <form class="c-comment-form" method="post" action="{{ request.path }}reply/json/create/" data-comment-form>
+    {% csrf_token %}
+    <input type="hidden" name="depth" value="0">
+    <input type="hidden" name="parent" value="">
+    <label class="form-label" for="comment">{% trans "Leave a comment" %}</label>
+    <p class="form-text mt-0 mb-2" data-replying hidden></p>
+    <textarea class="form-control" id="comment" name="comment" rows="4" required></textarea>
+    <div class="d-flex gap-2 justify-content-end mt-2">
+      <button type="button" class="btn btn-quiet" data-action="cancel-reply" hidden>{% trans "Cancel" %}</button>
+      <button type="submit" class="btn btn-primary">{% trans "Post comment" %}</button>
+    </div>
+  </form>
+  {% else %}
+  <p class="c-comments__login"><a href="{% url 'users:login' %}">{% trans "Log in" %}</a> {% trans "to leave a comment." %}</p>
+  {% endif %}
+  <noscript><p class="c-comments__status">{% trans "Comments need JavaScript to load." %}</p></noscript>
+
+  <template data-comment-tpl>
+    <li class="c-comment">
+      <article class="c-comment__box">
+        <header class="c-comment__head">
+          <img class="c-comment__avatar" alt="" width="32" height="32" loading="lazy" data-f="avatar">
+          <strong data-f="author"></strong>
+          <time data-f="time"></time>
+        </header>
+        <p class="c-comment__body" data-f="comment"></p>
+        <div class="c-comment__actions">
+          {% if request.user.is_authenticated %}<button type="button" class="btn btn-quiet btn-sm" data-action="reply">{% trans "Reply" %}</button>{% endif %}
+          <button type="button" class="btn btn-quiet btn-sm" data-action="edit" data-own hidden>{% trans "Edit" %}</button>
+          <form method="post" data-own data-f="delete" hidden>{% csrf_token %}<button type="submit" class="btn btn-quiet btn-sm c-comment__danger">{% trans "Delete" %}</button></form>
+        </div>
+      </article>
+      <ol class="c-comment__children"></ol>
+    </li>
+  </template>
+  <template data-edit-tpl>
+    <div class="c-comment__edit">
+      <textarea class="form-control" rows="3" aria-label="{% trans 'Edit comment' %}"></textarea>
+      <div class="d-flex gap-2 justify-content-end mt-2">
+        <button type="button" class="btn btn-quiet btn-sm" data-action="edit-cancel">{% trans "Cancel" %}</button>
+        <button type="button" class="btn btn-primary btn-sm" data-action="edit-save">{% trans "Save" %}</button>
+      </div>
+    </div>
+  </template>
+</section>

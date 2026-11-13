@@ -3,7 +3,6 @@
 {% comment %}Shared list page for the five blog types; the project list uses project cards, the others post rows.{% endcomment %}
 {% block title %}{{ page_title }} | devspoon{% endblock %}
 {% block legacy_css %}{% endblock %}
-{% block legacy_js %}{% endblock %}
 
 {% block content %}
 {% with url_base=request.resolver_match.view_name|cut:"_list" %}

@@ -38,7 +38,7 @@ class OnlineStudyReplyListJsonView(View):
     cache_prefix = "blog:OnlineStudyReply"
 
     def get(self, request, pk):
-        page = request.GET.get("page", 1)
+        page = request.GET.get("page", "1")
 
         check_cached_key = dredis_cache_check_key(
             self.cache_prefix,
@@ -74,7 +74,7 @@ class OnlineStudyReplyListJsonView(View):
                             "%Y-%m-%d %I:%M:%S %p"
                         ),
                         "thumbnail": str(context.author.photo_thumbnail.url),
-                        "user_auth": str(context.author) == str(request.user.username),
+                        "author_id": context.author_id,
                     },
                     pages.object_list,
                 )

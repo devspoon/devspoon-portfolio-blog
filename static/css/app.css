@@ -225,6 +225,24 @@
   .c-scrollbox { max-height: 14rem; overflow: auto; font-size: var(--fs-2); color: var(--c-text-muted);
       padding: var(--sp-3); border: 1px solid var(--c-line); border-radius: var(--r-sm); background: var(--c-bg); }
 
+  /* comment thread (components/comments.html): nesting is shown by a rule on the left, not by shrinking boxes */
+  .c-comments h2 { font-size: var(--fs-4); margin-bottom: var(--sp-4); }
+  .c-comments__list, .c-comment__children { list-style: none; padding: 0; margin: 0; }
+  .c-comment__children:not(:empty) { margin-left: var(--sp-5); padding-left: var(--sp-4); border-left: 2px solid var(--c-line); }
+  .c-comment__box { padding-block: var(--sp-4); border-bottom: 1px solid var(--c-line); }
+  .c-comment__head { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-2); }
+  .c-comment__head time { color: var(--c-text-muted); font-size: var(--fs-1); }
+  .c-comment__avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+  .c-comment__body { margin: var(--sp-2) 0 0; white-space: pre-line; overflow-wrap: anywhere; }
+  .c-comment__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); margin-top: var(--sp-2); }
+  .c-comment__danger { --bs-btn-color: var(--c-danger); --bs-btn-hover-color: var(--c-danger); }
+  .c-comment__edit { margin-top: var(--sp-2); }
+  .c-comment .c-comment-form { margin-block: var(--sp-3); }
+  .c-comment-form { margin-top: var(--sp-5); }
+  .c-comments__status:empty { display: none; }
+  .c-comments__status { color: var(--c-danger); font-size: var(--fs-2); }
+  .c-comments__login { margin-top: var(--sp-5); color: var(--c-text-muted); }
+
   /* auth pages: secondary links, "or" divider, social sign-in images */
   .c-auth-links { list-style: none; padding: 0; margin: var(--sp-5) 0 0; display: grid; gap: var(--sp-2);
       font-size: var(--fs-2); color: var(--c-text-muted); text-align: center; }

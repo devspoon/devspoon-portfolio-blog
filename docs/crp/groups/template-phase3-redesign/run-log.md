@@ -38,6 +38,19 @@
 - **수렴 판정:** `NOT CONVERGED` (5단계 JS 재작성 남음)
 - **잔여 위험 변화:** R-001·R-003 해소, R-007~R-009 추가
 
+### Round 3 — 2026-11-13 (base SHA: `287639c`) — 5단계 JS 재작성
+- **트리거:** 사용자 "작업을 재개해줘" → 승인된 계획 5단계
+- **범위:** 댓글(components/comments.html + js/modules/comments.js), 좋아요·방문 집계(js/modules/post.js).
+  작성·삭제는 일반 폼 POST(뷰가 리다이렉트), 수정·페이지만 fetch. DOM은 `<template>` 복제 + textContent(C-2)
+- **형제 버그(ADR-017 계열):** 댓글 목록 JSON의 `user_auth`가 첫 요청자 기준으로 페이지 캐시에 저장되고,
+  작성자 닉네임과 보는 사람 username을 비교해 틀린 값 → `author_id`로 바꾸고 판정은 페이지의 viewer id로(8개 뷰) + 회귀 테스트 3종.
+  같은 파일의 `page` 기본값 정수 → 캐시 키 TypeError(페이지 없이 요청 시 500)도 `"1"`로 수정
+- **삭제:** blog.js, blog_apis.js, base/javascripts.html, reply.html, replies_pagination.html, base의 legacy_js 블록. axios CDN 로드 제거
+- **검증:** pytest 154 passed·1 skipped / Playwright 상호작용 7종(작성·답글 중첩·수정 저장·마크업 문자 표시·좋아요·익명 권한·페이지·삭제) 통과 /
+  Lighthouse 모바일 상세 A100·BP96·SEO100(BP 감점은 R-011 테스트 환경 콘솔 오류)
+- **다음:** 레거시 CSS를 쓰는 페이지 0개 → 6단계에서 legacy.css·style.css·custom.css·responsive.css 삭제 가능. 이미지 삭제는 사용자 확인 후
+- **잔여 위험 변화:** R-002·R-006 해소, R-010·R-011 추가
+
 ## 심각도 추세 (수렴이 보이게)
 | Round | CRIT | HIGH | MED | LOW | 신규 Fix | 판정 |
 |---|---|---|---|---|---|---|
