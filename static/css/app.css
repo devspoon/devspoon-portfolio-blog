@@ -230,6 +230,8 @@
 
   /* empty state */
   .c-empty { padding: var(--sp-8) var(--sp-5); text-align: center; color: var(--c-text-muted); }
+  .c-empty__code { font-size: var(--fs-7); font-weight: var(--fw-black); letter-spacing: -.04em; line-height: 1;
+      color: var(--c-text); margin-bottom: var(--sp-3); }
 
   @media (max-width: 767.98px) {
     .c-card--post { grid-template-columns: 1fr; gap: var(--sp-1); }

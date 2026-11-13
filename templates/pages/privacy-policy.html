@@ -1,21 +1,11 @@
 {% extends "base/base.html" %}
-{% load static %}
 {% load i18n %}
 {% block title %}{{ _("privacy policy (Required)") }}{% endblock %}
+{% block legacy_css %}{% endblock %}
+{% block legacy_js %}{% endblock %}
 {% block content %}
-<section class="blog-details-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-10 col-xl-8 m-auto">
-                <div class="post-details-content">
-                    <div class="post-details-body">
-                        <div class="content form-control">
-                            {{privacy_policy|safe}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-  </section>
+{# admin-authored (SiteInfo), not user input #}
+<article class="l-wrap l-section c-prose">
+  {{ privacy_policy|safe }}
+</article>
 {% endblock %}

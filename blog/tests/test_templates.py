@@ -123,8 +123,7 @@ def test_detail_prev_next_links_point_to_neighbours(client, posts):
 def test_update_form_heading_and_cancel_link(client, posts):
     (prefix, _, _, _, heading, _), items = posts
     page = soup(client.get(reverse(f"blog:{prefix}_update", args=[items[0].pk]), **headers))
-    # form headings stay <h4>: theme CSS styles headings by tag, <h1> would change the look (phase 3)
-    assert page.find("div", class_="box-body").h4.get_text() == heading
+    assert page.find("main").h1.get_text() == heading
     cancel = page.find("a", string="Cancel")
     assert cancel["href"] == reverse(f"blog:{prefix}_detail", args=[items[0].pk])
     page = soup(client.get(reverse(f"blog:{prefix}_create"), **headers))
