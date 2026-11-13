@@ -38,7 +38,7 @@
 
 ## 3. 인수 기준
 > 2026-11-13 측정 결과는 run-log Round 5.
-- [ ] Lighthouse(모바일, 대표 6페이지): Performance ≥ 90, Accessibility ≥ 95, Best Practices ≥ 95, SEO ≥ 95 — **A100·SEO100 통과, BP 93~100(R-007·R-011), P 70~79 / gzip 84~96 미달(R-013)**
+- [ ] Lighthouse(모바일, 대표 6페이지): Performance ≥ 90, Accessibility ≥ 95, Best Practices ≥ 95, SEO ≥ 95 — **A100·SEO100 통과, BP 93~100(R-007·R-011), P 70~79 / gzip 84~96 미달(R-013)** → Round 6 글꼴 CSS 비차단 후 gzip 조건 P 중앙값 97~99(운영 압축 확인 필요)
 - [x] axe-core: critical·serious 위반 0 (전 페이지) — 22쪽 × 2테마 × 2폭, 모든 영향도 0
 - [x] 전송량: 첫 화면 CSS+JS+폰트 합계가 현재 대비 50% 이상 감소(기준선 측정값 대비) — 2,379KB → 983~994KB(-59%)
 - [x] INV-1 검사 스크립트: 토큰 파일 밖 색 리터럴 0
