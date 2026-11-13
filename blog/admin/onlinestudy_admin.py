@@ -39,10 +39,6 @@ class OnlineStudyPostAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, Admi
     date_hierarchy = "created_at"
     exclude = ("table_name",)
 
-    def save_model(self, request, obj, form, change):
-        obj.table_name = obj._meta.db_table
-        super().save_model(request, obj, form, change)
-
 
 class OnlineStudyPostReplyAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanReplyMixin):
     list_per_page = 20

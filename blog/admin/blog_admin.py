@@ -40,10 +40,6 @@ class BlogPostAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommon
     exclude = ("table_name",)
     # prepopulated_fields = {'slug' : ['title']}
 
-    def save_model(self, request, obj, form, change):
-        obj.table_name = obj._meta.db_table
-        super().save_model(request, obj, form, change)
-
 
 class BlogPostReplyAdmin(CustomActionsAdminMixin, TrimHtmlTagsAdminMixin, AdminCommonActionMixin, AdminCacheCleanReplyMixin):
     list_per_page = 20

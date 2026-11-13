@@ -40,28 +40,28 @@
                         <tbody>
                           <tr>
                             <td width="5%" class="th-number text-center tb-row fs-6" scope="row">{{item.pk}}</td>
-                            {% if item.table_name == 'Notice'%}
+                            {% if item.board_type == 'Notice'%}
                             <td width="65%" class="th-title tb-row fs-6" > <a href="{% url 'board:notice_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
                             {% endif  %}
-                            {% if item.table_name == 'Visiter'%}
+                            {% if item.board_type == 'Visiter'%}
                             <td width="65%" class="th-title tb-row" > <a href="{% url 'board:visiter_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
                             {% endif  %}
-                            {% if item.table_name == 'Reactivation'%}
+                            {% if item.board_type == 'Reactivation'%}
                             <td width="65%" class="th-title tb-row" > <a href="{% url 'board:reactivation_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
                             {% endif  %}
-                            {% if item.table_name == 'ProjectPost'%}
+                            {% if item.board_type == 'ProjectPost'%}
                             <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:project_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
                             {% endif  %}
-                            {% if item.table_name == 'OnlineStudyPost'%}
+                            {% if item.board_type == 'OnlineStudyPost'%}
                             <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:online_study_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
                             {% endif  %}
-                            {% if item.table_name == 'BlogPost'%}
+                            {% if item.board_type == 'BlogPost'%}
                             <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:blog_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
                             {% endif  %}
-                            {% if item.table_name == 'OpenSourcePost'%}
+                            {% if item.board_type == 'OpenSourcePost'%}
                             <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:opensource_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
                             {% endif  %}
-                            {% if item.table_name == 'BooksPost'%}
+                            {% if item.board_type == 'BooksPost'%}
                             <td width="65%" class="th-title tb-row" > <a href="{% url 'blog:books_detail' item.pk %}">{{item.title|striptags|truncatechars:80}}</a></td>
                             {% endif  %}
                             <td width="15%" class="th-date text-center tb-row" >{{item.created_at|date:'Y/m/d H:i'}}</td>

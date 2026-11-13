@@ -70,6 +70,11 @@ class BoardMixin(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        # 검색 템플릿과 같은 값(모델 클래스 이름)으로 맞춘다. 작성 경로(뷰·admin·ORM·복사)와 무관하다.
+        self.table_name = type(self).__name__
+        super().save(*args, **kwargs)
+
 
 class Notice(BoardMixin):
     priority = models.SmallIntegerField(

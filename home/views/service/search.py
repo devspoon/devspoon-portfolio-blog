@@ -2,7 +2,7 @@ import logging
 
 from django.conf import settings
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Value
 
 from blog.models.blog import (
     BlogPost,
@@ -21,6 +21,10 @@ class Search:
     def get_keyword_search_query_set(self, instance, keyword):
         result = (
             instance.activate_objects.get_data()
+            # union 안쪽 정렬은 SQLite가 지원하지 않는다. 최종 정렬은 union 뒤에 한다(phase4 F-004).
+            .order_by()
+            # 어느 게시판 글인지는 저장된 table_name이 아니라 모델로 정한다(phase4 F-001).
+            .annotate(board_type=Value(instance.__name__))
             .filter(
                 Q(title__icontains=str(keyword)) | Q(content__icontains=str(keyword))
             )
@@ -31,7 +35,7 @@ class Search:
                 "created_at",
                 "author__username",
                 "visit_count",
-                "table_name",
+                "board_type",
             )
         )
 
@@ -40,6 +44,10 @@ class Search:
     def get_tag_search_query_set(self, instance, tag):
         result = (
             instance.activate_objects.get_data()
+            # union 안쪽 정렬은 SQLite가 지원하지 않는다. 최종 정렬은 union 뒤에 한다(phase4 F-004).
+            .order_by()
+            # 어느 게시판 글인지는 저장된 table_name이 아니라 모델로 정한다(phase4 F-001).
+            .annotate(board_type=Value(instance.__name__))
             .filter(tag_set__in=tag)
             .distinct()
             .values(
@@ -48,7 +56,7 @@ class Search:
                 "created_at",
                 "author__username",
                 "visit_count",
-                "table_name",
+                "board_type",
             )
         )
 
