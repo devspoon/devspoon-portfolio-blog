@@ -54,7 +54,11 @@
 ### Round 4 — 2026-11-13 (base SHA: `61776e9`) — 6단계 정리(CSS·옛 vendor)
 - **삭제(참조 0건 확인):** css/legacy.css·style.css(+map)·custom.css·responsive.css, static/vendors/(13MB: animate·bootstrap 구버전·icons·litebox·nouislider·selectr·slider), js/main.js,
   base의 legacy_css 블록과 페이지별 빈 오버라이드, app.css의 `legacy` 층과 이를 누르던 `p{color:inherit}`
-- **보류(사용자 확인 대기):** static/images 중 코드 참조 0건 53개·12.3MB(목록: job tmp unused_images.txt). DB 본문이 /static/images 경로를 쓸 수 있어 삭제 전 확인
+- **이미지(2026-11-13 사용자 지시 "db와 모든 부분을 확인하여 사용하지 않는 이미지는 삭제"):** 54개 삭제(14MB → 48KB).
+  근거: ① 추적 파일 724개 전체(문서·테스트·로케일 포함) 파일명 참조 0건(charter의 크기 기록 1건은 사용 아님)
+  ② git 전체 기록에서 `profile_img` 참조 코드 없음(19e5061 "test AI images") ③ 로컬 PostgreSQL(127.0.0.1:25432/devspoon, READ ONLY)
+  텍스트 컬럼 240개에서 참조 0건, `static/images/` 경로 언급 0건. 첫 목록에서 `2.png`가 `favicon-32x32.png` 부분 일치로 잘못 제외돼 추가 삭제.
+  남은 5개: 소셜 로그인 버튼 3, 파비콘, logo.png(og/twitter 이미지). 삭제 파일은 git 기록에서 복구 가능
 - **검증:** pytest 154 passed·1 skipped / 8개 페이지 응답 정상, legacy.css·axios·blog_apis 로드 0건
 
 ## 심각도 추세 (수렴이 보이게)
