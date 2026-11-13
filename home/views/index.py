@@ -47,7 +47,6 @@ class IndexView(TemplateView):
                 .annotate(table=Value("OnlineStudy"))
                 .values(
                     "pk",
-                    "author",
                     "title",
                     "content",
                     "title_image",
@@ -62,7 +61,6 @@ class IndexView(TemplateView):
                 .annotate(table=Value("Blog"))
                 .values(
                     "pk",
-                    "author",
                     "title",
                     "content",
                     "title_image",
@@ -77,7 +75,6 @@ class IndexView(TemplateView):
                 .annotate(table=Value("OpenSource"))
                 .values(
                     "pk",
-                    "author",
                     "title",
                     "content",
                     "title_image",
@@ -92,7 +89,6 @@ class IndexView(TemplateView):
                 .annotate(table=Value("Books"))
                 .values(
                     "pk",
-                    "author",
                     "title",
                     "content",
                     "title_image",
@@ -104,7 +100,7 @@ class IndexView(TemplateView):
             )
             latest = study.union(blog, all=False)
             latest = latest.union(opensource, all=False)
-            context["latest"] = latest.union(books, all=False).order_by("created_at")[
+            context["latest"] = latest.union(books, all=False).order_by("-created_at")[
                 0:9
             ]
             caching_data = context.copy()

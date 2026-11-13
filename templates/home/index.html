@@ -6,8 +6,7 @@
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/home.css' %}">{% endblock %}
 
 {% block content %}
-{# latest arrives oldest-first from the view; show newest first #}
-{% with posts=latest|dictsortreversed:"created_at" %}
+{% with posts=latest %}
 <div class="l-wrap">
   <section class="p-hero" aria-labelledby="hero-title">
     <div>

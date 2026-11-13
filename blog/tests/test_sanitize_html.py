@@ -13,7 +13,9 @@ from blog.templatetags.public_tags import sanitize_html
         ("<ul><li>a</li></ul><ol><li>b</li></ol>",) * 2,
         ("<table><tbody><tr><td>cell</td></tr></tbody></table>",) * 2,
         ('<span style="color: rgb(255, 0, 0);">red</span>', '<span style="color:rgb(255, 0, 0)">red</span>'),
-        ('<img src="/media/a.png" style="width: 50%;">', '<img src="/media/a.png" style="width:50%">'),
+        # images without alt get alt="" (decorative by default); an author's alt is kept
+        ('<img src="/media/a.png" style="width: 50%;">', '<img alt="" src="/media/a.png" style="width:50%">'),
+        ('<img src="/media/a.png" alt="chart">', '<img src="/media/a.png" alt="chart">'),
     ],
 )
 def test_keeps_summernote_formatting(html, expected):

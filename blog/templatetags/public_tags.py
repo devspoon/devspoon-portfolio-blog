@@ -27,6 +27,7 @@ _STYLE_PROPERTIES = {
     "height", "float", "margin", "margin-left", "margin-right", "padding",
     "border", "border-collapse", "vertical-align",
 }
+_IMG_WITHOUT_ALT = re.compile(r'<img(?![^>]*\salt=)')
 _IFRAME_SRC = re.compile(r"^(https?:)?//(www\.)?(youtube\.com|youtube-nocookie\.com|player\.vimeo\.com)/")
 
 
@@ -41,15 +42,15 @@ def sanitize_html(value):
     """User-authored HTML (Summernote) -> safe HTML. Use instead of |safe."""
     if not value:
         return ""
-    return mark_safe(
-        nh3.clean(
-            str(value),
-            tags=_TAGS,
-            attributes=_ATTRIBUTES,
-            attribute_filter=_filter_attribute,
-            filter_style_properties=_STYLE_PROPERTIES,
-        )
+    clean = nh3.clean(
+        str(value),
+        tags=_TAGS,
+        attributes=_ATTRIBUTES,
+        attribute_filter=_filter_attribute,
+        filter_style_properties=_STYLE_PROPERTIES,
     )
+    # images without alt are treated as decorative (runs on nh3's normalized output, so attributes are quoted)
+    return mark_safe(_IMG_WITHOUT_ALT.sub('<img alt=""', clean))
 
 
 @register.filter(name="filename")

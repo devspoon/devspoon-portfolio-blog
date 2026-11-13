@@ -12,7 +12,7 @@
     --c-accent: #E8505B; --c-accent-text: #C23A44; --c-accent-strong: #A8323B; --c-accent-soft: #FCE9EA;
     --c-success: #1F7A4D; --c-danger: #B42318; --c-on-accent: #FFFFFF;
     --c-code-bg: #0F172A; --c-code-text: #E2E8F0;
-    --c-footer-bg: #1D2433; --c-footer-text: #C9CFDA; --c-footer-strong: #FFFFFF; --c-footer-line: rgb(255 255 255 / .12);
+    --c-footer-bg: #FFFFFF; --c-footer-text: #5A6478; --c-footer-strong: #1D2433; --c-footer-line: #E2E5EB;
 
     --font-sans: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Segoe UI", sans-serif;
     --font-mono: "JetBrains Mono", D2Coding, ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -48,7 +48,7 @@
     --c-text: #E7EAF0; --c-text-muted: #A3ACBD; --c-line: #2A3140;
     --c-accent: #F06A73; --c-accent-text: #F58A91; --c-accent-strong: #F9AEB3; --c-accent-soft: #3A2228;
     --c-on-accent: #161B26; --c-success: #5CC68F; --c-danger: #FF8A80;
-    --c-footer-bg: #11151E; --c-footer-text: #A3ACBD; --c-footer-strong: #E7EAF0;
+    --c-footer-bg: #11151E; --c-footer-text: #A3ACBD; --c-footer-strong: #E7EAF0; --c-footer-line: #2A3140;
     --sh-1: 0 1px 2px rgb(0 0 0 / .3); --sh-2: 0 8px 32px rgb(0 0 0 / .5);
     --bs-link-color-rgb: 245, 138, 145; --bs-link-hover-color-rgb: 249, 174, 179;
     --bs-primary-rgb: 245, 138, 145;
@@ -115,14 +115,14 @@
   @media (min-width: 992px) { .c-menu-btn { display: none; } }
 
   /* site footer */
-  .c-footer { margin-top: var(--sp-9); background: var(--c-footer-bg); color: var(--c-footer-text); font-size: var(--fs-2); }
+  .c-footer { margin-top: var(--sp-9); background: var(--c-footer-bg); color: var(--c-footer-text); font-size: var(--fs-2);
+      border-top: 1px solid var(--c-footer-line); }
   .c-footer .l-wrap { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--sp-6); padding-block: var(--sp-8) var(--sp-6); }
   .c-footer h2 { font-size: var(--fs-3); color: var(--c-footer-strong); margin-bottom: var(--sp-3); }
   .c-footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--sp-2); }
   .c-footer a { color: var(--c-footer-text); text-decoration: none; }
   .c-footer a:hover { color: var(--c-footer-strong); text-decoration: underline; }
   .c-footer .c-brand { color: var(--c-footer-strong); }
-  .c-footer .c-brand span { color: var(--c-accent); }   /* the footer is dark in both themes */
   .c-footer__legal { grid-column: 1 / -1; border-top: 1px solid var(--c-footer-line); padding-top: var(--sp-4); }
   @media (max-width: 767.98px) { .c-footer .l-wrap { grid-template-columns: 1fr; } }
 }
