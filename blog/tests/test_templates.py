@@ -82,6 +82,18 @@ def test_detail_shows_content_meta_tags_and_owner_buttons(client, posts):
 
 
 @param
+def test_byline_skips_empty_nickname_and_never_shows_username(client, posts, staff):
+    (prefix, *_), items = posts
+    url = reverse(f"blog:{prefix}_detail", args=[items[0].pk])
+    byline = soup(client.get(url, **headers)).select_one(".p-post__byline")
+    assert [s.get_text() for s in byline.find_all("span")] == []  # no empty slot shifting the date
+    staff.nickname = "writer"
+    staff.save()
+    byline = soup(client.get(url, **headers)).select_one(".p-post__byline")
+    assert "writer" in byline.get_text() and staff.username not in byline.get_text()
+
+
+@param
 def test_create_and_update_forms_render_fields(client, posts):
     (prefix, *_), items = posts
     for url in (reverse(f"blog:{prefix}_create"), reverse(f"blog:{prefix}_update", args=[items[0].pk])):

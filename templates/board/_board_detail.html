@@ -24,7 +24,7 @@ Visit count and comments run on js/modules/post.js + comments.js.
     </nav>
     <h1>{{ board.title }}</h1>
     <div class="c-meta p-post__byline">
-      <span>{{ board.author }}</span>
+      {% if board.author.nickname %}<span>{{ board.author.nickname }}</span>{% endif %}
       <time datetime="{{ board.created_at|date:'c' }}">{{ board.created_at|date:'Y.m.d H:i' }}</time>
     </div>
     {% include "components/meta.html" with post=board %}
