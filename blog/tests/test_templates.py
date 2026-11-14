@@ -90,6 +90,7 @@ def test_create_and_update_forms_render_fields(client, posts):
         assert form.find("input", attrs={"name": "csrfmiddlewaretoken"})
         assert form.find(attrs={"name": "title"})
         assert form.find(attrs={"name": "content"}) or form.find("iframe")  # summernote
+        assert all(f.get("title") for f in page.find_all("iframe"))  # axe frame-title
         assert form.find("button")
         assert 'value="None"' not in str(form)
 

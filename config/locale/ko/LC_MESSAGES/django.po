@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-28 00:12+0900\n"
+"POT-Creation-Date: 2026-11-13 08:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,803 +17,1111 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\blog\models\blog.py:53
+#: blog/models/blog.py:53
 msgid "Beginner"
 msgstr "초보자"
 
-#: .\blog\models\blog.py:54
+#: blog/models/blog.py:54
 msgid "Intermediate"
 msgstr "중급"
 
-#: .\blog\models\blog.py:55
+#: blog/models/blog.py:55
 msgid "Advanced"
 msgstr "고급"
 
-#: .\blog\models\blog.py:58
+#: blog/models/blog.py:58 portfolio/models.py:173
 msgid "Owner"
 msgstr "소유자"
 
-#: .\blog\models\blog.py:59
+#: blog/models/blog.py:59
 msgid "Maintainer"
 msgstr "관리자"
 
-#: .\blog\models\blog.py:60
+#: blog/models/blog.py:60
 msgid "Developer"
 msgstr "개발자"
 
-#: .\blog\models\blog.py:61
+#: blog/models/blog.py:61
 msgid "Reporter"
 msgstr "보고자"
 
-#: .\blog\models\blog.py:62
+#: blog/models/blog.py:62
 msgid "Guest"
 msgstr "손님"
 
-#: .\blog\models\blog.py:65
+#: blog/models/blog.py:65
 msgid "Frontend"
 msgstr "프런트엔드"
 
-#: .\blog\models\blog.py:66
+#: blog/models/blog.py:66
 msgid "Backend"
 msgstr "백엔드"
 
-#: .\blog\models\blog.py:67
+#: blog/models/blog.py:67
 msgid "Infrastructure"
 msgstr "인프라스트럭쳐"
 
-#: .\blog\models\blog.py:68
+#: blog/models/blog.py:68
 msgid "Database"
 msgstr "데이터베이스"
 
-#: .\blog\models\blog.py:69
+#: blog/models/blog.py:69
 msgid "Analysis"
 msgstr "분석"
 
-#: .\blog\models\blog.py:70
+#: blog/models/blog.py:70
 msgid "Monitoring"
 msgstr "모니터링"
 
-#: .\blog\models\blog.py:73 .\board\models\board.py:45
+#: blog/models/blog.py:73 board/models/board.py:45
 msgid "Author"
 msgstr "작가"
 
-#: .\blog\models\blog.py:75 .\board\models\board.py:47
-#: .\portfolio\models.py:191 .\portfolio\models.py:242
-#: .\portfolio\models.py:261
+#: blog/models/blog.py:75 board/models/board.py:47 portfolio/models.py:194
+#: portfolio/models.py:245 portfolio/models.py:264
 msgid "Title"
 msgstr "제목"
 
-#: .\blog\models\blog.py:76 .\board\models\board.py:48
-#: .\portfolio\models.py:144 .\portfolio\models.py:200
-#: .\portfolio\models.py:243 .\portfolio\models.py:262
+#: blog/models/blog.py:76 board/models/board.py:48 portfolio/models.py:145
+#: portfolio/models.py:203 portfolio/models.py:246 portfolio/models.py:265
 msgid "Content"
 msgstr "콘텐츠"
 
-#: .\blog\models\blog.py:77
+#: blog/models/blog.py:77
 msgid "title_image"
 msgstr "제목_이미지"
 
-#: .\blog\models\blog.py:78
+#: blog/models/blog.py:78
 msgid "Link1"
 msgstr "링크1"
 
-#: .\blog\models\blog.py:79
+#: blog/models/blog.py:79
 msgid "Link2"
 msgstr "링크2"
 
-#: .\blog\models\blog.py:81
+#: blog/models/blog.py:81
 msgid "file1"
 msgstr "파일1"
 
-#: .\blog\models\blog.py:84
+#: blog/models/blog.py:84
 msgid "file2"
 msgstr "파일2"
 
-#: .\blog\models\blog.py:87 .\board\models\board.py:50
+#: blog/models/blog.py:87 board/models/board.py:50
 msgid "table_name"
 msgstr "테이블_이름"
 
-#: .\blog\models\blog.py:92
+#: blog/models/blog.py:92
 msgid "Tags Set"
 msgstr "태그 세트"
 
-#: .\blog\models\blog.py:94 .\board\models\board.py:54
+#: blog/models/blog.py:94 board/models/board.py:54
 msgid "Reply Count"
 msgstr "응답 수"
 
-#: .\blog\models\blog.py:95
+#: blog/models/blog.py:95
 msgid "Like Count"
 msgstr "좋아요 수"
 
-#: .\blog\models\blog.py:97 .\board\models\board.py:56
+#: blog/models/blog.py:97 board/models/board.py:56
 msgid "Reply last group id"
 msgstr "마지막 그룹 ID 응답"
 
-#: .\blog\models\blog.py:99 .\board\models\board.py:58
+#: blog/models/blog.py:99 board/models/board.py:58
 msgid "Visit Count"
 msgstr "방문수"
 
-#: .\blog\models\blog.py:101 .\board\models\board.py:60
+#: blog/models/blog.py:101 board/models/board.py:60
 msgid "Deleted state"
 msgstr "삭제된 상태"
 
-#: .\blog\models\blog.py:102 .\board\models\board.py:61
+#: blog/models/blog.py:102 board/models/board.py:61
 msgid "Hidden state"
 msgstr "숨겨진 상태"
 
-#: .\blog\models\blog.py:140 .\blog\models\blog.py:229
+#: blog/models/blog.py:140 blog/models/blog.py:229
 msgid "Project Role"
 msgstr "프로젝트 역할"
 
-#: .\blog\models\blog.py:143 .\blog\models\blog.py:173
-#: .\blog\models\blog.py:232 .\blog\models\blog.py:267
+#: blog/models/blog.py:143 blog/models/blog.py:173 blog/models/blog.py:232
+#: blog/models/blog.py:267
 msgid "Development Language"
 msgstr "개발 언어"
 
-#: .\blog\models\blog.py:145
+#: blog/models/blog.py:145 templates/blog/_post_detail.html:35
 msgid "Version"
 msgstr "버전"
 
-#: .\blog\models\blog.py:150 .\blog\models\blog.py:179
-#: .\blog\models\blog.py:238 .\blog\models\blog.py:273
+#: blog/models/blog.py:150 blog/models/blog.py:179 blog/models/blog.py:238
+#: blog/models/blog.py:273
 msgid "Project Branch"
 msgstr "프로젝트 브랜치"
 
-#: .\blog\models\blog.py:152 .\blog\models\blog.py:240
+#: blog/models/blog.py:152 blog/models/blog.py:240
+#: templates/blog/_post_detail.html:38
+#: templates/components/card_project.html:15
 msgid "Repository"
 msgstr "저장소"
 
-#: .\blog\models\blog.py:158 .\blog\models\blog.py:192
-#: .\blog\models\blog.py:211 .\blog\models\blog.py:252
-#: .\blog\models\blog.py:286
+#: blog/models/blog.py:158 blog/models/blog.py:192 blog/models/blog.py:211
+#: blog/models/blog.py:252 blog/models/blog.py:286
 msgid "Like Set"
 msgstr "좋아요 설정"
 
-#: .\blog\models\blog.py:163 .\blog\models\blog.py:164
+#: blog/models/blog.py:163 blog/models/blog.py:164
 msgid "project"
 msgstr "프로젝트"
 
-#: .\blog\models\blog.py:185 .\blog\models\blog.py:245
-#: .\blog\models\blog.py:279
+#: blog/models/blog.py:185 blog/models/blog.py:245 blog/models/blog.py:279
 msgid "Difficulty Level"
 msgstr "난이도"
 
-#: .\blog\models\blog.py:197 .\blog\models\blog.py:198
+#: blog/models/blog.py:197 blog/models/blog.py:198
 msgid "online study"
 msgstr "온라인 학습"
 
-#: .\blog\models\blog.py:216 .\blog\models\blog.py:217
+#: blog/models/blog.py:216 blog/models/blog.py:217
 msgid "blog post"
 msgstr "블로그 게시물"
 
-#: .\blog\models\blog.py:257 .\blog\models\blog.py:258
+#: blog/models/blog.py:257 blog/models/blog.py:258
 msgid "open source post"
 msgstr "오픈 소스 포스트"
 
-#: .\blog\models\blog.py:291 .\blog\models\blog.py:292
+#: blog/models/blog.py:291 blog/models/blog.py:292
 msgid "books post"
 msgstr "책 포스트"
 
-#: .\blog\models\blog.py:304
+#: blog/models/blog.py:304
 msgid "tag"
 msgstr "태그"
 
-#: .\blog\models\blog.py:305
+#: blog/models/blog.py:305
 msgid "tags"
 msgstr "태그"
 
-#: .\blog\models\blog_reply.py:17 .\board\models\board_reply.py:17
+#: blog/models/blog_reply.py:17 board/models/board_reply.py:16
 msgid "Comment"
 msgstr "코멘트"
 
-#: .\blog\models\blog_reply.py:18 .\board\models\board_reply.py:18
+#: blog/models/blog_reply.py:18 board/models/board_reply.py:17
 msgid "Reply depth"
 msgstr "댓글 깊이"
 
-#: .\blog\models\blog_reply.py:19 .\board\models\board_reply.py:19
+#: blog/models/blog_reply.py:19 board/models/board_reply.py:18
 msgid "Reply group"
 msgstr "댓글 그룹"
 
-#: .\blog\models\blog_reply.py:43 .\blog\models\blog_reply.py:44
+#: blog/models/blog_reply.py:43 blog/models/blog_reply.py:44
 msgid "project post reply"
 msgstr "프로젝트 포스트 댓글"
 
-#: .\blog\models\blog_reply.py:55 .\blog\models\blog_reply.py:56
+#: blog/models/blog_reply.py:55 blog/models/blog_reply.py:56
 msgid "online study post reply"
 msgstr "온라인 학습 포스트 댓글"
 
-#: .\blog\models\blog_reply.py:67 .\blog\models\blog_reply.py:68
+#: blog/models/blog_reply.py:67 blog/models/blog_reply.py:68
 msgid "blog post reply"
 msgstr "블로그 포스트 댓글"
 
-#: .\blog\models\blog_reply.py:79 .\blog\models\blog_reply.py:80
+#: blog/models/blog_reply.py:79 blog/models/blog_reply.py:80
 msgid "open source post reply"
 msgstr "오픈 소스 포스트 댓글"
 
-#: .\blog\models\blog_reply.py:91 .\blog\models\blog_reply.py:92
+#: blog/models/blog_reply.py:91 blog/models/blog_reply.py:92
 msgid "books post reply"
 msgstr "책 포스트 댓글"
 
-#: .\blog\views\blog\blog_forms.py:15 .\blog\views\books\books_forms.py:15
-#: .\blog\views\online_study\online_study_forms.py:15
-#: .\blog\views\opensource\opensource_forms.py:15
-#: .\blog\views\project\project_forms.py:15
+#: blog/views/blog/blog_forms.py:15 blog/views/books/books_forms.py:15
+#: blog/views/online_study/online_study_forms.py:15
+#: blog/views/opensource/opensource_forms.py:15
+#: blog/views/project/project_forms.py:15
 msgid "Separate tags using \",\""
 msgstr "\",\"를 사용하여 태그를 구분합니다."
 
-#: .\blog\views\blog\blog_forms.py:25 .\blog\views\books\books_forms.py:26
-#: .\blog\views\online_study\online_study_forms.py:26
-#: .\blog\views\opensource\opensource_forms.py:27
-#: .\blog\views\project\project_forms.py:27
-#: .\board\views\notice\notice_forms.py:24
-#: .\board\views\reactivation\reactivation_forms.py:22
-#: .\board\views\visiter\visiter_forms.py:22
+#: blog/views/blog/blog_forms.py:25 blog/views/books/books_forms.py:26
+#: blog/views/online_study/online_study_forms.py:26
+#: blog/views/opensource/opensource_forms.py:27
+#: blog/views/project/project_forms.py:27 board/views/notice/notice_forms.py:24
+#: board/views/reactivation/reactivation_forms.py:22
+#: board/views/visiter/visiter_forms.py:22
 msgid "Enter Content"
 msgstr "내용 입력"
 
-#: .\board\models\board.py:76
+#: board/models/board.py:76
 msgid "Priority"
 msgstr "우선 사항"
 
-#: .\board\models\board.py:79
+#: board/models/board.py:79
 msgid "Sorting sequence"
 msgstr "정렬 순서"
 
-#: .\board\models\board.py:85 .\board\models\board.py:86
+#: board/models/board.py:85 board/models/board.py:86
 msgid "notice"
 msgstr "공지"
 
-#: .\board\models\board.py:97 .\board\models\board.py:98
+#: board/models/board.py:97 board/models/board.py:98
 msgid "visiter"
 msgstr "방문자"
 
-#: .\board\models\board.py:109 .\board\models\board.py:110
+#: board/models/board.py:109 board/models/board.py:110
 msgid "reactivation"
 msgstr "재활성화"
 
-#: .\board\models\board_reply.py:36 .\board\models\board_reply.py:37
+#: board/models/board_reply.py:35 board/models/board_reply.py:36
 msgid "notice board reply"
 msgstr "공지 보드 댓글"
 
-#: .\board\models\board_reply.py:46 .\board\models\board_reply.py:47
+#: board/models/board_reply.py:45 board/models/board_reply.py:46
 msgid "visiter board reply"
 msgstr "방문자 보드 댓글"
 
-#: .\board\models\board_reply.py:56 .\board\models\board_reply.py:57
+#: board/models/board_reply.py:55 board/models/board_reply.py:56
 msgid "reactivation board reply"
 msgstr "재활성화 보드 댓글"
 
-#: .\config\settings\base.py:142
+#: config/settings/base.py:144
 msgid "Korean"
 msgstr "한국어"
 
-#: .\config\settings\base.py:143
+#: config/settings/base.py:145
 msgid "English"
 msgstr "영어"
 
-#: .\custom_middlewares\models.py:11
+#: custom_middlewares/models.py:11
 msgid "windows"
 msgstr ""
 
-#: .\custom_middlewares\models.py:12
+#: custom_middlewares/models.py:12
 msgid "mac"
 msgstr ""
 
-#: .\custom_middlewares\models.py:13
+#: custom_middlewares/models.py:13
 msgid "iphone"
 msgstr ""
 
-#: .\custom_middlewares\models.py:14
+#: custom_middlewares/models.py:14
 msgid "android"
 msgstr ""
 
-#: .\custom_middlewares\models.py:15
+#: custom_middlewares/models.py:15
 msgid "others"
-msgstr ""
+msgstr "기타"
 
-#: .\custom_middlewares\models.py:17 .\custom_middlewares\models.py:34
-#: .\portfolio\models.py:31 .\users\models.py:114 .\users\models.py:256
-#: .\users\models.py:278 .\users\models.py:375
+#: custom_middlewares/models.py:17 custom_middlewares/models.py:34
+#: portfolio/models.py:31 users/models.py:114 users/models.py:256
+#: users/models.py:278 users/models.py:375
 msgid "Created Time"
 msgstr "생성 시간"
 
-#: .\custom_middlewares\models.py:23 .\custom_middlewares\models.py:24
+#: custom_middlewares/models.py:23 custom_middlewares/models.py:24
 msgid "connection method stats"
 msgstr "연결 방법 통계"
 
-#: .\custom_middlewares\models.py:29
+#: custom_middlewares/models.py:29
 msgid "Mobile"
-msgstr ""
+msgstr "모바일"
 
-#: .\custom_middlewares\models.py:30
+#: custom_middlewares/models.py:30
 msgid "Tablet"
-msgstr ""
+msgstr "태블릿"
 
-#: .\custom_middlewares\models.py:31
+#: custom_middlewares/models.py:31
 msgid "PC"
 msgstr ""
 
-#: .\custom_middlewares\models.py:32
+#: custom_middlewares/models.py:32
 msgid "Bot"
-msgstr ""
+msgstr "봇"
 
-#: .\custom_middlewares\models.py:40 .\custom_middlewares\models.py:41
+#: custom_middlewares/models.py:40 custom_middlewares/models.py:41
 msgid "connection hardware stats"
 msgstr "연결 장치 통계"
 
-#: .\helpers\translate_sample.html:2 .\helpers\translate_sample.html:3
-#: .\helpers\translate_sample.html:4
+#: doc/helpers_code/translate_sample.html:2
+#: doc/helpers_code/translate_sample.html:3
+#: doc/helpers_code/translate_sample.html:4
 msgid "Hello World"
 msgstr "헬로 월드"
 
-#: .\helpers\translate_sample.html:5
+#: doc/helpers_code/translate_sample.html:5
 msgid "\n"
 msgstr "\n"
 
-#: .\home\models\default.py:16
+#: home/models/default.py:16
 msgid "admin page"
 msgstr "관리자 페이지"
 
-#: .\home\models\default.py:17
+#: home/models/default.py:17
 msgid "main page"
 msgstr "메인 페이지"
 
-#: .\home\models\default.py:18
+#: home/models/default.py:18
 msgid "list page"
 msgstr "목록 페이지"
 
-#: .\home\models\default.py:19
+#: home/models/default.py:19
 msgid "detail page"
 msgstr "상세 페이지"
 
-#: .\home\models\default.py:20
+#: home/models/default.py:20
 msgid "user page"
 msgstr "사용자 페이지"
 
-#: .\home\models\default.py:29
+#: home/models/default.py:29
 msgid "Parent"
 msgstr "부모"
 
-#: .\home\models\default.py:32
+#: home/models/default.py:32
 msgid "Menu Name"
 msgstr "메뉴명"
 
-#: .\home\models\default.py:35
+#: home/models/default.py:35
 msgid "Menu Icon"
 msgstr "메뉴 아이콘"
 
-#: .\home\models\default.py:38
+#: home/models/default.py:38
 msgid "Menu Path"
 msgstr "메뉴 경로"
 
-#: .\home\models\default.py:44
+#: home/models/default.py:44
 msgid "Menu Type"
 msgstr "메뉴 유형"
 
-#: .\home\models\default.py:47
+#: home/models/default.py:47
 msgid "Menu Link"
 msgstr "메뉴 링크"
 
-#: .\home\models\default.py:49
+#: home/models/default.py:49
 msgid "Menu Target"
 msgstr "메뉴 대상"
 
-#: .\home\models\default.py:52
+#: home/models/default.py:52
 msgid "Menu Permit Level"
 msgstr "메뉴 허가 수준"
 
-#: .\home\models\default.py:54
+#: home/models/default.py:54
 msgid "Menu Side"
 msgstr "메뉴 사이드"
 
-#: .\home\models\default.py:55
+#: home/models/default.py:55
 msgid "Menu Use"
 msgstr "메뉴 사용"
 
-#: .\home\models\default.py:56
+#: home/models/default.py:56
 msgid "Menu Use Nav"
 msgstr "메뉴 사용 탐색"
 
-#: .\home\models\default.py:58
+#: home/models/default.py:58
 msgid "Menu Created Time"
 msgstr "메뉴 생성 시간"
 
-#: .\home\models\default.py:61
+#: home/models/default.py:61
 msgid "Menu Updated Time"
 msgstr "메뉴 생성 시간"
 
-#: .\home\models\default.py:75 .\home\models\default.py:76
+#: home/models/default.py:75 home/models/default.py:76
 msgid "main menu"
 msgstr "메인 메뉴"
 
-#: .\home\models\default.py:98 .\portfolio\models.py:244
+#: home/models/default.py:98 portfolio/models.py:247
 msgid "Site Name"
 msgstr "사이트 이름"
 
-#: .\home\models\default.py:101
+#: home/models/default.py:101
 msgid "Site Owner"
 msgstr "사이트 소유자"
 
-#: .\home\models\default.py:109 .\portfolio\models.py:82
+#: home/models/default.py:109 portfolio/models.py:82
 msgid "Country Phone Code"
 msgstr "국가 전화번호"
 
-#: .\home\models\default.py:119 .\portfolio\models.py:92
-#: .\portfolio\models.py:308
+#: home/models/default.py:119 portfolio/models.py:92 portfolio/models.py:311
 msgid "Phone Number"
 msgstr "전화 번호"
 
-#: .\home\models\default.py:122 .\portfolio\models.py:95
+#: home/models/default.py:122 portfolio/models.py:95
 msgid "Office Phone Number"
 msgstr "사무실 전화번호"
 
-#: .\home\models\default.py:125 .\portfolio\models.py:98
+#: home/models/default.py:125 portfolio/models.py:98
 msgid "Office Email"
 msgstr "사무실 이메일"
 
-#: .\home\models\default.py:127 .\portfolio\models.py:100
+#: home/models/default.py:127 portfolio/models.py:100
 msgid "Office Twitter"
 msgstr "사무실 트위터"
 
-#: .\home\models\default.py:128 .\portfolio\models.py:101
+#: home/models/default.py:128 portfolio/models.py:101
 msgid "Office Facebook"
 msgstr "사무실 페이스북"
 
-#: .\home\models\default.py:129 .\portfolio\models.py:102
+#: home/models/default.py:129 portfolio/models.py:102
 msgid "Office Instagram"
 msgstr "사무실 인스타그램"
 
-#: .\home\models\default.py:130 .\portfolio\models.py:103
+#: home/models/default.py:130 portfolio/models.py:103
 msgid "Office Youtube"
 msgstr "사무실 유튜브"
 
-#: .\home\models\default.py:132 .\templates\base\footer.html:49
-#: .\users\models.py:96
+#: home/models/default.py:132 templates/base/footer.html:14 users/models.py:96
 msgid "Privacy Policy"
 msgstr "개인 정보 정책"
 
-#: .\home\models\default.py:135
+#: home/models/default.py:135
 msgid "Terms Of Service"
 msgstr "서비스 약관"
 
-#: .\home\models\default.py:140 .\home\models\default.py:141
+#: home/models/default.py:140 home/models/default.py:141
 msgid "site info"
 msgstr "사이트 정보"
 
-#: .\portfolio\models.py:20
+#: portfolio/models.py:20
 msgid "ko"
 msgstr "한국어"
 
-#: .\portfolio\models.py:21
+#: portfolio/models.py:21
 msgid "en"
 msgstr "영어"
 
-#: .\portfolio\models.py:28
+#: portfolio/models.py:28 templates/base/header.html:35
+#: templates/blog/_post_detail.html:33
 msgid "Language"
 msgstr "언어"
 
-#: .\portfolio\models.py:42
+#: portfolio/models.py:42
 msgid "Portfolio CV File"
 msgstr "포트폴리오 이력서 파일"
 
-#: .\portfolio\models.py:48
+#: portfolio/models.py:48
 msgid "Portfolio Image1"
 msgstr "포트폴리오 이미지1"
 
-#: .\portfolio\models.py:54
+#: portfolio/models.py:54
 msgid "Portfolio Image2"
 msgstr "포트폴리오 이미지2"
 
-#: .\portfolio\models.py:60
+#: portfolio/models.py:60
 msgid "Portfolio Image3"
 msgstr "포트폴리오 이미지3"
 
-#: .\portfolio\models.py:62 .\portfolio\models.py:199
+#: portfolio/models.py:62 portfolio/models.py:202
 msgid "Summary"
 msgstr "요약"
 
-#: .\portfolio\models.py:66 .\portfolio\models.py:67
+#: portfolio/models.py:66 portfolio/models.py:67
 msgid "portfolio"
 msgstr "포트폴리오"
 
-#: .\portfolio\models.py:74 .\portfolio\models.py:298
-#: .\templates\portfolio\portfolio.html:340
+#: portfolio/models.py:74 portfolio/models.py:301
+#: templates/portfolio/portfolio.html:156
 msgid "Name"
 msgstr "이름"
 
-#: .\portfolio\models.py:75
+#: portfolio/models.py:75
 msgid "Country"
 msgstr "국가"
 
-#: .\portfolio\models.py:104
+#: portfolio/models.py:104
 msgid "Get In Touch"
 msgstr "연락하기"
 
-#: .\portfolio\models.py:108 .\portfolio\models.py:109
+#: portfolio/models.py:108 portfolio/models.py:109
 msgid "personal info"
 msgstr "개인 정보"
 
-#: .\portfolio\models.py:123
+#: portfolio/models.py:123
 msgid "Front-End"
 msgstr "프런트엔드"
 
-#: .\portfolio\models.py:124
+#: portfolio/models.py:124
 msgid "Back-End"
 msgstr "백엔드"
 
-#: .\portfolio\models.py:125
+#: portfolio/models.py:125
 msgid "Marketing"
 msgstr "마케팅"
 
-#: .\portfolio\models.py:126
+#: portfolio/models.py:126
 msgid "Startup"
 msgstr "스타트업"
 
-#: .\portfolio\models.py:132 .\templates\home\index.html:54
+#: portfolio/models.py:127 portfolio/models.py:172
+#: templates/users/profile.html:18
+msgid "Member"
+msgstr "멤버"
+
+#: portfolio/models.py:133 templates/base/footer.html:13
+#: templates/home/index.html:58 templates/portfolio/portfolio.html:7
 msgid "Portfolio"
 msgstr "포트폴리오"
 
-#: .\portfolio\models.py:135 .\portfolio\models.py:189
-#: .\portfolio\models.py:233 .\portfolio\models.py:282
+#: portfolio/models.py:136 portfolio/models.py:192 portfolio/models.py:236
+#: portfolio/models.py:285
 msgid "Sort Number"
 msgstr "정렬 번호"
 
-#: .\portfolio\models.py:142
+#: portfolio/models.py:143
 msgid "Position"
 msgstr "위치"
 
-#: .\portfolio\models.py:148
+#: portfolio/models.py:149
 msgid "Skill"
 msgstr "기술"
 
-#: .\portfolio\models.py:154 .\portfolio\models.py:155
+#: portfolio/models.py:155 portfolio/models.py:156
 msgid "portfolio summary"
 msgstr "포트폴리오 요약"
 
-#: .\portfolio\models.py:166
+#: portfolio/models.py:167
 msgid "Startup CEO"
 msgstr "스타트업 CEO"
 
-#: .\portfolio\models.py:167
+#: portfolio/models.py:168
 msgid "Project Manager"
 msgstr "프로젝트 매니저"
 
-#: .\portfolio\models.py:168
+#: portfolio/models.py:169
 msgid "Project Leader"
 msgstr "프로젝트 리더"
 
-#: .\portfolio\models.py:169
+#: portfolio/models.py:170
 msgid "Project Assistant"
 msgstr "프로젝트 어시스턴트"
 
-#: .\portfolio\models.py:170
+#: portfolio/models.py:171
 msgid "Marketer"
 msgstr "마케터"
 
-#: .\portfolio\models.py:173
-msgid "pink"
-msgstr "분홍"
-
-#: .\portfolio\models.py:174
-msgid "red"
-msgstr "빨간색"
-
-#: .\portfolio\models.py:175
-msgid "orange"
-msgstr "주황색"
-
-#: .\portfolio\models.py:176
-msgid "yellow"
-msgstr "노란색"
-
-#: .\portfolio\models.py:177
-msgid "blue"
-msgstr "파란색"
-
-#: .\portfolio\models.py:178
-msgid "skyblue"
-msgstr "하늘색"
-
-#: .\portfolio\models.py:179
-msgid "green"
-msgstr "초록"
-
-#: .\portfolio\models.py:180
-msgid "gray"
-msgstr "회색"
-
-#: .\portfolio\models.py:183
+#: portfolio/models.py:186
 msgid "Project Start Date"
 msgstr "프로젝트 시작 날짜"
 
-#: .\portfolio\models.py:186
+#: portfolio/models.py:189
 msgid "Project End Date"
 msgstr "프로젝트 종료 날짜"
 
-#: .\portfolio\models.py:197
+#: portfolio/models.py:200 templates/blog/_post_detail.html:36
 msgid "Role"
 msgstr "역할"
 
-#: .\portfolio\models.py:206
+#: portfolio/models.py:209
 msgid "Color"
 msgstr "색깔"
 
-#: .\portfolio\models.py:211 .\portfolio\models.py:212
+#: portfolio/models.py:214 portfolio/models.py:215
 msgid "work experience"
 msgstr "업무 경험"
 
-#: .\portfolio\models.py:223
+#: portfolio/models.py:226
 msgid "Education"
 msgstr "교육"
 
-#: .\portfolio\models.py:224
+#: portfolio/models.py:227
 msgid "Study"
 msgstr "학습"
 
-#: .\portfolio\models.py:227
+#: portfolio/models.py:230
 msgid "Study Start Date"
 msgstr "학습 시작 날자"
 
-#: .\portfolio\models.py:230
+#: portfolio/models.py:233
 msgid "Study End Date"
 msgstr "학습 종료 날자"
 
-#: .\portfolio\models.py:240
+#: portfolio/models.py:243
 msgid "Type"
 msgstr "유형"
 
-#: .\portfolio\models.py:245
+#: portfolio/models.py:248
 msgid "Site Link"
 msgstr "사이트 링크"
 
-#: .\portfolio\models.py:249 .\portfolio\models.py:250
+#: portfolio/models.py:252 portfolio/models.py:253
 msgid "education study"
 msgstr "교육 학습"
 
-#: .\portfolio\models.py:260
+#: portfolio/models.py:263
 msgid "Icon"
 msgstr "아이콘"
 
-#: .\portfolio\models.py:266 .\portfolio\models.py:267
+#: portfolio/models.py:269 portfolio/models.py:270
 msgid "interested in"
 msgstr "관심 있는 것"
 
-#: .\portfolio\models.py:279
+#: portfolio/models.py:282
 msgid "Project Post"
 msgstr "프로젝트 포스트"
 
-#: .\portfolio\models.py:287 .\portfolio\models.py:288
+#: portfolio/models.py:290 portfolio/models.py:291
 msgid "about projects"
 msgstr "프로젝트에 대해"
 
-#: .\portfolio\models.py:299
+#: portfolio/models.py:302
 msgid "State"
 msgstr "상태"
 
-#: .\portfolio\models.py:300 .\templates\portfolio\portfolio.html:347
-#: .\users\models.py:58 .\users\models.py:233 .\users\models.py:269
+#: portfolio/models.py:303 templates/portfolio/portfolio.html:157
+#: templates/users/profile.html:36 users/models.py:58 users/models.py:233
+#: users/models.py:269 users/views/users_forms.py:22
+#: users/views/users_forms.py:152 users/views/users_forms.py:164
+#: users/views/users_forms.py:199
 msgid "Email"
 msgstr "이메일"
 
-#: .\portfolio\models.py:310 .\templates\portfolio\portfolio.html:361
+#: portfolio/models.py:313 templates/portfolio/portfolio.html:159
 msgid "Subject"
 msgstr "주제"
 
-#: .\portfolio\models.py:311 .\templates\portfolio\portfolio.html:368
+#: portfolio/models.py:314 templates/portfolio/portfolio.html:160
 msgid "Message"
 msgstr "메시지"
 
-#: .\portfolio\models.py:315 .\portfolio\models.py:316
+#: portfolio/models.py:318 portfolio/models.py:319
 msgid "get in touch"
 msgstr "연락하다"
 
-#: .\templates\base\footer.html:21
+#: templates/base/base.html:18
+msgid "Skip to content"
+msgstr "본문 바로가기"
+
+#: templates/base/footer.html:7
 msgid ""
 "This site is made by open source on 'devspoon-portfolio-blog' repository "
 msgstr ""
 "이 사이트는 'devspoon-portfolio-blog' 저장소의 오픈 소스로 만들어졌습니다. "
 
-#: .\templates\base\footer.html:37
+#: templates/base/footer.html:10
 msgid "Quick Link"
 msgstr "빠른 링크"
 
-#: .\templates\base\footer.html:47
-msgid "Support"
-msgstr "고객지원"
+#: templates/base/footer.html:12
+#: templates/base/search_result_board_list.html:12
+#: templates/blog/_post_detail.html:21 templates/blog/blog_list.html:14
+#: templates/board/_board_detail.html:21 templates/board/board_list.html:14
+msgid "Home"
+msgstr "홈"
 
-#: .\templates\base\footer.html:50 .\users\models.py:99
+#: templates/base/footer.html:15 users/models.py:99
 msgid "Terms of Service"
 msgstr "서비스 약관"
 
-#: .\templates\base\footer.html:57
+#: templates/base/footer.html:19
 msgid "Contact Us"
 msgstr "문의하기"
 
-#: .\templates\home\index.html:16
-msgid "Welcome to"
-msgstr "환영합니다"
+#: templates/base/header.html:7
+msgid "Main menu"
+msgstr "주 메뉴"
 
-#: .\templates\home\index.html:16
-msgid " my 'devspoon' website!"
-msgstr " 여기는 'devspoon'의 웹사이트 입니다!"
+#: templates/base/header.html:29 templates/base/header.html:66
+#: templates/base/search_result_board_list.html:5
+#: templates/base/search_result_board_list.html:13
+#: templates/base/search_result_board_list.html:16
+msgid "Search"
+msgstr "검색"
 
-#: .\templates\home\index.html:18
-msgid "Hey folks"
-msgstr "안녕하세요 여러분"
+#: templates/base/header.html:30 templates/base/header.html:67
+msgid "Search posts"
+msgstr "글 검색"
 
-#: .\templates\home\index.html:18
-msgid "I'm"
-msgstr "저는"
+#: templates/base/header.html:39
+msgid "Change"
+msgstr "변경"
 
-#: .\templates\home\index.html:20
-msgid " Full-Stack Developer "
-msgstr " 풀 스택 개발자"
+#: templates/base/header.html:41
+msgid "Toggle dark mode"
+msgstr "다크 모드 전환"
 
-#: .\templates\home\index.html:21
-msgid " Digital Brand Marketer "
-msgstr " 디지털 브랜드 마케터"
+#: templates/base/header.html:44 templates/users/profile.html:34
+msgid "Account"
+msgstr "계정"
 
-#: .\templates\home\index.html:22
-msgid " led startups 6 times "
-msgstr "6번의 스타트업 경험자"
+# #: .\users\views\users_forms.py:292
+# msgid "User Name"
+# msgstr "사용자 이름"
+#: templates/base/header.html:47 templates/users/profile.html:3
+msgid "Profile settings"
+msgstr "프로필 설정"
 
-#: .\templates\home\index.html:25
+#: templates/base/header.html:48
+msgid "Log out"
+msgstr "로그아웃"
+
+#: templates/base/header.html:52 templates/components/comments.html:32
+#: templates/users/login.html:3 templates/users/login.html:5
+#: templates/users/login.html:6 templates/users/register.html:23
+msgid "Log in"
+msgstr "로그인"
+
+#: templates/base/header.html:54
+msgid "Open menu"
+msgstr "메뉴 열기"
+
+#: templates/base/header.html:61
+msgid "Menu"
+msgstr "메뉴"
+
+#: templates/base/header.html:62
+msgid "Close menu"
+msgstr "메뉴 닫기"
+
+#: templates/base/post_form.html:31
+msgid "Current file"
+msgstr "현재 파일"
+
+#: templates/base/post_form.html:47 templates/base/post_form.html:49
+#: templates/components/comments.html:27 templates/components/comments.html:58
+#: templates/users/password_replacement.html:7
+msgid "Cancel"
+msgstr "취소"
+
+#: templates/base/post_form.html:51 templates/blog/blog/blog_edit.html:4
+#: templates/blog/blog_list.html:21 templates/blog/books/books_edit.html:4
+#: templates/blog/online_study/online_study_edit.html:4
+#: templates/blog/opensource/opensource_edit.html:4
+#: templates/blog/project/project_edit.html:4
+#: templates/board/board_list.html:21 templates/board/notice/notice_edit.html:4
+#: templates/board/reactivation/reactivation_edit.html:4
+#: templates/board/visiter/visiter_edit.html:4
+msgid "Write"
+msgstr "글쓰기"
+
+#: templates/base/search_result_board_list.html:10
+#: templates/blog/_post_detail.html:19 templates/blog/blog_list.html:12
+#: templates/board/_board_detail.html:19 templates/board/board_list.html:12
+msgid "Breadcrumb"
+msgstr "현재 위치"
+
+#: templates/base/search_result_board_list.html:16
+#, python-format
+msgid "Results for “%(keyword)s”"
+msgstr "“%(keyword)s” 검색 결과"
+
+#: templates/base/search_result_board_list.html:16
+#, python-format
+msgid "Posts tagged “%(tag)s”"
+msgstr "“%(tag)s” 태그가 붙은 글"
+
+#: templates/base/search_result_board_list.html:21
+#: templates/board/notice/notice_edit.html:4
+#: templates/board/notice/notice_edit.html:5
+#: templates/board/notice/notice_update.html:4
+#: templates/board/notice/notice_update.html:5
+msgid "Notice"
+msgstr "공지사항"
+
+#: templates/base/search_result_board_list.html:22
+msgid "Guestbook"
+msgstr "방명록"
+
+#: templates/base/search_result_board_list.html:23
+#: templates/board/reactivation/reactivation_edit.html:4
+#: templates/board/reactivation/reactivation_edit.html:5
+#: templates/board/reactivation/reactivation_update.html:4
+#: templates/board/reactivation/reactivation_update.html:5
+msgid "Reactivation"
+msgstr "휴면 해제 요청"
+
+#: templates/base/search_result_board_list.html:24
+#: templates/blog/project/project_edit.html:4
+#: templates/blog/project/project_edit.html:5
+#: templates/blog/project/project_update.html:4
+#: templates/blog/project/project_update.html:5
+msgid "Project"
+msgstr "프로젝트"
+
+#: templates/base/search_result_board_list.html:25
+#: templates/home/_post_link.html:5
+msgid "Online study"
+msgstr "온라인 학습"
+
+#: templates/base/search_result_board_list.html:26
+#: templates/blog/blog/blog_edit.html:4 templates/blog/blog/blog_edit.html:5
+#: templates/blog/blog/blog_update.html:4
+#: templates/blog/blog/blog_update.html:5 templates/home/_post_link.html:6
+msgid "Blog"
+msgstr "블로그"
+
+#: templates/base/search_result_board_list.html:27
+#: templates/home/_post_link.html:7
+msgid "Open source"
+msgstr "오픈 소스"
+
+#: templates/base/search_result_board_list.html:28
+#: templates/blog/books/books_edit.html:4
+#: templates/blog/books/books_edit.html:5
+#: templates/blog/books/books_update.html:4
+#: templates/blog/books/books_update.html:5 templates/home/_post_link.html:8
+#: templates/portfolio/portfolio.html:113
+msgid "Books"
+msgstr "도서"
+
+#: templates/base/search_result_board_list.html:31
+msgid "Nothing matched. Try another word or tag."
+msgstr "일치하는 글이 없습니다. 다른 단어나 태그로 검색해 보세요."
+
+#: templates/blog/_post_detail.html:34
+msgid "Branch"
+msgstr "브랜치"
+
+#: templates/blog/_post_detail.html:37
+msgid "Difficulty"
+msgstr "난이도"
+
+#: templates/blog/_post_detail.html:51
+msgid "Links and files"
+msgstr "링크와 파일"
+
+#: templates/blog/_post_detail.html:65
+msgid "Like"
+msgstr "좋아요"
+
+#: templates/blog/_post_detail.html:69 templates/blog/blog/blog_update.html:4
+#: templates/blog/books/books_update.html:4
+#: templates/blog/online_study/online_study_update.html:4
+#: templates/blog/opensource/opensource_update.html:4
+#: templates/blog/project/project_update.html:4
+#: templates/board/_board_detail.html:39
+#: templates/board/notice/notice_update.html:4
+#: templates/board/reactivation/reactivation_update.html:4
+#: templates/board/visiter/visiter_update.html:4
+#: templates/components/comments.html:47
+msgid "Edit"
+msgstr "수정"
+
+#: templates/blog/_post_detail.html:70 templates/board/_board_detail.html:40
+#: templates/components/comments.html:48
+msgid "Delete"
+msgstr "삭제"
+
+#: templates/blog/_post_detail.html:76
+msgid "Post navigation"
+msgstr "이전·다음 글"
+
+#: templates/blog/_post_detail.html:79
+msgid "Older"
+msgstr "이전 글"
+
+#: templates/blog/_post_detail.html:84
+msgid "Newer"
+msgstr "다음 글"
+
+#: templates/blog/blog_list.html:33 templates/blog/blog_list.html:42
+#: templates/board/board_list.html:30 templates/home/index.html:36
+msgid "No posts yet."
+msgstr "아직 글이 없습니다."
+
+#: templates/blog/online_study/online_study_edit.html:4
+#: templates/blog/online_study/online_study_edit.html:5
+#: templates/blog/online_study/online_study_update.html:4
+#: templates/blog/online_study/online_study_update.html:5
+msgid "Online Study"
+msgstr "온라인 학습"
+
+#: templates/blog/opensource/opensource_edit.html:4
+#: templates/blog/opensource/opensource_edit.html:5
+#: templates/blog/opensource/opensource_update.html:4
+#: templates/blog/opensource/opensource_update.html:5
+msgid "OpenSource"
+msgstr "오픈 소스"
+
+#: templates/board/visiter/visiter_edit.html:4
+#: templates/board/visiter/visiter_edit.html:5
+#: templates/board/visiter/visiter_update.html:4
+#: templates/board/visiter/visiter_update.html:5
+msgid "Visiter"
+msgstr "방명록"
+
+#: templates/components/comments.html:10 templates/components/pagination.html:9
+msgid "Previous page"
+msgstr "이전 페이지"
+
+#: templates/components/comments.html:10
+#: templates/components/pagination.html:19
+msgid "Next page"
+msgstr "다음 페이지"
+
+#: templates/components/comments.html:10
+msgid "Comment pages"
+msgstr "댓글 페이지"
+
+#: templates/components/comments.html:11
+msgid "Something went wrong. Reload the page and try again."
+msgstr "문제가 생겼습니다. 페이지를 새로 고친 뒤 다시 시도하세요."
+
+#: templates/components/comments.html:12
+msgid "Replying to"
+msgstr "답글 대상:"
+
+#: templates/components/comments.html:13
+#, python-format
+msgid "%(n)s comment"
+msgid_plural "%(n)s comments"
+msgstr[0] "댓글 %(n)s개"
+
+#: templates/components/comments.html:23
+msgid "Leave a comment"
+msgstr "댓글 남기기"
+
+#: templates/components/comments.html:28
+msgid "Post comment"
+msgstr "댓글 등록"
+
+#: templates/components/comments.html:32
+msgid "to leave a comment."
+msgstr "후 댓글을 남길 수 있습니다."
+
+#: templates/components/comments.html:34
+msgid "Comments need JavaScript to load."
+msgstr "댓글을 불러오려면 JavaScript가 필요합니다."
+
+#: templates/components/comments.html:46
+msgid "Reply"
+msgstr "답글"
+
+#: templates/components/comments.html:56
+msgid "Edit comment"
+msgstr "댓글 수정"
+
+#: templates/components/comments.html:59
+msgid "Save"
+msgstr "저장"
+
+#: templates/components/meta.html:5
+msgid "Views"
+msgstr "조회수"
+
+#: templates/components/meta.html:6
+msgid "Likes"
+msgstr "좋아요 수"
+
+#: templates/components/meta.html:7
+msgid "Comments"
+msgstr "댓글"
+
+#: templates/components/pagination.html:6
+msgid "Pagination"
+msgstr "페이지 이동"
+
+#: templates/components/tag_list.html:4
+msgid "Tags"
+msgstr "태그"
+
+#: templates/django_summernote/widget_iframe.html:18
+msgid "Post editor"
+msgstr "본문 편집기"
+
+#: templates/errors/error.html:10
+msgid "Bad request"
+msgstr "잘못된 요청"
+
+#: templates/errors/error.html:10
+msgid "The request hostname is invalid."
+msgstr "요청한 호스트 이름이 올바르지 않습니다."
+
+#: templates/errors/error.html:12
+msgid "Permission denied"
+msgstr "권한 없음"
+
+#: templates/errors/error.html:12
 msgid ""
-"\n"
-"                    <p></p>\n"
-"                    <p>This site was created as an open source based django "
-"in the <strong>'devspoon-portfolio-blog' repository. </strong></p>\n"
-"                    <p>It is used for <strong><i>personal portfolio, blog, "
-"and community</i></strong> purposes</p>\n"
-"                    <p>And supports English and Korean multilingual.</p>\n"
-"                    "
-msgstr ""
-"\n"
-"                    <p>경력을 가지고 있습니다.</p>\n"
-"                    <p>이 사이트는 <strong>'devspoon-portfolio-blog' 저장소</"
-"strong>의  django 기반 오픈 소스로 만들어졌습니다.</p>\n"
-"                    <p><strong><i>개인 포트폴리오, 블로그,  커뮤니티</i></"
-"strong> 용도로 사용되며</p>\n"
-"                    <p>영어와 한국어 다국어를 지원합니다.</p>\n"
-"                    "
+"Only the author or a staff member can do this. Log in with that account and "
+"try again."
+msgstr "작성자나 운영진만 할 수 있습니다. 해당 계정으로 로그인한 뒤 다시 시도하세요."
 
-#: .\templates\home\index.html:32
-msgid " Devspoon's Open Source"
+#: templates/errors/error.html:14
+msgid "Page not found"
+msgstr "페이지를 찾을 수 없음"
+
+#: templates/errors/error.html:14
+msgid ""
+"The page you’re looking for doesn’t exist. Check the address, or search for "
+"the post."
+msgstr "찾는 페이지가 없습니다. 주소를 확인하거나 글을 검색해 보세요."
+
+#: templates/errors/error.html:16
+msgid "Server error"
+msgstr "서버 오류"
+
+#: templates/errors/error.html:16
+msgid ""
+"Your request cannot be completed due to a server error. Try again in a "
+"moment."
+msgstr "서버 오류로 요청을 처리하지 못했습니다. 잠시 뒤 다시 시도하세요."
+
+#: templates/errors/error.html:18
+msgid "Go home"
+msgstr "홈으로"
+
+#: templates/home/index.html:11
+msgid "I build Django and FastAPI backends and write down how I built them."
+msgstr "Django와 FastAPI로 백엔드를 만들고, 만든 과정을 기록합니다."
+
+#: templates/home/index.html:13 templates/home/index.html:58
+msgid "See Portfolio"
+msgstr "포트폴리오 보기"
+
+#: templates/home/index.html:14
+msgid "Devspoon's Open Source"
 msgstr "Devspoon의 오픈 소스"
 
-#: .\templates\home\index.html:33
-msgid "Official Manual"
-msgstr "공식 매뉴얼"
+#: templates/home/index.html:18
+msgid "Recent posts"
+msgstr "최근 글"
 
-#: .\templates\home\index.html:55
+#: templates/home/index.html:31
+msgid "Latest Blog Posts"
+msgstr "최신 블로그 게시물"
+
+#: templates/home/index.html:31
+msgid ""
+"You can see the latest articles in open source, study, book, and blog "
+"categories. "
+msgstr ""
+"오픈소스, 스터디, 도서, 블로그 카테고리의 최신 기사를 보실 수 있습니다. "
+
+#: templates/home/index.html:31
+msgid "All posts"
+msgstr "전체 글"
+
+#: templates/home/index.html:42 templates/portfolio/portfolio.html:134
+msgid "About Projects"
+msgstr "프로젝트 정보"
+
+#: templates/home/index.html:42
+msgid ""
+"Open source, teaching/learning projects created and operated by teams or "
+"individuals."
+msgstr "팀 또는 개인이 만들고 운영하는 오픈 소스와 교육/학습 프로젝트들."
+
+#: templates/home/index.html:42
+msgid "All projects"
+msgstr "전체 프로젝트"
+
+#: templates/home/index.html:51 templates/portfolio/portfolio.html:142
+msgid "No projects yet."
+msgstr "아직 프로젝트가 없습니다."
+
+#: templates/home/index.html:61
 msgid ""
 "\n"
 "                    <p>I am a <strong>pull-stack developer</strong> and "
 "interested in <u>django,fast-api,Huge Traffic Handling,AI,CI/CD</u>\n"
-"                    so doing open source activities. I ran an <u>online "
+"                    so doing open source activities. I ran an <u>digital "
 "branding marketing startup</u> and collaborated with various companies.</p>\n"
 "                    "
 msgstr ""
 "\n"
-"                    <p>저는 <strong> 풀스택 개발자</strong>로 <u>django,fast-api,Huge Traffic Handling,AI,CI/CD"
-"</u>관심을 가지고 있어\n"
-"                    오픈소스 활동을 하고 있습니다. 저는 <u>온라인 브랜"
-"딩 마케팅 스타트업</u>을 운영하였고 다양한 기업들과 협업을 했었습니다.</p>\n"
+"                    <p>저는 <strong>풀스택 개발자</strong>로 <u>django,fast-api,Huge Traffic Handling,AI,CI/CD</u>에 관심을 가지고\n"
+"                    오픈소스 활동을 하고 있습니다. <u>디지털 브랜딩 마케팅 스타트업</u>을 운영하며 다양한 기업과 협업했습니다.</p>\n"
 "                    "
 
-#: .\templates\home\index.html:59
-msgid "See Portfolio"
-msgstr "포트폴리오 보기"
-
-#: .\templates\home\index.html:128
-msgid "study and project plans"
-msgstr "연구와 프로젝트 계획"
-
-#: .\templates\home\index.html:129
+#: templates/home/index.html:75
 msgid "What I am studying, the project I am planning"
 msgstr "학습 중, 계획 중인 프로젝트"
 
-#: .\templates\home\index.html:130
+#: templates/home/index.html:75
 msgid ""
 "These are the skills I am learning and the new projects I am preparing. "
 "Please contact me if you would like to study together or have a project you "
@@ -822,620 +1130,659 @@ msgstr ""
 "이것은 제가 배우고 있는 기술들이자 제가 준비하고 있는 새로운 프로젝트들입니"
 "다. 함께 공부하고 싶거나 시작하고 싶은 프로젝트가 있으면 연락주세요."
 
-#: .\templates\home\index.html:139
+#: templates/home/index.html:78
 msgid "fast-api"
 msgstr ""
 
-#: .\templates\home\index.html:140
+#: templates/home/index.html:78
 msgid "A Python server suitable for microservices based on Rest API."
 msgstr "Rest API 기반의 마이크로서비스에 적합한 Python 서버"
 
-#: .\templates\home\index.html:148
+#: templates/home/index.html:79
 msgid "vue.js"
 msgstr ""
 
-#: .\templates\home\index.html:149
+#: templates/home/index.html:79
 msgid "The front-end to be used for devspoon projects."
 msgstr "Devspoon 프로젝트에 사용되는 프런트엔드"
 
-#: .\templates\home\index.html:157
+#: templates/home/index.html:80
 msgid "Redis Advanced"
 msgstr "Redis 고급"
 
-#: .\templates\home\index.html:158
+#: templates/home/index.html:80
 msgid ""
 "Implementation of RDB, AOF, Sharding, Consistent Hashing, and Redis Cluster."
 msgstr "RDB, AOF, Sharding, Consistent Hashing, Redis Cluster 구축하기"
 
-#: .\templates\home\index.html:166
+#: templates/home/index.html:81
 msgid "RabbitMQ Advanced"
 msgstr "RabbitMQ 고급"
 
-#: .\templates\home\index.html:167
+#: templates/home/index.html:81
 msgid "Implementation of pub/sub, routing, topics, and RPC."
 msgstr "pub/sub, routing, topics, RPC 구현하기"
 
-#: .\templates\home\index.html:178
+#: templates/home/index.html:82
 msgid "E-commerce based on django and Vue.js"
 msgstr "django, vue.js 기반의 e-commerce"
 
-#: .\templates\home\index.html:179
+#: templates/home/index.html:82
 msgid "An open source E-commerce project using Django and Vue.js. "
 msgstr "django와 vue.js를 이용한 e-commerce open source project"
 
-#: .\templates\home\index.html:187
+#: templates/home/index.html:83
 msgid "Predictive Marketing Analytics with GA4"
 msgstr "GA4를 통한 예측 마케팅 분석"
 
-#: .\templates\home\index.html:188
+#: templates/home/index.html:83
 msgid "A marketing analytics project integrating GA4's BigQuery with Django."
 msgstr "GA4의 BigQuery와 Django가 통합된 마케팅 분석 프로젝트."
 
-#: .\templates\home\index.html:196
+#: templates/home/index.html:84
 msgid "Recommendation System"
 msgstr "추천 시스템"
 
-#: .\templates\home\index.html:197
+#: templates/home/index.html:84
 msgid ""
 "Analyze user behavior and use ML to provide personalized information and "
 "recommendations"
 msgstr "사용자 행동을 분석하고 ML을 사용해 개인화된 정보와 추천을 제공."
 
-#: .\templates\home\index.html:205
+#: templates/home/index.html:85
 msgid "TTS(Text to Speech), STT(Speech to Text)"
-msgstr ""
+msgstr "TTS(음성 합성), STT(음성 인식)"
 
-#: .\templates\home\index.html:206
+#: templates/home/index.html:85
 msgid ""
 "This is a project that provides TTS or STT technology by utilizing the "
 "user's voice."
 msgstr "사용자의 음성을 활용하여 TTS 또는 STT 기술을 제공하는 프로젝트."
 
-#: .\templates\home\index.html:222
-msgid "About Projects"
-msgstr "프로젝트 정보"
-
-#: .\templates\home\index.html:223
-msgid ""
-"Open source, teaching/learning projects created and operated by teams or "
-"individuals."
-msgstr "팀 또는 개인이 만들고 운영하는 오픈 소스와 교육/학습 프로젝트들."
-
-#: .\templates\home\index.html:306
-msgid "Latest Blog Posts"
-msgstr "최신 블로그 게시물"
-
-#: .\templates\home\index.html:307
-msgid ""
-"You can see the latest articles in open source, study, book, and blog "
-"categories. "
-msgstr ""
-"오픈소스, 스터디, 도서, 블로그 카테고리의 최신 기사를 보실 수 있습니다. "
-
-#: .\templates\pages\privacy-policy.html:4
+#: templates/pages/privacy-policy.html:3
 msgid "privacy policy (Required)"
 msgstr "개인정보취급방침 (필수)"
 
-#: .\templates\pages\terms-of-service.html:4
+#: templates/pages/privacy-policy.html:7
+msgid "Privacy policy"
+msgstr "개인정보 처리방침"
+
+#: templates/pages/terms-of-service.html:3
 msgid "Terms of Service (Required)"
 msgstr "이용약관 (필수)"
 
-#: .\templates\portfolio\portfolio.html:13
-msgid "Get In Touch Messages"
-msgstr "연락하기 메시지"
+#: templates/pages/terms-of-service.html:7
+msgid "Terms of service"
+msgstr "이용약관"
 
-#: .\templates\portfolio\portfolio.html:22
-msgid "Close"
-msgstr "닫다"
+#: templates/portfolio/portfolio.html:19
+msgid "About me"
+msgstr "소개"
 
-#: .\templates\portfolio\portfolio.html:35
-msgid "<h3>WHO <strong>AM I</strong>?</h3>"
-msgstr "<h3>나는 <strong>누구일까</strong>?</h3>"
+#: templates/portfolio/portfolio.html:22
+msgid "Download CV"
+msgstr "이력서 내려받기"
 
-#: .\templates\portfolio\portfolio.html:38
-msgid "DOWNLOAD MY CV"
-msgstr "내 이력서 다운로드"
+#: templates/portfolio/portfolio.html:27
+msgid "Main stack and how it connects, with the number of posts on each"
+msgstr "주요 기술 스택의 연결 구조와 기술별 글 수"
 
-#: .\templates\portfolio\portfolio.html:122
+#: templates/portfolio/portfolio.html:39 templates/portfolio/portfolio.html:40
+#: templates/portfolio/portfolio.html:41 templates/portfolio/portfolio.html:42
+#: templates/portfolio/portfolio.html:43 templates/portfolio/portfolio.html:44
+#, python-format
+msgid "%(n)s post"
+msgid_plural "%(n)s posts"
+msgstr[0] "글 %(n)s개"
+
+#: templates/portfolio/portfolio.html:51
+msgid "Roles"
+msgstr "역할"
+
+#: templates/portfolio/portfolio.html:71
+msgid "Photos"
+msgstr "사진"
+
+#: templates/portfolio/portfolio.html:79
+msgid "Work Experience"
+msgstr "경력"
+
+#: templates/portfolio/portfolio.html:92
+msgid "Details"
+msgstr "자세히"
+
+#: templates/portfolio/portfolio.html:99
+msgid "No experience entries yet."
+msgstr "아직 경력 항목이 없습니다."
+
+#: templates/portfolio/portfolio.html:105
+msgid "Education & Study"
+msgstr "교육과 학습"
+
+#: templates/portfolio/portfolio.html:105
+msgid "Learning history through online/offline sites or technical books."
+msgstr "온라인·오프라인 강의와 기술 서적으로 공부한 기록입니다."
+
+#: templates/portfolio/portfolio.html:109
+msgid "Courses"
+msgstr "강의"
+
+#: templates/portfolio/portfolio.html:122
+msgid "What I am interested in"
+msgstr "관심 분야"
+
+#: templates/portfolio/portfolio.html:149
+msgid "Get in touch"
+msgstr "연락하기"
+
+#: templates/portfolio/portfolio.html:149
 msgid ""
-"\n"
-"                        <h1>Work Experience</h1>\n"
-"                        <p>It shows experiences related to startup, "
-"planning, development, and marketing by color.</p>\n"
-"                        "
-msgstr ""
-"\n"
-"                        <h1>경력</h1>\n"
-"                        <p>스타트업, 기획, 개발, 마케팅 관련 경험을 색상별로 "
-"보여줍니다.</p>\n"
-"                        "
-
-#: .\templates\portfolio\portfolio.html:148
-msgid ""
-"\n"
-"                        <h1>Education & Study</h1>\n"
-"                        <p>Learning history through online/offline sites or "
-"technical books.</p>\n"
-"                        "
-msgstr ""
-"\n"
-"                        <h1>교육 & 학습</h1>\n"
-"                        <p>온/오프라인 사이트 혹은 기술서적을 통한 학습 이력."
-"</p>\n"
-"                        "
-
-#: .\templates\portfolio\portfolio.html:157
-msgid "<h3><strong>EDU</strong>CATION</h3>"
-msgstr "<h3><strong>교육</strong></h3>"
-
-#: .\templates\portfolio\portfolio.html:179
-msgid "<h3><strong>SKILL</strong>-BOOKS</h3>"
-msgstr "<h3><strong>기술 서적</strong></h3>"
-
-#: .\templates\portfolio\portfolio.html:212
-msgid "WHAT I AM INTERESTED IN"
-msgstr "내가 관심있는 것"
-
-#: .\templates\portfolio\portfolio.html:247
-msgid ""
-"\n"
-"                        <h1>About Projects</h1>\n"
-"                        <p>Open source, teaching/learning projects created "
-"and operated by teams or individuals.</p>\n"
-"                        "
-msgstr ""
-"\n"
-"                        <h1>프로젝트 정보</h1>\n"
-"                        <p>팀 또는 개인이 만들고 운영하는 오픈 소스, 교육/학"
-"습 프로젝트.</p>\n"
-"                        "
-
-#: .\templates\portfolio\portfolio.html:354
-msgid "Number"
-msgstr "연락처"
-
-#: .\templates\portfolio\portfolio.html:376
-msgid "Submit"
-msgstr "제출"
-
-#: .\templates\portfolio\portfolio.html:388
-msgid ""
-"\n"
-"                  <h3 class=\"mb-15\">Get in touch</h3>\n"
-"                  <p>If you'd like to collaborate on something cool or share "
-"your thoughts, please get in touch! Cheerful, joyful, happy things are all "
-"good!</p>\n"
-"                  "
-msgstr ""
-"\n"
-"                  <h3 class=\"mb-15\">연락하기</h3>\n"
-"                  <p>만약 무언가 멋진 일이나 생각을 공유하고 싶다면 연락 주세"
-"요.즐겁고, 재미있고, 행복한 일들이라면 모두 좋아합니다!</p>\n"
-"                  "
-
-#: .\users\models.py:53
-msgid "Female"
-msgstr "여성"
-
-#: .\users\models.py:54
-msgid "Male"
-msgstr "남성"
-
-#: .\users\models.py:55
-msgid "Not to disclose"
-msgstr "공개하지 않음"
-
-#: .\users\models.py:65 .\users\views\users_forms.py:290
-msgid "Notification Email"
-msgstr "알림 이메일"
-
-#: .\users\models.py:67 .\users\models.py:271 .\users\views\users_forms.py:292
-msgid "User Name"
-msgstr "사용자 이름"
-
-#: .\users\models.py:69 .\users\models.py:273
-msgid "Nick Name"
-msgstr "닉네임"
-
-#: .\users\models.py:75 .\users\views\users_forms.py:293
-msgid "Gender"
-msgstr "성별"
-
-#: .\users\models.py:78
-msgid "Email Verified State"
-msgstr "이메일 확인 상태"
-
-#: .\users\models.py:83
-msgid "User Profile Image"
-msgstr "사용자 프로필 이미지"
-
-#: .\users\models.py:92
-msgid "Last Login IP Address"
-msgstr "마지막 로그인 IP 주소"
-
-#: .\users\models.py:102
-msgid "Mobile Authentication"
-msgstr "모바일 인증"
-
-#: .\users\models.py:105
-msgid "Dormant Account State"
-msgstr "휴면 계정 상태"
-
-#: .\users\models.py:108
-msgid "Deleted State"
-msgstr "삭제된 상태"
-
-#: .\users\models.py:111
-msgid "Site Register User"
-msgstr "사이트 등록 사용자"
-
-#: .\users\models.py:117
-msgid "Last Login Time"
-msgstr "마지막 로그인 시간"
-
-#: .\users\models.py:120
-msgid "Updated Time"
-msgstr "업데이트된 시간"
-
-#: .\users\models.py:123
-msgid "Dormant Account Time"
-msgstr "휴면 계정 시간"
-
-#: .\users\models.py:126
-msgid "Deleted Time"
-msgstr "삭제된 시간"
-
-#: .\users\models.py:129
-msgid "Password Replacement Time"
-msgstr "비밀번호 교체 시간"
-
-#: .\users\models.py:144
-msgid "user"
-msgstr "사용자"
-
-#: .\users\models.py:145
-msgid "users"
-msgstr "사용자들"
-
-#: .\users\models.py:180
-msgid "Full name"
-msgstr "성명"
-
-#: .\users\models.py:234
-msgid "Password"
-msgstr "비밀번호"
-
-#: .\users\models.py:240 .\users\models.py:310 .\users\models.py:436
-#: .\users\models.py:470
-msgid "User"
-msgstr "사용자"
-
-#: .\users\models.py:246
-msgid "Verify Name"
-msgstr "이름 확인"
-
-#: .\users\models.py:248
-msgid "Token Key"
-msgstr "토큰 키"
-
-#: .\users\models.py:250
-msgid "Sending Mail Result"
-msgstr "메일 발송 결과"
-
-#: .\users\models.py:252
-msgid "Verified State"
-msgstr "검증된 상태"
-
-#: .\users\models.py:253
-msgid "Expired Time"
-msgstr "만료 시간"
-
-#: .\users\models.py:254
-msgid "Verified Time"
-msgstr "검증된 시간"
-
-#: .\users\models.py:261 .\users\models.py:262
-msgid "user email verification"
-msgstr "검증된 시간"
-
-#: .\users\models.py:275
-msgid "IP Address"
-msgstr "IP 주소"
-
-#: .\users\models.py:283 .\users\models.py:284
-msgid "register history"
-msgstr "수정 이력"
-
-#: .\users\models.py:318 .\users\models.py:319
-msgid "user profile"
-msgstr "유저 프로필"
-
-#: .\users\models.py:326
-msgid "Vendor Name"
-msgstr "공급업체 명"
-
-#: .\users\models.py:328
-msgid "Sending Success Count"
-msgstr "전송 성공 횟수"
-
-#: .\users\models.py:331
-msgid "Sending Failed Count"
-msgstr "실패한 카운트 보내기"
-
-#: .\users\models.py:334
-msgid "Sending Total Count"
-msgstr "전송 총 수"
-
-#: .\users\models.py:339
-msgid "This Month"
-msgstr "이번 달"
-
-#: .\users\models.py:342
-msgid "Last Sending State"
-msgstr "마지막 전송 상태"
-
-#: .\users\models.py:345
-msgid "Success Time"
-msgstr "성공 시간"
-
-#: .\users\models.py:348
-msgid "Failed Time"
-msgstr "실패한 시간"
-
-#: .\users\models.py:353 .\users\models.py:354
-msgid "sending email monitor"
-msgstr "전송한 이메일 모니터"
-
-#: .\users\models.py:361
-msgid "Page Title"
-msgstr "페이지 제목"
-
-#: .\users\models.py:362
-msgid "Page Content"
-msgstr "페이지 콘텐츠"
-
-#: .\users\models.py:369
-msgid "Page Slug"
-msgstr "페이지 슬러그"
-
-#: .\users\models.py:372
-msgid "Necessary Policy"
-msgstr "필요한 정책"
-
-#: .\users\models.py:380 .\users\models.py:381
-msgid "policy pages"
-msgstr "정책 페이지"
-
-#: .\users\models.py:438
-msgid "twitter"
-msgstr "트위터"
-
-#: .\users\models.py:439
-msgid "facebook"
-msgstr "페이스북"
-
-#: .\users\models.py:440
-msgid "instagram"
-msgstr "인스타그램"
-
-#: .\users\models.py:441
-msgid "youtube"
-msgstr "유튜브"
-
-#: .\users\models.py:442
-msgid "pinterest"
-msgstr "핀터레스트"
-
-#: .\users\models.py:443
-msgid "linkedin"
-msgstr "링크드인"
-
-#: .\users\models.py:444
-msgid "xing"
-msgstr "싱"
-
-#: .\users\models.py:445
-msgid "meetup"
-msgstr "미트업"
-
-#: .\users\models.py:446
-msgid "opportunity"
-msgstr "기회"
-
-#: .\users\models.py:447
-msgid "connect"
-msgstr "연결"
-
-#: .\users\models.py:448
-msgid "upwork"
-msgstr "업워크"
-
-#: .\users\models.py:449
-msgid "freelancer"
-msgstr "프리랜서"
-
-#: .\users\models.py:450
-msgid "indeed"
-msgstr "인디드"
-
-#: .\users\models.py:451 .\users\models.py:475
-msgid "monster"
-msgstr "몬스터"
-
-#: .\users\models.py:452
-msgid "angel"
-msgstr "엔젤"
-
-#: .\users\models.py:453
-msgid "peoplenjob"
-msgstr "피플앤잡"
-
-#: .\users\models.py:457
-msgid "world social account"
-msgstr "세계 소셜 계정"
-
-#: .\users\models.py:458
-msgid "world social accounts"
-msgstr "세계 소셜 계정"
-
-#: .\users\models.py:472
-msgid "wanted"
-msgstr "원티드"
-
-#: .\users\models.py:473
-msgid "rocketpunch"
-msgstr "로켓펀치"
-
-#: .\users\models.py:474
-msgid "remember"
-msgstr "리멤버"
-
-#: .\users\models.py:479 .\users\models.py:480
-msgid "local social account"
-msgstr "지역 소셜 계정"
-
-#: .\users\views\users_forms.py:27 .\users\views\users_forms.py:123
-#: .\users\views\users_forms.py:135 .\users\views\users_forms.py:170
-msgid "Enter email address"
-msgstr "이메일 주소 입력"
-
-#: .\users\views\users_forms.py:34
-msgid "Enter between 8"
-msgstr "8 사이에 입력"
-
-#: .\users\views\users_forms.py:41
-msgid "Enter the same password"
-msgstr "같은 비밀번호를 입력하세요"
-
-#: .\users\views\users_forms.py:48 .\users\views\users_forms.py:56
-msgid "Enter between 4 and 20 character"
-msgstr "4~20자 사이로 입력"
-
-#: .\users\views\users_forms.py:64 .\users\views\users_forms.py:70
-msgid "To sign up, you must read and agree to the linked policy."
-msgstr "가입하시려면 링크된 정책을 읽고 동의하셔야 합니다."
-
-#: .\users\views\users_forms.py:143 .\users\views\users_forms.py:181
-#: .\users\views\users_forms.py:189
-msgid "Enter password"
-msgstr "암호를 입력"
-
-#: .\users\views\users_forms.py:213 .\users\views\users_forms.py:252
-msgid "Enter old password"
-msgstr "이전 비밀번호 입력"
-
-#: .\users\views\users_forms.py:221 .\users\views\users_forms.py:261
-msgid "Enter new password"
-msgstr "새 비밀번호를 입력하십시오"
-
-#: .\users\views\users_forms.py:229
-msgid "Enter password same like new password"
-msgstr "새 비밀번호와 동일한 비밀번호를 입력하세요"
-
-#: .\users\views\users_forms.py:271
-msgid "Enter password confirm"
-msgstr "비밀번호 확인 입력"
-
-#: .\users\views\users_forms.py:291
-msgid "Nickname"
-msgstr "별명"
+"If you'd like to collaborate on something or share your thoughts, send a "
+"message."
+msgstr "함께 하고 싶은 일이 있거나 의견을 나누고 싶다면 메시지를 보내 주세요."
+
+#: templates/portfolio/portfolio.html:158
+msgid "Phone"
+msgstr "전화"
+
+#: templates/portfolio/portfolio.html:163
+msgid "Send message"
+msgstr "메시지 보내기"
+
+#: templates/users/login.html:9
+msgid "No account yet?"
+msgstr "아직 계정이 없나요?"
+
+#: templates/users/login.html:9
+msgid "Create one"
+msgstr "가입하기"
+
+#: templates/users/login.html:10
+msgid "Forgot your password?"
+msgstr "비밀번호를 잊으셨나요?"
+
+#: templates/users/login.html:10 templates/users/reset_password.html:3
+#: templates/users/reset_password.html:4
+msgid "Reset password"
+msgstr "비밀번호 재설정"
+
+#: templates/users/login.html:11 templates/users/register.html:24
+msgid "No verification email?"
+msgstr "인증 메일을 받지 못했나요?"
+
+#: templates/users/login.html:11 templates/users/register.html:24
+msgid "Resend it"
+msgstr "다시 보내기"
+
+#: templates/users/login.html:13
+msgid "or"
+msgstr "또는"
+
+#: templates/users/login.html:15
+msgid "Sign in with Google"
+msgstr "Google로 로그인"
+
+#: templates/users/login.html:16
+msgid "Sign in with Kakao"
+msgstr "카카오로 로그인"
+
+#: templates/users/login.html:17
+msgid "Sign in with Naver"
+msgstr "네이버로 로그인"
+
+#: templates/users/password_replacement.html:3
+#: templates/users/password_replacement.html:4
+msgid "Replace password"
+msgstr "새 비밀번호 설정"
+
+#: templates/users/password_replacement.html:6
+#: templates/users/update_password.html:6
+msgid "Update"
+msgstr "변경"
+
+#: templates/users/profile.html:18
+msgid "Administrator"
+msgstr "관리자"
+
+#: templates/users/profile.html:18
+msgid "Staff"
+msgstr "운영진"
+
+#: templates/users/profile.html:19
+msgid "Joined"
+msgstr "가입일"
+
+#: templates/users/profile.html:20
+msgid "Last login"
+msgstr "마지막 로그인"
+
+#: templates/users/profile.html:21
+msgid "Points"
+msgstr "포인트"
 
 # #: .\users\views\users_forms.py:292
 # msgid "User Name"
 # msgstr "사용자 이름"
-#: .\users\views\users_forms.py:294
+#: templates/users/profile.html:40
+msgid "Profile photo"
+msgstr "프로필 사진"
+
+#: templates/users/profile.html:58
+msgid "Change password"
+msgstr "비밀번호 변경"
+
+#: templates/users/profile.html:65
+msgid "Keeping in touch"
+msgstr "소식 받기"
+
+#: templates/users/profile.html:74
+msgid "Delete account"
+msgstr "계정 삭제"
+
+#: templates/users/profile.html:75
+msgid "Save changes"
+msgstr "변경 사항 저장"
+
+#: templates/users/register.html:3 templates/users/register.html:13
+#: templates/users/register.html:20
+msgid "Create account"
+msgstr "계정 만들기"
+
+#: templates/users/register.html:23
+msgid "Already have an account, or a social account?"
+msgstr "이미 계정이나 소셜 계정이 있나요?"
+
+#: templates/users/resend_email.html:3 templates/users/resend_email.html:4
+msgid "Resend verification email"
+msgstr "인증 메일 다시 보내기"
+
+#: templates/users/resend_email.html:5
+msgid "Resend"
+msgstr "다시 보내기"
+
+#: templates/users/resend_email.html:6 templates/users/reset_password.html:6
+msgid "Back to log in"
+msgstr "로그인으로 돌아가기"
+
+#: templates/users/reset_password.html:5
+msgid "Send reset email"
+msgstr "재설정 메일 보내기"
+
+#: templates/users/update_password.html:3
+#: templates/users/update_password.html:4
+msgid "Update password"
+msgstr "비밀번호 변경"
+
+#: users/models.py:53
+msgid "Female"
+msgstr "여성"
+
+#: users/models.py:54
+msgid "Male"
+msgstr "남성"
+
+#: users/models.py:55
+msgid "Not to disclose"
+msgstr "공개하지 않음"
+
+#: users/models.py:65 users/views/users_forms.py:324
+msgid "Notification Email"
+msgstr "알림 이메일"
+
+#: users/models.py:67 users/models.py:271 users/views/users_forms.py:43
+#: users/views/users_forms.py:326
+msgid "User Name"
+msgstr "사용자 이름"
+
+#: users/models.py:69 users/models.py:273 users/views/users_forms.py:51
+msgid "Nick Name"
+msgstr "닉네임"
+
+#: users/models.py:75 users/views/users_forms.py:327
+msgid "Gender"
+msgstr "성별"
+
+#: users/models.py:78
+msgid "Email Verified State"
+msgstr "이메일 확인 상태"
+
+#: users/models.py:83
+msgid "User Profile Image"
+msgstr "사용자 프로필 이미지"
+
+#: users/models.py:92
+msgid "Last Login IP Address"
+msgstr "마지막 로그인 IP 주소"
+
+#: users/models.py:102
+msgid "Mobile Authentication"
+msgstr "모바일 인증"
+
+#: users/models.py:105
+msgid "Dormant Account State"
+msgstr "휴면 계정 상태"
+
+#: users/models.py:108
+msgid "Deleted State"
+msgstr "삭제된 상태"
+
+#: users/models.py:111
+msgid "Site Register User"
+msgstr "사이트 등록 사용자"
+
+#: users/models.py:117
+msgid "Last Login Time"
+msgstr "마지막 로그인 시간"
+
+#: users/models.py:120
+msgid "Updated Time"
+msgstr "업데이트된 시간"
+
+#: users/models.py:123
+msgid "Dormant Account Time"
+msgstr "휴면 계정 시간"
+
+#: users/models.py:126
+msgid "Deleted Time"
+msgstr "삭제된 시간"
+
+#: users/models.py:129
+msgid "Password Replacement Time"
+msgstr "비밀번호 교체 시간"
+
+#: users/models.py:144
+msgid "user"
+msgstr "사용자"
+
+#: users/models.py:145
+msgid "users"
+msgstr "사용자들"
+
+#: users/models.py:180
+msgid "Full name"
+msgstr "성명"
+
+#: users/models.py:234 users/views/users_forms.py:29
+#: users/views/users_forms.py:173 users/views/users_forms.py:211
+#: users/views/users_forms.py:251
+msgid "Password"
+msgstr "비밀번호"
+
+#: users/models.py:240 users/models.py:310 users/models.py:436
+#: users/models.py:470
+msgid "User"
+msgstr "사용자"
+
+#: users/models.py:246
+msgid "Verify Name"
+msgstr "이름 확인"
+
+#: users/models.py:248
+msgid "Token Key"
+msgstr "토큰 키"
+
+#: users/models.py:250
+msgid "Sending Mail Result"
+msgstr "메일 발송 결과"
+
+#: users/models.py:252
+msgid "Verified State"
+msgstr "검증된 상태"
+
+#: users/models.py:253
+msgid "Expired Time"
+msgstr "만료 시간"
+
+#: users/models.py:254
+msgid "Verified Time"
+msgstr "검증된 시간"
+
+#: users/models.py:261 users/models.py:262
+msgid "user email verification"
+msgstr "검증된 시간"
+
+#: users/models.py:275
+msgid "IP Address"
+msgstr "IP 주소"
+
+#: users/models.py:283 users/models.py:284
+msgid "register history"
+msgstr "수정 이력"
+
+#: users/models.py:318 users/models.py:319
+msgid "user profile"
+msgstr "유저 프로필"
+
+#: users/models.py:326
+msgid "Vendor Name"
+msgstr "공급업체 명"
+
+#: users/models.py:328
+msgid "Sending Success Count"
+msgstr "전송 성공 횟수"
+
+#: users/models.py:331
+msgid "Sending Failed Count"
+msgstr "실패한 카운트 보내기"
+
+#: users/models.py:334
+msgid "Sending Total Count"
+msgstr "전송 총 수"
+
+#: users/models.py:339
+msgid "This Month"
+msgstr "이번 달"
+
+#: users/models.py:342
+msgid "Last Sending State"
+msgstr "마지막 전송 상태"
+
+#: users/models.py:345
+msgid "Success Time"
+msgstr "성공 시간"
+
+#: users/models.py:348
+msgid "Failed Time"
+msgstr "실패한 시간"
+
+#: users/models.py:353 users/models.py:354
+msgid "sending email monitor"
+msgstr "전송한 이메일 모니터"
+
+#: users/models.py:361
+msgid "Page Title"
+msgstr "페이지 제목"
+
+#: users/models.py:362
+msgid "Page Content"
+msgstr "페이지 콘텐츠"
+
+#: users/models.py:369
+msgid "Page Slug"
+msgstr "페이지 슬러그"
+
+#: users/models.py:372
+msgid "Necessary Policy"
+msgstr "필요한 정책"
+
+#: users/models.py:380 users/models.py:381
+msgid "policy pages"
+msgstr "정책 페이지"
+
+#: users/models.py:438
+msgid "twitter"
+msgstr "트위터"
+
+#: users/models.py:439
+msgid "facebook"
+msgstr "페이스북"
+
+#: users/models.py:440
+msgid "instagram"
+msgstr "인스타그램"
+
+#: users/models.py:441
+msgid "youtube"
+msgstr "유튜브"
+
+#: users/models.py:442
+msgid "pinterest"
+msgstr "핀터레스트"
+
+#: users/models.py:443
+msgid "linkedin"
+msgstr "링크드인"
+
+#: users/models.py:444
+msgid "xing"
+msgstr "싱"
+
+#: users/models.py:445
+msgid "meetup"
+msgstr "미트업"
+
+#: users/models.py:446
+msgid "opportunity"
+msgstr "기회"
+
+#: users/models.py:447
+msgid "connect"
+msgstr "연결"
+
+#: users/models.py:448
+msgid "upwork"
+msgstr "업워크"
+
+#: users/models.py:449
+msgid "freelancer"
+msgstr "프리랜서"
+
+#: users/models.py:450
+msgid "indeed"
+msgstr "인디드"
+
+#: users/models.py:451 users/models.py:475
+msgid "monster"
+msgstr "몬스터"
+
+#: users/models.py:452
+msgid "angel"
+msgstr "엔젤"
+
+#: users/models.py:453
+msgid "peoplenjob"
+msgstr "피플앤잡"
+
+#: users/models.py:457
+msgid "world social account"
+msgstr "세계 소셜 계정"
+
+#: users/models.py:458
+msgid "world social accounts"
+msgstr "세계 소셜 계정"
+
+#: users/models.py:472
+msgid "wanted"
+msgstr "원티드"
+
+#: users/models.py:473
+msgid "rocketpunch"
+msgstr "로켓펀치"
+
+#: users/models.py:474
+msgid "remember"
+msgstr "리멤버"
+
+#: users/models.py:479 users/models.py:480
+msgid "local social account"
+msgstr "지역 소셜 계정"
+
+#: users/views/users_forms.py:25 users/views/users_forms.py:157
+#: users/views/users_forms.py:169 users/views/users_forms.py:204
+msgid "Enter email address"
+msgstr "이메일 주소 입력"
+
+#: users/views/users_forms.py:32
+msgid "Enter between 8"
+msgstr "8 사이에 입력"
+
+#: users/views/users_forms.py:36
+msgid "Password Confirm"
+msgstr "비밀번호 확인"
+
+#: users/views/users_forms.py:39
+msgid "Enter the same password"
+msgstr "같은 비밀번호를 입력하세요"
+
+#: users/views/users_forms.py:46 users/views/users_forms.py:54
+msgid "Enter between 4 and 20 character"
+msgstr "4~20자 사이로 입력"
+
+# #: .\users\views\users_forms.py:292
+# msgid "User Name"
+# msgstr "사용자 이름"
+#: users/views/users_forms.py:58 users/views/users_forms.py:328
 msgid "Profile Image"
 msgstr "프로필 이미지"
 
-#: .\users\views\users_forms.py:299
+#: users/views/users_forms.py:61
+msgid "Privacy Policy (Click on the text below)"
+msgstr "개인정보 처리방침 (아래 글을 눌러 확인)"
+
+#: users/views/users_forms.py:62 users/views/users_forms.py:68
+msgid "To sign up, you must read and agree to the linked policy."
+msgstr "가입하시려면 링크된 정책을 읽고 동의하셔야 합니다."
+
+#: users/views/users_forms.py:67
+msgid "Terms of Service (Click on the text below)"
+msgstr "이용약관 (아래 글을 눌러 확인)"
+
+#: users/views/users_forms.py:177 users/views/users_forms.py:215
+#: users/views/users_forms.py:223
+msgid "Enter password"
+msgstr "암호를 입력"
+
+#: users/views/users_forms.py:219 users/views/users_forms.py:259
+#: users/views/users_forms.py:301
+msgid "Password confirm"
+msgstr "비밀번호 확인"
+
+#: users/views/users_forms.py:243 users/views/users_forms.py:283
+msgid "Old Password"
+msgstr "현재 비밀번호"
+
+#: users/views/users_forms.py:247 users/views/users_forms.py:286
+msgid "Enter old password"
+msgstr "이전 비밀번호 입력"
+
+#: users/views/users_forms.py:255 users/views/users_forms.py:295
+msgid "Enter new password"
+msgstr "새 비밀번호를 입력하십시오"
+
+#: users/views/users_forms.py:263
+msgid "Enter password same like new password"
+msgstr "새 비밀번호와 동일한 비밀번호를 입력하세요"
+
+#: users/views/users_forms.py:292
+msgid "New Password"
+msgstr "새 비밀번호"
+
+#: users/views/users_forms.py:305
+msgid "Enter password confirm"
+msgstr "비밀번호 확인 입력"
+
+#: users/views/users_forms.py:310
+msgid "Email notifications"
+msgstr "이메일 알림"
+
+#: users/views/users_forms.py:325
+msgid "Nickname"
+msgstr "별명"
+
+#: users/views/users_forms.py:333
 msgid "Please fill out this field to receive notification emails."
 msgstr "알림 이메일을 받으려면 이 필드를 작성하십시오."
 
-#: .\users\views\users_forms.py:301
+#: users/views/users_forms.py:335
 msgid "Nicknames must be unique."
 msgstr "닉네임은 고유해야 합니다."
-
-#~ msgid " Built and led teams across 5 startups "
-#~ msgstr "5번의 스타트업 팀 빌딩 경험"
-
-#~ msgid "Eng"
-#~ msgstr "영어"
-
-#~ msgid "Kor"
-#~ msgstr "한국어"
-
-#~ msgid "National Language"
-#~ msgstr "국가 언어"
-
-#~ msgid " ready to join with you "
-#~ msgstr " 함께 할 준비 완료!  "
-
-#~ msgid "My future plans"
-#~ msgstr "나의 미래 계획"
-
-#~ msgid "What I want to do, what I am interested in these days!"
-#~ msgstr "내가 하고 싶은 것, 요즘 관심 있는 것!"
-
-#~ msgid "Skills I would like to add to a project soon or start learning"
-#~ msgstr "곧 프로젝트에 추가하거나 학습을 시작하고 싶은 기술들"
-
-#~ msgid "Applying Docker-swarm"
-#~ msgstr "Docker-swarm 적용"
-
-#~ msgid "Applying docker-swarm to open source projects you manage."
-#~ msgstr "관리하는 오픈 소스 프로젝트에 docker-swarm을 적용."
-
-#~ msgid "Swift and kotlin"
-#~ msgstr "스위프트와 코틀린"
-
-#~ msgid ""
-#~ "Start learning Kotlin and Swift. Getting Started with Android and iOS "
-#~ "Development."
-#~ msgstr "Kotlin 및 Swift 학습을 시작하기. Android 및 iOS 개발 시작하기."
-
-#~ msgid "React"
-#~ msgstr "리액트"
-
-#~ msgid ""
-#~ "Start learning React. Start my new web development project with React."
-#~ msgstr "React 학습을 시작하기. React로 새로운 웹 개발 프로젝트 시작하기."
-
-#~ msgid ""
-#~ "Implementation of chatbot and real-time chatting system using Node.js."
-#~ msgstr "Node.js를 이용한 챗봇 및 실시간 채팅 시스템 구현."
-
-#~ msgid "Applying Monitoring system"
-#~ msgstr "모니터링 시스템 적용"
-
-#~ msgid ""
-#~ "Applying Monitoring system using Prometheus, Sentry, Slack API at "
-#~ "existing open source projects. "
-#~ msgstr ""
-#~ "기존 오픈소스 프로젝트에 Prometheus, Sentry, Slack API를 이용한 모니터링 "
-#~ "시스템 적용. "
-
-#~ msgid ""
-#~ "Creating a recommendation system using Naver, Google, Twitter, and "
-#~ "Instagram data."
-#~ msgstr "네이버, 구글, 트위터, 인스타그램 데이터를 활용한 추천 시스템 구축."
-
-#~ msgid "Shopping mall with Vue.js"
-#~ msgstr "Vue.js 기반 쇼핑몰"
-
-#~ msgid "Starting Django and Vue.js-based shopping mall open source project."
-#~ msgstr "Django 및 Vue.js 기반 쇼핑몰 오픈소스 프로젝트 시작."
-
-#~ msgid "Smart mirror with Android"
-#~ msgstr "안드로이드 스마트 미러"
-
-#~ msgid ""
-#~ "Renewal of the smart mirror, which was currently developed based on "
-#~ "Tizen, based on Android."
-#~ msgstr ""
-#~ "기존 타이젠 기반으로 개발되던 스마트미러를 안드로이드 기반으로 리뉴얼."
-
-#~ msgid "First Name"
-#~ msgstr "이름"
-
-#~ msgid "Last Name"
-#~ msgstr "성"

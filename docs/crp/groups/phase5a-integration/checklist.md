@@ -18,3 +18,7 @@
 - [x] pytest 548 passed / 1 skipped, check·이쪽 앱 migration 통과
 - [x] runserver: 점검표·`author_id` 비공개·정적 파일·좋아요 동시 요청·SCAN 0
 - [x] 판정 CONVERGED
+
+## Round 3 — 2026-11-14
+- [x] 그쪽 `54976ab`까지 병합, 충돌 0
+- [x] 전체 테스트·check·migration
