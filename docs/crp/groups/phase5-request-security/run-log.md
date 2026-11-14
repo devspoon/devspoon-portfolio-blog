@@ -20,3 +20,8 @@
 - **게이트:** pytest **688 passed / 1 skipped**, check exit 0, 이쪽 앱 `makemigrations --check` No changes. runserver(dev 설정, 실제 라우터, PostgreSQL, 18765): 기존 점검표 전부 통과, 최상위 댓글 group 1→2, 대댓글 depth 99 → 1, 조작 입력(부모 `abc`·없는 부모·3001자·잘못된 JSON·공백 수정) 전부 400, `reply_count` = 행 수, 입력창 `maxlength` 2곳, 좋아요 동시 10개 0/0, Redis GET·SET만(SCAN 0), 서버 로그 500 0건
 - **수렴 판정:** 계획 범위 `CONVERGED`(Open Fix는 사용자 결정 대기인 F-005 하나)
 - **검사 범위의 한계:** 실제 replica 지연은 재현하지 않음(R-001). 브라우저에서 직접 누르지 않음. CI 미실행
+
+### Round 2 — 2026-11-14 (F-005)
+- **트리거:** 사용자 "작업 재개해줘" → F-005를 권장안 A로 진행(가정)
+- **red:** `test_saving_a_user_checks_the_profile_on_the_primary` → `nickname` 중복 `IntegrityError`
+- **green:** `on_save_user` 본문을 `read_primary()` 안에서. 되돌리면 실패, 복원하면 통과

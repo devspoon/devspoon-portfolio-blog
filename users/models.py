@@ -21,6 +21,7 @@ from django.utils.translation import gettext_lazy as _
 from imagekit.models import ImageSpecField  # 썸네일 함수
 from imagekit.processors import ResizeToFill  # 사이즈조절
 
+from common.core.replica_router import read_primary
 from utils.email import *
 from utils.os.file_path_name_gen import date_upload_to_for_image
 
@@ -485,6 +486,12 @@ class LocalSocialAccount(models.Model):
 
 @receiver(post_save, sender=User)
 def on_save_user(sender, instance, **kwargs):
+    # 방금 만든 사용자·프로필은 replica에 아직 없을 수 있다. 없다고 보고 또 만들면 nickname 중복(phase5 F-005).
+    with read_primary():
+        _ensure_profile(instance)
+
+
+def _ensure_profile(instance):
     profile = UserProfile.objects.filter(user=instance).first()
     # social_account = SocialAccount.objects.filter(user=instance).first()
 

@@ -12,7 +12,7 @@ from blog.models.blog import BlogPost
 from blog.models.blog_reply import BlogPostReply
 from common.components.django_redis_cache_components import cached
 from common.core.replica_router import ReplicationRouter
-from users.models import User
+from users.models import User, UserProfile
 
 both = pytest.mark.django_db(databases=["default", "replica1"])
 headers = {"HTTP_USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/112.0"}
@@ -71,3 +71,11 @@ def test_reply_create_reads_the_primary_inside_the_request(author, monkeypatch):
     assert c.post(url, {"comment": "child", "depth": 1, "parent": first.pk}).status_code == 302
     child = BlogPostReply.objects.using("default").get(comment="child")
     assert (child.parent_id, child.group, child.depth) == (first.pk, 1, 1)
+
+
+@both
+def test_saving_a_user_checks_the_profile_on_the_primary(stale_replica):
+    """ledger F-005: 사용자를 다시 저장해도(로그인의 last_login 등) replica에 프로필이 없다고 또 만들지 않는다."""
+    user = User.objects.create_user(username="u", email="u@example.com", nickname="u", password="password")
+    user.save()  # GET으로 끝나는 로그인 흐름(소셜 콜백 등)은 미들웨어가 primary로 돌리지 않는다
+    assert UserProfile.objects.using("default").filter(user=user).count() == 1
