@@ -43,7 +43,8 @@ class ReplicationRouter:
         """
         # return random.choice([key for key in settings.DATABASES]) # for All database
         # return random.choice(['replica1', 'replica2']) # for replica database
-        if _read_primary.get():
+        # 세션은 로그인(POST, default에 저장) 직후 GET에서 바로 읽힌다. 늦은 replica에서 읽으면 로그아웃처럼 보인다(phase7 ADR-002).
+        if _read_primary.get() or model._meta.app_label == "sessions":
             return "default"
         return "replica1"
 

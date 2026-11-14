@@ -21,3 +21,11 @@ def delete_users_with_unverified_emails():
     logger.debug("Number of emails that need to be deleted : ", extra={"count:": cnt})
     result.delete()
     return cnt
+
+
+@shared_task
+def clear_expired_sessions():
+    """만료된 DB 세션 행을 지운다(phase7 D4-A). admin 주기 작업에 하루 한 번 등록한다."""
+    from django.core.management import call_command
+
+    call_command("clearsessions")
