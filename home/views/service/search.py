@@ -62,15 +62,15 @@ class Search:
 
         return result
 
-    def queryset_tag_search(self, tag_text, page_number, per_page):
-        tag = Tag.objects.filter(tag=tag_text)
+    def queryset_tag_search(self, tag, page_number, per_page):
+        tags = Tag.objects.filter(tag=tag)
 
         # blog result
-        project_queryset = self.get_tag_search_query_set(ProjectPost, tag)
-        onlinestudy_queryset = self.get_tag_search_query_set(OnlineStudyPost, tag)
-        blog_queryset = self.get_tag_search_query_set(BlogPost, tag)
-        opensource_queryset = self.get_tag_search_query_set(OpenSourcePost, tag)
-        books_queryset = self.get_tag_search_query_set(BooksPost, tag)
+        project_queryset = self.get_tag_search_query_set(ProjectPost, tags)
+        onlinestudy_queryset = self.get_tag_search_query_set(OnlineStudyPost, tags)
+        blog_queryset = self.get_tag_search_query_set(BlogPost, tags)
+        opensource_queryset = self.get_tag_search_query_set(OpenSourcePost, tags)
+        books_queryset = self.get_tag_search_query_set(BooksPost, tags)
 
         result_queryset = project_queryset.union(onlinestudy_queryset, all=False)
         result_queryset = result_queryset.union(blog_queryset, all=False)
@@ -90,7 +90,7 @@ class Search:
         result = {
             "page_obj": paging,
             "board": paging.object_list,
-            "tag": tag_text,
+            "tag": tag,  # the searched text; the template prints it and puts it in page links
         }
 
         return result

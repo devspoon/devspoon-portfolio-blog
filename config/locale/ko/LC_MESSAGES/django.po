@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-13 08:19+0000\n"
+"POT-Creation-Date: 2026-11-14 10:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,186 +17,202 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: blog/models/blog.py:53
+#: blog/models/blog.py:52
 msgid "Beginner"
 msgstr "초보자"
 
-#: blog/models/blog.py:54
+#: blog/models/blog.py:53
 msgid "Intermediate"
 msgstr "중급"
 
-#: blog/models/blog.py:55
+#: blog/models/blog.py:54
 msgid "Advanced"
 msgstr "고급"
 
-#: blog/models/blog.py:58 portfolio/models.py:173
+#: blog/models/blog.py:57 portfolio/models.py:173
 msgid "Owner"
 msgstr "소유자"
 
-#: blog/models/blog.py:59
+#: blog/models/blog.py:58
 msgid "Maintainer"
 msgstr "관리자"
 
-#: blog/models/blog.py:60
+#: blog/models/blog.py:59
 msgid "Developer"
 msgstr "개발자"
 
-#: blog/models/blog.py:61
+#: blog/models/blog.py:60
 msgid "Reporter"
 msgstr "보고자"
 
-#: blog/models/blog.py:62
+#: blog/models/blog.py:61
 msgid "Guest"
 msgstr "손님"
 
-#: blog/models/blog.py:65
+#: blog/models/blog.py:64
 msgid "Frontend"
 msgstr "프런트엔드"
 
-#: blog/models/blog.py:66
+#: blog/models/blog.py:65
 msgid "Backend"
 msgstr "백엔드"
 
-#: blog/models/blog.py:67
+#: blog/models/blog.py:66
 msgid "Infrastructure"
 msgstr "인프라스트럭쳐"
 
-#: blog/models/blog.py:68
+#: blog/models/blog.py:67
 msgid "Database"
 msgstr "데이터베이스"
 
-#: blog/models/blog.py:69
+#: blog/models/blog.py:68
 msgid "Analysis"
 msgstr "분석"
 
-#: blog/models/blog.py:70
+#: blog/models/blog.py:69
 msgid "Monitoring"
 msgstr "모니터링"
 
-#: blog/models/blog.py:73 board/models/board.py:45
+#: blog/models/blog.py:72 board/models/board.py:45
 msgid "Author"
 msgstr "작가"
 
-#: blog/models/blog.py:75 board/models/board.py:47 portfolio/models.py:194
+#: blog/models/blog.py:74 blog/views/blog/blog_forms.py:42
+#: blog/views/books/books_forms.py:53
+#: blog/views/online_study/online_study_forms.py:53
+#: blog/views/opensource/opensource_forms.py:57
+#: blog/views/project/project_forms.py:56 board/models/board.py:47
+#: board/views/notice/notice_forms.py:34
+#: board/views/reactivation/reactivation_forms.py:32
+#: board/views/visiter/visiter_forms.py:32 portfolio/models.py:194
 #: portfolio/models.py:245 portfolio/models.py:264
 msgid "Title"
 msgstr "제목"
 
-#: blog/models/blog.py:76 board/models/board.py:48 portfolio/models.py:145
+#: blog/models/blog.py:75 blog/views/blog/blog_forms.py:43
+#: blog/views/books/books_forms.py:54
+#: blog/views/online_study/online_study_forms.py:54
+#: blog/views/opensource/opensource_forms.py:59
+#: blog/views/project/project_forms.py:59 board/models/board.py:48
+#: board/views/notice/notice_forms.py:35
+#: board/views/reactivation/reactivation_forms.py:33
+#: board/views/visiter/visiter_forms.py:33 portfolio/models.py:145
 #: portfolio/models.py:203 portfolio/models.py:246 portfolio/models.py:265
 msgid "Content"
-msgstr "콘텐츠"
+msgstr "본문"
 
-#: blog/models/blog.py:77
+#: blog/models/blog.py:76
 msgid "title_image"
 msgstr "제목_이미지"
 
-#: blog/models/blog.py:78
+#: blog/models/blog.py:77
 msgid "Link1"
 msgstr "링크1"
 
-#: blog/models/blog.py:79
+#: blog/models/blog.py:78
 msgid "Link2"
 msgstr "링크2"
 
-#: blog/models/blog.py:81
+#: blog/models/blog.py:80
 msgid "file1"
 msgstr "파일1"
 
-#: blog/models/blog.py:84
+#: blog/models/blog.py:83
 msgid "file2"
 msgstr "파일2"
 
-#: blog/models/blog.py:87 board/models/board.py:50
+#: blog/models/blog.py:86 board/models/board.py:50
 msgid "table_name"
 msgstr "테이블_이름"
 
-#: blog/models/blog.py:92
+#: blog/models/blog.py:91
 msgid "Tags Set"
 msgstr "태그 세트"
 
-#: blog/models/blog.py:94 board/models/board.py:54
+#: blog/models/blog.py:93 board/models/board.py:54
 msgid "Reply Count"
 msgstr "응답 수"
 
-#: blog/models/blog.py:95
+#: blog/models/blog.py:94
 msgid "Like Count"
 msgstr "좋아요 수"
 
-#: blog/models/blog.py:97 board/models/board.py:56
+#: blog/models/blog.py:96 board/models/board.py:56
 msgid "Reply last group id"
 msgstr "마지막 그룹 ID 응답"
 
-#: blog/models/blog.py:99 board/models/board.py:58
+#: blog/models/blog.py:98 board/models/board.py:58
 msgid "Visit Count"
 msgstr "방문수"
 
-#: blog/models/blog.py:101 board/models/board.py:60
+#: blog/models/blog.py:100 board/models/board.py:60
 msgid "Deleted state"
 msgstr "삭제된 상태"
 
-#: blog/models/blog.py:102 board/models/board.py:61
+#: blog/models/blog.py:101 board/models/board.py:61
 msgid "Hidden state"
 msgstr "숨겨진 상태"
 
-#: blog/models/blog.py:140 blog/models/blog.py:229
+#: blog/models/blog.py:132 blog/models/blog.py:221
 msgid "Project Role"
 msgstr "프로젝트 역할"
 
-#: blog/models/blog.py:143 blog/models/blog.py:173 blog/models/blog.py:232
-#: blog/models/blog.py:267
+#: blog/models/blog.py:135 blog/models/blog.py:165 blog/models/blog.py:224
+#: blog/models/blog.py:259
 msgid "Development Language"
 msgstr "개발 언어"
 
-#: blog/models/blog.py:145 templates/blog/_post_detail.html:35
+#: blog/models/blog.py:137 blog/views/project/project_forms.py:58
+#: templates/blog/_post_detail.html:35
 msgid "Version"
 msgstr "버전"
 
-#: blog/models/blog.py:150 blog/models/blog.py:179 blog/models/blog.py:238
-#: blog/models/blog.py:273
+#: blog/models/blog.py:142 blog/models/blog.py:171 blog/models/blog.py:230
+#: blog/models/blog.py:265
 msgid "Project Branch"
 msgstr "프로젝트 브랜치"
 
-#: blog/models/blog.py:152 blog/models/blog.py:240
-#: templates/blog/_post_detail.html:38
+#: blog/models/blog.py:144 blog/models/blog.py:232
+#: blog/views/opensource/opensource_forms.py:62
+#: blog/views/project/project_forms.py:62 templates/blog/_post_detail.html:38
 #: templates/components/card_project.html:15
 msgid "Repository"
 msgstr "저장소"
 
-#: blog/models/blog.py:158 blog/models/blog.py:192 blog/models/blog.py:211
-#: blog/models/blog.py:252 blog/models/blog.py:286
+#: blog/models/blog.py:150 blog/models/blog.py:184 blog/models/blog.py:203
+#: blog/models/blog.py:244 blog/models/blog.py:278
 msgid "Like Set"
 msgstr "좋아요 설정"
 
-#: blog/models/blog.py:163 blog/models/blog.py:164
+#: blog/models/blog.py:155 blog/models/blog.py:156
 msgid "project"
 msgstr "프로젝트"
 
-#: blog/models/blog.py:185 blog/models/blog.py:245 blog/models/blog.py:279
+#: blog/models/blog.py:177 blog/models/blog.py:237 blog/models/blog.py:271
 msgid "Difficulty Level"
 msgstr "난이도"
 
-#: blog/models/blog.py:197 blog/models/blog.py:198
+#: blog/models/blog.py:189 blog/models/blog.py:190
 msgid "online study"
 msgstr "온라인 학습"
 
-#: blog/models/blog.py:216 blog/models/blog.py:217
+#: blog/models/blog.py:208 blog/models/blog.py:209
 msgid "blog post"
 msgstr "블로그 게시물"
 
-#: blog/models/blog.py:257 blog/models/blog.py:258
+#: blog/models/blog.py:249 blog/models/blog.py:250
 msgid "open source post"
 msgstr "오픈 소스 포스트"
 
-#: blog/models/blog.py:291 blog/models/blog.py:292
+#: blog/models/blog.py:283 blog/models/blog.py:284
 msgid "books post"
 msgstr "책 포스트"
 
-#: blog/models/blog.py:304
+#: blog/models/blog.py:296
 msgid "tag"
 msgstr "태그"
 
-#: blog/models/blog.py:305
+#: blog/models/blog.py:297
 msgid "tags"
 msgstr "태그"
 
@@ -235,6 +251,13 @@ msgstr "책 포스트 댓글"
 #: blog/views/blog/blog_forms.py:15 blog/views/books/books_forms.py:15
 #: blog/views/online_study/online_study_forms.py:15
 #: blog/views/opensource/opensource_forms.py:15
+#: blog/views/project/project_forms.py:15 templates/components/tag_list.html:4
+msgid "Tags"
+msgstr "태그"
+
+#: blog/views/blog/blog_forms.py:15 blog/views/books/books_forms.py:15
+#: blog/views/online_study/online_study_forms.py:15
+#: blog/views/opensource/opensource_forms.py:15
 #: blog/views/project/project_forms.py:15
 msgid "Separate tags using \",\""
 msgstr "\",\"를 사용하여 태그를 구분합니다."
@@ -248,9 +271,65 @@ msgstr "\",\"를 사용하여 태그를 구분합니다."
 msgid "Enter Content"
 msgstr "내용 입력"
 
-#: board/models/board.py:76
+#: blog/views/blog/blog_forms.py:40 blog/views/books/books_forms.py:51
+#: blog/views/online_study/online_study_forms.py:51
+#: blog/views/opensource/opensource_forms.py:55
+#: blog/views/project/project_forms.py:54
+msgid "Link 1"
+msgstr "링크 1"
+
+#: blog/views/blog/blog_forms.py:41 blog/views/books/books_forms.py:52
+#: blog/views/online_study/online_study_forms.py:52
+#: blog/views/opensource/opensource_forms.py:56
+#: blog/views/project/project_forms.py:55
+msgid "Link 2"
+msgstr "링크 2"
+
+#: blog/views/blog/blog_forms.py:44 blog/views/books/books_forms.py:58
+#: blog/views/online_study/online_study_forms.py:58
+#: blog/views/opensource/opensource_forms.py:64
+#: blog/views/project/project_forms.py:63
+msgid "Attachment 1"
+msgstr "첨부파일 1"
+
+#: blog/views/blog/blog_forms.py:45 blog/views/books/books_forms.py:59
+#: blog/views/online_study/online_study_forms.py:59
+#: blog/views/opensource/opensource_forms.py:65
+#: blog/views/project/project_forms.py:64
+msgid "Attachment 2"
+msgstr "첨부파일 2"
+
+#: blog/views/books/books_forms.py:55
+#: blog/views/online_study/online_study_forms.py:55
+#: blog/views/opensource/opensource_forms.py:60
+#: blog/views/project/project_forms.py:60 portfolio/models.py:28
+#: templates/base/header.html:35 templates/blog/_post_detail.html:33
+msgid "Language"
+msgstr "언어"
+
+#: blog/views/books/books_forms.py:56
+#: blog/views/online_study/online_study_forms.py:56
+#: blog/views/opensource/opensource_forms.py:61
+#: blog/views/project/project_forms.py:61 templates/blog/_post_detail.html:34
+msgid "Branch"
+msgstr "브랜치"
+
+#: blog/views/books/books_forms.py:57
+#: blog/views/online_study/online_study_forms.py:57
+#: blog/views/opensource/opensource_forms.py:63
+#: templates/blog/_post_detail.html:37
+msgid "Difficulty"
+msgstr "난이도"
+
+#: blog/views/opensource/opensource_forms.py:58
+#: blog/views/project/project_forms.py:57 portfolio/models.py:200
+#: templates/blog/_post_detail.html:36
+msgid "Role"
+msgstr "역할"
+
+#: board/models/board.py:76 board/views/notice/notice_forms.py:36
 msgid "Priority"
-msgstr "우선 사항"
+msgstr "우선순위"
 
 #: board/models/board.py:79
 msgid "Sorting sequence"
@@ -279,6 +358,10 @@ msgstr "방문자 보드 댓글"
 #: board/models/board_reply.py:55 board/models/board_reply.py:56
 msgid "reactivation board reply"
 msgstr "재활성화 보드 댓글"
+
+#: board/views/notice/notice_forms.py:37
+msgid "Sort order"
+msgstr "정렬 순서"
 
 #: config/settings/base.py:144
 msgid "Korean"
@@ -484,11 +567,6 @@ msgstr "한국어"
 msgid "en"
 msgstr "영어"
 
-#: portfolio/models.py:28 templates/base/header.html:35
-#: templates/blog/_post_detail.html:33
-msgid "Language"
-msgstr "언어"
-
 #: portfolio/models.py:42
 msgid "Portfolio CV File"
 msgstr "포트폴리오 이력서 파일"
@@ -601,10 +679,6 @@ msgstr "프로젝트 시작 날짜"
 msgid "Project End Date"
 msgstr "프로젝트 종료 날짜"
 
-#: portfolio/models.py:200 templates/blog/_post_detail.html:36
-msgid "Role"
-msgstr "역할"
-
 #: portfolio/models.py:209
 msgid "Color"
 msgstr "색깔"
@@ -681,7 +755,7 @@ msgstr "메시지"
 msgid "get in touch"
 msgstr "연락하다"
 
-#: templates/base/base.html:18
+#: templates/base/base.html:20
 msgid "Skip to content"
 msgstr "본문 바로가기"
 
@@ -766,17 +840,17 @@ msgstr "메뉴"
 msgid "Close menu"
 msgstr "메뉴 닫기"
 
-#: templates/base/post_form.html:31
+#: templates/base/post_form.html:29
 msgid "Current file"
 msgstr "현재 파일"
 
-#: templates/base/post_form.html:47 templates/base/post_form.html:49
+#: templates/base/post_form.html:44 templates/base/post_form.html:46
 #: templates/components/comments.html:27 templates/components/comments.html:58
 #: templates/users/password_replacement.html:7
 msgid "Cancel"
 msgstr "취소"
 
-#: templates/base/post_form.html:51 templates/blog/blog/blog_edit.html:4
+#: templates/base/post_form.html:48 templates/blog/blog/blog_edit.html:4
 #: templates/blog/blog_list.html:21 templates/blog/books/books_edit.html:4
 #: templates/blog/online_study/online_study_edit.html:4
 #: templates/blog/opensource/opensource_edit.html:4
@@ -860,14 +934,6 @@ msgstr "도서"
 #: templates/base/search_result_board_list.html:31
 msgid "Nothing matched. Try another word or tag."
 msgstr "일치하는 글이 없습니다. 다른 단어나 태그로 검색해 보세요."
-
-#: templates/blog/_post_detail.html:34
-msgid "Branch"
-msgstr "브랜치"
-
-#: templates/blog/_post_detail.html:37
-msgid "Difficulty"
-msgstr "난이도"
 
 #: templates/blog/_post_detail.html:51
 msgid "Links and files"
@@ -1003,10 +1069,6 @@ msgstr "댓글"
 #: templates/components/pagination.html:6
 msgid "Pagination"
 msgstr "페이지 이동"
-
-#: templates/components/tag_list.html:4
-msgid "Tags"
-msgstr "태그"
 
 #: templates/django_summernote/widget_iframe.html:18
 msgid "Post editor"

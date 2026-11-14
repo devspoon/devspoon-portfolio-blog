@@ -14,7 +14,7 @@ logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
 
 class BlogForm(forms.ModelForm):
     tag_set = TagsField(
-        label="tags", help_text=_('Separate tags using ","'), required=False, initial=""
+        label=_("Tags"), help_text=_('Separate tags using ","'), required=False, initial=""
     )
 
     def __init__(self, *args, **kwargs):
@@ -39,11 +39,11 @@ class BlogForm(forms.ModelForm):
         fields = ["title", "content", "link1", "link2", "file1", "file2"]
         # fields = "__all__"
         labels = {
-            "link1": "link1",
-            "link2": "link2",
-            "title": "title",
-            "content": "content",
-            "file1": "file1",
-            "file2": "file2",
+            "link1": _("Link 1"),
+            "link2": _("Link 2"),
+            "title": _("Title"),
+            "content": _("Content"),
+            "file1": _("Attachment 1"),
+            "file2": _("Attachment 2"),
         }
         widgets = {"content": SummernoteWidget()}

@@ -14,7 +14,7 @@ logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
 
 class OnlineStudyForm(forms.ModelForm):
     tag_set = TagsField(
-        label="tags", help_text=_('Separate tags using ","'), required=False, initial=""
+        label=_("Tags"), help_text=_('Separate tags using ","'), required=False, initial=""
     )
 
     def __init__(self, *args, **kwargs):
@@ -50,14 +50,14 @@ class OnlineStudyForm(forms.ModelForm):
         ]
         # fields = "__all__"
         labels = {
-            "link1": "link1",
-            "link2": "link2",
-            "title": "title",
-            "content": "content",
-            "dev_lang": "dev_lang",
-            "branch": "branch",
-            "difficulty_level": "difficulty_level",
-            "file1": "file1",
-            "file2": "file2",
+            "link1": _("Link 1"),
+            "link2": _("Link 2"),
+            "title": _("Title"),
+            "content": _("Content"),
+            "dev_lang": _("Language"),
+            "branch": _("Branch"),
+            "difficulty_level": _("Difficulty"),
+            "file1": _("Attachment 1"),
+            "file2": _("Attachment 2"),
         }
         widgets = {"content": SummernoteWidget()}

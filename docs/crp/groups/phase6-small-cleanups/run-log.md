@@ -20,3 +20,6 @@
 - **게이트:** pytest **722 passed / 1 skipped**, check exit 0, 이쪽 앱 `makemigrations --check` No changes. dev 스택(PostgreSQL·실제 라우터): 프로젝트 글 수정 화면 그대로 저장 → 302·태그 유지, 141자 태그 → 폼 오류, 태그 검색 12개 → 10+2, 제목·페이지 링크에 검색어. runserver 점검표·5단계 댓글 점검 통과, mac UA 요청 200, 500 0건
 - **수렴 판정:** `CONVERGED` — Open Fix 0
 - **검사 범위의 한계:** 브라우저에서 직접 누르지 않음. CI 미실행. 이미 합쳐진 태그·mac 통계는 보정 안 함(R-001)
+
+### 병합 후 — 2026-11-14
+- 그쪽 `f094739`가 F-001~F-003을 같은 동작으로 고쳐 통합 Round 4로 병합(phase5a-integration run-log). 이쪽 F-001~F-003 테스트와 그쪽 `blog/tests/test_tags.py`·`home/tests/test_search.py`가 함께 통과

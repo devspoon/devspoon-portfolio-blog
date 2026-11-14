@@ -64,9 +64,13 @@ SUMMERNOTE_CONFIG = {
     #'attachment_absolute_uri': False,
 
     # You can add custom css/js for SummernoteWidget.
+    # Dark theme for the editor iframe. These URLs are used as-is (not passed through static()):
+    # shortcut: assumes STATIC_URL == "/static/" (true in every settings file); use static() if that changes.
     'css': (
+        '/static/css/summernote-theme.css',
     ),
     'js': (
+        '/static/js/summernote-theme.js',
     ),
 
     # You can also add custom css/js for SummernoteInplaceWidget.
