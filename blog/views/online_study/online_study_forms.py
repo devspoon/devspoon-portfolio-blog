@@ -5,13 +5,15 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django_summernote.widgets import SummernoteWidget
 
+from blog.views.tags_field import TagsField
+
 from blog.models.blog import OnlineStudyPost
 
 logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
 
 
 class OnlineStudyForm(forms.ModelForm):
-    tag_set = forms.CharField(
+    tag_set = TagsField(
         label="tags", help_text=_('Separate tags using ","'), required=False, initial=""
     )
 
@@ -29,7 +31,7 @@ class OnlineStudyForm(forms.ModelForm):
             }
         )
         if self.instance and self.instance.pk:
-            self.fields["tag_set"].initial = "".join(
+            self.fields["tag_set"].initial = ",".join(
                 str(tag.tag) for tag in self.instance.tag_set.all()
             )
 

@@ -62,8 +62,8 @@ class Search:
 
         return result
 
-    def queryset_tag_search(self, tag, page_number, per_page):
-        tag = Tag.objects.filter(tag=tag)
+    def queryset_tag_search(self, tag_text, page_number, per_page):
+        tag = Tag.objects.filter(tag=tag_text)
 
         # blog result
         project_queryset = self.get_tag_search_query_set(ProjectPost, tag)
@@ -89,8 +89,8 @@ class Search:
 
         result = {
             "page_obj": paging,
-            "board": result_queryset,
-            "tag": tag,
+            "board": paging.object_list,
+            "tag": tag_text,
         }
 
         return result

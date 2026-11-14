@@ -492,24 +492,16 @@ def on_save_user(sender, instance, **kwargs):
 
 
 def _ensure_profile(instance):
-    profile = UserProfile.objects.filter(user=instance).first()
-    # social_account = SocialAccount.objects.filter(user=instance).first()
-
-    temp_num = 0
-    if not profile:
-        if instance.nickname:
-            nickname = instance.nickname
-        else:
-            nickname = instance.email.split("@")[0]
-            check_nickname = User.objects.filter(
-                nickname__icontains=nickname
-            ).values_list("username", flat=True)
-            if nickname in check_nickname:
-                for num in check_nickname:
-                    nickname = nickname + str(temp_num + 1)
-                    if not nickname in check_nickname:
-                        break
-        UserProfile.objects.create(user=instance, nickname=nickname, point=0)
+    if UserProfile.objects.filter(user=instance).exists():
+        return
+    # 프로필 닉네임은 unique다. 가입 닉네임(없으면 이메일 앞부분)이 겹치면 base1, base2…(phase6 F-004)
+    limit = UserProfile._meta.get_field("nickname").max_length
+    base = (instance.nickname or instance.email.split("@")[0])[:limit]
+    nickname, n = base, 0
+    while UserProfile.objects.filter(nickname=nickname).exists():
+        n += 1
+        nickname = f"{base[: limit - len(str(n))]}{n}"
+    UserProfile.objects.create(user=instance, nickname=nickname, point=0)
 
 
 def delete_thumbnail(origin_file, instance):
@@ -556,7 +548,7 @@ def auto_delete_file_on_save(sender, instance, **kwargs):
             new_file = getattr(instance, field.name)
 
             if not origin_file or origin_file == "default/no_img.png":
-                return True
+                continue
 
             if origin_file != new_file and os.path.isfile(origin_file.path):
                 os.remove(origin_file.path)
@@ -581,7 +573,7 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
             origin_file = getattr(instance, field.name)
 
             if origin_file == "default/no_img.png":
-                return True
+                continue
 
             if origin_file and os.path.isfile(origin_file.path):
                 os.remove(origin_file.path)

@@ -99,7 +99,7 @@ class ConnectionMethodStatsMiddleware(BaseStatsMiddleware):
     def resolve_field(os_info: str) -> str:
         if "Windows" in os_info:
             return "win"
-        if "mac" in os_info:
+        if "Macintosh" in os_info:  # iPhone UA의 "like Mac OS X"와 섞이지 않는다
             return "mac"
         if "iPhone" in os_info:
             return "iph"

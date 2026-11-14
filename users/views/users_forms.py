@@ -72,6 +72,7 @@ class RegisterForm(forms.Form):
     captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
 
     def check_email_validation_with_dns(self, email: str) -> [str, bool]:
+        is_valid = False  # 검증 전에 예외가 나면 거부로 본다(phase6 F-010)
         try:
             if email is None:
                 return False
@@ -81,7 +82,7 @@ class RegisterForm(forms.Form):
 
             _, domain = email.rsplit("@", 1)
 
-            if "test" in domain.lower():
+            if "test" in domain.lower().split("."):
                 raise AddressFormatError("Incorrect domain. Please enter the domain you actually use.")
 
             is_valid = validate_email(

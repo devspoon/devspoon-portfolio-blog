@@ -5,13 +5,15 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django_summernote.widgets import SummernoteWidget
 
+from blog.views.tags_field import TagsField
+
 from blog.models.blog import OpenSourcePost
 
 logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
 
 
 class OpenSourceForm(forms.ModelForm):
-    tag_set = forms.CharField(
+    tag_set = TagsField(
         label="tags", help_text=_('Separate tags using ","'), required=False, initial=""
     )
 

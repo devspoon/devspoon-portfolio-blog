@@ -354,6 +354,7 @@ class CustomUserAdmin(UserAdmin, ExportCsv):
 class UserVerificationAdmin(admin.ModelAdmin):
     list_display = ["id", "user", "verified", "created_at"]
     list_display_links = ["id", "user", "verified"]
+    list_select_related = ("user",)  # user는 NULL 허용이라 자동 select_related에서 빠진다(phase6 F-008)
     search_fields = ("id", "user__username")
     list_per_page = 20
 

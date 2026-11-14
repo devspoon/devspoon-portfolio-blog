@@ -1,6 +1,5 @@
 import logging
 import os
-import re
 
 from bs4 import BeautifulSoup as Bs
 
@@ -15,6 +14,13 @@ from django.utils.translation import gettext_lazy as _
 from utils.os.file_path_name_gen import date_upload_to_for_file
 
 logger = logging.getLogger(getattr(settings, "BLOG_LOGGER", "django"))
+
+TAG_MAX_LENGTH = 140
+
+
+def split_tags(content) -> list:
+    """'a, b,,a' -> ['a', 'b']: 쉼표로 나누고 앞뒤 공백·빈 값·중복을 뺀다(입력 순서 유지, phase6 ADR-001)."""
+    return list(dict.fromkeys(t.strip() for t in (content or "").split(",") if t.strip()))
 
 
 class ActivateDataQuerySet(models.QuerySet):
@@ -116,25 +122,8 @@ class PostMixin(models.Model):
         self.table_name = type(self).__name__
         super().save(*args, **kwargs)
 
-    def __table_name__(self):
-        return self.__name__
-
     def tag_save(self, content):
-        tags = re.findall(r"#([a-zA-Z\dㄱ-힣]+)", content)
-        tags = content.split(",")
-        tags = list(set(tags))
-
-        if not tags:
-            return
-
-        self.tag_set.clear()
-
-        for t in tags:
-            if not t:
-                continue
-
-            tag, tag_created = Tag.objects.get_or_create(tag=t)
-            self.tag_set.add(tag)
+        self.tag_set.set([Tag.objects.get_or_create(tag=t)[0] for t in split_tags(content)])
 
 
 class ProjectPost(PostMixin):
@@ -302,7 +291,7 @@ class BooksPost(PostMixin):
 
 
 class Tag(models.Model):
-    tag = models.CharField(max_length=140, unique=True)
+    tag = models.CharField(max_length=TAG_MAX_LENGTH, unique=True)
 
     class Meta:
         db_table = "tag"
@@ -351,7 +340,7 @@ def auto_delete_file_on_save_for_blog(sender, instance):
             new_file = getattr(instance, field_name)
 
             if not origin_file:
-                return True
+                continue
 
             if origin_file != new_file and os.path.isfile(origin_file.path):
                 os.remove(origin_file.path)

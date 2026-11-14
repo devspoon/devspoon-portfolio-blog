@@ -96,14 +96,24 @@ def test_malformed_emails_are_rejected(email):
     assert "emailfrom" in form.errors
 
 
+# 도메인 이름 중 하나가 정확히 test일 때만 거부한다(phase6 D1-A). mytest.co.kr 같은 정상 도메인은 통과.
 @pytest.mark.parametrize(
-    "email", ["a@test.com", "a@mytest.co.kr", "a@TEST.io"]
+    "email", ["a@test.com", "a@mail.test.co.kr", "a@TEST.io"]
 )
 def test_test_domains_are_rejected(email):
     form = GetInTouchForm(payload(emailfrom=email))
 
     assert not form.is_valid()
     assert "emailfrom" in form.errors
+
+
+@override_settings(EMAIL_DNS_VALIDATION=False)
+@pytest.mark.parametrize("email", ["a@mytest.co.kr", "a@contest.com"])
+def test_domains_that_only_contain_test_are_accepted(email):
+    form = GetInTouchForm(payload(emailfrom=email))
+    form.is_valid()
+
+    assert "emailfrom" not in form.errors
 
 
 @override_settings(EMAIL_DNS_VALIDATION=True)

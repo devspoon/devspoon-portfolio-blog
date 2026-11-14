@@ -87,7 +87,7 @@ class GetInTouchForm(forms.Form):
         email = self.cleaned_data["emailfrom"]
         _local, domain = email.rsplit("@", 1)
 
-        if "test" in domain.lower():
+        if "test" in domain.lower().split("."):
             raise forms.ValidationError(
                 _("Incorrect domain. Please enter the domain you actually use.")
             )
