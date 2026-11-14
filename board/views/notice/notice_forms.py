@@ -31,9 +31,9 @@ class NoticeForm(forms.ModelForm):
         model = Notice
         fields = ["title", "content", "priority", "sorting_sequence"]
         labels = {
-            "title": "title",
-            "content": "content",
-            "priority": "priority",
-            "sorting_sequence": "sorting sequence",
+            "title": _("Title"),
+            "content": _("Content"),
+            "priority": _("Priority"),
+            "sorting_sequence": _("Sort order"),
         }
         widgets = {"content": SummernoteWidget()}

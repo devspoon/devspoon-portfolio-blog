@@ -29,7 +29,7 @@ class ReactivationForm(forms.ModelForm):
         model = Reactivation
         fields = ["title", "content"]
         labels = {
-            "title": "title",
-            "content": "content",
+            "title": _("Title"),
+            "content": _("Content"),
         }
         widgets = {"content": SummernoteWidget()}

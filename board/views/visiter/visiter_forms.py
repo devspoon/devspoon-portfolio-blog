@@ -29,7 +29,7 @@ class VisiterForm(forms.ModelForm):
         model = Visiter
         fields = ["title", "content"]
         labels = {
-            "title": "title",
-            "content": "content",
+            "title": _("Title"),
+            "content": _("Content"),
         }
         widgets = {"content": SummernoteWidget()}

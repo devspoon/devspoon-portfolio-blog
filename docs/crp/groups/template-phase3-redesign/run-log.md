@@ -120,6 +120,20 @@
 - **검증:** pytest 162 passed·1 skipped
 - **수렴 판정:** `NOT CONVERGED` — 스크린샷 세트 사용자 확인 대기(STOP ③)
 
+### Round 8 — 2026-11-14 (base SHA: `726d55d`) — 범위 밖 발견 수정(REQ-009)
+- **트리거:** 사용자 "2번 진행해줘" → 설계 승인 "권장대로 진행해줘"(태그 공백 제거 포함)
+- **수정(모두 실패 테스트 먼저):**
+  1. 태그 수정 손상(형제 버그, 데이터): blog·books·online_study·project 폼이 수정 화면 태그를 `"".join`으로 채워, 그대로 저장하면
+     태그가 하나로 합쳐짐 → `",".join`. `tag_save`는 앞뒤 공백 제거·중복 제거, 빈 입력은 여전히 태그 전부 삭제(기존 동작 유지), 죽은 `re.findall` 삭제
+  2. 폼 라벨 8개 폼: 필드 이름 → `_()` 단어(한국어 번역). 연결점 `post_form.html`의 `field.label == 'file1'` → `field.name`,
+     같은 유형 `form_field.html`의 `field.label == "Captcha"` → `field.name`. 번역 변경: Content 콘텐츠→본문, Priority 우선 사항→우선순위
+  3. 태그 검색: 컨텍스트 `tag`가 QuerySet이던 것을 검색어 문자열로, `board`를 페이지 결과로
+  4. 다크 편집기: `SUMMERNOTE_CONFIG` css/js에 `summernote-theme.{css,js}` — iframe이 부모 페이지의 `data-bs-theme`와 색 토큰을 복사(색 리터럴 없음, INV-1),
+     테마 전환을 MutationObserver로 따라감. 확인 중 bs4 `.card` 흰 배경 띠 발견해 함께 처리
+- **회귀 테스트:** test_tags 7, test_form_labels 9, test_search 1, test_editor_theme 1 — 모두 수정 전 실패 확인
+- **검증:** pytest 180 passed·1 skipped / axe 위반 0 / 다크 글쓰기 화면: 편집기 배경 = 다크 `--c-surface`, 전환 후 라이트 복귀 / 번역 402/409
+- **잔여:** 이미 공백이 붙어 저장된 태그는 그대로(데이터 정리는 범위 밖)
+
 ## 심각도 추세 (수렴이 보이게)
 | Round | CRIT | HIGH | MED | LOW | 신규 Fix | 판정 |
 |---|---|---|---|---|---|---|

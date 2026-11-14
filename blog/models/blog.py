@@ -1,6 +1,5 @@
 import logging
 import os
-import re
 
 from bs4 import BeautifulSoup as Bs
 
@@ -115,19 +114,12 @@ class PostMixin(models.Model):
         return self.__name__
 
     def tag_save(self, content):
-        tags = re.findall(r"#([a-zA-Z\dㄱ-힣]+)", content)
-        tags = content.split(",")
-        tags = list(set(tags))
-
-        if not tags:
-            return
+        # empty input clears the tags (the user removed them all)
+        tags = {t.strip() for t in content.split(",")} - {""}
 
         self.tag_set.clear()
 
         for t in tags:
-            if not t:
-                continue
-
             tag, tag_created = Tag.objects.get_or_create(tag=t)
             self.tag_set.add(tag)
 

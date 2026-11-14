@@ -1,0 +1,15 @@
+/* Summernote editor iframe (bs4 theme) in the site's dark theme. data-theme and the --c-* values are set by
+   js/summernote-theme.js from the parent page's tokens; selectors out-rank summernote-bs4.min.css. */
+:root[data-theme="dark"] body { background: var(--c-bg); }
+:root[data-theme="dark"] .note-editor.note-frame { background: var(--c-surface); border-color: var(--c-line); } /* bs4 .card is white */
+:root[data-theme="dark"] .note-editor.note-frame .note-toolbar,
+:root[data-theme="dark"] .note-editor.note-frame .note-statusbar { background: var(--c-surface-2); border-color: var(--c-line); }
+:root[data-theme="dark"] .note-editor.note-frame .note-editing-area .note-editable { background: var(--c-surface); color: var(--c-text); }
+:root[data-theme="dark"] .note-editor.note-frame .note-placeholder { color: var(--c-text-muted); }
+:root[data-theme="dark"] .note-editor .note-btn { background: var(--c-surface); color: var(--c-text); border-color: var(--c-line); }
+:root[data-theme="dark"] .note-editor .dropdown-menu,
+:root[data-theme="dark"] .note-editor .note-dropdown-menu { background: var(--c-surface); color: var(--c-text); border-color: var(--c-line); }
+:root[data-theme="dark"] .note-editor .dropdown-item,
+:root[data-theme="dark"] .note-editor .note-dropdown-item { color: var(--c-text); }
+:root[data-theme="dark"] .note-editor .dropdown-item:hover,
+:root[data-theme="dark"] .note-editor .note-dropdown-item:hover { background: var(--c-surface-2); }
