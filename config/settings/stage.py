@@ -126,7 +126,8 @@ REDIS_CONNECTION = get_redis_connection()
 
 CACHE_TTL = 60 * 60 * 24
 # 세션은 DB(django_session)에 둔다. Redis 비우기·재시작·축출과 무관하게 로그인이 유지된다(phase7 ADR-001).
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
+# 전환용: DB에 없으면 옛 Redis 세션을 옮겨 쓴다. 전환이 끝나면 "django.contrib.sessions.backends.db"로(ADR-007)
+SESSION_ENGINE = "common.core.session_transition"
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

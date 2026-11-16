@@ -93,3 +93,44 @@ def test_clear_expired_sessions_removes_only_expired_rows():
     Session.objects.create(session_key="valid", session_data="", expire_date=now + timedelta(days=1))
     clear_expired_sessions()
     assert list(Session.objects.values_list("session_key", flat=True)) == ["valid"]
+
+
+# --- 전환 빈틈(ADR-007): 배포 뒤 move_sessions 전에 와도 로그인 유지 ------------------------------
+
+
+def _cookie_deleted(response):
+    cookie = response.cookies.get("sessionid")
+    return bool(cookie) and cookie["max-age"] == 0
+
+
+@pytest.mark.django_db
+def test_legacy_redis_session_survives_the_first_request_after_deploy(user):
+    key = _redis_session(user)
+    cache.set("phase7:unrelated", 1)
+    c = Client(**headers)
+    c.cookies["sessionid"] = key
+
+    response = c.get("/")
+    assert response.wsgi_request.user.is_authenticated and not _cookie_deleted(response)
+    assert Session.objects.filter(session_key=key).exists()  # 그 자리에서 DB로 옮겼다
+    assert cache.get(CACHE_SESSION_PREFIX + key) is None
+    assert cache.get("phase7:unrelated") == 1
+    assert logged_in(c)  # 다음 요청은 DB에서
+
+
+@pytest.mark.django_db
+def test_unknown_cookie_is_still_anonymous(user):
+    c = Client(**headers)
+    c.cookies["sessionid"] = "nosuchsession0000000000000000000"
+    assert not logged_in(c)
+
+
+@pytest.mark.django_db
+def test_legacy_session_when_the_row_was_already_created(user):
+    """같은 번호의 행이 이미 있으면(동시 요청, 만료된 행) CreateError를 삼키고 로그인시킨다."""
+    key = _redis_session(user)
+    Session.objects.create(session_key=key, session_data="", expire_date=timezone.now() - timedelta(minutes=1))
+    c = Client(**headers)
+    c.cookies["sessionid"] = key
+    assert logged_in(c)
+    assert Session.objects.get(session_key=key).expire_date > timezone.now()  # 요청 끝에 저장돼 살아났다
