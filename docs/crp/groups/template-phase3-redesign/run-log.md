@@ -178,6 +178,14 @@
   세 버튼 width/height 216·195·210×48. 테스트 기준을 Lighthouse 규칙(표시 높이의 1.5배 = 72px 이상)으로, 네이버 예외 제거
 - **검증:** pytest 183 passed·1 skipped / 로그인 Lighthouse BP 100(image-size-responsive 통과)·CLS 0 / 라이트·다크 360폭 화면 확인
 
+### Round 13 — 2026-11-17 (base SHA: `caa21b8`) — 운영 공백 태그 삭제(REQ-010)
+- **트리거:** 사용자 "삭제 진행해줘"(관리자 화면 대신 Claude가 직접 삭제 — 명시 승인)
+- **동등성:** `TagAdmin`은 기본 `ModelAdmin`, `Tag`에 삭제 신호·캐시 정리 없음 → SQL 삭제 = 관리자 삭제
+- **방법:** 작업 폴더 스크립트 하나, 접속 정보 비출력. `tag`를 참조하는 외래키를 카탈로그에서 찾아(5개 `*_post_tag_set`) 연결 0 재확인,
+  `FOR UPDATE`로 잠근 뒤 `id = ANY(...) AND NOT EXISTS(연결)` 조건 삭제, 정확히 3건일 때만 COMMIT. 연습 실행(ROLLBACK) 먼저
+- **삭제 전 기록(복구용):** `id=6 ' c'`, `id=7 ' a'`, `id=32 '  '` — 셋 다 연결 0
+- **사후 확인(별도 읽기 전용 연결):** 태그 32개, 앞뒤 공백 태그 0
+
 ## 심각도 추세 (수렴이 보이게)
 | Round | CRIT | HIGH | MED | LOW | 신규 Fix | 판정 |
 |---|---|---|---|---|---|---|
