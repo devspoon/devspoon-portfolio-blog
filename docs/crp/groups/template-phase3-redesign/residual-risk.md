@@ -12,13 +12,14 @@
 | R-011 | 스크린샷 환경(SQLite)에서 방문 집계·댓글 목록 동시 요청이 간헐적 500, media 미제공으로 아바타 404 → Lighthouse BP 96(콘솔 오류) | LOW | 테스트 환경 한정(단독 호출은 200, 운영은 PostgreSQL(PgBouncer)·nginx, 2026-11-16 정정: 이전 기재 MySQL·S3는 오류). 아바타는 로드 실패 시 숨김 처리 | 2026-11-13 | 운영 DB 환경에서 재측정 |
 | R-003 | 본문(사용자 작성 Summernote HTML) 이미지에 alt 없음 → Lighthouse image-alt | LOW | 콘텐츠 문제. sanitizer 변경은 계획 밖 | 2026-11-12 | **해소 2026-11-13** — sanitize_html이 alt 없는 img에 `alt=""` |
 | R-004 | 새 UI 문자열(영어 msgid)이 .po 미번역 → 한국어 화면에 영어 노출 | MED | 문자열이 4b까지 계속 바뀜 | 2026-11-12 | **해소 2026-11-13** — 397/404 번역, 미번역 7은 기술 용어 |
-| R-013 | Lighthouse 모바일 성능 70~79(무압축)·84~96(gzip) — charter 기준 90 미달 | MED | 원인 중 압축은 운영 인프라(저장소에 웹서버 설정 없음), 애널리틱스는 제품 결정, 글꼴 로딩·Bootstrap 부분 사용은 설계 변경 | 2026-11-13 | **조건부 해소 2026-11-13** — 글꼴 CSS 비차단 후 gzip 조건 중앙값 97~99. 남은 조건: 운영 웹서버(또는 CDN)가 CSS·JS를 gzip/br 압축하는지 사용자 확인 |
+| R-013 | Lighthouse 모바일 성능 70~79(무압축)·84~96(gzip) — charter 기준 90 미달 | MED | 원인 중 압축은 운영 인프라(저장소에 웹서버 설정 없음), 애널리틱스는 제품 결정, 글꼴 로딩·Bootstrap 부분 사용은 설계 변경 | 2026-11-13 | **해소 2026-11-17** — 운영 nginx가 HTML·CSS·JS를 `Content-Encoding: gzip`으로 응답(HEAD 요청 확인) |
 | R-014 | `config/settings/sub_settings/cloud/aws.py`에 AWS 키 평문, git 기록·GitHub 원격에 존재 | HIGH | 이번 그룹(템플릿) 범위 밖 기존 문제, 키 폐기는 AWS 계정에서 사용자만 가능 | 2026-11-13 | **사용자 조치 필요** — 2026-11-14 사용자: AWS는 계획 단계, 앱에서 연동·사용 안 함. 단 키가 IAM에서 활성이면 앱 사용 여부와 무관하게 악용 가능 → IAM에서 비활성 확인 후, 연동 시 환경변수(`config()`)로 옮김 |
 | R-005 | 레거시 CSS가 남은 페이지(상세 포함)에서 헤더 검색창 패딩 등 누수 | LOW | 6단계 legacy.css 삭제로 해소 | 2026-11-12 | 4b·6단계 |
 | R-007 | 로그인 소셜 버튼 이미지(구글·카카오·네이버) 저해상도 → Lighthouse BP 96(image-size-responsive) | LOW | 각 사의 공식 2x 버튼 이미지 교체 필요(외부 자산, 계획 밖) | 2026-11-13 | 공식 고해상도 이미지를 받을 때 |
 | R-008 | 포트폴리오 스택 연결도 숫자는 포트폴리오 캐시에 함께 저장 → 새 글의 태그가 캐시 TTL 동안 반영 안 됨 | LOW | 포트폴리오 캐시 정책 그대로 사용(관리자 저장 시 무효화) | 2026-11-13 | 실시간 숫자가 필요해지면 |
 | R-009 | `WorkExperienceJsonView`(/portfolio/json/)는 화면에서 더 쓰지 않지만 URL은 남김 | LOW | URL 제거는 계획 밖(외부 사용 여부 미확인) | 2026-11-13 | 6단계 정리 때 제거 여부 확인 |
-| R-012 | 삭제한 static 이미지 54개를 **운영 DB** 본문이 `/static/images/...`로 링크했는지는 확인 못 함(접근 가능한 로컬 DB는 포트폴리오·메뉴 테이블이 비어 있음) | LOW | 운영 DB 접근 불가. 로컬 DB·코드·git 기록은 참조 0건 | 2026-11-13 | 배포 후 404가 보이면 `git checkout e4ab312 -- static/images/<파일>`로 복구 |
+| R-012 | 삭제한 static 이미지 54개를 **운영 DB** 본문이 `/static/images/...`로 링크했는지는 확인 못 함(접근 가능한 로컬 DB는 포트폴리오·메뉴 테이블이 비어 있음) | LOW | 운영 DB 접근 불가. 로컬 DB·코드·git 기록은 참조 0건 | 2026-11-13 | **해소 2026-11-17** — 운영 DB(PostgreSQL, 스키마 django_portfolio_blog) 읽기 전용 조회: 텍스트 컬럼 239개, `static/images/` 언급 0·삭제 54개 참조 0 |
+| R-015 | 운영 nginx가 정적 파일에 `Cache-Control: max-age=315360000`(10년)을 붙이는데 파일 이름에 해시가 없음 → 이후 `app.css`·`core.js` 등을 고쳐도 재방문자는 옛 파일을 계속 씀(첫 배포는 새 파일 이름이라 안전) | MED | 해시 파일명(ManifestStaticFilesStorage) 또는 nginx 재검증 설정은 배포 구조 변경 | 2026-11-17 | **사용자 결정 대기** — 설계안 run-log Round 10 |
 | R-006 | 좋아요 버튼 `aria-pressed` 없음(레거시 JS가 `.clicked`만 토글) | LOW | 5단계 like.js에서 상태 동기화 | 2026-11-12 | **해소 2026-11-13** — post.js가 aria-pressed 토글 |
 
 <!--

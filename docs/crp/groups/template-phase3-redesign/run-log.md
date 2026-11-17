@@ -143,6 +143,18 @@
 - **결정:** 코드 없이 관리자 화면에서 사용자가 3개 삭제. 저장 시 공백 제거(`f094739`)로 재발 없음
 - **정정:** 운영 DB는 MySQL이 아니라 PostgreSQL(R-011 문구 수정, 백업은 `pg_dump`)
 
+### Round 10 — 2026-11-17 (base SHA: `0c2ae8d`) — 남은 4가지(REQ-011)
+- **R-012 해소:** 운영 PostgreSQL(스키마 `django_portfolio_blog`) 읽기 전용 조회 — 텍스트 컬럼 239개, `static/images/` 언급 0, 삭제 이미지 54개 참조 0
+- **R-013 해소:** 운영 `https://www.devspoon.com` HEAD 요청 — HTML·CSS·JS 모두 `Content-Encoding: gzip`. nginx 설정 작업 불필요
+- **R-015 신규:** 같은 응답의 `Cache-Control: max-age=315360000`(10년) + 해시 없는 파일 이름 → 이후 수정 시 재방문자에게 옛 파일. 설계안:
+  A) `ManifestStaticFilesStorage`(해시 파일명, ES 모듈 import 재작성 필요·collectstatic 필수 — 배포 구조 확인 전제),
+  B) nginx 정적 파일 캐시를 재검증 방식으로(`devspoon-web` 저장소, 사용자 작업), C) 템플릿 링크에 버전 쿼리(`?v=`) — 모듈 import 내부는 못 바꿈
+- **Django 5.2(트랙 B):** 하위 에이전트 조사 + 운영 PostgreSQL 17.5 확인 → `../django-52-upgrade/plan.md`(막힘 3: celery-beat 2.7, Django 제약, recaptcha 3.0)
+- **작은 개선 설계:** R-007 소셜 버튼 — 각 사 공식 2x 이미지 + `srcset`(외부 파일 내려받기 승인 필요, Google은 현재 'pressed' 상태 이미지라 기본 상태로 교체);
+  R-009 `/portfolio/json/` — 저장소 내 사용처 0, 화면 뷰와 독립 → 뷰·URL 삭제(외부 사용 여부는 미확인);
+  R-010 새 댓글 — `comments.js`만 수정: 작성 직전 sessionStorage에 표시, 상세 재로드 시 최상위 댓글이면 마지막 페이지·답글이면 작성 당시 페이지를 불러오고 댓글 영역으로 이동
+- **수렴 판정:** `NOT CONVERGED` — R-015·작은 개선·트랙 B 승인 대기
+
 ## 심각도 추세 (수렴이 보이게)
 | Round | CRIT | HIGH | MED | LOW | 신규 Fix | 판정 |
 |---|---|---|---|---|---|---|
