@@ -186,6 +186,22 @@
 - **삭제 전 기록(복구용):** `id=6 ' c'`, `id=7 ' a'`, `id=32 '  '` — 셋 다 연결 0
 - **사후 확인(별도 읽기 전용 연결):** 태그 32개, 앞뒤 공백 태그 0
 
+### Round 14 — 2026-11-17 (base SHA: `afe573c`) — CI 복구, `main` 통합
+- **CI 실패 1 (`origin/main` `5b647a4`, 2026-09-05):** `makemigrations`에서 `Unable to configure handler 'file'` — `logs.py`의 파일 핸들러는
+  `logs/<날짜>.log`를 열 뿐 폴더를 만들지 않음. 폴더는 추적되던 `logs/logfile.log`(2022-07~)가 만들어 왔는데 `fe14082`가 추적 해제.
+  이력상 폴더 생성 코드는 없었음(2023-06에도 같은 파일을 지웠다가 3일 뒤 웹 UI로 되살림)
+- **운영 확인(읽기 전용, ssh `OCI-redhohoho-arm`):** gunicorn은 접속·자체 로그만 `devspoon-web/log/gunicorn/`에 기록(`capture_output=False`),
+  Django 앱 에러는 앱 `logs/`(161개 파일)에만 남음 → 사용자 결정: 기존 방식 유지
+- **수정:** `logs/.gitkeep` 추적 + `.gitignore` `logs/` → `logs/*`·`!logs/.gitkeep` (`3b435e4`). CI가 `.env`를 Slack에 올리던 단계 삭제(`26b3b47`)
+- **통합:** `main-integration` = 로컬 `main`(`258c7ed`) + 이 브랜치 8커밋 cherry-pick(fast-forward 가능). 충돌은 `portfolio/views.py`만 —
+  `main`의 `cached()` 유지, `WorkExperienceJsonView`·`JsonResponse`·`work_experience_key` 삭제, `main`의 `/portfolio/json/` 테스트 2곳 정리.
+  로컬 pytest(`main` 의존성 venv, 마이그레이션 재생성) 754 passed·2 failed·1 skipped — 실패 2건(문의 폼 메일)은 `258c7ed`에서도 동일
+- **push(사용자 실행):** `origin/main` `5b647a4..85cc0ee`. 원격 `docs/sentry-error-remediation-plan`·`template-phase3-redesign` 삭제, 로컬 병합 완료 브랜치 13개 삭제
+- **CI 실패 2 (`85cc0ee`):** 로그 폴더 오류는 해소, 대신 Redis 사용 테스트 756건 setup 오류 `unknown command HELLO 3` — `redis` 8.1(RESP3 기본)과
+  CI의 Redis 5. 수정: `testing.yml` `redis-version` 5 → 7
+- **남은 위험:** 배포 전 서버 정리(오래된 체크아웃+서버 수정 파일 8개, 설정 모듈 `stage`, compose 경로, 마이그레이션 절차, 컨테이너 Python 버전),
+  Slack에 올라간 `.env` 비밀값 교체, phase7b는 `move_sessions --dry-run` 0건 뒤
+
 ## 심각도 추세 (수렴이 보이게)
 | Round | CRIT | HIGH | MED | LOW | 신규 Fix | 판정 |
 |---|---|---|---|---|---|---|

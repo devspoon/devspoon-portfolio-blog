@@ -19,7 +19,7 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: ["3.12"]
-        redis-version: ["5"]
+        redis-version: ["7"]  # redis-py 8 opens with HELLO 3 (RESP3), which needs Redis 6+
         include:
           - os: ubuntu-latest
             path: ~/.cache/pip
