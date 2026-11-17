@@ -21,17 +21,42 @@ function init(root) {
   const formNext = form?.nextSibling;
 
   const fail = () => { status.textContent = root.dataset.tError; };
+  // after posting, the page reloads; this note says which comment page holds the new comment
+  // (replies are ordered oldest first, so a new top-level comment is on the last page)
+  const AFTER_POST = `comments:after-post:${listUrl}`;
+  let current = 1;
 
   async function load(page = 1) {
     try {
       const res = await fetch(`${listUrl}?page=${page}`, { credentials: "same-origin" });
       if (!res.ok) throw new Error(res.status);
       const [info, ...replies] = await res.json();
+      current = info.number || 1;
       resetForm();
       list.replaceChildren(...buildTree(replies));
       renderPages(info);
+      return info;
     } catch { fail(); }
   }
+
+  function takeAfterPost() {
+    try {
+      const target = sessionStorage.getItem(AFTER_POST);
+      sessionStorage.removeItem(AFTER_POST);
+      return target;
+    } catch { return null; }  // storage blocked: fall back to page 1
+  }
+
+  async function firstLoad() {
+    const target = takeAfterPost();
+    const info = await load(target && target !== "last" ? Number(target) || 1 : 1);
+    if (target === "last" && info?.num_pages > (info.number || 1)) await load(info.num_pages);
+    if (target) root.scrollIntoView({ block: "start" });
+  }
+
+  form?.addEventListener("submit", () => {
+    try { sessionStorage.setItem(AFTER_POST, form.elements.parent.value ? String(current) : "last"); } catch { /* ignore */ }
+  });
 
   // parent/child by pk; a reply whose parent is on another page is shown at the top level
   function buildTree(replies) {
@@ -160,5 +185,5 @@ function init(root) {
     }
   });
 
-  load();
+  firstLoad();
 }

@@ -130,7 +130,7 @@ def test_portfolio_and_menu_never_scan(no_scan):
     client = Client()
 
     for _ in range(2):
-        for url in ["/portfolio/", "/portfolio/json/", "/blog/blog/"]:
+        for url in ["/portfolio/", "/blog/blog/"]:
             assert client.get(url).status_code == 200
 
     assert no_scan == []
@@ -354,16 +354,17 @@ def work_experience(lang, title):
     )
 
 
-def test_work_experience_json_follows_the_request_language():
+def test_work_experience_follows_the_request_language():
+    # the timeline is server-rendered on /portfolio/ (the old /portfolio/json/ view is gone)
     work_experience("0", "korean")
     work_experience("1", "english")
     client = Client()
 
-    ko = client.get("/portfolio/json/", HTTP_ACCEPT_LANGUAGE="ko").json()
-    en = client.get("/portfolio/json/", HTTP_ACCEPT_LANGUAGE="en").json()
+    ko = client.get("/portfolio/", HTTP_ACCEPT_LANGUAGE="ko").context["experience"]
+    en = client.get("/portfolio/", HTTP_ACCEPT_LANGUAGE="en").context["experience"]
 
-    assert [w["title"] for w in ko] == ["korean"]
-    assert [w["title"] for w in en] == ["english"]
+    assert [w.title for w in ko] == ["korean"]
+    assert [w.title for w in en] == ["english"]
 
 
 @pytest.mark.parametrize("lang,accept", [("0", "ko"), ("1", "en")])

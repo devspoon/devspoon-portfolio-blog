@@ -23,17 +23,9 @@ def portfolio_key(lang_index) -> str:
     return f"{NAMESPACE}:portfolio:{lang_index}"
 
 
-def work_experience_key(lang_index) -> str:
-    return f"{NAMESPACE}:portfolio:work:{lang_index}"
-
-
 def all_portfolio_keys() -> list:
     # portfolio 모델의 language 값은 settings.LANGUAGES의 순번("0", "1", ...)이다.
-    return [
-        key
-        for index in range(len(settings.LANGUAGES))
-        for key in (portfolio_key(index), work_experience_key(index))
-    ]
+    return [portfolio_key(index) for index in range(len(settings.LANGUAGES))]
 
 
 def cached(key: str, build):

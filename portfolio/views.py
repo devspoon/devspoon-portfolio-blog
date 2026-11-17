@@ -2,7 +2,6 @@ import logging
 
 from django.conf import settings
 from django.contrib import messages
-from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -15,7 +14,6 @@ from blog.models.blog import Tag
 from common.components.django_redis_cache_components import (
     cached,
     portfolio_key,
-    work_experience_key,
 )
 from utils.email.async_send_email import send_mail_sync
 
@@ -85,7 +83,7 @@ class PortfolioView(TemplateView):
             ),
             "portfolio": portfolio,
             "stack": stack_counts(),
-            # 서버에서 그리는 경력 타임라인(WorkExperienceJsonView와 같은 행)
+            # 서버에서 그리는 경력 타임라인
             "experience": list(WorkExperience.objects.filter(language__in=lang)),
             "portfolio_summary": (
                 list(portfolio.portfolio_summary.filter(language__in=lang))
@@ -93,48 +91,6 @@ class PortfolioView(TemplateView):
                 else []
             ),
         }
-
-
-class WorkExperienceJsonView(View):
-
-    def make_context(self, data):
-        if not data.project_end_date:
-            return {
-                "pk": data.pk,
-                "start_year": data.project_start_date.strftime("%Y"),
-                "project_start_date": data.project_start_date.strftime("%Y/%m/%d"),
-                "title": data.title,
-                "role": data.role,
-                "summary": data.summary,
-                "content": data.content,
-                "color": data.get_color_display(),
-                "created_at": data.created_at.strftime("%Y-%m-%d"),
-            }
-        else:
-            return {
-                "pk": data.pk,
-                "start_year": data.project_start_date.strftime("%Y"),
-                "project_start_date": data.project_start_date.strftime("%Y/%m/%d"),
-                "project_end_date": data.project_end_date.strftime("%Y/%m/%d"),
-                "title": data.title,
-                "role": data.role,
-                "summary": data.summary,
-                "content": data.content,
-                "color": data.get_color_display(),
-                "created_at": data.created_at.strftime("%Y-%m-%d"),
-            }
-
-    def get(self, request, *args, **kwargs):
-        lang = get_language_index()
-        # 언어마다 다른 결과이므로 키에 언어를 넣는다(phase3 F-007).
-        context = cached(
-            work_experience_key(lang[0]),
-            lambda: [
-                self.make_context(data)
-                for data in WorkExperience.objects.filter(language__in=lang)
-            ],
-        )
-        return JsonResponse(context, safe=False)
 
 
 class GetInTouchView(View):
