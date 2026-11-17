@@ -163,6 +163,16 @@
   실패 회차는 모두 서버 500 — 요청 기록 미들웨어의 SQLite 쓰기가 아바타(media 404)·방문 집계 요청과 겹침(R-011, 단독 호출은 200). 검증 스크립트는 방문 집계·media 요청을 브라우저에서 응답 처리해 격리
 - **수렴 판정:** `NOT CONVERGED` — 사용자 작업(nginx·태그·이미지·배포)과 R-015 대기
 
+### Round 12 — 2026-11-17 (base SHA: `216a396`) — 소셜 로그인 버튼(R-007)
+- **트리거:** 사용자 "구글·카카오는 받아서 적용하고 네이버는 bi.md에서 받을 수 있는 이미지 검토"
+- **내려받기(승인됨, 프로젝트 밖 빈 폴더):** Google `signin-assets.zip`(835KB, developers.google.com) — Dark·텍스트·사각형 @3x 사용,
+  Kakao `kakao_login_large_narrow.png`(6.6KB, developers.kakao.com). PIL로 형식·크기 확인 후 `static/images/`로
+- **적용:** `login.html` 두 버튼 교체 + width/height(CLS 방지). 이전 `btn_google_signin_dark_pressed_web.png`(눌린 상태)·`kakao_login_medium_narrow.png` 삭제.
+  테스트 1개(이미지 존재·높이 ≥ 88px, 되돌리면 실패 확인)
+- **검증:** pytest 183 passed·1 skipped / Lighthouse 로그인 image-size-responsive 지적은 네이버 1건만 남음 / 360폭 화면 확인
+- **네이버 검토(bi.md 원본):** 자료 `NAVER_login_KR.zip`(PNG, 196KB)·`NAVER_login_EN.zip`(279KB)·`.ai`·`.fig`. 규칙: 지정 컬러 고정(녹색 #03A94D 권장,
+  흰색 배경 허용), 완성형 권장, N 로고 16px 이상, 문구 변경 가능, **타사 버튼이 컬러일 때 흰색 버튼 지양**, 타사 버튼보다 작게 쓰지 말 것
+
 ## 심각도 추세 (수렴이 보이게)
 | Round | CRIT | HIGH | MED | LOW | 신규 Fix | 판정 |
 |---|---|---|---|---|---|---|
