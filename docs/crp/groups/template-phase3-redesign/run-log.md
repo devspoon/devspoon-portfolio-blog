@@ -173,6 +173,11 @@
 - **네이버 검토(bi.md 원본):** 자료 `NAVER_login_KR.zip`(PNG, 196KB)·`NAVER_login_EN.zip`(279KB)·`.ai`·`.fig`. 규칙: 지정 컬러 고정(녹색 #03A94D 권장,
   흰색 배경 허용), 완성형 권장, N 로고 16px 이상, 문구 변경 가능, **타사 버튼이 컬러일 때 흰색 버튼 지양**, 타사 버튼보다 작게 쓰지 말 것
 
+- **네이버 적용(사용자 승인 "권장 방식으로 진행"):** `NAVER_login_KR.zip`(196KB) → `NAVER_login_Light_KR_green_narrow_H48.png`(840×192, #03A94D)를
+  `naver_login_green.png`로. 흰색 `naver_btnW_official.png` 삭제. H48 버튼을 44px로 줄이면 N 로고가 16px 미만이 되므로 `.c-social img` 높이 44→48px,
+  세 버튼 width/height 216·195·210×48. 테스트 기준을 Lighthouse 규칙(표시 높이의 1.5배 = 72px 이상)으로, 네이버 예외 제거
+- **검증:** pytest 183 passed·1 skipped / 로그인 Lighthouse BP 100(image-size-responsive 통과)·CLS 0 / 라이트·다크 360폭 화면 확인
+
 ## 심각도 추세 (수렴이 보이게)
 | Round | CRIT | HIGH | MED | LOW | 신규 Fix | 판정 |
 |---|---|---|---|---|---|---|

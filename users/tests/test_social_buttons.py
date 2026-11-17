@@ -1,4 +1,5 @@
-"""Login page social buttons point at static images that exist and are big enough for 2x screens (44px tall)."""
+"""Login page social buttons point at static images that exist and are high-res for their 48px display height
+(Lighthouse image-size-responsive expects at least 1.5x)."""
 import pathlib
 import re
 
@@ -15,5 +16,4 @@ def test_social_button_images_exist_and_are_high_res():
     for rel in paths:
         f = ROOT / "static" / rel
         assert f.is_file(), rel
-        if "naver" not in rel:  # naver: pending the user's choice of the official green button
-            assert Image.open(f).height >= 88, rel
+        assert Image.open(f).height >= 72, rel

@@ -12,9 +12,9 @@
 </ul>
 <p class="c-divider">{% trans "or" %}</p>
 <div class="c-social">
-  {# official high-res assets shown at 44px tall (.c-social img): Google @3x, Kakao large_narrow (2x) #}
-  <a href="{% provider_login_url 'google' %}"><img src="{% static 'images/google_signin_dark.png' %}" width="198" height="44" alt="{% trans 'Sign in with Google' %}"></a>
-  <a href="{% provider_login_url 'kakao' %}"><img src="{% static 'images/kakao_login_large_narrow.png' %}" width="179" height="44" alt="{% trans 'Sign in with Kakao' %}"></a>
-  <a href="{% provider_login_url 'naver' %}"><img src="{% static 'images/naver_btnW_official.png' %}" alt="{% trans 'Sign in with Naver' %}"></a>
+  {# official high-res assets shown 48px tall (.c-social img): Google @3x, Kakao large_narrow (2x), Naver green H48 (4x) #}
+  <a href="{% provider_login_url 'google' %}"><img src="{% static 'images/google_signin_dark.png' %}" width="216" height="48" alt="{% trans 'Sign in with Google' %}"></a>
+  <a href="{% provider_login_url 'kakao' %}"><img src="{% static 'images/kakao_login_large_narrow.png' %}" width="195" height="48" alt="{% trans 'Sign in with Kakao' %}"></a>
+  <a href="{% provider_login_url 'naver' %}"><img src="{% static 'images/naver_login_green.png' %}" width="210" height="48" alt="{% trans 'Sign in with Naver' %}"></a>
 </div>
 {% endblock %}
