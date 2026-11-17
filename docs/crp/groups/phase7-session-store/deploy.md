@@ -37,7 +37,15 @@
    python manage.py shell --settings=config.settings.prod -c "from django.contrib.sessions.models import Session; print(Session.objects.count())"
    ```
 
-## 전환용 엔진 걷어내기 (다음 배포)
+## 브랜치와 배포 순서
+| 브랜치 | 세션 엔진 | 언제 |
+|---|---|---|
+| `crp/phase7-session-store` (`258c7ed`) | 전환용(`common.core.session_transition`) | **첫 배포 권장.** 배포 순간 방문자도 로그아웃되지 않는다 |
+| `crp/phase7b-session-engine-cleanup` | `django.contrib.sessions.backends.db` | 첫 배포 뒤 `move_sessions --dry-run`이 0개를 보고한 다음 배포 |
+
+> 엔진 없이 곧바로 `crp/phase7b-session-engine-cleanup`을 첫 배포로 반영하면, 배포와 `move_sessions` 사이에 방문한 사용자는 쿠키가 지워져 다시 로그인해야 한다. 그 경우 4단계 `move_sessions`를 **배포 직후 곧바로** 실행한다.
+
+## 전환용 엔진 걷어내기 (다음 배포) — `crp/phase7b-session-engine-cleanup`에서 완료
 7. 4단계 `move_sessions --dry-run`이 0개를 보고한 뒤라면 언제든:
    - `config/settings/{dev,stage,prod,test}.py`의 `SESSION_ENGINE`을 `"django.contrib.sessions.backends.db"`로 바꾼다.
    - `common/core/session_transition.py`와, 그 엔진만 확인하는 테스트(`common/test_phase7_sessions.py`의 "전환 빈틈" 묶음)를 지운다.

@@ -40,3 +40,8 @@
 - **dev 리허설:** 옛 Redis 세션으로 배포 직후 방문 → 프로필 200(그 자리에서 옮김), 두 번째 방문 200 / 방문 안 한 옛 세션 → `move_sessions` 1개 이동·재실행 0개 → 200 / Redis FLUSHDB 뒤 200 / 만료까지 14.0일 / 정리 작업은 만료 행만. 기존 점검표 통과, 500 0건
 - **문서:** `deploy.md` 정정(이전 판의 "옮기면 다시 로그인 상태로 돌아온다"는 그 사이 방문자에게 틀렸음), 전환 엔진 걷어내기 절차 추가
 - **수렴 판정:** `CONVERGED` — Open Fix 0
+
+### Round 3 — 2026-11-17 (전환용 엔진 제거, 브랜치 `crp/phase7b-session-engine-cleanup`)
+- **트리거:** 사용자 "전환용 세션 엔진과 테스트 제거해줘"
+- **가정:** 첫 배포에서 빈틈 보호를 잃지 않도록 `258c7ed` 위 새 브랜치에서 제거. 첫 배포는 `crp/phase7-session-store`, 다음 배포에 이 브랜치(`deploy.md` 표)
+- **변경:** `common/core/session_transition.py` 삭제, 설정 4곳 `SESSION_ENGINE = "django.contrib.sessions.backends.db"`, `common/test_phase7_sessions.py`의 "전환 빈틈" 묶음(테스트 3개·도우미 1개) 삭제. `move_sessions`·정리 작업·나머지 테스트 5개는 유지
