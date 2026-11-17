@@ -11,7 +11,9 @@ migrations/
 .env*
 
 # log files
-logs/
+# keep the folder (the file log handler needs it), ignore its contents
+logs/*
+!logs/.gitkeep
 *.log
 
 # collectstatic 결과물 (STATIC_ROOT)
