@@ -45,3 +45,8 @@
 - **트리거:** 사용자 "전환용 세션 엔진과 테스트 제거해줘"
 - **가정:** 첫 배포에서 빈틈 보호를 잃지 않도록 `258c7ed` 위 새 브랜치에서 제거. 첫 배포는 `crp/phase7-session-store`, 다음 배포에 이 브랜치(`deploy.md` 표)
 - **변경:** `common/core/session_transition.py` 삭제, 설정 4곳 `SESSION_ENGINE = "django.contrib.sessions.backends.db"`, `common/test_phase7_sessions.py`의 "전환 빈틈" 묶음(테스트 3개·도우미 1개) 삭제. `move_sessions`·정리 작업·나머지 테스트 5개는 유지
+
+### Round 4 — 2026-11-19 (main 통합)
+- **트리거:** 사용자 "메인 저장소 외의 브랜치가 있다면 통합 … 원격 호스트에서 테스트 … 커밋 푸시"
+- **판단:** 원격 main(9574549)에 다른 세션 작업(	emplate-phase3-redesign 8커밋, 해시만 다름)과 1차분(258c7ed)이 이미 있음. 남은 것은 crp/phase7b-session-engine-cleanup 1커밋 → 원격 main 위에 cherry-pick(일직선 이력)
+- **주의:** 운영 서버 컨테이너가 3개월째라 1차분 미배포로 보임 → deploy.md 맨 위에 "배포 직후 곧바로 move_sessions" 경고 추가
