@@ -111,10 +111,9 @@ jobs:
         run: |
           python manage.py makemigrations
           python manage.py migrate
-          pytest
+          coverage run -m pytest
       - name: Coverage report
         run: |
-          coverage run manage.py test
           coverage html
       - name: zip
         run: |
