@@ -247,7 +247,7 @@ class LoginView(AnonymousRequiredMixin, FormView):
             datetime_result = datetime.strptime(str(time_at), datetime_format)
 
             if datetime_result < six_months_ago:
-                self.success_url = "users/password_replacement.html"
+                self.success_url = reverse("users:replace_password", kwargs={"userid": user.pk})
 
             return super().form_valid(form)
         else:

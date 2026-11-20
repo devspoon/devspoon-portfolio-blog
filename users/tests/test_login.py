@@ -54,6 +54,21 @@ def test_login_fail(client, static_user, email, password):
 
 @pytest.mark.users
 @pytest.mark.django_db
+def test_login_with_an_old_password_goes_to_the_replacement_page(client, static_user):
+    """Passwords older than the replacement cycle redirect to the replacement view, not to a template path (404)."""
+    from datetime import timedelta
+
+    from django.utils import timezone
+
+    static_user.password_replacement_at = timezone.now() - timedelta(days=365)
+    static_user.save(update_fields=["password_replacement_at"])
+    response = client.post(reverse("users:login"), {"email": "test@test.com", "password": "test1324"}, **headers)
+    assert response.status_code == 302
+    assert response.url == reverse("users:replace_password", kwargs={"userid": static_user.pk})
+
+
+@pytest.mark.users
+@pytest.mark.django_db
 def test_profile_exist(client, static_user):
     result = UserProfile.objects.filter(user=static_user).values()
     print("result : ", result)
