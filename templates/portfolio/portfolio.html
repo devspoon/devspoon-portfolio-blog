@@ -86,9 +86,10 @@ summary/content/title fields marked |safe are admin-authored (portfolio admin), 
         <div class="col-md-6 col-lg-4">
           <article class="c-card c-card--timeline h-100">
             <span class="c-card__kind">{{ item.get_role_display }}</span>
-            <h4 class="c-card__title">{{ item.title }}</h4>
+            {# title and summary are summernote HTML that already carries its own <p>, so they sit in divs #}
+            <div class="c-card__title c-prose" role="heading" aria-level="4">{{ item.title|safe }}</div>
             <p class="c-meta mt-0"><time datetime="{{ item.project_start_date|date:'Y-m-d' }}">{{ item.project_start_date|date:'Y.m' }}</time>{% if item.project_end_date %}<span aria-hidden="true">–</span><time datetime="{{ item.project_end_date|date:'Y-m-d' }}">{{ item.project_end_date|date:'Y.m' }}</time>{% endif %}</p>
-            <p class="mb-2">{{ item.summary }}</p>
+            <div class="mb-2 c-prose">{{ item.summary|safe }}</div>
             <details class="p-details"><summary>{% trans "Details" %}</summary><div class="c-prose">{{ item.content|safe }}</div></details>
           </article>
         </div>
