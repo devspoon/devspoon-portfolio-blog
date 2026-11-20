@@ -89,7 +89,8 @@ jobs:
             sed -i 's/config.settings.dev/config.settings.stage/' ./config/wsgi.py
             sed -i 's/domain/${{ secrets.STAGE_SERVER_URL }}/' ./templates/home/robots.txt
             cd ~/project/github/devspoon-web/compose/web_service/nginx_php/
-            echo "${{ secrets.SUDO }}" | sudo -S docker compose stop
+            # Without the profile, stop skips the celery services and they keep running the old code.
+            echo "${{ secrets.SUDO }}" | sudo -S docker compose --profile celery stop
             echo "${{ secrets.SUDO }}" | sudo -S docker compose --profile celery up -d
             # The container installs packages before gunicorn opens port 8000; migrate once it is up.
             ready=0
