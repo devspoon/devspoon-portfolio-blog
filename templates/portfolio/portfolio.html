@@ -124,7 +124,7 @@ summary/content/title fields marked |safe are admin-authored (portfolio admin), 
     <div class="row g-3">
       {% for item in interested %}
       <div class="col-sm-6 col-lg-4">
-        <div class="c-card c-card--topic"><div class="c-card__title">{{ item.title|striptags }}</div><div class="c-prose">{{ item.content|safe }}</div></div>
+        <div class="c-card c-card--topic"><div class="c-card__title c-prose">{{ item.title|safe }}</div><div class="c-prose">{{ item.content|safe }}</div></div>
       </div>
       {% endfor %}
     </div>

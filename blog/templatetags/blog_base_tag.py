@@ -1,3 +1,4 @@
+import html
 import logging
 
 from django import template
@@ -31,4 +32,5 @@ def slice_visible_pages(paging: Page):
 def remove_styles(value):
     # 모든 인라인 스타일 속성 제거
     no_styles = re.sub(r'style="[^"]*"', "", value)
-    return strip_tags(no_styles)  # 스타일 제거 후 모든 태그 제거
+    # 태그를 지운 뒤 &nbsp; 같은 문자 표기를 글자로 되돌린다. 그대로 두면 자동 이스케이프가 "&amp;nbsp;"로 바꿔 글자로 보인다.
+    return html.unescape(strip_tags(no_styles)).replace("\xa0", " ")
