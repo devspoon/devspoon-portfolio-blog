@@ -24,6 +24,22 @@ jobs:
           - os: ubuntu-latest
             path: ~/.cache/pip
 
+    # A throwaway database for the migrate check. Never point CI at the production DB secrets.
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ci -d ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -73,24 +89,18 @@ jobs:
           echo "IP_ADDRESSES1=${{ secrets.IP_ADDRESSES1 }}" >> .env
           echo "IP_ADDRESSES2=${{ secrets.IP_ADDRESSES2 }}" >> .env
           echo "CSRF_TRUSTED_ORIGINS=${{ secrets.CSRF_TRUSTED_ORIGINS }}" >> .env
-          echo "DEFAULT_DB_ENGINE=${{ secrets.DEFAULT_DB_ENGINE }}" >> .env
-          echo "DEFAULT_DB_HOST=${{ secrets.DEFAULT_DB_HOST }}" >> .env
-          echo "DEFAULT_DB_PORT=${{ secrets.DEFAULT_DB_PORT }}" >> .env
-          echo "DEFAULT_DB_NAME=${{ secrets.DEFAULT_DB_NAME }}" >> .env
-          echo "DEFAULT_DB_USER=${{ secrets.DEFAULT_DB_USER }}" >> .env
-          echo "DEFAULT_DB_PASSWORD=${{ secrets.DEFAULT_DB_PASSWORD }}" >> .env
-          echo "DEFAULT_DB_CHARSET=${{ secrets.DEFAULT_DB_CHARSET }}" >> .env
-          echo "DEFAULT_DB_OPTIONS=${{ secrets.DEFAULT_DB_OPTIONS }}" >> .env
-          echo "DEFAULT_DB_CONN_MAX_AGE=${{ secrets.DEFAULT_DB_CONN_MAX_AGE }}" >> .env
-          echo "REPLICA1_DB_ENGINE=${{ secrets.REPLICA1_DB_ENGINE }}" >> .env
-          echo "REPLICA1_DB_HOST=${{ secrets.REPLICA1_DB_HOST }}" >> .env
-          echo "REPLICA1_DB_PORT=${{ secrets.REPLICA1_DB_PORT }}" >> .env
-          echo "REPLICA1_DB_NAME=${{ secrets.REPLICA1_DB_NAME }}" >> .env
-          echo "REPLICA1_DB_USER=${{ secrets.REPLICA1_DB_USER }}" >> .env
-          echo "REPLICA1_DB_PASSWORD=${{ secrets.REPLICA1_DB_PASSWORD }}" >> .env
-          echo "REPLICA1_DB_CHARSET=${{ secrets.REPLICA1_DB_CHARSET }}" >> .env
-          echo "REPLICA1_DB_OPTIONS=${{ secrets.REPLICA1_DB_OPTIONS }}" >> .env
-          echo "REPLICA1_DB_CONN_MAX_AGE=${{ secrets.REPLICA1_DB_CONN_MAX_AGE }}" >> .env
+          # Both aliases use the throwaway postgres service above. Values must not be empty: decouple treats "" as missing.
+          for alias in DEFAULT REPLICA1; do
+            echo "${alias}_DB_ENGINE=django.db.backends.postgresql" >> .env
+            echo "${alias}_DB_HOST=127.0.0.1" >> .env
+            echo "${alias}_DB_PORT=5432" >> .env
+            echo "${alias}_DB_NAME=ci" >> .env
+            echo "${alias}_DB_USER=ci" >> .env
+            echo "${alias}_DB_PASSWORD=ci" >> .env
+            echo "${alias}_DB_CHARSET=utf8" >> .env
+            echo "${alias}_DB_OPTIONS=-c search_path=public" >> .env
+            echo "${alias}_DB_CONN_MAX_AGE=0" >> .env
+          done
           echo "DEFAULT_CACHE_HOST=${{ secrets.TEST_CACHE_HOST }}" >> .env
           echo "DEFAULT_CACHE_PORT=${{ secrets.DEFAULT_CACHE_PORT }}" >> .env
           echo "DEFAULT_CACHE_DATABASE=${{ secrets.DEFAULT_CACHE_DATABASE }}" >> .env
