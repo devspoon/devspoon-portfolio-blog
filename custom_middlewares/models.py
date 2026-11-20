@@ -14,9 +14,8 @@ class DailyStatsMixin(models.Model):
     집계키는 `stat_date`이고 유니크 제약으로 같은 날짜 중복 row를 DB가 막는다.
 
     `stat_date`가 nullable인 이유:
-    이 프로젝트는 migration 파일을 저장소에 두지 않는다(.gitignore). 기존 운영
-    테이블에 not-null unique 컬럼을 한 번에 추가하면 모든 기존 row가 같은 기본값을
-    받아 유니크 제약에 걸린다. nullable로 추가한 뒤
+    기존 운영 테이블에 not-null unique 컬럼을 한 번에 추가하면 모든 기존 row가
+    같은 기본값을 받아 유니크 제약에 걸린다. nullable로 추가한 뒤
     `manage.py dedupe_connection_stats`로 중복 합산과 backfill을 수행한다.
     """
 

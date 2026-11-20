@@ -1,4 +1,4 @@
-"""1단계 핫픽스 회귀 테스트 (docs/crp/groups/phase1-hotfix).
+"""1단계 핫픽스 회귀 테스트.
 
 블로그 게시판 5종이 같은 코드를 복사해 쓰므로 모두 parametrize 한다.
 """

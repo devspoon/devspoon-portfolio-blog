@@ -1,4 +1,4 @@
-"""캐시 무효화를 한 곳에서 한다 (docs/crp/groups/phase3-cache-redesign, ADR-003).
+"""캐시 무효화를 한 곳에서 한다.
 
 모델 시그널(post_save·post_delete, mptt node_moved)에서 무효화를 transaction.on_commit으로
 미룬다. 커밋 전에 지우면 그 사이 읽은 요청이 옛 값을 다시 캐시할 수 있고, 롤백된 쓰기는

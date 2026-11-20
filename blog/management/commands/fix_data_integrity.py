@@ -39,7 +39,7 @@ class Command(BaseCommand):
     help = (
         "좋아요 (사용자, 글) 중복을 가장 먼저 만든 행 1개만 남기고 지우고, like_count를 실제 좋아요 수로, "
         "table_name을 모델 클래스 이름으로 맞춘다. 좋아요 unique 제약 migration 전에 실행한다. "
-        "여러 번 실행해도 결과가 같다 (docs/crp/groups/phase4-data-integrity)."
+        "여러 번 실행해도 결과가 같다."
     )
 
     def add_arguments(self, parser):

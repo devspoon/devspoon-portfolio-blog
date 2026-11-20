@@ -1,4 +1,4 @@
-"""4단계 데이터 정합성 회귀 테스트 (docs/crp/groups/phase4-data-integrity)."""
+"""4단계 데이터 정합성 회귀 테스트."""
 import pytest
 from django.contrib import admin
 from django.db import IntegrityError, transaction

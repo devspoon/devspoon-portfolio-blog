@@ -122,7 +122,7 @@ python manage.py dedupe_connection_stats --dry-run   # preview
 python manage.py dedupe_connection_stats             # sum duplicates, backfill stat_date
 ```
 
-The command is idempotent. See `docs/ai-docs/reports/06-implementation-report.md` for the full deployment procedure.
+The command is idempotent.
 
 ### common
 

@@ -10,7 +10,7 @@ SPRITE = "vendor/bootstrap-icons-1.13.1/icons.svg"
 @register.simple_tag
 def icon(name, label=""):
     """Bootstrap Icons sprite reference. Decorative unless a label is given.
-    The sprite only contains icons used in templates: run tools/build_icon_sprite.py after adding one."""
+    The sprite only contains icons used in templates: add the bootstrap-icons <symbol> to it before using a new one."""
     if label:
         return format_html('<svg class="icon" role="img" aria-label="{}"><use href="{}#{}"></use></svg>',
                            label, static(SPRITE), name)

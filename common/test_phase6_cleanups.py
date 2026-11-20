@@ -1,4 +1,4 @@
-"""phase6 소규모 정리 회귀 테스트 (docs/crp/groups/phase6-small-cleanups)."""
+"""phase6 소규모 정리 회귀 테스트."""
 
 import pathlib
 

@@ -1,4 +1,4 @@
-/* devspoon design system — direction A "engineering notes" (docs/design, ADR-016).
+/* devspoon design system — direction A "engineering notes".
    Layer order is the cascade contract: later layers win, unlayered CSS would beat all of them (ADR-015). */
 @layer vendor, tokens, base, layout, components, pages, utilities;
 @import url("../vendor/bootstrap-5.3.8/bootstrap.min.css") layer(vendor);

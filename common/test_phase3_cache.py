@@ -1,4 +1,4 @@
-"""3단계 캐시 재설계 회귀 테스트 (docs/crp/groups/phase3-cache-redesign).
+"""3단계 캐시 재설계 회귀 테스트.
 
 쓰기 뒤 무효화는 커밋 뒤(on_commit)에 일어나므로 쓰기는
 django_capture_on_commit_callbacks(execute=True) 안에서 한다.

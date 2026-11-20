@@ -1,5 +1,5 @@
 class PostDetailMixin:
-    """글 상세 (docs/crp/groups/phase3-cache-redesign, ADR-005·006·008).
+    """글 상세.
 
     캐시하지 않는다(D2-A): pk 조회라 DB가 충분히 빠르고, 좋아요 수 같은 값이 늘 최신이다.
     삭제·숨김 글은 누구에게나 404다(D1-A). admin에서만 본다.

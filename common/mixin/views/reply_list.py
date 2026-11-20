@@ -15,7 +15,7 @@ def page_number(value) -> int:
 
 
 class ReplyListJsonMixin:
-    """글 하나의 댓글 목록 JSON (docs/crp/groups/phase3-cache-redesign, ADR-004·008).
+    """글 하나의 댓글 목록 JSON.
 
     응답: [{"number", "num_pages"}, 댓글, ...]. 하위 클래스는 reply_model만 정한다.
     """

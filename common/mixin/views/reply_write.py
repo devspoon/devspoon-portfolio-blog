@@ -27,7 +27,7 @@ def _valid_comment(comment) -> bool:
 
 
 class ReplyCreateMixin:
-    """댓글 생성 폼 POST (docs/crp/groups/phase5-request-security, ADR-003·005).
+    """댓글 생성 폼 POST.
 
     활성 글에만, 부모는 같은 글의 댓글만. depth·group은 서버가 정한다. 하위 클래스는 reply_model·detail_url_name만 정한다.
     """

@@ -1,4 +1,4 @@
-"""phase7: 세션은 DB(django_session)에 저장한다 (docs/crp/groups/phase7-session-store)."""
+"""phase7: 세션은 DB(django_session)에 저장한다."""
 
 from datetime import timedelta
 

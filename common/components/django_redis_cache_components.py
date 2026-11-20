@@ -9,7 +9,7 @@ from common.core.replica_router import read_primary
 CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
 
-# --- v2 캐시 (docs/crp/groups/phase3-cache-redesign, ADR-001·002·004·007) ---
+# --- v2 캐시 ---
 # 읽기는 키 1개를 get 1회로 한다. 요청 경로에서 SCAN(iter_keys·delete_pattern)과 ttl을 쓰지 않는다.
 # 옛 키(prefix:pk:key)는 지우지 않고 TTL로 사라지게 둔다. 세션이 같은 DB라 clear()는 쓰지 않는다.
 

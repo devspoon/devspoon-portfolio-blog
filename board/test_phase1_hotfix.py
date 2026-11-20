@@ -1,4 +1,4 @@
-"""1단계 핫픽스 회귀 테스트 — board 게시판 3종 (docs/crp/groups/phase1-hotfix).
+"""1단계 핫픽스 회귀 테스트 — board 게시판 3종.
 
 board 앱은 tests.py 모듈이 있어 tests/ 패키지를 만들 수 없으므로 앱 루트에 둔다.
 """

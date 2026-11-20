@@ -1,7 +1,14 @@
 # cache files
 __pycache__/
-migrations/
 .pytest_cache/
+*.sqlite3
+
+# local tooling and work notes (not part of the project)
+.venv/
+.claude/
+.codegraph/
+docs/crp/
+docs/ai-docs/
 
 # ipynb_checkpoints
 **/.ipynb_checkpoints
