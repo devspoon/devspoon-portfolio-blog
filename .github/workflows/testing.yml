@@ -109,7 +109,7 @@ jobs:
           echo "CELERY_BROKER_URL=${{ secrets.CELERY_BROKER_URL }}" >> .env
       - name: Django Testing
         run: |
-          python manage.py makemigrations
+          python manage.py makemigrations --check --dry-run blog board home users portfolio
           python manage.py migrate
           coverage run -m pytest
       - name: Coverage report

@@ -76,9 +76,14 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
+            set -e
             cd ~/project/github/devspoon-web/www/devspoon-portfolio-blog/
-            rm .env
-            git pull origin main
+            # Keep any edit made on the server as a patch, then match origin/main exactly.
+            mkdir -p ~/backups
+            git diff --quiet || git diff > ~/backups/devspoon-local-$(date +%Y%m%d-%H%M%S).patch
+            git fetch origin main
+            git reset --hard origin/main
+            rm -f .env
             mv ../.env ./
             sed -i 's/config.settings.dev/config.settings.stage/' manage.py
             sed -i 's/config.settings.dev/config.settings.stage/' ./config/wsgi.py
@@ -86,6 +91,14 @@ jobs:
             cd ~/project/github/devspoon-web/compose/web_service/nginx_php/
             echo "${{ secrets.SUDO }}" | sudo -S docker compose stop
             echo "${{ secrets.SUDO }}" | sudo -S docker compose --profile celery up -d
+            # The container installs packages before gunicorn opens port 8000; migrate once it is up.
+            ready=0
+            for i in $(seq 60); do
+              docker exec gunicorn-app python -c "import socket; socket.create_connection(('127.0.0.1', 8000), 3)" 2>/dev/null && { ready=1; break; }
+              sleep 5
+            done
+            [ "$ready" = 1 ] || { echo "gunicorn did not open port 8000 within 5 minutes"; exit 1; }
+            docker exec gunicorn-app python manage.py migrate --noinput
       - name: send msg to slack channel
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
