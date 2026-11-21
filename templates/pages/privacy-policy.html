@@ -2,9 +2,21 @@
 {% load i18n %}
 {% block title %}{{ _("privacy policy (Required)") }}{% endblock %}
 {% block content %}
-{# admin-authored (SiteInfo), not user input #}
-<article class="l-wrap l-section c-prose">
-  <h1>{% trans "Privacy policy" %}</h1>
-  {{ privacy_policy|safe }}
-</article>
+<section class="blog-details-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-xl-8 m-auto">
+        <div class="post-details-content">
+          <div class="post-details-body">
+            <h1 class="visually-hidden">{% trans "Privacy policy" %}</h1>
+            {# admin-authored (SiteInfo), not user input #}
+            <div class="content form-control">
+              {{ privacy_policy|safe }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}

@@ -2,9 +2,21 @@
 {% load i18n %}
 {% block title %}{{ _("Terms of Service (Required)") }}{% endblock %}
 {% block content %}
-{# admin-authored (SiteInfo), not user input #}
-<article class="l-wrap l-section c-prose">
-  <h1>{% trans "Terms of service" %}</h1>
-  {{ terms_of_service|safe }}
-</article>
+<section class="blog-details-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-xl-8 m-auto">
+        <div class="post-details-content">
+          <div class="post-details-body">
+            <h1 class="visually-hidden">{% trans "Terms of service" %}</h1>
+            {# admin-authored (SiteInfo), not user input #}
+            <div class="content form-control">
+              {{ terms_of_service|safe }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}

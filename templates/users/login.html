@@ -5,16 +5,18 @@
 {% block auth_heading %}{% trans "Log in" %}{% endblock %}
 {% block submit_label %}{% trans "Log in" %}{% endblock %}
 {% block auth_links %}
-<ul class="c-auth-links">
-  <li>{% trans "No account yet?" %} <a href="{% url 'users:register' %}">{% trans "Create one" %}</a></li>
-  <li>{% trans "Forgot your password?" %} <a href="{% url 'users:forget_password' %}">{% trans "Reset password" %}</a></li>
-  <li>{% trans "No verification email?" %} <a href="{% url 'users:resend_verification_email' %}">{% trans "Resend it" %}</a></li>
-</ul>
-<p class="c-divider">{% trans "or" %}</p>
-<div class="c-social">
-  {# official high-res assets shown 48px tall (.c-social img): Google @3x, Kakao large_narrow (2x), Naver green H48 (4x) #}
-  <a href="{% provider_login_url 'google' %}"><img src="{% static 'images/google_signin_dark.png' %}" width="216" height="48" alt="{% trans 'Sign in with Google' %}"></a>
-  <a href="{% provider_login_url 'kakao' %}"><img src="{% static 'images/kakao_login_large_narrow.png' %}" width="195" height="48" alt="{% trans 'Sign in with Kakao' %}"></a>
-  <a href="{% provider_login_url 'naver' %}"><img src="{% static 'images/naver_login_green.png' %}" width="210" height="48" alt="{% trans 'Sign in with Naver' %}"></a>
+<div class="form-group text-center pt-10">
+  <span class="text-muted">{% trans "No account yet?" %}</span> <a href="{% url 'users:register' %}">{% trans "Create one" %}</a>
 </div>
+<div class="form-group text-center pt-10">
+  <span class="text-muted">{% trans "Forgot your password?" %}</span> <a href="{% url 'users:forget_password' %}">{% trans "Reset password" %}</a>
+</div>
+<div class="form-group text-center pt-10">
+  <span class="text-muted">{% trans "No verification email?" %}</span> <a href="{% url 'users:resend_verification_email' %}">{% trans "Resend it" %}</a>
+</div>
+<div class="title-line">{% trans "or" %}</div>
+{# official high-res assets shown 48px tall: Google @3x, Kakao large_narrow (2x), Naver green H48 (4x) #}
+<a href="{% provider_login_url 'google' %}" class="btn col-12"><img src="{% static 'images/google_signin_dark.png' %}" width="216" height="48" alt="{% trans 'Sign in with Google' %}"></a>
+<a href="{% provider_login_url 'kakao' %}" class="btn col-12"><img src="{% static 'images/kakao_login_large_narrow.png' %}" width="195" height="48" alt="{% trans 'Sign in with Kakao' %}"></a>
+<a href="{% provider_login_url 'naver' %}" class="btn col-12"><img src="{% static 'images/naver_login_green.png' %}" width="210" height="48" alt="{% trans 'Sign in with Naver' %}"></a>
 {% endblock %}

@@ -3156,3 +3156,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .preloader { animation: preloader-hide 0s linear 3s forwards; }
 @keyframes preloader-hide { to { visibility: hidden; opacity: 0; pointer-events: none; } }
 @media (prefers-reduced-motion: reduce) { .preloader { display: none; } }
+
+/* == users·auth (login, register, profile, password, errors, policy pages) == */
+/* the auth/profile headings are h1 (one per page) styled like the theme's h4 */
+.box .box-body h1.h4 { margin-bottom: 30px; }
+/* links and labels styled as the coral theme buttons (`section.first button.btn` only covers <button>) */
+section.first a.btn-primary,
+section.first label.btn {
+    font-weight: 400; padding: 10px 25px; background: #FF6B6B; border-color: #FF6B6B; color: #fff;
+}
+/* the visually hidden profile photo input keeps a visible focus ring on its label */
+section.first input.visually-hidden:focus-visible + label.btn { box-shadow: 0 0 0 .25rem rgba(255, 107, 107, .5); }
+.policy-box textarea { border: 0; resize: vertical; }
+

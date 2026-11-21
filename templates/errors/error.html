@@ -3,19 +3,19 @@
 {% block title %}{{ status_code }} | devspoon{% endblock %}
 
 {% block content %}
-<div class="l-wrap l-section">
-  <div class="c-empty">
-    <p class="c-empty__code">{{ status_code }}</p>
+<div class="d-flex align-items-center justify-content-center vh-100">
+  <div class="text-center">
+    <p class="display-1 fw-bold">{{ status_code }}</p>
     {% if status_code == 400 %}
-    <h1 class="h3">{% trans "Bad request" %}</h1><p>{% trans "The request hostname is invalid." %}</p>
+    <h1 class="fs-3 mt-4 text-danger">{% trans "Bad request" %}</h1><p class="lead mt-4">{% trans "The request hostname is invalid." %}</p>
     {% elif status_code == 403 %}
-    <h1 class="h3">{% trans "Permission denied" %}</h1><p>{% trans "Only the author or a staff member can do this. Log in with that account and try again." %}</p>
+    <h1 class="fs-3 mt-4 text-danger">{% trans "Permission denied" %}</h1><p class="lead mt-4">{% trans "Only the author or a staff member can do this. Log in with that account and try again." %}</p>
     {% elif status_code == 404 %}
-    <h1 class="h3">{% trans "Page not found" %}</h1><p>{% trans "The page you’re looking for doesn’t exist. Check the address, or search for the post." %}</p>
+    <h1 class="fs-3 mt-4 text-danger">{% trans "Page not found" %}</h1><p class="lead mt-4">{% trans "The page you’re looking for doesn’t exist. Check the address, or search for the post." %}</p>
     {% else %}
-    <h1 class="h3">{% trans "Server error" %}</h1><p>{% trans "Your request cannot be completed due to a server error. Try again in a moment." %}</p>
+    <h1 class="fs-3 mt-4 text-danger">{% trans "Server error" %}</h1><p class="lead mt-4">{% trans "Your request cannot be completed due to a server error. Try again in a moment." %}</p>
     {% endif %}
-    <a href="{% url 'home:index' %}" class="btn btn-primary mt-3">{% trans "Go home" %}</a>
+    <a href="{% url 'home:index' %}" class="btn btn-primary mt-4">{% trans "Go home" %}</a>
   </div>
 </div>
 {% endblock %}

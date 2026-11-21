@@ -1,81 +1,125 @@
 {% extends "base/base.html" %}
 {% load static i18n %}
 {% block title %}{% trans "Profile settings" %} | devspoon{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/auth.css' %}">{% endblock %}
 
 {% block content %}
-<div class="l-wrap l-section">
-  <div class="c-panel p-profile">
-    <header class="p-profile__head">
-      {% if object.photo_thumbnail %}
-      <img class="p-profile__photo" src="{{ object.photo_thumbnail.url }}" alt="" width="96" height="96">
-      {% else %}
-      <div class="p-profile__photo" aria-hidden="true">{{ object.username|slice:":1"|upper }}</div>
-      {% endif %}
-      <div>
-        <h1 class="h3 mb-1">{{ object.username }}</h1>
-        <div class="c-meta mt-0">
-          <span>{% if object.is_superuser and object.is_staff %}{% trans "Administrator" %}{% elif object.is_staff %}{% trans "Staff" %}{% else %}{% trans "Member" %}{% endif %}</span>
-          <span>{% trans "Joined" %} {{ object.date_joined|date:"Y.m.d" }}</span>
-          <span>{% trans "Last login" %} {{ object.last_login|date:"Y.m.d H:i" }}</span>
-          <span>{% trans "Points" %} {{ user_point }}</span>
-        </div>
-      </div>
-    </header>
+<section class="login first grey">
+  <div class="container">
+    <div class="d-flex flex-row justify-content-center">
+      <div class="col-10 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="e-profile">
+              {% for message in messages %}
+              <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} text-center" role="alert">{{ message }}</div>
+              {% endfor %}
+              {% if form.non_field_errors %}<div class="alert alert-danger text-center" role="alert">{{ form.non_field_errors|join:" " }}</div>{% endif %}
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-12 col-sm-auto mb-3">
+                    <div class="mx-auto">
+                      <div class="thumbnail d-flex justify-content-center align-items-center rounded">
+                        {% if object.photo_thumbnail %}
+                        <img src="{{ object.photo_thumbnail.url }}" alt="{% trans 'Profile photo' %}">
+                        {% else %}
+                        <span class="thumbnail-size" aria-hidden="true">140x140</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                    <div class="text-center text-sm-left mb-2 mb-sm-0">
+                      <h1 class="h4 pt-sm-2 pb-1 mb-0 text-nowrap">{{ object.username }}</h1>
+                      <div class="text-muted"><small>{% trans "Joined" %} {{ object.date_joined|date:"Y-m-d H:i" }}</small></div>
+                      <div class="mt-2">
+                        {# hidden file input opened by its label: no inline script needed #}
+                        <input type="file" class="visually-hidden" name="{{ form.profile_image.name }}" accept="image/*" id="{{ form.profile_image.id_for_label }}"{% if form.profile_image.errors %} aria-invalid="true" aria-describedby="{{ form.profile_image.id_for_label }}-error"{% endif %}>
+                        <label class="btn btn-primary" for="{{ form.profile_image.id_for_label }}">
+                          <i class="fa fa-fw fa-camera" aria-hidden="true"></i>
+                          <span>{% trans "Profile photo" %}</span>
+                        </label>
+                      </div>
+                      {% if form.profile_image.errors %}
+                      <ol class="validation_error" id="{{ form.profile_image.id_for_label }}-error">
+                        {% for error in form.profile_image.errors %}<li><strong>{{ error }}</strong></li>{% endfor %}
+                      </ol>
+                      {% endif %}
+                    </div>
+                    <div class="text-center text-sm-right">
+                      {% if object.is_superuser and object.is_staff %}{% trans "Administrator" %}{% elif object.is_staff %}{% trans "Staff" %}{% else %}{% trans "Member" %}{% endif %}
+                      <div class="text-muted"><small>{% trans "Last login" %} {{ object.last_login|date:"Y-m-d H:i" }}</small></div>
+                      <div class="text-muted"><small>{% trans "Points" %} {{ user_point }}</small></div>
+                    </div>
+                  </div>
+                </div>
 
-    {% for message in messages %}
-    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %}" role="alert">{{ message }}</div>
-    {% endfor %}
-    {% if form.non_field_errors %}<div class="alert alert-danger" role="alert">{{ form.non_field_errors|join:" " }}</div>{% endif %}
-
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <section class="p-profile__section" aria-labelledby="account">
-        <h2 class="h5" id="account">{% trans "Account" %}</h2>
-        <div class="mb-3">
-          <label class="form-label" for="profile-email">{% trans "Email" %}</label>
-          <input class="form-control" type="email" id="profile-email" value="{{ object.email }}" disabled>
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="{{ form.profile_image.id_for_label }}">{% trans "Profile photo" %}</label>
-          <input class="form-control{% if form.profile_image.errors %} is-invalid{% endif %}" type="file" accept="image/*" id="{{ form.profile_image.id_for_label }}" name="{{ form.profile_image.name }}">
-          {% if form.profile_image.errors %}<ul class="invalid-feedback d-block list-unstyled mb-0">{% for error in form.profile_image.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
-        </div>
-        {% for field in form %}
-          {% if field.name == 'new_password' or field.name == 'new_password_confirm' or field.name == 'profile_image' or field.name == 'password' or field.name == 'email_notifications' %}
-          {% elif field.name == 'gender' %}
-          <div class="mb-3">
-            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-            <select name="{{ field.name }}" class="form-select" id="{{ field.id_for_label }}">{% for item in field %}{{ item }}{% endfor %}</select>
+                <ul class="nav nav-tabs">
+                  <li class="nav-item"><span class="active nav-link" aria-current="page">{% trans "Account" %}</span></li>
+                </ul>
+                <div class="tab-content pt-3">
+                  <div class="tab-pane active">
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label for="profile-email">{% trans "Email" %}</label>
+                          <input class="form-control" type="email" id="profile-email" value="{{ object.email }}" disabled>
+                        </div>
+                        {% for field in form %}
+                          {% if field.name == 'new_password' or field.name == 'new_password_confirm' or field.name == 'profile_image' or field.name == 'password' or field.name == 'email_notifications' %}
+                          {% elif field.name == 'gender' %}
+                          <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            <select name="{{ field.name }}" class="form-select" id="{{ field.id_for_label }}">{% for item in field %}{{ item }}{% endfor %}</select>
+                          </div>
+                          {% else %}
+                          {% include "components/form_field.html" with placeholder=field.label %}
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="row">
+                      {# the notification block sits inside the password column, as in the original layout #}
+                      <div class="col-12 col-sm-6 mb-3 mt-4">
+                      <section aria-labelledby="password-head">
+                        <h2 class="mb-2 fs-6 fw-bold" id="password-head">{% trans "Change password" %}</h2>
+                        {% include "components/form_field.html" with field=form.password placeholder=form.password.label %}
+                        {% include "components/form_field.html" with field=form.new_password placeholder=form.new_password.label %}
+                        {% include "components/form_field.html" with field=form.new_password_confirm placeholder=form.new_password_confirm.label %}
+                      </section>
+                      <div class="row">
+                      <section class="col-12 offset-sm-1 mb-3" aria-labelledby="notify-head">
+                        <h2 class="mb-2 fs-6 fw-bold" id="notify-head">{% trans "Keeping in touch" %}</h2>
+                        <div class="custom-controls-stacked px-2">
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="{{ form.email_notifications.id_for_label }}" name="{{ form.email_notifications.name }}"{% if email_notifications %} checked{% endif %}>
+                            <label class="custom-control-label" for="{{ form.email_notifications.id_for_label }}">{{ form.email_notifications.label }}</label>
+                          </div>
+                          {% if form.email_notifications.errors %}
+                          <ol class="validation_error">{% for error in form.email_notifications.errors %}<li><strong>{{ error }}</strong></li>{% endfor %}</ol>
+                          {% endif %}
+                        </div>
+                      </section>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-8 d-flex justify-content-end my-2">
+                        <button type="submit" form="delete-account-form" class="btn btn-secondary">{% trans "Delete account" %}</button>
+                      </div>
+                      <div class="col-sm-3 d-flex justify-content-end my-2">
+                        <button class="btn btn-primary" type="submit">{% trans "Save changes" %}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <form id="delete-account-form" method="post" action="{% url 'users:user_delete' %}">{% csrf_token %}</form>
+            </div>
           </div>
-          {% else %}
-          {% include "components/form_field.html" %}
-          {% endif %}
-        {% endfor %}
-      </section>
-
-      <section class="p-profile__section" aria-labelledby="password-head">
-        <h2 class="h5" id="password-head">{% trans "Change password" %}</h2>
-        {% include "components/form_field.html" with field=form.password %}
-        {% include "components/form_field.html" with field=form.new_password %}
-        {% include "components/form_field.html" with field=form.new_password_confirm %}
-      </section>
-
-      <section class="p-profile__section" aria-labelledby="notify-head">
-        <h2 class="h5" id="notify-head">{% trans "Keeping in touch" %}</h2>
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="{{ form.email_notifications.id_for_label }}" name="{{ form.email_notifications.name }}"{% if email_notifications %} checked{% endif %}>
-          <label class="form-check-label" for="{{ form.email_notifications.id_for_label }}">{{ form.email_notifications.label }}</label>
         </div>
-        {% if form.email_notifications.errors %}<ul class="invalid-feedback d-block list-unstyled mb-0">{% for error in form.email_notifications.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
-      </section>
-
-      <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
-        <button type="submit" form="delete-account-form" class="btn btn-quiet p-profile__danger">{% trans "Delete account" %}</button>
-        <button class="btn btn-primary" type="submit">{% trans "Save changes" %}</button>
       </div>
-    </form>
-    <form id="delete-account-form" method="post" action="{% url 'users:user_delete' %}">{% csrf_token %}</form>
+    </div>
   </div>
-</div>
+</section>
 {% endblock %}

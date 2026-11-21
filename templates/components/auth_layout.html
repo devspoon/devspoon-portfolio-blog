@@ -1,23 +1,35 @@
 {% extends "base/base.html" %}
 {% comment %}
-Auth page layout (ADR-005): login, register, resend email, reset/update/replace password.
-Blocks: auth_heading, submit_label, form_action (` action="..."`), auth_before, auth_links.
+Auth page layout (GrayGrids `section.first > .box-wrapper > .box` markup): login, register, resend email,
+reset/update/replace password.
+Blocks: auth_section (section class), auth_before, auth_heading, form_action (` action="..."`), fields,
+submit_label, auth_after_submit (inside the form), auth_links (after the form).
 {% endcomment %}
 
 {% block content %}
-<div class="l-wrap l-section">
-  {% block auth_before %}{% endblock %}
-  <div class="c-panel c-panel--narrow">
-    <h1 class="h3 mb-4">{% block auth_heading %}{% endblock %}</h1>
-    {% for message in messages %}
-    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %}" role="alert">{{ message }}</div>
-    {% endfor %}
-    <form method="post" enctype="multipart/form-data"{% block form_action %}{% endblock %}>
-      {% csrf_token %}
-      {% block fields %}{% for field in form %}{% include "components/form_field.html" %}{% endfor %}{% endblock %}
-      <button type="submit" class="btn btn-primary w-100 mt-2">{% block submit_label %}{% endblock %}</button>
-    </form>
-    {% block auth_links %}{% endblock %}
+<section class="{% block auth_section %}login{% endblock %} first grey">
+  <div class="container">
+    {% block auth_before %}{% endblock %}
+    <div class="box-wrapper col col-lg-6">
+      <div class="box box-border">
+        <div class="box-body">
+          <h1 class="h4">{% block auth_heading %}{% endblock %}</h1>
+          {% for message in messages %}
+          <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} text-center" role="alert">{{ message }}</div>
+          {% endfor %}
+          {% if form.non_field_errors %}<div class="alert alert-danger text-center" role="alert">{{ form.non_field_errors|join:" " }}</div>{% endif %}
+          <form method="post" enctype="multipart/form-data"{% block form_action %}{% endblock %}>
+            {% csrf_token %}
+            {% block fields %}{% for field in form %}{% include "components/form_field.html" %}{% endfor %}{% endblock %}
+            <div class="form-group text-right">
+              <button type="submit" class="btn btn-primary col-12">{% block submit_label %}{% endblock %}</button>
+            </div>
+            {% block auth_after_submit %}{% endblock %}
+          </form>
+          {% block auth_links %}{% endblock %}
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 {% endblock %}
