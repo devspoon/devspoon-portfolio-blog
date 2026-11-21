@@ -6,13 +6,13 @@
 {% block content %}
 <div class="l-wrap">
   <header class="c-page-head">
+    <h1>{% if keyword %}{% blocktrans %}Results for “{{ keyword }}”{% endblocktrans %}{% elif tag %}{% blocktrans %}Posts tagged “{{ tag }}”{% endblocktrans %}{% else %}{% trans "Search" %}{% endif %}</h1>
     <nav aria-label="{% trans 'Breadcrumb' %}">
       <ol class="breadcrumb c-breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'home:index' %}">{% trans "Home" %}</a></li>
         <li class="breadcrumb-item active" aria-current="page">{% trans "Search" %}</li>
       </ol>
     </nav>
-    <h1>{% if keyword %}{% blocktrans %}Results for “{{ keyword }}”{% endblocktrans %}{% elif tag %}{% blocktrans %}Posts tagged “{{ tag }}”{% endblocktrans %}{% else %}{% trans "Search" %}{% endif %}</h1>
   </header>
 
   <div>
