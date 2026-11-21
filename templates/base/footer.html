@@ -1,42 +1,76 @@
-{% load static i18n home_tag ui_tags %}
+{% load static i18n home_tag %}
 {% site_info_tag as site_info %}
-{# the theme's navy footer: brand + social, quick links, support, contact; credit bar below #}
-<footer class="c-footer">
-  <div class="l-wrap c-footer__grid">
-    <div class="c-footer__about">
-      <a class="c-brand" href="{% url 'home:index' %}"><img src="{% static 'images/logo.png' %}" width="150" height="45" alt="devspoon"></a>
-      <p>{% trans "This site is made by open source on 'devspoon-portfolio-blog' repository " %}</p>
-      <ul class="c-footer__social">
-        {% if site_info.office_facebook %}<li><a href="{{ site_info.office_facebook }}" rel="noopener">{% icon "facebook" "Facebook" %}</a></li>{% endif %}
-        {% if site_info.office_twitter %}<li><a href="{{ site_info.office_twitter }}" rel="noopener">{% icon "twitter-x" "X" %}</a></li>{% endif %}
-        {% if site_info.office_instragram %}<li><a href="{{ site_info.office_instragram }}" rel="noopener">{% icon "instagram" "Instagram" %}</a></li>{% endif %}
-        {% if site_info.office_youtube %}<li><a href="{{ site_info.office_youtube }}" rel="noopener">{% icon "youtube" "YouTube" %}</a></li>{% endif %}
-      </ul>
+<footer class="footer-area">
+    <div class="widget-wrapper">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-xl-4 col-md-7">
+                    <div class="footer-widget about">
+                        <a href="{% url 'home:index' %}" class="d-inline-block mb-30 col-md-6 col-sm-4 col-6">
+                            <img src="{% static 'images/logo.png' %}" width="150" height="45" alt="devspoon">
+                        </a>
+                        <p class="text-white mb-25">{% trans "This site is made by open source on 'devspoon-portfolio-blog' repository " %}</p>
+                        <ul class="social">
+                            {% if site_info.office_facebook %}<li><a href="{{ site_info.office_facebook }}" rel="noopener" aria-label="Facebook"><i class="lni lni-facebook-filled" aria-hidden="true"></i></a></li>{% endif %}
+                            {% if site_info.office_twitter %}<li><a href="{{ site_info.office_twitter }}" rel="noopener" aria-label="X"><i class="lni lni-twitter-filled" aria-hidden="true"></i></a></li>{% endif %}
+                            {% if site_info.office_instragram %}<li><a href="{{ site_info.office_instragram }}" rel="noopener" aria-label="Instagram"><i class="lni lni-instagram-filled" aria-hidden="true"></i></a></li>{% endif %}
+                            {% if site_info.office_youtube %}<li><a href="{{ site_info.office_youtube }}" rel="noopener" aria-label="YouTube"><i class="lni lni-youtube" aria-hidden="true"></i></a></li>{% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-xl-2 col-md-4 order-md-2 order-xl-1 col-sm-6">
+                    <nav class="footer-widget" aria-labelledby="footer-links">
+                        <h4 id="footer-links">{% trans "Quick Link" %}</h4>
+                        <ul class="link">
+                            <li><a href="{% url 'home:index' %}">{% trans "Home" %}</a></li>
+                            <li><a href="{% url 'portfolio:portfolio' %}">{% trans "Portfolio" %}</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-xl-2 col-md-4 order-md-3 order-xl-2 col-sm-6">
+                    <nav class="footer-widget" aria-labelledby="footer-support">
+                        <h4 id="footer-support">{% trans "Support" %}</h4>
+                        <ul class="link">
+                            <li><a href="{% url 'home:privacy_policy' %}">{% trans "Privacy Policy" %}</a></li>
+                            <li><a href="{% url 'home:terms_of_service' %}">{% trans "Terms of Service" %}</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-xl-2 col-md-5 order-md-1 order-xl-4 col-sm-6">
+                    <div class="footer-widget">
+                        <h4>{% trans "Contact Us" %}</h4>
+                        <ul>
+                            {% if site_info.office_email %}
+                            <li>
+                                <span>{% trans "Email" %}:</span>
+                                <a href="mailto:{{ site_info.office_email }}">{{ site_info.office_email }}</a>
+                            </li>
+                            {% endif %}
+                            <li>
+                                <span>{% trans "Copyright" %}:</span>
+                                2022.4 – {% now "Y" %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-    <nav aria-labelledby="footer-links">
-      <h2 id="footer-links">{% trans "Quick Link" %}</h2>
-      <ul>
-        <li><a href="{% url 'home:index' %}">{% trans "Home" %}</a></li>
-        <li><a href="{% url 'portfolio:portfolio' %}">{% trans "Portfolio" %}</a></li>
-      </ul>
-    </nav>
-    <nav aria-labelledby="footer-support">
-      <h2 id="footer-support">{% trans "Support" %}</h2>
-      <ul>
-        <li><a href="{% url 'home:privacy_policy' %}">{% trans "Privacy Policy" %}</a></li>
-        <li><a href="{% url 'home:terms_of_service' %}">{% trans "Terms of Service" %}</a></li>
-      </ul>
-    </nav>
-    <div>
-      <h2>{% trans "Contact Us" %}</h2>
-      <ul>
-        {% if site_info.office_email %}<li><span>{% trans "Email" %}</span><a href="mailto:{{ site_info.office_email }}">{{ site_info.office_email }}</a></li>{% endif %}
-        <li><span>{% trans "Copyright" %}</span>2022.4 – {% now "Y" %}</li>
-      </ul>
+
+    <div class="copy-right">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="text-center">
+                        <p>© {% now "Y" %} devspoon · Designed &amp; Developed By <a href="https://graygrids.com/" rel="nofollow noopener" target="_blank">GrayGrids</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="c-footer__bar">
-    <p class="l-wrap">© {% now "Y" %} devspoon · Designed &amp; Developed By <a href="https://graygrids.com/" rel="nofollow noopener">GrayGrids</a></p>
-  </div>
 </footer>
-<a class="c-to-top" href="#main" aria-label="{% trans 'Back to top' %}">{% icon "chevron-up" %}</a>

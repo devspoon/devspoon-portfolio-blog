@@ -1,0 +1,28 @@
+{% load static %}
+<!--====== FAVICON ======-->
+<link rel="icon" href="{% static 'images/favicons/favicon-32x32.png' %}" type="image/png">
+<link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+
+<!--====== THEME VENDOR CSS ======-->
+<link rel="stylesheet" href="{% static 'vendors/animate/animate-4.1.0.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendors/slider/tiny-slider/tiny-slider-2.9.3.css' %}">
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+<link rel="stylesheet" href="{% static 'vendors/litebox/css/glightbox-3.1.0.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendors/selectr/selectr.css' %}">
+<link rel="stylesheet" href="{% static 'vendors/nouislider/css/nouislider-15.5.1.css' %}">
+<link rel="stylesheet" href="{% static 'vendors/bootstrap/bootstrap-5.1.3.min.css' %}">
+
+<!--====== ICON FONTS ======-->
+<link rel="stylesheet" href="{% static 'vendors/icons/Lineicons/Lineicons-3.0.css' %}">
+<link rel="stylesheet" href="{% static 'vendors/icons/icofont/icofont-1.0.1.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendors/icons/floaticon/flaticon.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+{# Korean text falls back to Pretendard; font CSS must not block first paint #}
+<link rel="stylesheet" href="{% static 'vendor/pretendard-1.3.9/pretendardvariable-dynamic-subset.css' %}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{% static 'vendor/pretendard-1.3.9/pretendardvariable-dynamic-subset.css' %}"></noscript>
+
+<!--====== THEME CSS ======-->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+<link rel="stylesheet" href="{% static 'css/theme-dark.css' %}">

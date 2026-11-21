@@ -840,6 +840,10 @@ msgstr "메뉴"
 msgid "Close menu"
 msgstr "메뉴 닫기"
 
+#: templates/base/mobile_menu.html:23
+msgid "Follow us"
+msgstr "팔로우"
+
 #: templates/base/post_form.html:29
 msgid "Current file"
 msgstr "현재 파일"

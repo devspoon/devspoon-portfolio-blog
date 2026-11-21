@@ -1,0 +1,57 @@
+{% load i18n home_tag %}
+{% site_info_tag as site_info %}
+{% main_menu_tag as main_menu %}
+<div class="body_overlay"></div>
+<div class="offcanvas_menu">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="offcanvas_menu_wrapper" id="mobile-menu" aria-label="{% trans 'Menu' %}">
+                    <div class="canvas_close">
+                        <a href="#" role="button" aria-label="{% trans 'Close menu' %}"><i class="lni lni-close" aria-hidden="true"></i></a>
+                    </div>
+                    <div class="header_contact_info">
+                        <ul class="d-flex">
+                            {% if site_info.office_phone_number %}
+                            <li class="text-white"><i class="lni lni-phone" aria-hidden="true"></i> <a href="tel:{{ site_info.country_code }}-{{ site_info.office_phone_number }}">{{ site_info.country_code }}-{{ site_info.office_phone_number }}</a></li>
+                            {% endif %}
+                            {% if site_info.office_email %}
+                            <li class="text-white"><i class="icofont-ui-email" aria-hidden="true"></i> <a href="mailto:{{ site_info.office_email }}">{{ site_info.office_email }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="header_social d-flex">
+                        <span>{% trans "Follow us" %}</span>
+                        <ul class="d-flex">
+                            {% if site_info.office_twitter %}<li><a href="{{ site_info.office_twitter }}" rel="noopener" aria-label="X"><i class="lni lni-twitter" aria-hidden="true"></i></a></li>{% endif %}
+                            {% if site_info.office_facebook %}<li><a href="{{ site_info.office_facebook }}" rel="noopener" aria-label="Facebook"><i class="lni lni-facebook" aria-hidden="true"></i></a></li>{% endif %}
+                            {% if site_info.office_instragram %}<li><a href="{{ site_info.office_instragram }}" rel="noopener" aria-label="Instagram"><i class="lni lni-instagram" aria-hidden="true"></i></a></li>{% endif %}
+                            {% if site_info.office_youtube %}<li><a href="{{ site_info.office_youtube }}" rel="noopener" aria-label="YouTube"><i class="lni lni-youtube" aria-hidden="true"></i></a></li>{% endif %}
+                        </ul>
+                    </div>
+                    <nav id="menu" class="sub-menu-bar text-left" aria-label="{% trans 'Main menu' %}">
+                        <ul class="offcanvas_main_menu navbar-nav">
+                            {% for node in main_menu %}{% if node.is_root_node %}
+                            {% if node.is_leaf_node %}
+                            <li class="nav-item">
+                                <a class="page-scroll" href="{% if node.menu_path %}{% url node.menu_path %}{% else %}{{ node.menu_link }}{% endif %}">{{ node.menu_name }}</a>
+                            </li>
+                            {% else %}
+                            <li class="menu-item-has-children nav-item">
+                                <a class="page-scroll dd-menu collapsed" href="#submenu-{{ node.pk }}" data-bs-toggle="collapse"
+                                   role="button" aria-controls="submenu-{{ node.pk }}" aria-expanded="false">{{ node.menu_name }} <i class="icofont-rounded-down" aria-hidden="true"></i></a>
+                                <ul class="sub-menu collapse" id="submenu-{{ node.pk }}">
+                                    {% for child in main_menu %}{% if child.parent_id == node.pk %}
+                                    <li class="nav-item"><a href="{% if child.menu_path %}{% url child.menu_path %}{% else %}{{ child.menu_link }}{% endif %}">{{ child.menu_name }}</a></li>
+                                    {% endif %}{% endfor %}
+                                </ul>
+                            </li>
+                            {% endif %}
+                            {% endif %}{% endfor %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,37 +1,52 @@
 {% load static i18n ui_tags %}<!doctype html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE|default:'ko' }}">
+
 <head>
+    <!--====== TITLE ======-->
     <title>{% block title %}devspoon{% endblock %}</title>
+
+    <!--====== METATAG ======-->
     {% include "base/meta.html" %}
     <meta name="color-scheme" content="light dark">
     {# set the theme before first paint: saved choice, else the OS setting #}
     <script>try{var t=localStorage.getItem("theme");document.documentElement.dataset.bsTheme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){}</script>
-    <link rel="icon" href="{% static 'images/favicons/favicon-32x32.png' %}" type="image/png">
-    <link rel="preload" href="{% static 'vendor/bootstrap-5.3.8/bootstrap.min.css' %}" as="style">
-    {# font CSS must not block first paint: text shows in the system font, then swaps (Lighthouse LCP ~2.5s -> ~1.6s, CLS 0) #}
-    <link rel="stylesheet" href="{% static 'vendor/pretendard-1.3.9/pretendardvariable-dynamic-subset.css' %}" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="{% static 'vendor/pretendard-1.3.9/pretendardvariable-dynamic-subset.css' %}"></noscript>
-    {# theme fonts: Roboto headings, Maven Pro body (Latin); Korean falls back to Pretendard #}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;700&family=Roboto:wght@500;700;900&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;700&family=Roboto:wght@500;700;900&display=swap"></noscript>
-    <link rel="stylesheet" href="{% static 'css/app.css' %}">
-    {% block extra_css %}{% endblock %}
+
+    <!--====== ANALYTICS (only where settings enable it) ======-->
     {% analytics_enabled as analytics_on %}{% if analytics_on %}{% include "base/analytics.html" %}{% endif %}
+
+    <!--====== ICONS & STYLES ======-->
+    {% include "base/icons_styles.html" %}
+    {% block extra_css %}{% endblock %}
+    <noscript><style>.preloader { display: none !important; }</style></noscript>
 </head>
+
 <body>
     <a class="visually-hidden-focusable" href="#main">{% trans "Skip to content" %}</a>
+
+    <!--====== PRELOADER ======-->
+    {% include "base/preloader.html" %}
+
+    <!--====== MOBILE MENU ======-->
+    {% include "base/mobile_menu.html" %}
+
+    <!--====== HEADER ======-->
     {% include "base/header.html" %}
-    <main id="main" class="l-main">
+
+    <main id="main">
     {% block content %}
     {% endblock %}
     </main>
+
+    <!--====== FOOTER ======-->
     {% include "base/footer.html" %}
 
-    <script src="{% static 'vendor/bootstrap-5.3.8/bootstrap.bundle.min.js' %}" defer></script>
-    <script type="module" src="{% static 'js/core.js' %}"></script>
+    <!--====== BACK TO TOP ======-->
+    <a href="#main" class="back-to-top btn-hover" aria-label="{% trans 'Back to top' %}"><i class="lni lni-chevron-up" aria-hidden="true"></i></a>
+
+    <!--====== JAVASCRIPT ======-->
+    {% include "base/javascripts.html" %}
     {% block extra_js %}{% endblock %}
 </body>
+
 </html>
