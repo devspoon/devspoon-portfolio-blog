@@ -8,6 +8,7 @@ Admin-authored summernote fields go through sanitize_html, never |safe.
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/pages/home.css' %}">{# shared section-title rules #}
 <link rel="stylesheet" href="{% static 'css/pages/portfolio.css' %}">
+<link rel="stylesheet" href="{% static 'css/pages/cards.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -44,7 +45,7 @@ Admin-authored summernote fields go through sanitize_html, never |safe.
                                 <div class="tab-pane fade{% if forloop.first %} show active{% endif %}" id="role-{{ forloop.counter }}" role="tabpanel" aria-labelledby="role-tab-{{ forloop.counter }}" tabindex="0">
                                     {{ item.content|sanitize_html }}
                                     {% if item.skill %}
-                                    <ul>
+                                    <ul class="skill-chips">
                                         {% for skill in item.skill|split_comma %}
                                         <li><i class="lni lni-checkmark-circle" aria-hidden="true"></i> {{ skill }}</li>
                                         {% endfor %}

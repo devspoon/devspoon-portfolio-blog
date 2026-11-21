@@ -6,3 +6,10 @@
 .single-timeline-content { cursor: pointer; }
 .single-timeline-content .timeline-more { font-size: 14px; color: #C73636; text-decoration: none; }
 [data-bs-theme="dark"] .single-timeline-content .timeline-more { color: #FF8E8E; }
+/* skills: one wrapping row of chips instead of a vertical list */
+.about-me .about-left .tab-content ul.skill-chips { display: flex; flex-wrap: wrap; gap: 10px 8px; margin: 20px 0 0; padding: 0; list-style: none; }
+.about-me .about-left .tab-content ul.skill-chips li { display: inline-flex; align-items: center; gap: 6px; margin: 0; padding: 6px 14px;
+  border: 1px solid #FFD5D5; border-radius: 999px; background: #FFF4F4; color: #333F57; font-size: 14px; line-height: 1.4; }
+.about-me .about-left .tab-content ul.skill-chips li i { margin: 0; color: #D6383E; }
+[data-bs-theme="dark"] .about-me .about-left .tab-content ul.skill-chips li { border-color: #5A3E4C; background: #3E2C38; color: #E8ECF4; }
+[data-bs-theme="dark"] .about-me .about-left .tab-content ul.skill-chips li i { color: #FF8E8E; }
