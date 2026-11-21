@@ -1,92 +1,181 @@
 {% extends "base/base.html" %}
-{% load static i18n ui_tags %}
+{% load static i18n blog_base_tag %}
 {% block title %}devspoon{% endblock %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/home.css' %}">{% endblock %}
 
 {% block content %}
-{% with posts=latest %}
-<div class="l-wrap">
-  {# the theme's hero: welcome line, rotating roles, intro, buttons; illustration on the right #}
-  <section class="p-hero" aria-labelledby="hero-title">
-    <div>
-      <p class="p-hero__welcome">{% trans "Welcome to" %} <span>{% trans "my 'devspoon' website!" %}</span></p>
-      <h1 id="hero-title">{% trans "Hey folks" %}, {% trans "I'm" %}
-        <span class="p-hero__roles">
-          <span>{% trans "Full-Stack Developer" %}</span>
-          <span>{% trans "Digital Brand Marketer" %}</span>
-          <span>{% trans "led startups 6 times" %}</span>
-        </span>
-      </h1>
-      <p class="p-hero__lede">{% trans "I build Django and FastAPI backends and write down how I built them." %}</p>
-      <div class="p-hero__links">
-        <a class="btn btn-primary" href="{% url 'portfolio:portfolio' %}">{% trans "See Portfolio" %}</a>
-        <a class="btn btn-outline-primary" href="https://github.com/devspoon/Devspoon-Projects" rel="noopener">{% icon "github" %} {% trans "Devspoon's Open Source" %}</a>
-      </div>
-    </div>
-    <img class="p-hero__art" src="{% static 'images/deverloper_ai.png' %}" width="526" height="526" alt="" fetchpriority="high">
-  </section>
 
-  <section class="l-section" aria-labelledby="latest">
-    {% url 'blog:blog_list' as blog_list_url %}
-    {% trans "Latest Blog Posts" as t %}{% trans "You can see the latest articles in open source, study, book, and blog categories. " as d %}{% trans "All posts" as a %}
-    {% include "components/section_head.html" with id="latest" title=t desc=d action_url=blog_list_url action_label=a %}
-    <div class="row g-4">
-      {% for item in posts %}
-      <div class="col-md-6 col-lg-4">{% include "home/_post_link.html" %}</div>
-      {% empty %}
-      <div class="col-12">{% trans "No posts yet." as m %}{% include "components/empty.html" with message=m %}</div>
-      {% endfor %}
+<!--====== ILLUST START ======-->
+<section class="illust full-screen d-lg-flex justify-content-center align-items-center" id="illust">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-12 col-12 d-flex align-items-center">
+                <div class="about-text">
+                    <small class="small-text">{% trans "Welcome to" %} <span class="mobile-block">{% trans "my 'devspoon' website!" %}</span></small>
+                    <h1 class="animated animated-text">
+                        <span class="mr-2">{% trans "Hey folks" %}, {% trans "I'm" %}</span>
+                        <span class="animated-info">
+                            <span class="animated-item">{% trans "Full-Stack Developer" %}</span>
+                            <span class="animated-item">{% trans "Digital Brand Marketer" %}</span>
+                            <span class="animated-item">{% trans "led startups 6 times" %}</span>
+                        </span>
+                    </h1>
+                    <p>{% trans "I build Django and FastAPI backends and write down how I built them." %}</p>
+                    <div class="custom-btn-group mt-4">
+                        <a href="https://github.com/devspoon/Devspoon-Projects" target="_blank" rel="noopener" class="btn mr-lg-2 custom-btn"><i class="lni lni-github" aria-hidden="true"></i> {% trans "Devspoon's Open Source" %}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-12 col-12">
+                <div class="about-image svg">
+                    <img src="{% static 'images/deverloper_ai.png' %}" class="img-fluid" width="526" height="526" alt="" fetchpriority="high">
+                </div>
+            </div>
+        </div>
     </div>
-  </section>
+</section>
+<!--====== ILLUST END ======-->
 
-  <section class="l-section l-section--alt" aria-labelledby="projects">
-    {% url 'blog:project_list' as project_list_url %}
-    {% trans "About Projects" as t %}{% trans "Open source, teaching/learning projects created and operated by teams or individuals." as d %}{% trans "All projects" as a %}
-    {% include "components/section_head.html" with id="projects" title=t desc=d action_url=project_list_url action_label=a %}
-    <div class="row g-4">
-      {% for item in projects %}
-      <div class="col-md-6 col-lg-4">
-        {% url 'blog:project_detail' item.projectpost.pk as u %}
-        {% include "components/card_project.html" with post=item.projectpost url=u %}
-      </div>
-      {% empty %}
-      <div class="col-12">{% trans "No projects yet." as m %}{% include "components/empty.html" with message=m %}</div>
-      {% endfor %}
-    </div>
-  </section>
-
-  <section class="l-section" aria-labelledby="career">
-    {% url 'portfolio:portfolio' as portfolio_url %}
-    {% trans "Portfolio" as t %}{% trans "See Portfolio" as a %}
-    {% include "components/section_head.html" with id="career" title=t action_url=portfolio_url action_label=a %}
-    <div class="p-lede">
-      {% blocktrans %}
+<!--====== PORTFOLIO START ======-->
+<section class="portfolio py-5" id="portfolio" aria-labelledby="portfolio-title">
+    <div class="container">
+        <div class="row">
+            <div class="mx-auto col-lg-6 col-10">
+                <div class="text-center portfolio-section-title mb-50">
+                    <h2 id="portfolio-title">{% trans "Portfolio" %}</h2>
+                    {% blocktrans %}
                     <p>I am a <strong>pull-stack developer</strong> and interested in <u>django,fast-api,Huge Traffic Handling,AI,CI/CD</u>
                     so doing open source activities. I ran an <u>digital branding marketing startup</u> and collaborated with various companies.</p>
                     {% endblocktrans %}
+                    <a href="{% url 'portfolio:portfolio' %}" class="main-btn btn-hover">{% trans "See Portfolio" %}</a>
+                </div>
+            </div>
+        </div>
+        <div id="carouselExampleIndicators" class="carousel slide col-lg-10 col-md-12" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="3500">
+                    <img class="d-block w-100" src="{% static 'images/1_google_ai.jpg' %}" alt="[Google] Google Machine Learning Boot Camp">
+                    <div class="carousel-caption d-none d-md-block">
+                        <div class="caption-box">
+                            <h5>[Google] Google Machine Learning Boot Camp 2023/09-11</h5>
+                            <p>Coursera Deep Learning training and Kaggle mission completion from September to November</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item" data-bs-interval="3500">
+                    <img class="d-block w-100" src="{% static 'images/2_smart_mirror.jpg' %}" alt="[StartUp] AI Smart Mirror IoT startup" loading="lazy">
+                    <div class="carousel-caption d-none d-md-block">
+                        <div class="caption-box">
+                            <h5>[StartUp] AI Smart Mirror IoT startup, PL/backend</h5>
+                            <p>2022~2023 Joining Tizen and Django-based AI smart mirror startup</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item" data-bs-interval="3500">
+                    <img class="d-block w-100" src="{% static 'images/3_opensource_global.jpg' %}" alt="[OSS] Global Open Source Software Lead Developer" loading="lazy">
+                    <div class="carousel-caption d-none d-md-block">
+                        <div class="caption-box">
+                            <h5>[OSS] Global Open Source Software Lead Developer</h5>
+                            <p>2020/03-12 devspoon-web, devspoon-startup-web, devspoon-startup-tizen</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item" data-bs-interval="3500">
+                    <img class="d-block w-100" src="{% static 'images/4_bigdata.jpg' %}" alt="[public servant] National Police Agency" loading="lazy">
+                    <div class="carousel-caption d-none d-md-block">
+                        <div class="caption-box">
+                            <h5>[public servant] National Police Agency</h5>
+                            <p>Big Data Division, Planning and Coordination Bureau, National Police Agency</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
     </div>
-    <div class="row g-3">
-      <div class="col-md-6">{% include "components/card_timeline.html" with period="2023/09-11" title="[Google] Google Machine Learning Boot Camp" text="Coursera Deep Learning training and Kaggle mission completion from September to November" %}</div>
-      <div class="col-md-6">{% include "components/card_timeline.html" with period="2022~2023" title="[StartUp] AI Smart Mirror IoT startup, PL/backend" text="Joining Tizen and Django-based AI smart mirror startup" %}</div>
-      <div class="col-md-6">{% include "components/card_timeline.html" with period="2020/03-12" title="[OSS] Global Open Source Software Lead Developer" text="devspoon-web, devspoon-startup-web, devspoon-startup-tizen" %}</div>
-      <div class="col-md-6">{% include "components/card_timeline.html" with title="[public servant] National Police Agency" text="Big Data Division, Planning and Coordination Bureau, National Police Agency" %}</div>
-    </div>
-  </section>
+</section>
+<!--====== PORTFOLIO ENDS ======-->
 
-  <section class="l-section l-section--alt" aria-labelledby="topics">
-    {% trans "What I am studying, the project I am planning" as t %}{% trans "These are the skills I am learning and the new projects I am preparing. Please contact me if you would like to study together or have a project you would like to start." as d %}
-    {% include "components/section_head.html" with id="topics" title=t desc=d %}
-    <div class="row g-3">
-      <div class="col-sm-6 col-lg-3">{% trans "fast-api" as t %}{% trans "A Python server suitable for microservices based on Rest API." as d %}{% include "components/card_topic.html" with title=t text=d %}</div>
-      <div class="col-sm-6 col-lg-3">{% trans "vue.js" as t %}{% trans "The front-end to be used for devspoon projects." as d %}{% include "components/card_topic.html" with title=t text=d %}</div>
-      <div class="col-sm-6 col-lg-3">{% trans "Redis Advanced" as t %}{% trans "Implementation of RDB, AOF, Sharding, Consistent Hashing, and Redis Cluster." as d %}{% include "components/card_topic.html" with title=t text=d %}</div>
-      <div class="col-sm-6 col-lg-3">{% trans "RabbitMQ Advanced" as t %}{% trans "Implementation of pub/sub, routing, topics, and RPC." as d %}{% include "components/card_topic.html" with title=t text=d %}</div>
-      <div class="col-sm-6 col-lg-3">{% trans "E-commerce based on django and Vue.js" as t %}{% trans "An open source E-commerce project using Django and Vue.js. " as d %}{% include "components/card_topic.html" with title=t text=d %}</div>
-      <div class="col-sm-6 col-lg-3">{% trans "Predictive Marketing Analytics with GA4" as t %}{% trans "A marketing analytics project integrating GA4's BigQuery with Django." as d %}{% include "components/card_topic.html" with title=t text=d %}</div>
-      <div class="col-sm-6 col-lg-3">{% trans "Recommendation System" as t %}{% trans "Analyze user behavior and use ML to provide personalized information and recommendations" as d %}{% include "components/card_topic.html" with title=t text=d %}</div>
-      <div class="col-sm-6 col-lg-3">{% trans "TTS(Text to Speech), STT(Speech to Text)" as t %}{% trans "This is a project that provides TTS or STT technology by utilizing the user's voice." as d %}{% include "components/card_topic.html" with title=t text=d %}</div>
+<!--====== SKILL START ======-->
+<section class="skills py-5" id="services-section" aria-labelledby="topics-title">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+                <h2 class="mb-4" id="topics-title">{% trans "What I am studying, the project I am planning" %}</h2>
+                <p>{% trans "These are the skills I am learning and the new projects I am preparing. Please contact me if you would like to study together or have a project you would like to start." %}</p>
+            </div>
+        </div>
+        <div class="row">
+            {% trans "fast-api" as t %}{% trans "A Python server suitable for microservices based on Rest API." as d %}{% include "home/_topic.html" with icon="branding" %}
+            {% trans "vue.js" as t %}{% trans "The front-end to be used for devspoon projects." as d %}{% include "home/_topic.html" with icon="web-programming" %}
+            {% trans "Redis Advanced" as t %}{% trans "Implementation of RDB, AOF, Sharding, Consistent Hashing, and Redis Cluster." as d %}{% include "home/_topic.html" with icon="3d-design" %}
+            {% trans "RabbitMQ Advanced" as t %}{% trans "Implementation of pub/sub, routing, topics, and RPC." as d %}{% include "home/_topic.html" with icon="suitcase" %}
+        </div>
+        <div class="row">
+            {% trans "E-commerce based on django and Vue.js" as t %}{% trans "An open source E-commerce project using Django and Vue.js. " as d %}{% include "home/_topic.html" with icon="computer" %}
+            {% trans "Predictive Marketing Analytics with GA4" as t %}{% trans "A marketing analytics project integrating GA4's BigQuery with Django." as d %}{% include "home/_topic.html" with icon="calendar" %}
+            {% trans "Recommendation System" as t %}{% trans "Analyze user behavior and use ML to provide personalized information and recommendations" as d %}{% include "home/_topic.html" with icon="loyalty" %}
+            {% trans "TTS(Text to Speech), STT(Speech to Text)" as t %}{% trans "This is a project that provides TTS or STT technology by utilizing the user's voice." as d %}{% include "home/_topic.html" with icon="listening" %}
+        </div>
     </div>
-  </section>
-</div>
-{% endwith %}
+</section>
+<!--====== SKILL ENDS ======-->
+
+<!--====== PROJECTS START ======-->
+<section class="latest-product-area py-5 pb-110" aria-labelledby="projects-title">
+    <div class="container" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+        <div class="row">
+            <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
+                <div class="text-center section-title mb-60">
+                    <h2 id="projects-title">{% trans "About Projects" %}</h2>
+                    <p>{% trans "Open source, teaching/learning projects created and operated by teams or individuals." %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for item in projects %}
+            <div class="col-xl-4 col-lg-6 col-md-6">{% include "home/_project_card.html" with post=item.projectpost %}</div>
+            {% empty %}
+            <div class="col-12">{% trans "No projects yet." as m %}{% include "components/empty.html" with message=m %}</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!--====== PROJECTS ENDS ======-->
+
+<!--====== Latest BLogs START ======-->
+<section class="blog py-5" aria-labelledby="latest-title">
+    <div class="container">
+        <div class="row">
+            <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
+                <div class="text-center section-title mb-60">
+                    <h2 id="latest-title">{% trans "Latest Blog Posts" %}</h2>
+                    <p>{% trans "You can see the latest articles in open source, study, book, and blog categories. " %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for item in latest %}
+            <div class="col-xl-4 col-lg-6 col-md-6">{% include "home/_post_link.html" %}</div>
+            {% empty %}
+            <div class="col-12">{% trans "No posts yet." as m %}{% include "components/empty.html" with message=m %}</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!--====== Latest BLogs ENDS ======-->
+
 {% endblock %}

@@ -1,36 +1,11 @@
-/* home page (ADR-004: page styles live in the "pages" layer, tokens only — INV-1) */
-@layer pages {
-  /* hero (theme): welcome line, big greeting with rotating roles, intro, buttons; illustration on the right */
-  .p-hero { display: grid; grid-template-columns: 7fr 5fr; gap: var(--sp-7); align-items: center; padding-block: var(--sp-8); }
-  .p-hero__welcome { font-size: var(--fs-2); font-weight: var(--fw-medium); color: var(--c-accent-text); margin: 0 0 var(--sp-3);
-      letter-spacing: .02em; }
-  .p-hero h1 { font-size: var(--fs-6); font-weight: var(--fw-black); line-height: 1.15; margin: 0; }
-  .p-hero__lede { margin: var(--sp-5) 0 0; max-width: var(--measure); font-size: var(--fs-3); }
-  .p-hero__links { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-6); }
-  .p-hero__art { width: 100%; height: auto; }
+/* home + portfolio (GrayGrids theme). Section titles are h2 for the outline but keep the theme's h1 look;
+   the latest-post title is h3 but keeps the theme's h4 size. */
+.section-title h2, .portfolio-section-title h2 { font-size: 45px; line-height: 55px; margin-bottom: 20px; }
+@media (max-width: 767px) { .section-title h2, .portfolio-section-title h2 { font-size: 36px; line-height: 46px; } }
+.post-item .content .title { font-size: 22px; }
 
-  /* rotating roles: three lines share one grid cell and take turns; reduced motion shows the first */
-  .p-hero__roles { display: grid; color: var(--c-accent-text); }
-  .p-hero__roles > span { grid-area: 1 / 1; }
-  .p-hero__roles > span + span { visibility: hidden; }
-  @media (prefers-reduced-motion: no-preference) {
-    .p-hero__roles > span { visibility: visible; opacity: 0; animation: p-roles 9s infinite; }
-    .p-hero__roles > span:nth-child(2) { animation-delay: 3s; }
-    .p-hero__roles > span:nth-child(3) { animation-delay: 6s; }
-  }
-  @keyframes p-roles {
-    0% { opacity: 0; transform: translateY(.4em); }
-    5%, 28% { opacity: 1; transform: none; }
-    33%, 100% { opacity: 0; transform: translateY(-.4em); }
-  }
-
-  .p-lede { max-width: var(--measure); margin: 0 auto var(--sp-6); text-align: center; }
-  .p-lede p { margin: 0; }
-
-  @media (max-width: 991.98px) {
-    .p-hero { grid-template-columns: 1fr; padding-block: var(--sp-7); text-align: center; }
-    .p-hero__lede { margin-inline: auto; }
-    .p-hero__links { justify-content: center; }
-    .p-hero__art { max-width: 22rem; margin-inline: auto; }
-  }
+/* rotating roles: without motion show the first one only */
+@media (prefers-reduced-motion: reduce) {
+  .animated-item { animation: none; }
+  .animated-item:first-child { opacity: 1; }
 }

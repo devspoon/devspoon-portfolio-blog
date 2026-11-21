@@ -86,3 +86,24 @@ def test_interest_title_renders_admin_html(client):
     html = client.get(reverse("portfolio:portfolio"), HTTP_USER_AGENT="Mozilla/5.0 Chrome/112.0").content.decode()
     assert "<p>AI&nbsp;&amp;&nbsp;MACHINE LEARNING</p>" in html
     assert "&amp;nbsp;" not in html
+
+
+@pytest.mark.django_db
+def test_portfolio_admin_html_is_sanitized(client):
+    """Admin HTML goes through sanitize_html, not |safe: markup stays, scripts and handlers go."""
+    from datetime import datetime, timezone
+
+    from django.core.cache import cache
+    from django.urls import reverse
+
+    from portfolio.models import InterestedIn, WorkExperience
+
+    cache.clear()
+    for lang in ("0", "1"):
+        WorkExperience.objects.create(language=lang, title="<p><b>Lead</b><script>alert(1)</script></p>",
+                                      summary='<p onclick="x()">s</p>', content="<p>c</p>",
+                                      project_start_date=datetime(2024, 3, 1, tzinfo=timezone.utc))
+        InterestedIn.objects.create(language=lang, icon='<i class="lni lni-world"></i>', title="<p>t</p>", content="<p>c</p>")
+    html = client.get(reverse("portfolio:portfolio"), HTTP_USER_AGENT="Mozilla/5.0 Chrome/112.0").content.decode()
+    assert "<b>Lead</b>" in html and '<i class="lni lni-world"></i>' in html
+    assert "alert(1)" not in html and "onclick" not in html

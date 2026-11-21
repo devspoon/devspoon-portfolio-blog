@@ -1,7 +1,11 @@
-{% comment %}Education/book entry; title and content are admin-authored HTML.{% endcomment %}
-<article class="c-card c-card--timeline mb-3">
-  <span class="c-card__kind">{{ item.site_name }}</span>
-  <h4 class="c-card__title">{% if item.class_link %}<a href="{{ item.class_link }}" rel="noopener">{{ item.title|striptags }}</a>{% else %}{{ item.title|striptags }}{% endif %}</h4>
-  <p class="c-meta mt-0">{{ item.study_start_date|date:'Y.m.d' }}<span aria-hidden="true">–</span>{{ item.study_end_date|date:'Y.m.d' }}</p>
-  <div class="c-prose">{{ item.content|safe }}</div>
-</article>
+{% load public_tags %}{% comment %}Education/book entry (theme educations-info-item); title and content are admin-authored HTML.{% endcomment %}
+<div class="educations-info-item row">
+    <div class="col-lg-4 col-md-4 col-sm-4">
+        <p>{{ item.study_start_date|date:'Y-m-d' }} – {{ item.study_end_date|date:'Y-m-d' }}</p>
+        <div class="h6"><strong>{{ item.site_name }}</strong></div>
+    </div>
+    <div class="col-lg-8 col-md-8 col-sm-8 educations-info-border">
+        <h4>{% if item.class_link %}<a href="{{ item.class_link }}" target="_blank" rel="noopener">{{ item.title|striptags }}</a>{% else %}{{ item.title|striptags }}{% endif %}</h4>
+        {{ item.content|sanitize_html }}
+    </div>
+</div>

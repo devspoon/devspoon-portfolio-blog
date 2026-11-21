@@ -1,9 +1,27 @@
-{% load i18n %}{% comment %}
-Maps a home "latest" row (a .values() dict with a `table` key) to its URL and kind label,
-then renders it as a thumbnail card.
+{% load i18n blog_base_tag %}{% comment %}
+Home "latest" card (theme post-item). item is a .values() dict with a `table` key:
+map it to the detail URL, the list URL and the kind label.
 {% endcomment %}
-{% if item.table == "OnlineStudy" %}{% url 'blog:online_study_detail' item.pk as u %}{% trans "Online study" as k %}
-{% elif item.table == "Blog" %}{% url 'blog:blog_detail' item.pk as u %}{% trans "Blog" as k %}
-{% elif item.table == "OpenSource" %}{% url 'blog:opensource_detail' item.pk as u %}{% trans "Open source" as k %}
-{% else %}{% url 'blog:books_detail' item.pk as u %}{% trans "Books" as k %}{% endif %}
-{% include "components/card_project.html" with post=item url=u kind=k %}
+{% if item.table == "OnlineStudy" %}{% url 'blog:online_study_detail' item.pk as u %}{% url 'blog:online_study_list' as list_u %}{% trans "Online study" as k %}
+{% elif item.table == "Blog" %}{% url 'blog:blog_detail' item.pk as u %}{% url 'blog:blog_list' as list_u %}{% trans "Blog" as k %}
+{% elif item.table == "OpenSource" %}{% url 'blog:opensource_detail' item.pk as u %}{% url 'blog:opensource_list' as list_u %}{% trans "Open source" as k %}
+{% else %}{% url 'blog:books_detail' item.pk as u %}{% url 'blog:books_list' as list_u %}{% trans "Books" as k %}{% endif %}
+<div class="card-box post-item">
+    {% if item.title_image %}
+    <div class="card-img thumb">
+        <a href="{{ u }}" tabindex="-1" aria-hidden="true"><img src="{{ item.title_image }}" alt="" loading="lazy" decoding="async"></a>
+    </div>
+    {% endif %}
+    <div class="card-content content">
+        <h3 class="title"><a href="{{ u }}">{{ item.title }}</a></h3>
+        <p>{{ item.content|remove_styles|truncatechars:20 }}</p>
+        <div class="meta bottom meta-bottom">
+            <div class="blog-info row col-12 justify-content-center">
+                <div class="col-6"><i class="lni lni-calendar" aria-hidden="true"></i> <time datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:'Y-m-d' }}</time></div>
+                <div class="col-6"><i class="lni lni-comments" aria-hidden="true"></i> {{ item.reply_count }}</div>
+                <div class="col-6"><i class="lni lni-eye" aria-hidden="true"></i> {{ item.visit_count }}</div>
+                <div class="col-6"><a class="category" href="{{ list_u }}"><i class="lni lni-folder" aria-hidden="true"></i> {{ k }}</a></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+{% load i18n blog_base_tag %}{% comment %}
+Theme project card (card-box) for the home and portfolio project lists. Args: post (a ProjectPost).
+The thumbnail link repeats the title link, so it is hidden from assistive tech.
+{% endcomment %}
+{% url 'blog:project_detail' post.pk as u %}
+<div class="card-box">
+    {% if post.title_image %}
+    <div class="card-img">
+        <a href="{{ u }}" tabindex="-1" aria-hidden="true"><img src="{{ post.title_image }}" alt="" loading="lazy" decoding="async"></a>
+        {% if post.repository %}
+        <div class="product-action">
+            <a href="{{ post.repository }}" class="share" rel="noopener" aria-label="{% trans 'Repository' %}"><i class="lni lni-world" aria-hidden="true"></i></a>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    <div class="card-content">
+        <h3 class="name"><i class="lni lni-github" aria-hidden="true"></i> <a href="{{ u }}">{{ post.title }}</a></h3>
+        <span class="update">{{ post.content|remove_styles|truncatechars:80 }}</span>
+        <div class="project-info row justify-content-center">
+            <div class="col-6"><i class="lni lni-calendar" aria-hidden="true"></i> <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:'Y-m-d H:i' }}</time></div>
+            {% if post.dev_lang %}<div class="col-6"><i class="lni lni-bookmark" aria-hidden="true"></i> {{ post.dev_lang }}</div>{% endif %}
+            {% if post.branch %}<div class="col-6"><i class="lni lni-layers" aria-hidden="true"></i> {{ post.get_branch_display }}</div>{% endif %}
+            {% if post.role %}<div class="col-6"><i class="lni lni-folder" aria-hidden="true"></i> {{ post.get_role_display }}</div>{% endif %}
+            {% if post.version %}<div class="col-6"><i class="lni lni-tag" aria-hidden="true"></i> {{ post.version }}</div>{% endif %}
+            {% if post.repository %}<div class="col-6"><i class="lni lni-tag" aria-hidden="true"></i> <a href="{{ post.repository }}" rel="noopener">{% trans "Repository" %}</a></div>{% endif %}
+            <div class="col-6"><i class="lni lni-heart" aria-hidden="true"></i> {{ post.like_count }}</div>
+            <div class="col-6"><i class="lni lni-comments-reply" aria-hidden="true"></i> {{ post.reply_count }}</div>
+            <div class="col-6"><i class="lni lni-eye" aria-hidden="true"></i> {{ post.visit_count }}</div>
+            <div class="col-6"><i class="lni lni-pencil-alt" aria-hidden="true"></i> {{ post.author }}</div>
+        </div>
+    </div>
+</div>

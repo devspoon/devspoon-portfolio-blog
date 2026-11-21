@@ -1,179 +1,322 @@
 {% extends "base/base.html" %}
-{% load static i18n portfolio_base_tag ui_tags %}
+{% load static i18n portfolio_base_tag public_tags %}
 {% comment %}
-Portfolio. The timeline is rendered on the server (it was built in portfolio.js); the stack diagram is ADR-016.
-summary/content/title fields marked |safe are admin-authored (portfolio admin), not visitor input.
+Portfolio (GrayGrids theme markup). The timeline is rendered on the server (portfolio.js built it from JSON before).
+Admin-authored summernote fields go through sanitize_html, never |safe.
 {% endcomment %}
 {% block title %}{% trans "Portfolio" %} | devspoon{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/portfolio.css' %}">{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/home.css' %}">{# shared section-title rules #}
+<link rel="stylesheet" href="{% static 'css/pages/portfolio.css' %}">
+{% endblock %}
 
 {% block content %}
-{% url 'home:search_queryset' as search_url %}
-<div class="l-wrap">
-  {% for message in messages %}
-  <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} mt-4" role="alert">{{ message }}</div>
-  {% endfor %}
-
-  <section class="p-port-hero" aria-labelledby="about">
-    <div>
-      <h1 id="about">{% trans "About me" %}</h1>
-      <div class="p-port-hero__summary">{{ portfolio.summary|safe }}</div>
-      {% if portfolio.portfolio_cv_file %}
-      <a href="{{ portfolio.portfolio_cv_file.url }}" class="btn btn-primary mt-3" download>{% icon "download" %} {% trans "Download CV" %}</a>
-      {% endif %}
-    </div>
-
-    <figure class="p-stack-wrap" aria-labelledby="stack-title">
-      <figcaption id="stack-title">{% trans "Main stack and how it connects, with the number of posts on each" %}</figcaption>
-      <svg class="p-stack" viewBox="0 0 520 300" aria-labelledby="stack-title">
-        <path class="p-stack__wire" d="M150 70 H260 M150 70 V230 H260 M390 70 H420 V150 M390 230 H420 V150 M150 150 H260"/>
-        <a class="p-stack__node" href="{{ search_url }}?tag=django" aria-label="Django, {{ stack.django|default:0 }}"><rect x="20" y="45" width="130" height="50" rx="6"/><text x="38" y="75">Django</text><text class="p-stack__count" x="132" y="75" text-anchor="end">{{ stack.django }}</text></a>
-        <a class="p-stack__node" href="{{ search_url }}?tag=fastapi" aria-label="FastAPI, {{ stack.fastapi|default:0 }}"><rect x="20" y="125" width="130" height="50" rx="6"/><text x="38" y="155">FastAPI</text><text class="p-stack__count" x="132" y="155" text-anchor="end">{{ stack.fastapi }}</text></a>
-        <a class="p-stack__node" href="{{ search_url }}?tag=redis" aria-label="Redis, {{ stack.redis|default:0 }}"><rect x="260" y="45" width="130" height="50" rx="6"/><text x="278" y="75">Redis</text><text class="p-stack__count" x="372" y="75" text-anchor="end">{{ stack.redis }}</text></a>
-        <a class="p-stack__node" href="{{ search_url }}?tag=celery" aria-label="Celery, {{ stack.celery|default:0 }}"><rect x="260" y="125" width="130" height="50" rx="6"/><text x="278" y="155">Celery</text><text class="p-stack__count" x="372" y="155" text-anchor="end">{{ stack.celery }}</text></a>
-        <a class="p-stack__node" href="{{ search_url }}?tag=rabbitmq" aria-label="RabbitMQ, {{ stack.rabbitmq|default:0 }}"><rect x="260" y="205" width="130" height="50" rx="6"/><text x="278" y="235">RabbitMQ</text><text class="p-stack__count" x="372" y="235" text-anchor="end">{{ stack.rabbitmq }}</text></a>
-        <a class="p-stack__node" href="{{ search_url }}?tag=mysql" aria-label="MySQL, {{ stack.mysql|default:0 }}"><rect x="420" y="125" width="90" height="50" rx="6"/><text x="434" y="155">MySQL</text><text class="p-stack__count" x="498" y="155" text-anchor="end">{{ stack.mysql }}</text></a>
-      </svg>
-      {# small screens: the same links as a list (the SVG is hidden there) #}
-      <ul class="p-stack-list">
-        <li><a href="{{ search_url }}?tag=django">Django</a> <span>{% blocktrans count n=stack.django|default:0 %}{{ n }} post{% plural %}{{ n }} posts{% endblocktrans %}</span></li>
-        <li><a href="{{ search_url }}?tag=fastapi">FastAPI</a> <span>{% blocktrans count n=stack.fastapi|default:0 %}{{ n }} post{% plural %}{{ n }} posts{% endblocktrans %}</span></li>
-        <li><a href="{{ search_url }}?tag=redis">Redis</a> <span>{% blocktrans count n=stack.redis|default:0 %}{{ n }} post{% plural %}{{ n }} posts{% endblocktrans %}</span></li>
-        <li><a href="{{ search_url }}?tag=celery">Celery</a> <span>{% blocktrans count n=stack.celery|default:0 %}{{ n }} post{% plural %}{{ n }} posts{% endblocktrans %}</span></li>
-        <li><a href="{{ search_url }}?tag=rabbitmq">RabbitMQ</a> <span>{% blocktrans count n=stack.rabbitmq|default:0 %}{{ n }} post{% plural %}{{ n }} posts{% endblocktrans %}</span></li>
-        <li><a href="{{ search_url }}?tag=mysql">MySQL</a> <span>{% blocktrans count n=stack.mysql|default:0 %}{{ n }} post{% plural %}{{ n }} posts{% endblocktrans %}</span></li>
-      </ul>
-    </figure>
-  </section>
-
-  {% if portfolio_summary %}
-  <section class="l-section" aria-labelledby="roles">
-    {% trans "Roles" as t %}{% include "components/section_head.html" with id="roles" title=t %}
-    <ul class="nav nav-tabs" role="tablist">
-      {% for item in portfolio_summary %}
-      <li class="nav-item" role="presentation">
-        <button class="nav-link{% if forloop.first %} active{% endif %}" id="role-tab-{{ forloop.counter }}" data-bs-toggle="tab" data-bs-target="#role-{{ forloop.counter }}" type="button" role="tab" aria-controls="role-{{ forloop.counter }}" aria-selected="{{ forloop.first|yesno:'true,false' }}">{{ item.get_position_display }}</button>
-      </li>
-      {% endfor %}
-    </ul>
-    <div class="tab-content p-roles">
-      {% for item in portfolio_summary %}
-      <div class="tab-pane fade{% if forloop.first %} show active{% endif %}" id="role-{{ forloop.counter }}" role="tabpanel" aria-labelledby="role-tab-{{ forloop.counter }}" tabindex="0">
-        <div class="c-prose">{{ item.content|safe }}</div>
-        {% include "components/tag_list.html" with tags=item.skill|split_comma %}
-      </div>
-      {% endfor %}
-    </div>
-  </section>
-  {% endif %}
-
-  {% if portfolio.portfolio_image1 or portfolio.portfolio_image2 or portfolio.portfolio_image3 %}
-  <section class="l-section p-gallery" aria-label="{% trans 'Photos' %}">
-    {% if portfolio.portfolio_image1 %}<img src="{{ portfolio.portfolio_image1.url }}" alt="{% get_verbose_name portfolio 'portfolio_image1' %}" loading="lazy">{% endif %}
-    {% if portfolio.portfolio_image2 %}<img src="{{ portfolio.portfolio_image2.url }}" alt="{% get_verbose_name portfolio 'portfolio_image2' %}" loading="lazy">{% endif %}
-    {% if portfolio.portfolio_image3 %}<img src="{{ portfolio.portfolio_image3.url }}" alt="{% get_verbose_name portfolio 'portfolio_image3' %}" loading="lazy">{% endif %}
-  </section>
-  {% endif %}
-
-  <section class="l-section" aria-labelledby="experience">
-    {% trans "Work Experience" as t %}{% include "components/section_head.html" with id="experience" title=t %}
-    {% regroup experience by project_start_date.year as years %}
-    {% for year in years %}
-    <div class="p-year">
-      <h3 class="p-year__label">{{ year.grouper }}</h3>
-      <div class="row g-3">
-        {% for item in year.list %}
-        <div class="col-md-6 col-lg-4">
-          <article class="c-card c-card--timeline h-100">
-            <span class="c-card__kind">{{ item.get_role_display }}</span>
-            {# title and summary are summernote HTML that already carries its own <p>, so they sit in divs #}
-            <div class="c-card__title c-prose" role="heading" aria-level="4">{{ item.title|safe }}</div>
-            <p class="c-meta mt-0"><time datetime="{{ item.project_start_date|date:'Y-m-d' }}">{{ item.project_start_date|date:'Y.m' }}</time>{% if item.project_end_date %}<span aria-hidden="true">–</span><time datetime="{{ item.project_end_date|date:'Y-m-d' }}">{{ item.project_end_date|date:'Y.m' }}</time>{% endif %}</p>
-            <div class="mb-2 c-prose">{{ item.summary|safe }}</div>
-            <details class="p-details"><summary>{% trans "Details" %}</summary><div class="c-prose">{{ item.content|safe }}</div></details>
-          </article>
-        </div>
+    {% if messages %}
+    <div class="container pt-4">
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} mb-2" role="alert">{{ message }}</div>
         {% endfor %}
-      </div>
     </div>
-    {% empty %}
-    {% trans "No experience entries yet." as m %}{% include "components/empty.html" with message=m %}
-    {% endfor %}
-  </section>
+    {% endif %}
 
-  {% if study %}
-  <section class="l-section l-section--alt" aria-labelledby="study">
-    {% trans "Education & Study" as t %}{% trans "Learning history through online/offline sites or technical books." as d %}
-    {% include "components/section_head.html" with id="study" title=t desc=d %}
-    <div class="row g-4">
-      <div class="col-md-6">
-        <h3 class="h4">{% trans "Courses" %}</h3>
-        {% for item in study %}{% if item.type == '0' %}{% include "portfolio/_study_item.html" %}{% endif %}{% endfor %}
-      </div>
-      <div class="col-md-6">
-        <h3 class="h4">{% trans "Books" %}</h3>
-        {% for item in study %}{% if item.type == '1' %}{% include "portfolio/_study_item.html" %}{% endif %}{% endfor %}
-      </div>
-    </div>
-  </section>
-  {% endif %}
+    <!--====== About Me PART START ======-->
+    <section class="about-me section" aria-labelledby="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-sm-12">
+                    <div class="about-left about-box">
+                        <div class="section-title align-left">
+                            <h1 id="about">{% trans "About me" %}</h1>
+                            {{ portfolio.summary|sanitize_html }}
+                            {% if portfolio.portfolio_cv_file %}
+                            <a href="{{ portfolio.portfolio_cv_file.url }}" class="btn btn-outline-danger" download><i class="lni lni-download" aria-hidden="true"></i> {% trans "Download CV" %}</a>
+                            {% endif %}
+                        </div>
+                        {% if portfolio_summary %}
+                        <div class="about-tab wow fadeInUp" data-wow-delay=".4s">
+                            <ul class="nav nav-tabs" role="tablist">
+                                {% for item in portfolio_summary %}
+                                <li class="nav-item" role="presentation"><a class="nav-link{% if forloop.first %} active{% endif %}" id="role-tab-{{ forloop.counter }}" href="#role-{{ forloop.counter }}" data-bs-toggle="tab" data-bs-target="#role-{{ forloop.counter }}" role="tab" aria-controls="role-{{ forloop.counter }}" aria-selected="{{ forloop.first|yesno:'true,false' }}">{{ item.get_position_display }}</a></li>
+                                {% endfor %}
+                            </ul>
+                            <div class="tab-content">
+                                {% for item in portfolio_summary %}
+                                <div class="tab-pane fade{% if forloop.first %} show active{% endif %}" id="role-{{ forloop.counter }}" role="tabpanel" aria-labelledby="role-tab-{{ forloop.counter }}" tabindex="0">
+                                    {{ item.content|sanitize_html }}
+                                    {% if item.skill %}
+                                    <ul>
+                                        {% for skill in item.skill|split_comma %}
+                                        <li><i class="lni lni-checkmark-circle" aria-hidden="true"></i> {{ skill }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    {% if portfolio.portfolio_image1 or portfolio.portfolio_image2 or portfolio.portfolio_image3 %}
+                    <div id="portfolioCarousel" class="carousel slide" data-bs-ride="carousel">
+                        {% if portfolio.portfolio_image1 and portfolio.portfolio_image2 and portfolio.portfolio_image3 %}
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#portfolioCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#portfolioCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#portfolioCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        </div>
+                        {% endif %}
+                        <div class="carousel-inner">
+                            {% if portfolio.portfolio_image1 %}
+                            <div class="carousel-item active" data-bs-interval="3500">
+                                <img src="{{ portfolio.portfolio_image1.url }}" class="d-block w-100" alt="{% get_verbose_name portfolio 'portfolio_image1' %}">
+                            </div>
+                            {% endif %}
+                            {% if portfolio.portfolio_image2 %}
+                            <div class="carousel-item{% if not portfolio.portfolio_image1 %} active{% endif %}" data-bs-interval="3500">
+                                <img src="{{ portfolio.portfolio_image2.url }}" class="d-block w-100" alt="{% get_verbose_name portfolio 'portfolio_image2' %}" loading="lazy">
+                            </div>
+                            {% endif %}
+                            {% if portfolio.portfolio_image3 %}
+                            <div class="carousel-item{% if not portfolio.portfolio_image1 and not portfolio.portfolio_image2 %} active{% endif %}" data-bs-interval="3500">
+                                <img src="{{ portfolio.portfolio_image3.url }}" class="d-block w-100" alt="{% get_verbose_name portfolio 'portfolio_image3' %}" loading="lazy">
+                            </div>
+                            {% endif %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#portfolioCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#portfolioCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--====== About Me PART END ======-->
 
-  {% if interested %}
-  <section class="l-section" aria-labelledby="interests">
-    {% trans "What I am interested in" as t %}{% include "components/section_head.html" with id="interests" title=t %}
-    <div class="row g-3">
-      {% for item in interested %}
-      <div class="col-sm-6 col-lg-4">
-        <div class="c-card c-card--topic"><div class="c-card__title c-prose">{{ item.title|safe }}</div><div class="c-prose">{{ item.content|safe }}</div></div>
-      </div>
-      {% endfor %}
-    </div>
-  </section>
-  {% endif %}
+    <!--====== Experiences PART START ======-->
+    <section class="experience timeline_area section_padding_130" aria-labelledby="experience">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
+                    <div class="text-center section-title mb-60">
+                        <h2 id="experience">{% trans "Work Experience" %}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="apland-timeline-area">
+                        {% regroup experience by project_start_date.year as years %}
+                        {% for year in years %}
+                        <div class="single-timeline-area">
+                            <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s"><p>{{ year.grouper }}</p></div>
+                            <div class="row">
+                                {% for item in year.list %}
+                                {% with c=item.get_color_display %}
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    {# the whole card toggles on click (theme behaviour); the Details button is the keyboard path #}
+                                    <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" data-bs-toggle="collapse" data-bs-target="#exp-{{ item.pk }}">
+                                        <div class="timeline-icon timeline-icon-{{ c }}"><i class="{% if c == 'orange' %}fa-regular fa-building{% elif c == 'red' %}fa-regular fa-clipboard{% elif c == 'pink' %}fa-solid fa-people-group{% elif c == 'yellow' %}fa-solid fa-laptop{% elif c == 'blue' %}fa-solid fa-bullhorn{% elif c == 'skyblue' %}fa-solid fa-chalkboard-user{% elif c == 'green' %}fa-solid fa-earth-americas{% elif c == 'gray' %}fa-solid fa-terminal{% else %}fa-solid fa-mug-hot{% endif %}" aria-hidden="true"></i></div>
+                                        <div class="timeline-text">
+                                            <time datetime="{{ item.project_start_date|date:'Y-m-d' }}">{{ item.project_start_date|date:'Y/m/d' }}</time>{% if item.project_end_date %} – <time datetime="{{ item.project_end_date|date:'Y-m-d' }}">{{ item.project_end_date|date:'Y/m/d' }}</time>{% endif %}
+                                            <span class="d-block">{{ item.get_role_display }}</span>
+                                            {{ item.title|sanitize_html }}
+                                            <div class="mt-2">{{ item.summary|sanitize_html }}</div>
+                                            <button type="button" class="btn btn-link p-0 timeline-more" data-bs-toggle="collapse" data-bs-target="#exp-{{ item.pk }}" aria-expanded="false" aria-controls="exp-{{ item.pk }}">{% trans "Details" %}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="collapse" id="exp-{{ item.pk }}"><div class="card card-body">{{ item.content|sanitize_html }}</div></div>
+                                {% endwith %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-center">{% trans "No experience entries yet." %}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--====== Experiences PART END ======-->
 
-  <section class="l-section l-section--alt" aria-labelledby="projects">
-    {% trans "About Projects" as t %}{% include "components/section_head.html" with id="projects" title=t %}
-    <div class="row g-4">
-      {% for item in projects %}
-      <div class="col-md-6 col-lg-4">
-        {% url 'blog:project_detail' item.projectpost.pk as u %}
-        {% include "components/card_project.html" with post=item.projectpost url=u %}
-      </div>
-      {% empty %}
-      <div class="col-12">{% trans "No projects yet." as m %}{% include "components/empty.html" with message=m %}</div>
-      {% endfor %}
-    </div>
-  </section>
+    <!--====== Educations PART START ======-->
+    <section class="educations section" aria-labelledby="study">
+        <div class="container" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+            <div class="row">
+                <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
+                    <div class="text-center section-title mb-60">
+                        <h2 id="study">{% trans "Education & Study" %}</h2>
+                        <p>{% trans "Learning history through online/offline sites or technical books." %}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="educations-info-wrapper">
+                            <h3>{% trans "Courses" %}</h3>
+                            {% for item in study %}{% if item.type == '0' %}{% include "portfolio/_study_item.html" %}{% endif %}{% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="educations-info-wrapper">
+                            <h3>{% trans "Books" %}</h3>
+                            {% for item in study %}{% if item.type == '1' %}{% include "portfolio/_study_item.html" %}{% endif %}{% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--====== Educations PART END ======-->
 
-  {% if info.get_in_touch is True %}
-  <section class="l-section" aria-labelledby="contact">
-    {% trans "Get in touch" as t %}{% trans "If you'd like to collaborate on something or share your thoughts, send a message." as d %}
-    {% include "components/section_head.html" with id="contact" title=t desc=d %}
-    <div class="row g-4">
-      <div class="col-lg-7">
-        <form class="c-panel" action="{% url 'portfolio:mail' %}" method="post">
-          {% csrf_token %}
-          <div class="row g-3">
-            <div class="col-md-6"><label class="form-label" for="name">{% trans "Name" %}</label><input class="form-control" type="text" id="name" name="name" autocomplete="name" maxlength="300" required></div>
-            <div class="col-md-6"><label class="form-label" for="emailfrom">{% trans "Email" %}</label><input class="form-control" type="email" id="emailfrom" name="emailfrom" autocomplete="email" maxlength="128" required></div>
-            <div class="col-md-6"><label class="form-label" for="number">{% trans "Phone" %}</label><input class="form-control" type="tel" id="number" name="number" autocomplete="tel" maxlength="16"></div>
-            <div class="col-md-6"><label class="form-label" for="subject">{% trans "Subject" %}</label><input class="form-control" type="text" id="subject" name="subject" maxlength="300" required></div>
-            <div class="col-12"><label class="form-label" for="message">{% trans "Message" %}</label><textarea class="form-control" id="message" name="message" rows="6" maxlength="5000" required></textarea></div>
-            {% if get_in_touch_form.captcha %}<div class="col-12">{{ get_in_touch_form.captcha }}</div>{% endif %}
-          </div>
-          <input type="hidden" id="emailto" name="emailto" value="{{ info.office_email }}">
-          <button type="submit" class="btn btn-primary mt-3">{% icon "send" %} {% trans "Send message" %}</button>
-        </form>
-      </div>
-      <div class="col-lg-5">
-        <ul class="p-contact">
-          {% if info.phone_number %}<li>{% icon "phone" %}<span>{% if info.country_code %}{{ info.country_code }} {% endif %}{{ info.phone_number }}</span></li>{% endif %}
-          {% if info.office_phone_number %}<li>{% icon "telephone" %}<span>{% if info.country_code %}{{ info.country_code }} {% endif %}{{ info.office_phone_number }}</span></li>{% endif %}
-          {% if info.office_email %}<li>{% icon "envelope" %}<a href="mailto:{{ info.office_email }}">{{ info.office_email }}</a></li>{% endif %}
-        </ul>
-      </div>
-    </div>
-  </section>
-  {% endif %}
-</div>
+    <!--====== Interesting PART START ======-->
+    <section class="interesting section" aria-labelledby="interests">
+        <div class="container" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+            <div class="row">
+                <div class="section--title">
+                    <h2 id="interests"><strong>{% trans "What I am interested in" %}</strong></h2>
+                </div>
+                <div class="row row-eq-height">
+                    {% for item in interested %}
+                    <div class="col-md-4 col-sm-6 service--item">
+                        {# icon is either icon markup (<i class="lni ...">) or a bare Lineicons name #}
+                        <div class="service--icon" aria-hidden="true">{% if "<" in item.icon %}{{ item.icon|sanitize_html }}{% else %}<i class="lni lni-{{ item.icon }}"></i>{% endif %}</div>
+                        <div class="service--content">
+                            {{ item.title|sanitize_html }}
+                            {{ item.content|sanitize_html }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--====== Interesting PART END ======-->
+
+    <!--====== Project PART START ======-->
+    <section class="latest-product-area py-5 pb-110" aria-labelledby="projects">
+        <div class="container" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+            <div class="row">
+                <div class="mx-auto col-xl-6 col-lg-7 col-md-10">
+                    <div class="text-center section-title mb-60">
+                        <h2 id="projects">{% trans "About Projects" %}</h2>
+                        <p>{% trans "Open source, teaching/learning projects created and operated by teams or individuals." %}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for item in projects %}
+                <div class="col-xl-4 col-lg-6 col-md-6">{% include "home/_project_card.html" with post=item.projectpost %}</div>
+                {% empty %}
+                <div class="col-12">{% trans "No projects yet." as m %}{% include "components/empty.html" with message=m %}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!--====== Project PART END ======-->
+
+    {% if info.get_in_touch is True %}
+    <!--====== Contact PART START ======-->
+    <section class="contact py-5 pb-110" aria-labelledby="contact">
+        <div class="container" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="contact-form-wrapper">
+                        <form action="{% url 'portfolio:mail' %}" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="single-input">
+                                        <label for="name">{% trans "Name" %}</label>
+                                        <input type="text" id="name" name="name" class="form-input" autocomplete="name" maxlength="300" required>
+                                        <i class="lni lni-user" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="single-input">
+                                        <label for="emailfrom">{% trans "Email" %}</label>
+                                        <input type="email" id="emailfrom" name="emailfrom" class="form-input" autocomplete="email" maxlength="128" required>
+                                        <i class="lni lni-envelope" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="single-input">
+                                        <label for="number">{% trans "Phone" %}</label>
+                                        <input type="tel" id="number" name="number" class="form-input" autocomplete="tel" maxlength="16">
+                                        <i class="lni lni-phone" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="single-input">
+                                        <label for="subject">{% trans "Subject" %}</label>
+                                        <input type="text" id="subject" name="subject" class="form-input" maxlength="300" required>
+                                        <i class="lni lni-text-format" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="single-input">
+                                        <label for="message">{% trans "Message" %}</label>
+                                        <textarea name="message" id="message" class="form-input" rows="6" maxlength="5000" required></textarea>
+                                        <i class="lni lni-comments-alt" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                {% if get_in_touch_form.captcha %}<div class="col-md-12 mb-3">{{ get_in_touch_form.captcha }}</div>{% endif %}
+                                <input type="hidden" id="emailto" name="emailto" value="{{ info.office_email }}">
+                                <div class="col-md-12">
+                                    <div class="form-button">
+                                        <button type="submit" class="btn btn-primary btn-lg col-12">{% trans "Send message" %} <i class="lni lni-telegram-original" aria-hidden="true"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-5 order-first order-lg-last">
+                    <div class="left-wrapper">
+                        <div class="section-title mb-40">
+                            <h2 class="mb-15" id="contact">{% trans "Get in touch" %}</h2>
+                            <p>{% trans "If you'd like to collaborate on something or share your thoughts, send a message." %}</p>
+                        </div>
+                        <div class="row">
+                            {% if info.phone_number %}
+                            <div class="col-lg-12 col-md-6">
+                                <div class="single-item">
+                                    <div class="icon"><i class="lni lni-mobile" aria-hidden="true"></i></div>
+                                    <div class="text"><p>{% if info.country_code %}{{ info.country_code }} {% endif %}{{ info.phone_number }}</p></div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if info.office_phone_number %}
+                            <div class="col-lg-12 col-md-6">
+                                <div class="single-item">
+                                    <div class="icon"><i class="lni lni-phone" aria-hidden="true"></i></div>
+                                    <div class="text"><p>{% if info.country_code %}{{ info.country_code }} {% endif %}{{ info.office_phone_number }}</p></div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if info.office_email %}
+                            <div class="col-lg-12 col-md-6">
+                                <div class="single-item">
+                                    <div class="icon"><i class="lni lni-envelope" aria-hidden="true"></i></div>
+                                    <div class="text"><p><a href="mailto:{{ info.office_email }}">{{ info.office_email }}</a></p></div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--====== Contact PART END ======-->
+    {% endif %}
 {% endblock %}
