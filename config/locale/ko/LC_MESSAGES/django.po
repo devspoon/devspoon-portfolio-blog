@@ -1848,3 +1848,55 @@ msgstr "알림 이메일을 받으려면 이 필드를 작성하십시오."
 #: users/views/users_forms.py:335
 msgid "Nicknames must be unique."
 msgstr "닉네임은 고유해야 합니다."
+
+#: templates/home/index.html
+msgid "Welcome to"
+msgstr "환영합니다"
+
+#: templates/home/index.html
+msgid "my 'devspoon' website!"
+msgstr "여기는 'devspoon'의 웹사이트입니다!"
+
+#: templates/home/index.html
+msgid "Hey folks"
+msgstr "안녕하세요 여러분"
+
+#: templates/home/index.html
+msgid "I'm"
+msgstr "저는"
+
+#: templates/home/index.html
+msgid "Full-Stack Developer"
+msgstr "풀 스택 개발자"
+
+#: templates/home/index.html
+msgid "Digital Brand Marketer"
+msgstr "디지털 브랜드 마케터"
+
+#: templates/home/index.html
+msgid "led startups 6 times"
+msgstr "6번의 스타트업 경험자"
+
+#: templates/board/board_list.html
+msgid "No."
+msgstr "번호"
+
+#: templates/board/board_list.html
+msgid "Date"
+msgstr "날짜"
+
+#: templates/base/header.html
+msgid "Register"
+msgstr "회원가입"
+
+#: templates/base/footer.html
+msgid "Support"
+msgstr "고객지원"
+
+#: templates/base/footer.html
+msgid "Copyright"
+msgstr "저작권"
+
+#: templates/base/footer.html
+msgid "Back to top"
+msgstr "맨 위로"

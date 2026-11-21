@@ -1,10 +1,10 @@
-{% load i18n home_tag ui_tags %}
+{% load static i18n home_tag ui_tags %}
 {% main_menu_tag as main_menu %}
 <header class="c-header">
   <div class="l-wrap c-header__bar">
-    <a class="c-brand" href="{% url 'home:index' %}">dev<span>spoon</span></a>
+    <a class="c-brand" href="{% url 'home:index' %}"><img src="{% static 'images/logo.png' %}" width="150" height="45" alt="devspoon"></a>
 
-    <nav aria-label="{% trans 'Main menu' %}" class="ms-auto">
+    <nav aria-label="{% trans 'Main menu' %}" class="c-header__nav">
       <ul class="c-nav">
         {% for node in main_menu %}{% if node.is_root_node %}
         {% if node.is_leaf_node %}
@@ -25,19 +25,6 @@
     </nav>
 
     <div class="c-header__tools">
-      <form class="c-search" action="{% url 'home:search_queryset' %}" method="get" role="search">
-        <label class="visually-hidden" for="site-search">{% trans "Search" %}</label>
-        <input class="form-control form-control-sm" id="site-search" type="search" name="keyword" placeholder="{% trans 'Search posts' %}">
-      </form>
-      <form class="c-lang" action="{% url 'set_language' %}" method="post">
-        {% csrf_token %}
-        {% get_current_language as LANGUAGE_CODE %}{% get_available_languages as LANGUAGES %}
-        <label class="visually-hidden" for="site-lang">{% trans "Language" %}</label>
-        <select class="form-select form-select-sm" id="site-lang" name="language" data-autosubmit>
-          {% for code, name in LANGUAGES %}<option value="{{ code }}"{% if code == LANGUAGE_CODE %} selected{% endif %}>{{ code }}</option>{% endfor %}
-        </select>
-        <noscript><button class="btn btn-sm btn-quiet" type="submit">{% trans "Change" %}</button></noscript>
-      </form>
       <button class="c-icon-btn" type="button" data-theme-toggle aria-label="{% trans 'Toggle dark mode' %}">{% icon "moon-stars" %}</button>
       {% if request.user.is_authenticated %}
       <div class="dropdown">
@@ -49,10 +36,28 @@
         </ul>
       </div>
       {% else %}
-      <a class="btn btn-sm btn-outline-primary" href="{% url 'users:login' %}">{% trans "Log in" %}</a>
+      <a class="btn btn-outline-primary c-header__auth" href="{% url 'users:login' %}">{% trans "Log in" %}</a>
+      <a class="btn btn-primary c-header__auth c-header__register" href="{% url 'users:register' %}">{% trans "Register" %}</a>
       {% endif %}
       <button class="c-icon-btn c-menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobile-nav" aria-controls="mobile-nav" aria-label="{% trans 'Open menu' %}">{% icon "list" %}</button>
     </div>
+  </div>
+  {# second row, as in the theme: a wide search with its button, the language switch at the end #}
+  <div class="l-wrap c-header__sub">
+    <form class="c-search" action="{% url 'home:search_queryset' %}" method="get" role="search">
+      <label class="visually-hidden" for="site-search">{% trans "Search" %}</label>
+      <input class="form-control" id="site-search" type="search" name="keyword" placeholder="{% trans 'Search posts' %}">
+      <button class="btn c-search__btn" type="submit">{% trans "Search" %}</button>
+    </form>
+    <form class="c-lang" action="{% url 'set_language' %}" method="post">
+      {% csrf_token %}
+      {% get_current_language as LANGUAGE_CODE %}{% get_available_languages as LANGUAGES %}
+      <label class="visually-hidden" for="site-lang">{% trans "Language" %}</label>
+      <select class="form-select form-select-sm" id="site-lang" name="language" data-autosubmit>
+        {% for code, name in LANGUAGES %}<option value="{{ code }}"{% if code == LANGUAGE_CODE %} selected{% endif %}>{{ code }}</option>{% endfor %}
+      </select>
+      <noscript><button class="btn btn-sm btn-quiet" type="submit">{% trans "Change" %}</button></noscript>
+    </form>
   </div>
 </header>
 
@@ -66,6 +71,12 @@
       <label class="visually-hidden" for="mobile-search">{% trans "Search" %}</label>
       <input class="form-control" id="mobile-search" type="search" name="keyword" placeholder="{% trans 'Search posts' %}">
     </form>
+    {% if not request.user.is_authenticated %}
+    <div class="d-flex gap-2 mb-4">
+      <a class="btn btn-outline-primary flex-fill" href="{% url 'users:login' %}">{% trans "Log in" %}</a>
+      <a class="btn btn-primary flex-fill" href="{% url 'users:register' %}">{% trans "Register" %}</a>
+    </div>
+    {% endif %}
     <ul class="c-mobile-nav">
       {% for node in main_menu %}{% if node.is_root_node %}
       <li>

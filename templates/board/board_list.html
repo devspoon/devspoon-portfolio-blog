@@ -1,34 +1,53 @@
 {% extends "base/base.html" %}
 {% load i18n ui_tags %}
-{% comment %}Shared list page for the three boards (post rows, ADR-005).{% endcomment %}
+{% comment %}Shared list page for the three boards: the theme's table (number, title, date, author, views).{% endcomment %}
 {% block title %}{{ page_title }} | devspoon{% endblock %}
 
 {% block content %}
 {% with url_base=request.resolver_match.view_name|cut:"_list" %}
 <div class="l-wrap">
-  <header class="c-page-head d-flex flex-wrap align-items-end justify-content-between gap-3">
-    <div>
-      <nav aria-label="{% trans 'Breadcrumb' %}">
-        <ol class="breadcrumb c-breadcrumb">
-          <li class="breadcrumb-item"><a href="{% url 'home:index' %}">{% trans "Home" %}</a></li>
-          <li class="breadcrumb-item active" aria-current="page">{{ page_title }}</li>
-        </ol>
-      </nav>
-      <h1>{{ page_title }}</h1>
-    </div>
+  <header class="c-page-head">
+    <h1>{{ page_title }}</h1>
+    <nav aria-label="{% trans 'Breadcrumb' %}">
+      <ol class="breadcrumb c-breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home:index' %}">{% trans "Home" %}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ page_title }}</li>
+      </ol>
+    </nav>
     {% if user.is_authenticated and "visiter" in request.path or request.user.is_staff and "visiter" not in request.path %}
     <a href="{% url url_base|add:'_create' %}" class="btn btn-primary">{% icon "pencil" %} {% trans "Write" %}</a>
     {% endif %}
   </header>
 
-  <div>
-    {% for item in board %}
-      {% url url_base|add:'_detail' item.pk as u %}
-      {% include "components/card_post.html" with post=item url=u h=2 %}
-    {% empty %}
-      {% trans "No posts yet." as m %}{% include "components/empty.html" with message=m %}
-    {% endfor %}
+  {% if board %}
+  <div class="c-table-wrap">
+    <table class="c-table">
+      <thead>
+        <tr>
+          <th scope="col" class="c-table__num">{% trans "No." %}</th>
+          <th scope="col">{% trans "Title" %}</th>
+          <th scope="col" class="c-table__date">{% trans "Date" %}</th>
+          <th scope="col" class="c-table__author">{% trans "Author" %}</th>
+          <th scope="col" class="c-table__num">{% trans "Views" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in board %}
+        {% url url_base|add:'_detail' item.pk as u %}
+        <tr>
+          <td class="c-table__num">{{ item.pk }}</td>
+          <td><a href="{{ u }}">{{ item.title }}</a>{% if item.reply_count %} <span class="c-table__replies">[{{ item.reply_count }}]</span>{% endif %}</td>
+          <td class="c-table__date"><time datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:'Y.m.d' }}</time></td>
+          <td class="c-table__author">{% if item.author.nickname %}{{ item.author.nickname }}{% endif %}</td>
+          <td class="c-table__num">{{ item.visit_count }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
+  {% else %}
+  {% trans "No posts yet." as m %}{% include "components/empty.html" with message=m %}
+  {% endif %}
 
   {% include "components/pagination.html" %}
 </div>

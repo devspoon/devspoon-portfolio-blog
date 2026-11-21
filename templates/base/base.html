@@ -12,6 +12,11 @@
     {# font CSS must not block first paint: text shows in the system font, then swaps (Lighthouse LCP ~2.5s -> ~1.6s, CLS 0) #}
     <link rel="stylesheet" href="{% static 'vendor/pretendard-1.3.9/pretendardvariable-dynamic-subset.css' %}" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="{% static 'vendor/pretendard-1.3.9/pretendardvariable-dynamic-subset.css' %}"></noscript>
+    {# theme fonts: Roboto headings, Maven Pro body (Latin); Korean falls back to Pretendard #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;700&family=Roboto:wght@500;700;900&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;700&family=Roboto:wght@500;700;900&display=swap"></noscript>
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
     {% block extra_css %}{% endblock %}
     {% include "base/analytics.html" %}

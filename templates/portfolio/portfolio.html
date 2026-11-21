@@ -102,7 +102,7 @@ summary/content/title fields marked |safe are admin-authored (portfolio admin), 
   </section>
 
   {% if study %}
-  <section class="l-section" aria-labelledby="study">
+  <section class="l-section l-section--alt" aria-labelledby="study">
     {% trans "Education & Study" as t %}{% trans "Learning history through online/offline sites or technical books." as d %}
     {% include "components/section_head.html" with id="study" title=t desc=d %}
     <div class="row g-4">
@@ -131,7 +131,7 @@ summary/content/title fields marked |safe are admin-authored (portfolio admin), 
   </section>
   {% endif %}
 
-  <section class="l-section" aria-labelledby="projects">
+  <section class="l-section l-section--alt" aria-labelledby="projects">
     {% trans "About Projects" as t %}{% include "components/section_head.html" with id="projects" title=t %}
     <div class="row g-4">
       {% for item in projects %}

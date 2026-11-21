@@ -6,38 +6,40 @@
 {% block content %}
 {% with posts=latest %}
 <div class="l-wrap">
+  {# the theme's hero: welcome line, rotating roles, intro, buttons; illustration on the right #}
   <section class="p-hero" aria-labelledby="hero-title">
     <div>
-      <h1 id="hero-title">devspoon<span>{% trans "I build Django and FastAPI backends and write down how I built them." %}</span></h1>
+      <p class="p-hero__welcome">{% trans "Welcome to" %} <span>{% trans "my 'devspoon' website!" %}</span></p>
+      <h1 id="hero-title">{% trans "Hey folks" %}, {% trans "I'm" %}
+        <span class="p-hero__roles">
+          <span>{% trans "Full-Stack Developer" %}</span>
+          <span>{% trans "Digital Brand Marketer" %}</span>
+          <span>{% trans "led startups 6 times" %}</span>
+        </span>
+      </h1>
+      <p class="p-hero__lede">{% trans "I build Django and FastAPI backends and write down how I built them." %}</p>
       <div class="p-hero__links">
         <a class="btn btn-primary" href="{% url 'portfolio:portfolio' %}">{% trans "See Portfolio" %}</a>
         <a class="btn btn-outline-primary" href="https://github.com/devspoon/Devspoon-Projects" rel="noopener">{% icon "github" %} {% trans "Devspoon's Open Source" %}</a>
       </div>
     </div>
-    {% if posts %}
-    <ol class="p-now" aria-label="{% trans 'Recent posts' %}">
-      {% for item in posts|slice:":3" %}
-      <li>
-        <time datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:'Y.m.d' }}</time>
-        {% include "home/_post_link.html" %}
-      </li>
-      {% endfor %}
-    </ol>
-    {% endif %}
+    <img class="p-hero__art" src="{% static 'images/deverloper_ai.png' %}" width="526" height="526" alt="" fetchpriority="high">
   </section>
 
   <section class="l-section" aria-labelledby="latest">
     {% url 'blog:blog_list' as blog_list_url %}
     {% trans "Latest Blog Posts" as t %}{% trans "You can see the latest articles in open source, study, book, and blog categories. " as d %}{% trans "All posts" as a %}
     {% include "components/section_head.html" with id="latest" title=t desc=d action_url=blog_list_url action_label=a %}
-    {% for item in posts %}
-      {% include "home/_post_link.html" with as_card=True %}
-    {% empty %}
-      {% trans "No posts yet." as m %}{% include "components/empty.html" with message=m %}
-    {% endfor %}
+    <div class="row g-4">
+      {% for item in posts %}
+      <div class="col-md-6 col-lg-4">{% include "home/_post_link.html" %}</div>
+      {% empty %}
+      <div class="col-12">{% trans "No posts yet." as m %}{% include "components/empty.html" with message=m %}</div>
+      {% endfor %}
+    </div>
   </section>
 
-  <section class="l-section" aria-labelledby="projects">
+  <section class="l-section l-section--alt" aria-labelledby="projects">
     {% url 'blog:project_list' as project_list_url %}
     {% trans "About Projects" as t %}{% trans "Open source, teaching/learning projects created and operated by teams or individuals." as d %}{% trans "All projects" as a %}
     {% include "components/section_head.html" with id="projects" title=t desc=d action_url=project_list_url action_label=a %}
@@ -71,7 +73,7 @@
     </div>
   </section>
 
-  <section class="l-section" aria-labelledby="topics">
+  <section class="l-section l-section--alt" aria-labelledby="topics">
     {% trans "What I am studying, the project I am planning" as t %}{% trans "These are the skills I am learning and the new projects I am preparing. Please contact me if you would like to study together or have a project you would like to start." as d %}
     {% include "components/section_head.html" with id="topics" title=t desc=d %}
     <div class="row g-3">

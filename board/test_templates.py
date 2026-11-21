@@ -90,3 +90,17 @@ def test_detail_single_title_heading_article(client, posts):
     assert len(page.find_all("title")) == 1
     assert len(page.find_all("h1")) == 1 and items[1].title in page.h1.get_text()
     assert len(page.find_all("main")) == 1 and page.find("article")
+
+
+@param
+def test_list_table_shows_nickname_never_login_name(client, posts):
+    # the theme's board table has an author column: it must show the nickname, not the username or email
+    (prefix, *_), items = posts
+    author = items[0].author
+    author.email, author.nickname = "author@example.com", "Writer Nick"
+    author.save()
+    page = soup(client.get(reverse(f"board:{prefix}_list"), **headers))
+    cells = [td.get_text(strip=True) for td in page.select(".c-table td.c-table__author")]
+    assert cells == ["Writer Nick"] * len(items)
+    table = page.select_one(".c-table").get_text()
+    assert "author@example.com" not in table and "author" not in table.replace("Writer Nick", "")

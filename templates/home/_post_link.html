@@ -1,10 +1,9 @@
 {% load i18n %}{% comment %}
-Maps a home "latest" row (a .values() dict with a `table` key) to its URL and kind label.
-as_card -> post row card, otherwise a kind label + title link (hero list).
+Maps a home "latest" row (a .values() dict with a `table` key) to its URL and kind label,
+then renders it as a thumbnail card.
 {% endcomment %}
 {% if item.table == "OnlineStudy" %}{% url 'blog:online_study_detail' item.pk as u %}{% trans "Online study" as k %}
 {% elif item.table == "Blog" %}{% url 'blog:blog_detail' item.pk as u %}{% trans "Blog" as k %}
 {% elif item.table == "OpenSource" %}{% url 'blog:opensource_detail' item.pk as u %}{% trans "Open source" as k %}
 {% else %}{% url 'blog:books_detail' item.pk as u %}{% trans "Books" as k %}{% endif %}
-{% if as_card %}{% include "components/card_post.html" with post=item url=u kind=k %}
-{% else %}<span class="c-card__kind">{{ k }}</span><a href="{{ u }}">{{ item.title }}</a>{% endif %}
+{% include "components/card_project.html" with post=item url=u kind=k %}

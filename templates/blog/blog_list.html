@@ -1,27 +1,25 @@
 {% extends "base/base.html" %}
 {% load i18n ui_tags %}
-{% comment %}Shared list page for the five blog types; the project list uses project cards, the others post rows.{% endcomment %}
+{% comment %}Shared list page for the five blog types: one thumbnail card grid (components/card_project.html).{% endcomment %}
 {% block title %}{{ page_title }} | devspoon{% endblock %}
 
 {% block content %}
 {% with url_base=request.resolver_match.view_name|cut:"_list" %}
 <div class="l-wrap">
-  <header class="c-page-head d-flex flex-wrap align-items-end justify-content-between gap-3">
-    <div>
-      <nav aria-label="{% trans 'Breadcrumb' %}">
-        <ol class="breadcrumb c-breadcrumb">
-          <li class="breadcrumb-item"><a href="{% url 'home:index' %}">{% trans "Home" %}</a></li>
-          <li class="breadcrumb-item active" aria-current="page">{{ page_title }}</li>
-        </ol>
-      </nav>
-      <h1>{{ page_title }}</h1>
-    </div>
+  <header class="c-page-head">
+    <h1>{{ page_title }}</h1>
+    <nav aria-label="{% trans 'Breadcrumb' %}">
+      <ol class="breadcrumb c-breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home:index' %}">{% trans "Home" %}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ page_title }}</li>
+      </ol>
+    </nav>
     {% if request.user.is_staff %}
     <a href="{% url url_base|add:'_create' %}" id="blog-list-write" class="btn btn-primary">{% icon "pencil" %} {% trans "Write" %}</a>
     {% endif %}
   </header>
 
-  {% if url_base == "blog:project" %}
+  {# every blog type uses the same thumbnail card grid, as in the theme #}
   <div class="row g-4">
     {% for item in board %}
     <div class="col-md-6 col-lg-4">
@@ -32,16 +30,6 @@
     <div class="col-12">{% trans "No posts yet." as m %}{% include "components/empty.html" with message=m %}</div>
     {% endfor %}
   </div>
-  {% else %}
-  <div>
-    {% for item in board %}
-      {% url url_base|add:'_detail' item.pk as u %}
-      {% include "components/card_post.html" with post=item url=u h=2 %}
-    {% empty %}
-      {% trans "No posts yet." as m %}{% include "components/empty.html" with message=m %}
-    {% endfor %}
-  </div>
-  {% endif %}
 
   {% include "components/pagination.html" %}
 </div>
