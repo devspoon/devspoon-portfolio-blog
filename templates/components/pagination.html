@@ -1,31 +1,35 @@
 {% load i18n blog_base_tag %}{% comment %}
 List pagination (ADR-005) in the GrayGrids markup. Uses page_obj; keeps the keyword or tag filter of search pages.
-Hidden when there is a single page.
+Shown even for a single page (« 1 »), like the theme.
 {% endcomment %}
-{% if page_obj.paginator.num_pages > 1 %}
-<div class="pagination-area text-center pb-lg-30">
-  <nav aria-label="{% trans 'Pagination' %}">
-    <ul class="page-numbers">
-      <li>
-        {% if page_obj.has_previous %}
-        <a class="page-number prev" href="?page={{ page_obj.previous_page_number }}{% if keyword %}&amp;keyword={{ keyword|urlencode }}{% elif tag %}&amp;tag={{ tag|urlencode }}{% endif %}" aria-label="{% trans 'Previous page' %}"><i class="lni lni-chevron-left" aria-hidden="true"></i></a>
-        {% else %}
-        <span class="page-number prev disabled" aria-hidden="true"><i class="lni lni-chevron-left"></i></span>
-        {% endif %}
-      </li>
-      {% for page in page_obj|slice_visible_pages %}
-      <li class="page-item{% if page_obj.number == page %} active{% endif %}">
-        <a class="page-link" href="?page={{ page }}{% if keyword %}&amp;keyword={{ keyword|urlencode }}{% elif tag %}&amp;tag={{ tag|urlencode }}{% endif %}"{% if page_obj.number == page %} aria-current="page"{% endif %}>{{ page }}</a>
-      </li>
-      {% endfor %}
-      <li>
-        {% if page_obj.has_next %}
-        <a class="page-number next" href="?page={{ page_obj.next_page_number }}{% if keyword %}&amp;keyword={{ keyword|urlencode }}{% elif tag %}&amp;tag={{ tag|urlencode }}{% endif %}" aria-label="{% trans 'Next page' %}"><i class="lni lni-chevron-right" aria-hidden="true"></i></a>
-        {% else %}
-        <span class="page-number next disabled" aria-hidden="true"><i class="lni lni-chevron-right"></i></span>
-        {% endif %}
-      </li>
-    </ul>
-  </nav>
+{% if page_obj %}
+<div class="row">
+  <div class="col-lg-12 pb-xs-30 pb-sm-70 pb-100">
+    <div class="pagination-area text-center lg-pt-0 sm-pb-0 pb-lg-30 pb-100">
+      <nav aria-label="{% trans 'Pagination' %}">
+        <ul class="page-numbers">
+          <li>
+            {% if page_obj.has_previous %}
+            <a class="page-number prev" href="?page={{ page_obj.previous_page_number }}{% if keyword %}&amp;keyword={{ keyword|urlencode }}{% elif tag %}&amp;tag={{ tag|urlencode }}{% endif %}" aria-label="{% trans 'Previous page' %}"><i class="lni lni-chevron-left" aria-hidden="true"></i></a>
+            {% else %}
+            <span class="page-number prev disabled" aria-hidden="true"><i class="lni lni-chevron-left"></i></span>
+            {% endif %}
+          </li>
+          {% for page in page_obj|slice_visible_pages %}
+          <li class="page-item{% if page_obj.number == page %} active{% endif %}">
+            <a class="page-link" href="?page={{ page }}{% if keyword %}&amp;keyword={{ keyword|urlencode }}{% elif tag %}&amp;tag={{ tag|urlencode }}{% endif %}"{% if page_obj.number == page %} aria-current="page"{% endif %}>{{ page }}</a>
+          </li>
+          {% endfor %}
+          <li>
+            {% if page_obj.has_next %}
+            <a class="page-number next" href="?page={{ page_obj.next_page_number }}{% if keyword %}&amp;keyword={{ keyword|urlencode }}{% elif tag %}&amp;tag={{ tag|urlencode }}{% endif %}" aria-label="{% trans 'Next page' %}"><i class="lni lni-chevron-right" aria-hidden="true"></i></a>
+            {% else %}
+            <span class="page-number next disabled" aria-hidden="true"><i class="lni lni-chevron-right"></i></span>
+            {% endif %}
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
 </div>
 {% endif %}

@@ -45,8 +45,9 @@
 [data-bs-theme="dark"] .card,
 [data-bs-theme="dark"] .modal-content,
 [data-bs-theme="dark"] .list-group-item,
-[data-bs-theme="dark"] .pagination-area nav .page-numbers,
 [data-bs-theme="dark"] [class*="single-"] { background-color: #263047; color: #E8ECF4; border-color: #3A4660; }
+/* the theme's white pagination strip is invisible on the light page; keep it invisible here too */
+[data-bs-theme="dark"] .pagination-area nav .page-numbers { background-color: transparent; }
 [data-bs-theme="dark"] .table { color: #E8ECF4; border-color: #3A4660; }
 [data-bs-theme="dark"] .page-link { background: #263047; color: #E8ECF4; border-color: #3A4660; }
 [data-bs-theme="dark"] .page-item.active .page-link { background: #FF6B6B; border-color: #FF6B6B; color: #1E2638; }
