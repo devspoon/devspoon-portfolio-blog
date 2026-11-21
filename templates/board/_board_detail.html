@@ -1,12 +1,11 @@
 {% extends "base/base.html" %}
-{% load static i18n public_tags ui_tags %}
+{% load static i18n public_tags %}
 {% comment %}
-Shared detail page for the three boards; same layout as blog posts (css/pages/post.css).
+Shared detail page for the three boards (GrayGrids blog-details markup).
 URLs are derived from the current view name: "board:notice_detail" -> "board:notice" + "_update" etc.
 Visit count and comments run on js/modules/post.js + comments.js.
 {% endcomment %}
 {% block title %}{{ board.title }} | devspoon{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/post.css' %}">{% endblock %}
 {% block extra_js %}
 <script type="module" src="{% static 'js/modules/post.js' %}"></script>
 <script type="module" src="{% static 'js/modules/comments.js' %}"></script>
@@ -14,34 +13,40 @@ Visit count and comments run on js/modules/post.js + comments.js.
 
 {% block content %}
 {% with url_base=request.resolver_match.view_name|cut:"_detail" %}
-<article class="l-wrap p-post" data-visit-url="{% url url_base|add:'_visit' board.pk %}">
-  <header class="p-post__head">
-    <nav aria-label="{% trans 'Breadcrumb' %}">
-      <ol class="breadcrumb c-breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'home:index' %}">{% trans "Home" %}</a></li>
-        <li class="breadcrumb-item"><a href="{% url url_base|add:'_list' %}">{{ url_base|cut:"board:" }}</a></li>
-      </ol>
-    </nav>
-    <h1>{{ board.title }}</h1>
-    <div class="c-meta p-post__byline">
-      {% if board.author.nickname %}<span>{{ board.author.nickname }}</span>{% endif %}
-      <time datetime="{{ board.created_at|date:'c' }}">{{ board.created_at|date:'Y.m.d H:i' }}</time>
-    </div>
-    {% include "components/meta.html" with post=board %}
-  </header>
+    <!--====== Blog Detail PART START ======-->
+    <section class="blog-details-area">
+        <div class="container">
+          <article class="row" data-visit-url="{% url url_base|add:'_visit' board.pk %}">
+            <header class="col-10 m-auto text-center">
+                <h1 class="title">{{ board.title }}</h1>
+                <div class="meta p-post__byline">
+                    {% if board.author.nickname %}<span class="author">{{ board.author.nickname }}</span>{% endif %}
+                    <time datetime="{{ board.created_at|date:'c' }}">{{ board.created_at|date:'Y-m-d H:i' }}</time>
+                </div>
+            </header>
 
-  <div class="c-prose p-post__body">
-    {{ board.content|sanitize_html }}
-  </div>
+            <div class="col-10 m-auto">
+                <div class="post-details-content">
+                    <div class="post-details-body">
+                        <div class="content form-control">
+                            {{ board.content|sanitize_html }}
+                        </div>
+                        {% if user_auth %}
+                        <div class="blog-button">
+                            <div class="d-flex justify-content-end" id="detail-button-group">
+                                <a href="{% url url_base|add:'_update' board.pk %}" class="btn btn-outline-primary me-3">{% trans "Edit" %}</a>
+                                <form method="post" action="{% url url_base|add:'_delete' board.pk %}">{% csrf_token %}<button type="submit" class="btn btn-outline-danger">{% trans "Delete" %}</button></form>
+                            </div>
+                        </div>
+                        {% endif %}
 
-  {% if user_auth %}
-  <div class="p-post__actions justify-content-end" id="detail-button-group">
-    <a href="{% url url_base|add:'_update' board.pk %}" class="btn btn-quiet">{% icon "pencil" %} {% trans "Edit" %}</a>
-    <form method="post" action="{% url url_base|add:'_delete' board.pk %}">{% csrf_token %}<button type="submit" class="btn btn-quiet p-post__danger">{% icon "trash" %} {% trans "Delete" %}</button></form>
-  </div>
-  {% endif %}
-
-  {% include "components/comments.html" %}
-</article>
+                        {% include "components/comments.html" %}
+                    </div>
+                </div>
+            </div>
+          </article>
+        </div>
+    </section>
+    <!--====== Blog Detail PART END ======-->
 {% endwith %}
 {% endblock %}

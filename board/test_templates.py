@@ -100,7 +100,7 @@ def test_list_table_shows_nickname_never_login_name(client, posts):
     author.email, author.nickname = "author@example.com", "Writer Nick"
     author.save()
     page = soup(client.get(reverse(f"board:{prefix}_list"), **headers))
-    cells = [td.get_text(strip=True) for td in page.select(".c-table td.c-table__author")]
+    cells = [td.get_text(strip=True) for td in page.select(".board-table td.th-author")]
     assert cells == ["Writer Nick"] * len(items)
-    table = page.select_one(".c-table").get_text()
+    table = page.select_one(".board-table").get_text()
     assert "author@example.com" not in table and "author" not in table.replace("Writer Nick", "")

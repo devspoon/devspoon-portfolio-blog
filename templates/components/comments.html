@@ -4,28 +4,28 @@ the list JSON is cached per post+page without viewer data; the server adds user_
 Create and delete are plain form posts (the views redirect back); edit and paging use fetch.
 DOM is built from <template> clones + textContent only (XSS contract C-2).
 {% endcomment %}
-<section class="c-comments" aria-labelledby="comments-title" data-comments
+<section class="c-comments comment-area" aria-labelledby="comments-title" data-comments
          data-list-url="{{ request.path }}reply/json/" data-update-url="{{ request.path }}reply/json/update/"
          data-delete-url="{{ request.path }}reply/delete/"
          data-t-prev="{% trans 'Previous page' %}" data-t-next="{% trans 'Next page' %}" data-t-pages="{% trans 'Comment pages' %}"
          data-t-error="{% trans 'Something went wrong. Reload the page and try again.' %}"
          data-t-replying="{% trans 'Replying to' %}">
-  <h2 id="comments-title">{% blocktrans count n=board.reply_count %}{{ n }} comment{% plural %}{{ n }} comments{% endblocktrans %}</h2>
+  <h2 id="comments-title" class="inner-title">{% blocktrans count n=board.reply_count %}{{ n }} comment{% plural %}{{ n }} comments{% endblocktrans %}</h2>
   <ol class="c-comments__list" data-comments-list></ol>
   <div data-comments-pages></div>
   <p class="c-comments__status" role="status" data-comments-status></p>
 
   {% if request.user.is_authenticated %}
-  <form class="c-comment-form" method="post" action="{{ request.path }}reply/json/create/" data-comment-form>
+  <form class="c-comment-form reply-input comment-form-wrap" method="post" action="{{ request.path }}reply/json/create/" data-comment-form>
     {% csrf_token %}
     <input type="hidden" name="depth" value="0">
     <input type="hidden" name="parent" value="">
     <label class="form-label" for="comment">{% trans "Leave a comment" %}</label>
     <p class="form-text mt-0 mb-2" data-replying hidden></p>
-    <textarea class="form-control" id="comment" name="comment" rows="4" maxlength="3000" required></textarea>
+    <textarea class="form-control reply-input-box" id="comment" name="comment" rows="7" maxlength="3000" required></textarea>
     <div class="d-flex gap-2 justify-content-end mt-2">
       <button type="button" class="btn btn-quiet" data-action="cancel-reply" hidden>{% trans "Cancel" %}</button>
-      <button type="submit" class="btn btn-primary">{% trans "Post comment" %}</button>
+      <button type="submit" class="btn btn-outline-danger btn-sm">{% trans "Post comment" %}</button>
     </div>
   </form>
   {% else %}

@@ -1,37 +1,77 @@
 {% extends "base/base.html" %}
-{% load i18n ui_tags %}
-{% comment %}Shared list page for the five blog types: one thumbnail card grid (components/card_project.html).{% endcomment %}
+{% load i18n blog_base_tag %}
+{% comment %}Shared list page for the five blog types: the GrayGrids card-box grid.{% endcomment %}
 {% block title %}{{ page_title }} | devspoon{% endblock %}
 
 {% block content %}
 {% with url_base=request.resolver_match.view_name|cut:"_list" %}
-<div class="l-wrap">
-  <header class="c-page-head">
-    <h1>{{ page_title }}</h1>
-    <nav aria-label="{% trans 'Breadcrumb' %}">
-      <ol class="breadcrumb c-breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'home:index' %}">{% trans "Home" %}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ page_title }}</li>
-      </ol>
-    </nav>
-    {% if request.user.is_staff %}
-    <a href="{% url url_base|add:'_create' %}" id="blog-list-write" class="btn btn-primary">{% icon "pencil" %} {% trans "Write" %}</a>
-    {% endif %}
-  </header>
 
-  {# every blog type uses the same thumbnail card grid, as in the theme #}
-  <div class="row g-4">
-    {% for item in board %}
-    <div class="col-md-6 col-lg-4">
-      {% url url_base|add:'_detail' item.pk as u %}
-      {% include "components/card_project.html" with post=item url=u h=2 %}
-    </div>
-    {% empty %}
-    <div class="col-12">{% trans "No posts yet." as m %}{% include "components/empty.html" with message=m %}</div>
-    {% endfor %}
-  </div>
+    <!--== Start Page Title Area ==-->
+    <section class="page-title-area">
+        <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-title-content text-center pb-lg-30 pb-80">
+                    <h1 class="title">{{ page_title }}</h1>
+                    <nav class="bread-crumbs pb-1" aria-label="{% trans 'Breadcrumb' %}">
+                        <a href="{% url 'home:index' %}">{% trans "Home" %}<span class="breadcrumb-sep">/</span></a><span class="active navi-blog" aria-current="page">{{ page_title }}</span>
+                    </nav>
+                    {% if request.user.is_staff %}
+                    <a href="{% url url_base|add:'_create' %}" id="blog-list-write" class="btn btn-outline-success mt-2">{% trans "Write" %}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    <!--== End Page Title Area ==-->
 
-  {% include "components/pagination.html" %}
-</div>
+    <!--== Start Blog Area Wrapper ==-->
+    <section class="blog-grid-area pb-1">
+        <div class="container">
+            <div class="row">
+                {% for item in board %}
+                {% url url_base|add:'_detail' item.pk as u %}
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card-box">
+                        <div class="card-img">
+                            {# decorative: the title link below names the card #}
+                            <a href="{{ u }}" tabindex="-1" aria-hidden="true">{% if item.title_image %}<img src="{{ item.title_image }}" alt="" loading="lazy" decoding="async">{% else %}<span class="card-img-empty"></span>{% endif %}</a>
+                            {% if item.repository %}
+                            <div class="product-action">
+                                <a href="{{ item.repository }}" class="share" rel="noopener" title="{% trans 'Repository' %}" aria-label="{% trans 'Repository' %}"><i class="lni lni-world" aria-hidden="true"></i></a>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-content">
+                            <h2 class="name"><i class="lni lni-github" aria-hidden="true"></i> <a href="{{ u }}">{{ item.title }}</a></h2>
+                            <span class="update">{{ item.content|remove_styles|truncatechars:80 }}</span>
+                            <div class="project-info row justify-content-center">
+                                <div class="col-6"><i class="lni lni-calendar" aria-hidden="true"></i> <time datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:'Y-m-d H:i' }}</time></div>
+                                {% if item.dev_lang %}<div class="col-6"><i class="lni lni-bookmark" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Language" %}</span>{{ item.dev_lang }}</div>{% endif %}
+                                {% if item.branch %}<div class="col-6"><i class="lni lni-layers" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Branch" %}</span>{{ item.get_branch_display }}</div>{% endif %}
+                                {% if item.role %}<div class="col-6"><i class="lni lni-folder" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Role" %}</span>{{ item.get_role_display }}</div>{% endif %}
+                                {% if item.difficulty_level %}<div class="col-6"><i class="lni lni-book" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Difficulty" %}</span>{{ item.get_difficulty_level_display }}</div>{% endif %}
+                                {% if item.version %}<div class="col-6"><i class="lni lni-tag" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Version" %}</span>{{ item.version }}</div>{% endif %}
+                                {% if item.repository %}<div class="col-6"><i class="lni lni-tag" aria-hidden="true"></i> <a href="{{ item.repository }}" rel="noopener">{% trans "Repository" %}</a></div>{% endif %}
+                                <div class="col-6"><i class="lni lni-heart" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Likes" %}</span>{{ item.like_count }}</div>
+                                <div class="col-6"><i class="lni lni-comments-reply" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Comments" %}</span>{{ item.reply_count }}</div>
+                                <div class="col-6"><i class="lni lni-user" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Views" %}</span>{{ item.visit_count }}</div>
+                                <div class="col-6"><i class="lni lni-pencil-alt" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Author" %}</span>{% if item.author.nickname %}{{ item.author.nickname }}{% endif %}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">{% trans "No posts yet." as m %}{% include "components/empty.html" with message=m %}</div>
+                {% endfor %}
+
+                {% include "components/pagination.html" %}
+            </div>
+        </div>
+    </section>
+    <!--== End Blog Area Wrapper ==-->
+
 {% endwith %}
 {% endblock %}

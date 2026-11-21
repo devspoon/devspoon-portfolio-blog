@@ -3169,3 +3169,26 @@ section.first label.btn {
 section.first input.visually-hidden:focus-visible + label.btn { box-shadow: 0 0 0 .25rem rgba(255, 107, 107, .5); }
 .policy-box textarea { border: 0; resize: vertical; }
 
+/* == blog·board (lists, details, post form, search) == */
+/* list card titles are h2 for heading order; keep the theme's h3 size */
+.card-box .card-content h2.name { font-size: 25px; }
+/* detail head: values and author as spans (the old dead "#" links are gone) */
+.blog-details-area .post-info span { color: #01054B; font-weight: 500; margin-left: 4px; margin-right: 23px; }
+.blog-details-area .meta span.author { color: #FF6B6B; font-weight: 500; margin-right: 12px; }
+.blog-details-area header p.h4 { font-family: "Roboto", sans-serif; font-size: 22px; font-weight: 700; }
+.post-details-body .tags ul { min-height: 38px; }
+/* like toggle is a real button (js/modules/post.js flips aria-pressed) */
+.blog-like .like-btn { background: none; border: 0; padding: 4px 16px; color: inherit; border-radius: 5px; }
+.blog-like .like-btn:hover { background: rgba(218, 222, 228, 0.65); }
+.blog-like .like-btn[aria-pressed="true"] .lni-heart { color: #FF6B6B; }
+.blog-like .like-btn .lni-heart::before { font-weight: 700; }
+.comment-area { margin-top: 60px; }
+.comment-area .inner-title { margin-bottom: 40px; }
+.comment-area .comment-form-wrap { margin-top: 3rem; }
+/* post form heading: h1 for the page outline, theme's h4 look */
+.box .box-body h1.post-form-heading { font-size: 22px; margin-bottom: 30px; }
+/* posts without a thumbnail keep the card's image band (the theme always had an image) */
+.card-box .card-img .card-img-empty { display: block; aspect-ratio: 16 / 9; background: linear-gradient(135deg, #FFECEC, #F5F7FC); }
+.blog-details-area header p.h4 a { color: #333F57; }
+.blog-like .like-btn .h4 { font-family: "Roboto", sans-serif; font-weight: 700; color: #333F57; }
+.board-table .search-kind { color: #646E83; }
