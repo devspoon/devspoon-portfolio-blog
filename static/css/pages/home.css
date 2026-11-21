@@ -1,8 +1,6 @@
-/* home + portfolio (GrayGrids theme). Section titles are h2 for the outline but keep the theme's h1 look;
-   the latest-post title is h3 but keeps the theme's h4 size. */
+/* home + portfolio (GrayGrids theme). Section titles are h2 for the outline but keep the theme's h1 look. */
 .section-title h2, .portfolio-section-title h2 { font-size: 45px; line-height: 55px; margin-bottom: 20px; }
 @media (max-width: 767px) { .section-title h2, .portfolio-section-title h2 { font-size: 36px; line-height: 46px; } }
-.post-item .content .title { font-size: 22px; }
 
 /* rotating roles: without motion show the first one only */
 @media (prefers-reduced-motion: reduce) {

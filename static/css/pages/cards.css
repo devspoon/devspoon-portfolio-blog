@@ -1,0 +1,19 @@
+/* card-box title in the top band: blog lists, home/portfolio project cards, home latest posts.
+   The heading covers the whole band so its link (::after) makes the thumbnail clickable with one link only. */
+.card-box .card-img > img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.card-box .card-img .card-title { position: absolute; inset: 0; display: flex; align-items: flex-end; margin: 0; padding: 20px;
+  font-size: 20px; font-weight: 700; line-height: 1.35; letter-spacing: -0.2px;
+  background: linear-gradient(to top, rgb(14 18 30 / .86) 0%, rgb(14 18 30 / .45) 42%, rgb(14 18 30 / 0) 72%); }
+.card-box .card-img .card-title a { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  color: #fff; text-shadow: 0 1px 3px rgb(0 0 0 / .45); }
+.card-box .card-img .card-title a::after { content: ""; position: absolute; inset: 0; }
+.card-box .card-img .card-title a:focus-visible { outline: none; }
+.card-box .card-img:has(.card-title a:focus-visible) { outline: 3px solid #FF6B6B; outline-offset: -3px; }
+.card-box:hover .card-img .card-title a { text-decoration: underline; text-underline-offset: 4px; }
+/* no thumbnail: the title sits in the pale gradient box (custom.css .card-img-empty) */
+.card-box .card-img .card-img-empty ~ .card-title { align-items: center; justify-content: center; padding: 24px 28px; text-align: center;
+  font-size: 22px; background: none; }
+.card-box .card-img .card-img-empty ~ .card-title a { -webkit-line-clamp: 3; color: #333F57; text-shadow: none; }
+[data-bs-theme="dark"] .card-box .card-img .card-img-empty ~ .card-title a { color: #F2F4F8; }
+/* the repository button stays above the title link */
+.card-box .card-img .product-action { z-index: 1; }

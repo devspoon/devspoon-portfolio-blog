@@ -123,6 +123,29 @@ def test_list_title_heading_and_links_are_server_rendered(client, posts):
 
 
 @param
+def test_list_card_title_is_in_the_top_band_once(client, posts):
+    # with and without a thumbnail: one h2 title link in .card-img, no heading left in .card-content
+    (prefix, *_), items = posts
+    type(items[0]).objects.filter(pk=items[0].pk).update(title_image="seed/thumb.jpg")
+    page = soup(client.get(reverse(f"blog:{prefix}_list"), **headers))
+    cards = page.select(".card-box")
+    assert len(cards) == len(items)
+    with_image = 0
+    for card in cards:
+        titles = card.select(".card-img h2.card-title")
+        assert len(titles) == 1
+        link = titles[0].find("a")
+        post = next(p for p in items if p.title == link.get_text())
+        assert card.get_text().count(post.title) == 1
+        assert [a["href"] for a in card.find_all("a", href=True) if "/detail/" in a["href"]] == [
+            reverse(f"blog:{prefix}_detail", args=[post.pk])]
+        assert not card.select_one(".card-content").find(["h1", "h2", "h3", "h4", "h5", "h6"])
+        with_image += bool(card.select_one(".card-img img"))
+        assert bool(card.select_one(".card-img img")) != bool(card.select_one(".card-img .card-img-empty"))
+    assert with_image == 1
+
+
+@param
 def test_detail_prev_next_links_point_to_neighbours(client, posts):
     (prefix, *_), (older, current, newer) = posts
     page = soup(client.get(reverse(f"blog:{prefix}_detail", args=[current.pk]), **headers))

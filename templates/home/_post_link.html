@@ -1,19 +1,18 @@
 {% load i18n blog_base_tag %}{% comment %}
 Home "latest" card (theme post-item). item is a .values() dict with a `table` key:
 map it to the detail URL, the list URL and the kind label.
+The title sits in the top band (over the thumbnail, or in the gradient box without one) and is the card link.
 {% endcomment %}
 {% if item.table == "OnlineStudy" %}{% url 'blog:online_study_detail' item.pk as u %}{% url 'blog:online_study_list' as list_u %}{% trans "Online study" as k %}
 {% elif item.table == "Blog" %}{% url 'blog:blog_detail' item.pk as u %}{% url 'blog:blog_list' as list_u %}{% trans "Blog" as k %}
 {% elif item.table == "OpenSource" %}{% url 'blog:opensource_detail' item.pk as u %}{% url 'blog:opensource_list' as list_u %}{% trans "Open source" as k %}
 {% else %}{% url 'blog:books_detail' item.pk as u %}{% url 'blog:books_list' as list_u %}{% trans "Books" as k %}{% endif %}
 <div class="card-box post-item">
-    {% if item.title_image %}
-    <div class="card-img thumb">
-        <a href="{{ u }}" tabindex="-1" aria-hidden="true"><img src="{{ item.title_image }}" alt="" loading="lazy" decoding="async"></a>
+    <div class="card-img">
+        {% if item.title_image %}<img src="{{ item.title_image }}" alt="" loading="lazy" decoding="async">{% else %}<span class="card-img-empty"></span>{% endif %}
+        <h3 class="card-title"><a href="{{ u }}">{{ item.title }}</a></h3>
     </div>
-    {% endif %}
     <div class="card-content content">
-        <h3 class="title"><a href="{{ u }}">{{ item.title }}</a></h3>
         <p>{{ item.content|remove_styles|truncatechars:20 }}</p>
         <div class="meta bottom meta-bottom">
             <div class="blog-info row col-12 justify-content-center">

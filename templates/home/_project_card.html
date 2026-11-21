@@ -1,21 +1,19 @@
 {% load i18n blog_base_tag %}{% comment %}
 Theme project card (card-box) for the home and portfolio project lists. Args: post (a ProjectPost).
-The thumbnail link repeats the title link, so it is hidden from assistive tech.
+The title sits in the top band (over the thumbnail, or in the gradient box without one) and is the only card link.
 {% endcomment %}
 {% url 'blog:project_detail' post.pk as u %}
 <div class="card-box">
-    {% if post.title_image %}
     <div class="card-img">
-        <a href="{{ u }}" tabindex="-1" aria-hidden="true"><img src="{{ post.title_image }}" alt="" loading="lazy" decoding="async"></a>
+        {% if post.title_image %}<img src="{{ post.title_image }}" alt="" loading="lazy" decoding="async">{% else %}<span class="card-img-empty"></span>{% endif %}
+        <h3 class="card-title"><a href="{{ u }}">{{ post.title }}</a></h3>
         {% if post.repository %}
         <div class="product-action">
             <a href="{{ post.repository }}" class="share" rel="noopener" aria-label="{% trans 'Repository' %}"><i class="lni lni-world" aria-hidden="true"></i></a>
         </div>
         {% endif %}
     </div>
-    {% endif %}
     <div class="card-content">
-        <h3 class="name"><i class="lni lni-github" aria-hidden="true"></i> <a href="{{ u }}">{{ post.title }}</a></h3>
         <span class="update">{{ post.content|remove_styles|truncatechars:80 }}</span>
         <div class="project-info row justify-content-center">
             <div class="col-6"><i class="lni lni-calendar" aria-hidden="true"></i> <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:'Y-m-d H:i' }}</time></div>
@@ -27,7 +25,7 @@ The thumbnail link repeats the title link, so it is hidden from assistive tech.
             <div class="col-6"><i class="lni lni-heart" aria-hidden="true"></i> {{ post.like_count }}</div>
             <div class="col-6"><i class="lni lni-comments-reply" aria-hidden="true"></i> {{ post.reply_count }}</div>
             <div class="col-6"><i class="lni lni-eye" aria-hidden="true"></i> {{ post.visit_count }}</div>
-            <div class="col-6"><i class="lni lni-pencil-alt" aria-hidden="true"></i> {{ post.author }}</div>
+            <div class="col-6"><i class="lni lni-pencil-alt" aria-hidden="true"></i> {% if post.author.nickname %}{{ post.author.nickname }}{% endif %}</div>
         </div>
     </div>
 </div>

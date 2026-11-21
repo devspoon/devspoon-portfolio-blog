@@ -1,7 +1,8 @@
 {% extends "base/base.html" %}
-{% load i18n blog_base_tag %}
+{% load static i18n blog_base_tag %}
 {% comment %}Shared list page for the five blog types: the GrayGrids card-box grid.{% endcomment %}
 {% block title %}{{ page_title }} | devspoon{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/cards.css' %}">{% endblock %}
 
 {% block content %}
 {% with url_base=request.resolver_match.view_name|cut:"_list" %}
@@ -35,8 +36,9 @@
                 <div class="col-xl-4 col-lg-6 col-md-6">
                     <div class="card-box">
                         <div class="card-img">
-                            {# decorative: the title link below names the card #}
-                            <a href="{{ u }}" tabindex="-1" aria-hidden="true">{% if item.title_image %}<img src="{{ item.title_image }}" alt="" loading="lazy" decoding="async">{% else %}<span class="card-img-empty"></span>{% endif %}</a>
+                            {# the thumbnail is decorative; the title link is the only card link and covers the image (pages/cards.css) #}
+                            {% if item.title_image %}<img src="{{ item.title_image }}" alt="" loading="lazy" decoding="async">{% else %}<span class="card-img-empty"></span>{% endif %}
+                            <h2 class="card-title"><a href="{{ u }}">{{ item.title }}</a></h2>
                             {% if item.repository %}
                             <div class="product-action">
                                 <a href="{{ item.repository }}" class="share" rel="noopener" title="{% trans 'Repository' %}" aria-label="{% trans 'Repository' %}"><i class="lni lni-world" aria-hidden="true"></i></a>
@@ -45,7 +47,6 @@
                         </div>
 
                         <div class="card-content">
-                            <h2 class="name"><i class="lni lni-github" aria-hidden="true"></i> <a href="{{ u }}">{{ item.title }}</a></h2>
                             <span class="update">{{ item.content|remove_styles|truncatechars:80 }}</span>
                             <div class="project-info row justify-content-center">
                                 <div class="col-6"><i class="lni lni-calendar" aria-hidden="true"></i> <time datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:'Y-m-d H:i' }}</time></div>
