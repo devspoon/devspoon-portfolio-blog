@@ -1,6 +1,0 @@
-{% load i18n %}{% comment %}Tag links to search (ADR-005). Args: tags (iterable).{% endcomment %}
-{% if tags %}
-<ul class="c-tags" aria-label="{% trans 'Tags' %}">
-  {% for tag in tags %}<li><a class="c-tag" href="{% url 'home:search_queryset' %}?tag={{ tag|urlencode }}">{{ tag }}</a></li>{% endfor %}
-</ul>
-{% endif %}
