@@ -248,3 +248,6 @@ CELERY_WORKER_CONCURRENCY = 2  # worker 개수
 CELERY_WORKER_CHILD_CONCURRENCY = 2  # child process 개수
 CELERY_WORKER_PREFETCH_MULTIPLIER = 4  # 가져오는 작업 수
 CELERY_WORKER_MAX_TASKS_PER_CHILD = 1000  # 해당 횟수만큼 작업 후 프로세스 강제 종료
+
+# Google Analytics (templates/base/analytics.html) only on the public site
+ANALYTICS_ENABLED = True

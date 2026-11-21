@@ -1,10 +1,17 @@
 from django import template
+from django.conf import settings
 from django.templatetags.static import static
 from django.utils.html import format_html
 
 register = template.Library()
 
 SPRITE = "vendor/bootstrap-icons-1.13.1/icons.svg"
+
+
+@register.simple_tag
+def analytics_enabled():
+    """True only where settings turn analytics on (prod/stage), so dev and test pages send nothing to GA."""
+    return getattr(settings, "ANALYTICS_ENABLED", False)
 
 
 @register.simple_tag

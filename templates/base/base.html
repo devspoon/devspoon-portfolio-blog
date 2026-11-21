@@ -1,4 +1,4 @@
-{% load static i18n %}<!doctype html>
+{% load static i18n ui_tags %}<!doctype html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE|default:'ko' }}">
 <head>
@@ -19,7 +19,7 @@
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;700&family=Roboto:wght@500;700;900&display=swap"></noscript>
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
     {% block extra_css %}{% endblock %}
-    {% include "base/analytics.html" %}
+    {% analytics_enabled as analytics_on %}{% if analytics_on %}{% include "base/analytics.html" %}{% endif %}
 </head>
 <body>
     <a class="visually-hidden-focusable" href="#main">{% trans "Skip to content" %}</a>

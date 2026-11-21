@@ -19,9 +19,13 @@ INSTALLED_APPS.insert(0, "corsheaders")
 
 domain_str = config("DOMAIN_NAME")
 
-CORS_ORIGIN_WHITELIST = domain_str.split(",")
-
-CORS_ORIGIN_ALLOW_ALL = True
+# Only the site's own origins may make credentialed cross-origin requests: allowing every origin together
+# with CORS_ALLOW_CREDENTIALS let any website read responses with the visitor's cookies.
+# DOMAIN_NAME may list bare hosts ("example.com") or full origins; bare hosts get https://.
+CORS_ALLOWED_ORIGINS = [
+    d if "://" in d else f"https://{d}" for d in (s.strip() for s in domain_str.split(",")) if d
+]
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 
 
