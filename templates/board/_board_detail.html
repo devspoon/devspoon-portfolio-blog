@@ -1,11 +1,12 @@
 {% extends "base/base.html" %}
 {% load static i18n public_tags %}
 {% comment %}
-Shared detail page for the three boards (GrayGrids blog-details markup).
+Shared detail page for the three boards: one reading column (css/pages/detail.css).
 URLs are derived from the current view name: "board:notice_detail" -> "board:notice" + "_update" etc.
 Visit count and comments run on js/modules/post.js + comments.js.
 {% endcomment %}
 {% block title %}{{ board.title }} | devspoon{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/detail.css' %}">{% endblock %}
 {% block extra_js %}
 <script type="module" src="{% static 'js/modules/post.js' %}"></script>
 <script type="module" src="{% static 'js/modules/comments.js' %}"></script>
@@ -13,40 +14,36 @@ Visit count and comments run on js/modules/post.js + comments.js.
 
 {% block content %}
 {% with url_base=request.resolver_match.view_name|cut:"_detail" %}
-    <!--====== Blog Detail PART START ======-->
-    <section class="blog-details-area">
+    <section class="post-detail">
         <div class="container">
-          <article class="row" data-visit-url="{% url url_base|add:'_visit' board.pk %}">
-            <header class="col-10 m-auto text-center">
-                <h1 class="title">{{ board.title }}</h1>
-                <div class="meta p-post__byline">
-                    {% if board.author.nickname %}<span class="author">{{ board.author.nickname }}</span>{% endif %}
-                    <time datetime="{{ board.created_at|date:'c' }}">{{ board.created_at|date:'Y-m-d H:i' }}</time>
+          <article class="post-detail__inner" data-visit-url="{% url url_base|add:'_visit' board.pk %}">
+            <header class="post-detail__head">
+                <h1 class="post-detail__title">{{ board.title }}</h1>
+                <div class="post-detail__meta">
+                    <div class="meta p-post__byline">
+                        {% if board.author.nickname %}<span class="author">{{ board.author.nickname }}</span>{% endif %}
+                        <time datetime="{{ board.created_at|date:'c' }}">{{ board.created_at|date:'Y-m-d H:i' }}</time>
+                    </div>
+                    <span class="post-detail__views"><i class="lni lni-eye" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Views" %}</span>{{ board.visit_count }}</span>
                 </div>
             </header>
 
-            <div class="col-10 m-auto">
-                <div class="post-details-content">
-                    <div class="post-details-body">
-                        <div class="content form-control">
-                            {{ board.content|sanitize_html }}
-                        </div>
-                        {% if user_auth %}
-                        <div class="blog-button">
-                            <div class="d-flex justify-content-end" id="detail-button-group">
-                                <a href="{% url url_base|add:'_update' board.pk %}" class="btn btn-outline-primary me-3">{% trans "Edit" %}</a>
-                                <form method="post" action="{% url url_base|add:'_delete' board.pk %}">{% csrf_token %}<button type="submit" class="btn btn-outline-danger">{% trans "Delete" %}</button></form>
-                            </div>
-                        </div>
-                        {% endif %}
+            <div class="post-detail__body">
+                {{ board.content|sanitize_html }}
+            </div>
 
-                        {% include "components/comments.html" %}
-                    </div>
+            {% if user_auth %}
+            <div class="post-detail__actions">
+                <div class="post-detail__owner" id="detail-button-group">
+                    <a href="{% url url_base|add:'_update' board.pk %}" class="btn btn-outline-primary">{% trans "Edit" %}</a>
+                    <form method="post" action="{% url url_base|add:'_delete' board.pk %}">{% csrf_token %}<button type="submit" class="btn btn-outline-danger">{% trans "Delete" %}</button></form>
                 </div>
             </div>
+            {% endif %}
+
+            {% include "components/comments.html" %}
           </article>
         </div>
     </section>
-    <!--====== Blog Detail PART END ======-->
 {% endwith %}
 {% endblock %}

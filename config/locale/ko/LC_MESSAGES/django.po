@@ -1904,3 +1904,9 @@ msgstr "저작권"
 #: templates/base/footer.html
 msgid "Back to top"
 msgstr "맨 위로"
+
+#: templates/base/search_result_board_list.html
+#, python-format
+msgid "%(n)s result"
+msgid_plural "%(n)s results"
+msgstr[0] "%(n)s건"

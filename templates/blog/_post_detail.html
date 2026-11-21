@@ -1,11 +1,12 @@
 {% extends "base/base.html" %}
 {% load static i18n public_tags %}
 {% comment %}
-Shared detail page for the five blog types (GrayGrids blog-details markup). Children only set `title`.
+Shared detail page for the five blog types: one reading column (css/pages/detail.css). Children only set `title`.
 URLs are derived from the current view name: "blog:project_detail" -> "blog:project" + "_update" etc.
 Like, visit count and comments run on js/modules/post.js + comments.js.
 {% endcomment %}
 {% block title %}{{ board.title }} | devspoon{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/detail.css' %}">{% endblock %}
 {% block extra_js %}
 <script type="module" src="{% static 'js/modules/post.js' %}"></script>
 <script type="module" src="{% static 'js/modules/comments.js' %}"></script>
@@ -13,108 +14,91 @@ Like, visit count and comments run on js/modules/post.js + comments.js.
 
 {% block content %}
 {% with url_base=request.resolver_match.view_name|cut:"_detail" %}
-    <!--====== Blog Detail PART START ======-->
-    <section class="blog-details-area">
+    <section class="post-detail">
         <div class="container">
-          <article class="row" data-visit-url="{% url url_base|add:'_visit' board.pk %}">
-            <header class="col-lg-8 m-auto text-center">
-              <h1 class="title">{{ board.title }}</h1>
-              {% if board.repository %}
-              {% trans "Repository" %}
-              <p class="h4 pb-2"><a href="{{ board.repository }}" rel="noopener">{{ board.repository|truncatechars:30 }}</a></p>
-              {% endif %}
-              {% if board.dev_lang or board.branch or board.version or board.role or board.difficulty_level %}
-              <div class="post-info d-flex justify-content-center">
-                {% if board.dev_lang %}<div>{% trans "Language" %} <span>{{ board.dev_lang }}</span></div>{% endif %}
-                {% if board.branch %}<div>{% trans "Branch" %} <span>{{ board.get_branch_display }}</span></div>{% endif %}
-                {% if board.version %}<div>{% trans "Version" %} <span>{{ board.version }}</span></div>{% endif %}
-                {% if board.role %}<div>{% trans "Role" %} <span>{{ board.get_role_display }}</span></div>{% endif %}
-                {% if board.difficulty_level %}<div>{% trans "Difficulty" %} <span>{{ board.get_difficulty_level_display }}</span></div>{% endif %}
+          <article class="post-detail__inner" data-visit-url="{% url url_base|add:'_visit' board.pk %}">
+            <header class="post-detail__head">
+              <h1 class="post-detail__title">{{ board.title }}</h1>
+              <div class="post-detail__meta">
+                <div class="meta p-post__byline">
+                  {% if board.author.nickname %}<span class="author">{{ board.author.nickname }}</span>{% endif %}
+                  <time datetime="{{ board.created_at|date:'c' }}">{{ board.created_at|date:'Y-m-d H:i' }}</time>
+                </div>
+                <span class="post-detail__views"><i class="lni lni-eye" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Views" %}</span>{{ board.visit_count }}</span>
               </div>
+              {% if board.repository or board.dev_lang or board.branch or board.version or board.role or board.difficulty_level %}
+              <dl class="post-detail__facts">
+                {% if board.repository %}<div><dt>{% trans "Repository" %}</dt><dd><a href="{{ board.repository }}" rel="noopener">{{ board.repository|truncatechars:30 }}</a></dd></div>{% endif %}
+                {% if board.dev_lang %}<div><dt>{% trans "Language" %}</dt><dd>{{ board.dev_lang }}</dd></div>{% endif %}
+                {% if board.branch %}<div><dt>{% trans "Branch" %}</dt><dd>{{ board.get_branch_display }}</dd></div>{% endif %}
+                {% if board.version %}<div><dt>{% trans "Version" %}</dt><dd>{{ board.version }}</dd></div>{% endif %}
+                {% if board.role %}<div><dt>{% trans "Role" %}</dt><dd>{{ board.get_role_display }}</dd></div>{% endif %}
+                {% if board.difficulty_level %}<div><dt>{% trans "Difficulty" %}</dt><dd>{{ board.get_difficulty_level_display }}</dd></div>{% endif %}
+              </dl>
               {% endif %}
-              <div class="meta p-post__byline">
-                {% if board.author.nickname %}<span class="author">{{ board.author.nickname }}</span>{% endif %}
-                <time datetime="{{ board.created_at|date:'c' }}">{{ board.created_at|date:'Y-m-d H:i' }}</time>
-              </div>
             </header>
 
-            <div class="col-lg-10 col-xl-8 m-auto">
-                <div class="post-details-content">
-                    <div class="post-details-body">
-                        <div class="content form-control">
-                            {{ board.content|sanitize_html }}
-                        </div>
-                        {% with tags=board.tag_set.all %}{% if tags %}
-                        <div class="tags mb-3">
-                            <span class="form-label d-block" id="tags-label">{% trans "Tags" %}</span>
-                            <ul class="form-control list-inline mb-0" aria-labelledby="tags-label">
-                                {% for tag in tags %}<li class="list-inline-item"><a href="{% url 'home:search_queryset' %}?tag={{ tag|urlencode }}">{{ tag }}</a>{% if not forloop.last %},{% endif %}</li>{% endfor %}
-                            </ul>
-                        </div>
-                        {% endif %}{% endwith %}
-                        {% if user_auth %}
-                        <div class="blog-button">
-                            <div class="d-flex justify-content-end" id="detail-button-group">
-                                <a href="{% url url_base|add:'_update' board.pk %}" class="btn btn-outline-primary me-3">{% trans "Edit" %}</a>
-                                <form method="post" action="{% url url_base|add:'_delete' board.pk %}">{% csrf_token %}<button type="submit" class="btn btn-outline-danger">{% trans "Delete" %}</button></form>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% if board.link1 or board.link2 or board.file1 or board.file2 %}
-                        <div class="blog-links mt-5">
-                            <h2 class="visually-hidden">{% trans "Links and files" %}</h2>
-                            <div class="row">
-                                {% if board.link1 %}<div class="col-sm-6 mb-3"><i class="lni lni-link" aria-hidden="true"></i> <a href="{{ board.link1 }}" rel="noopener">{{ board.link1|truncatechars:40 }}</a></div>{% endif %}
-                                {% if board.link2 %}<div class="col-sm-6 mb-3"><i class="lni lni-link" aria-hidden="true"></i> <a href="{{ board.link2 }}" rel="noopener">{{ board.link2|truncatechars:40 }}</a></div>{% endif %}
-                                {% if board.file1 %}<div class="col-sm-6 mb-3"><i class="lni lni-files" aria-hidden="true"></i> <a href="{{ board.file1.url }}">{{ board.file1|filename }}</a></div>{% endif %}
-                                {% if board.file2 %}<div class="col-sm-6 mb-3"><i class="lni lni-files" aria-hidden="true"></i> <a href="{{ board.file2.url }}">{{ board.file2|filename }}</a></div>{% endif %}
-                            </div>
-                        </div>
-                        {% endif %}
-                        <div class="blog-like mt-5 text-center">
-                            {# js/modules/post.js: data-like-url, aria-pressed, [data-like-count] inside the button #}
-                            <button type="button" class="like-btn" aria-pressed="{{ like_state|yesno:'true,false' }}"
-                                    data-like-url="{% url url_base|add:'_like' board.pk %}"{% if not request.user.is_authenticated %} data-login-url="{% url 'users:login' %}"{% endif %}>
-                                <span class="like h4 d-block">{% trans "Likes" %} <span class="like_count" data-like-count>{{ board.like_count }}</span></span>
-                                <span class="h4 d-block mt-3"><i class="lni lni-heart" aria-hidden="true"></i></span>
-                            </button>
-                        </div>
-                        {% if pre_board or next_board %}
-                        <nav class="blog-history-navigation" id="navigation-group" aria-label="{% trans 'Post navigation' %}">
-                            <div class="row">
-                            {% if pre_board %}
-                            <div class="col-sm-6">
-                                <div class="nav-prev">
-                                <a href="{% url request.resolver_match.view_name pre_board.pk %}" id="nav-left" rel="prev">
-                                    <span><i class="lni lni-arrow-left" aria-hidden="true"></i> {% trans "Older" %}</span>
-                                    {{ pre_board.title }}
-                                    <p class="mb-0">{{ pre_board.content|striptags|truncatechars:80 }}</p>
-                                </a>
-                                </div>
-                            </div>
-                            {% endif %}
-                            {% if next_board %}
-                            <div class="col-sm-6{% if not pre_board %} offset-sm-6{% endif %}">
-                                <div class="nav-next">
-                                <a href="{% url request.resolver_match.view_name next_board.pk %}" id="nav-right" rel="next">
-                                    <span>{% trans "Newer" %} <i class="lni lni-arrow-right" aria-hidden="true"></i></span>
-                                    {{ next_board.title }}
-                                    <p class="mb-0">{{ next_board.content|striptags|truncatechars:80 }}</p>
-                                </a>
-                                </div>
-                            </div>
-                            {% endif %}
-                            </div>
-                        </nav>
-                        {% endif %}
-
-                        {% include "components/comments.html" %}
-                    </div>
-                </div>
+            <div class="post-detail__body">
+                {{ board.content|sanitize_html }}
             </div>
+
+            {% with tags=board.tag_set.all %}{% if tags %}
+            <div class="post-detail__section">
+                <span class="post-detail__label" id="tags-label">{% trans "Tags" %}</span>
+                <ul class="post-detail__tags" aria-labelledby="tags-label">
+                    {% for tag in tags %}<li><a href="{% url 'home:search_queryset' %}?tag={{ tag|urlencode }}">{{ tag }}</a></li>{% endfor %}
+                </ul>
+            </div>
+            {% endif %}{% endwith %}
+
+            {% if board.link1 or board.link2 or board.file1 or board.file2 %}
+            <div class="post-detail__section">
+                <h2 class="post-detail__label">{% trans "Links and files" %}</h2>
+                <ul class="post-detail__files">
+                    {% if board.link1 %}<li><i class="lni lni-link" aria-hidden="true"></i> <a href="{{ board.link1 }}" rel="noopener">{{ board.link1|truncatechars:60 }}</a></li>{% endif %}
+                    {% if board.link2 %}<li><i class="lni lni-link" aria-hidden="true"></i> <a href="{{ board.link2 }}" rel="noopener">{{ board.link2|truncatechars:60 }}</a></li>{% endif %}
+                    {% if board.file1 %}<li><i class="lni lni-files" aria-hidden="true"></i> <a href="{{ board.file1.url }}">{{ board.file1|filename }}</a></li>{% endif %}
+                    {% if board.file2 %}<li><i class="lni lni-files" aria-hidden="true"></i> <a href="{{ board.file2.url }}">{{ board.file2|filename }}</a></li>{% endif %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <div class="post-detail__actions">
+                {# js/modules/post.js: data-like-url, aria-pressed, [data-like-count] inside the button #}
+                <button type="button" class="like-btn" aria-pressed="{{ like_state|yesno:'true,false' }}"
+                        data-like-url="{% url url_base|add:'_like' board.pk %}"{% if not request.user.is_authenticated %} data-login-url="{% url 'users:login' %}"{% endif %}>
+                    <i class="lni lni-heart" aria-hidden="true"></i> {% trans "Likes" %} <span class="like_count" data-like-count>{{ board.like_count }}</span>
+                </button>
+                {% if user_auth %}
+                <div class="post-detail__owner" id="detail-button-group">
+                    <a href="{% url url_base|add:'_update' board.pk %}" class="btn btn-outline-primary">{% trans "Edit" %}</a>
+                    <form method="post" action="{% url url_base|add:'_delete' board.pk %}">{% csrf_token %}<button type="submit" class="btn btn-outline-danger">{% trans "Delete" %}</button></form>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if pre_board or next_board %}
+            <nav class="post-detail__pager" id="navigation-group" aria-label="{% trans 'Post navigation' %}">
+                {% if pre_board %}
+                <a href="{% url request.resolver_match.view_name pre_board.pk %}" id="nav-left" rel="prev" class="post-detail__pager-prev">
+                    <span class="post-detail__pager-dir"><i class="lni lni-arrow-left" aria-hidden="true"></i> {% trans "Older" %}</span>
+                    <strong>{{ pre_board.title }}</strong>
+                    <span class="post-detail__pager-excerpt">{{ pre_board.content|striptags|truncatechars:80 }}</span>
+                </a>
+                {% endif %}
+                {% if next_board %}
+                <a href="{% url request.resolver_match.view_name next_board.pk %}" id="nav-right" rel="next" class="post-detail__pager-next">
+                    <span class="post-detail__pager-dir">{% trans "Newer" %} <i class="lni lni-arrow-right" aria-hidden="true"></i></span>
+                    <strong>{{ next_board.title }}</strong>
+                    <span class="post-detail__pager-excerpt">{{ next_board.content|striptags|truncatechars:80 }}</span>
+                </a>
+                {% endif %}
+            </nav>
+            {% endif %}
+
+            {% include "components/comments.html" %}
           </article>
         </div>
     </section>
-    <!--====== Blog Detail PART END ======-->
 {% endwith %}
 {% endblock %}

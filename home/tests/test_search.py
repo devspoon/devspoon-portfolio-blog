@@ -32,3 +32,13 @@ def test_tag_search_shows_tag_text_and_pages_results(client):
     assert "django" in h1 and "QuerySet" not in h1
     assert len(first.context["board"]) == 10 and len(second.context["board"]) == 2
     assert 'href="?page=2&amp;tag=django"' in first.content.decode()
+    page = BeautifulSoup(first.content, "html.parser")
+    summary = page.select_one(".search-results__summary").get_text()
+    assert "django" in summary and "12 results" in summary
+    items = page.select(".search-results__list .search-item")
+    assert len(items) == 10
+    # detail URLs per board type are covered by blog/tests/test_phase4_data_integrity.py (real query)
+    for item in items:
+        assert len(item.find_all("a")) == 1 and item.select_one("h2.search-item__title a")["href"]
+        assert item.select_one(".search-item__kind").get_text(strip=True)
+        assert "author" not in item.get_text()  # the login name is never shown

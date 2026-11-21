@@ -1,10 +1,11 @@
 {% extends "base/base.html" %}
-{% load i18n %}
+{% load static i18n %}
 {% comment %}
-Search results across blogs and boards in the GrayGrids board table; `board_type` (the model name, phase4 F-001)
-picks the detail URL and board label. No author column: the search rows only carry the login name, which is never shown.
+Search results across blogs and boards as a card list (css/pages/detail.css); `board_type` (the model name, phase4 F-001)
+picks the detail URL and board label. No author: the search rows only carry the login name, which is never shown.
 {% endcomment %}
 {% block title %}{% trans "Search" %} | devspoon{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/detail.css' %}">{% endblock %}
 
 {% block content %}
 
@@ -25,23 +26,13 @@ picks the detail URL and board label. No author column: the search rows only car
     </section>
     <!--== End Page Title Area ==-->
 
-    <!--== Start Blog Area Wrapper ==-->
-    <section class="blog-grid-area pb-1">
+    <!--== Start Search Results ==-->
+    <section class="search-results pb-1">
         <div class="container">
-            <div class="row">
-                <div class="col-10 m-auto">
+            <div class="search-results__inner">
                     {% if board %}
-                    <div class="table-responsive">
-                    <table class="table table-hover board-table">
-                        <thead>
-                          <tr>
-                            <th width="5%" class="th-number text-center" scope="col">{% trans "No." %}</th>
-                            <th width="75%" class="th-title" scope="col">{% trans "Title" %}</th>
-                            <th width="15%" class="th-date text-center" scope="col">{% trans "Date" %}</th>
-                            <th width="5%" class="th-visiter text-center" scope="col">{% trans "Views" %}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
+                    <p class="search-results__summary">{% if tag %}{% trans "Tags" %}{% else %}{% trans "Search" %}{% endif %}: <strong>{% if tag %}{{ tag }}{% else %}{{ keyword }}{% endif %}</strong>{% if page_obj %} · {% blocktrans count n=page_obj.paginator.count %}{{ n }} result{% plural %}{{ n }} results{% endblocktrans %}{% endif %}</p>
+                    <ul class="search-results__list">
                         {% for item in board %}
                           {% if item.board_type == "Notice" %}{% url 'board:notice_detail' item.pk as u %}{% trans "Notice" as k %}
                           {% elif item.board_type == "Visiter" %}{% url 'board:visiter_detail' item.pk as u %}{% trans "Guestbook" as k %}
@@ -51,25 +42,23 @@ picks the detail URL and board label. No author column: the search rows only car
                           {% elif item.board_type == "BlogPost" %}{% url 'blog:blog_detail' item.pk as u %}{% trans "Blog" as k %}
                           {% elif item.board_type == "OpenSourcePost" %}{% url 'blog:opensource_detail' item.pk as u %}{% trans "Open source" as k %}
                           {% else %}{% url 'blog:books_detail' item.pk as u %}{% trans "Books" as k %}{% endif %}
-                          <tr>
-                            <td class="th-number text-center tb-row">{{ item.pk }}</td>
-                            <td class="th-title tb-row"><span class="search-kind small me-2">[{{ k }}]</span><a href="{{ u }}">{{ item.title|truncatechars:80 }}</a></td>
-                            <td class="th-date text-center tb-row"><time datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:'Y/m/d H:i' }}</time></td>
-                            <td class="th-visiter text-center tb-row">{{ item.visit_count }}</td>
-                          </tr>
+                          <li class="search-item">
+                            <span class="search-item__kind">{{ k }}</span>
+                            <h2 class="search-item__title"><a href="{{ u }}">{{ item.title|truncatechars:80 }}</a></h2>
+                            <div class="search-item__meta">
+                              <time datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:'Y-m-d H:i' }}</time>
+                              <span><i class="lni lni-eye" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Views" %}</span>{{ item.visit_count }}</span>
+                            </div>
+                          </li>
                         {% endfor %}
-                        </tbody>
-                    </table>
-                    </div>
+                    </ul>
                     {% else %}
                     {% trans "Nothing matched. Try another word or tag." as m %}{% include "components/empty.html" with message=m %}
                     {% endif %}
-                </div>
-
-                {% include "components/pagination.html" %}
             </div>
+            {% include "components/pagination.html" %}
         </div>
     </section>
-    <!--== End Blog Area Wrapper ==-->
+    <!--== End Search Results ==-->
 
 {% endblock %}

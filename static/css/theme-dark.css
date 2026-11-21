@@ -86,25 +86,15 @@
 
 /* == blog·board (lists, details, post form, search) == */
 [data-bs-theme="dark"] .card-box { background-color: #263047; border-color: #3A4660; }
-[data-bs-theme="dark"] .card-box .card-content .name a,
 [data-bs-theme="dark"] .blog-details-area .title,
-[data-bs-theme="dark"] .blog-details-area .post-info span,
-[data-bs-theme="dark"] .blog-details-area header p.h4 a,
 [data-bs-theme="dark"] .board-table,
-[data-bs-theme="dark"] .tb-row a,
-[data-bs-theme="dark"] .blog-history-navigation a { color: #E8ECF4; }
+[data-bs-theme="dark"] .tb-row a { color: #E8ECF4; }
 [data-bs-theme="dark"] .board-table { --bs-table-hover-color: #E8ECF4; --bs-table-hover-bg: #2A3550; border-color: #3A4660; }
-[data-bs-theme="dark"] .blog-history-navigation { border-color: #3A4660; }
-[data-bs-theme="dark"] .blog-like .like-btn:hover { background: #2A3550; }
 [data-bs-theme="dark"] .card-box .card-img .card-img-empty { background: linear-gradient(135deg, #3A2E3E, #263047); }
-[data-bs-theme="dark"] .blog-like .like-btn .h4 { color: #E8ECF4; }
 [data-bs-theme="dark"] .post-details-content .post-details-body { background-color: transparent; }
 [data-bs-theme="dark"] .page-title-area .page-title-content .title,
 [data-bs-theme="dark"] .page-title-area .page-title-content .bread-crumbs span.active { color: #E8ECF4; }
 [data-bs-theme="dark"] .page-title-area .page-title-content .bread-crumbs a { color: #B0B8C8; }
-[data-bs-theme="dark"] .blog-history-navigation p,
-[data-bs-theme="dark"] .post-details-body .tags .form-label { color: #B0B8C8; }
-[data-bs-theme="dark"] .board-table .search-kind { color: #B0B8C8; }
 [data-bs-theme="dark"] .comment-area .btn-quiet { color: #B0B8C8; }
 [data-bs-theme="dark"] .comment-area .btn-quiet:hover { color: #E8ECF4; background: #2A3550; }
 
@@ -125,6 +115,5 @@
 [data-bs-theme="dark"] .about-me .about-left .about-tab .nav li a.active { background: #FF6B6B; color: #1E2638; }
 [data-bs-theme="dark"] .about-me .about-left .tab-content ul li i { color: #8FA8FF; }
 [data-bs-theme="dark"] .services p { color: #B0B8C8; }
-[data-bs-theme="dark"] .post-item .content .title a { color: #F2F4F8; }
 [data-bs-theme="dark"] .post-item .content { border-color: #3A4660; }
 [data-bs-theme="dark"] .post-item .content:before { background-color: #263047; }
