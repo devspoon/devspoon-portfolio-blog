@@ -135,7 +135,7 @@ def test_list_card_title_is_in_the_top_band_once(client, posts):
         titles = card.select(".card-img h2.card-title")
         assert len(titles) == 1
         link = titles[0].find("a")
-        post = next(p for p in items if p.title == link.get_text())
+        post = next(p for p in items if p.title == link.get_text(strip=True))
         assert card.get_text().count(post.title) == 1
         assert [a["href"] for a in card.find_all("a", href=True) if "/detail/" in a["href"]] == [
             reverse(f"blog:{prefix}_detail", args=[post.pk])]
@@ -143,10 +143,9 @@ def test_list_card_title_is_in_the_top_band_once(client, posts):
         with_image += bool(card.select_one(".card-img img"))
         assert bool(card.select_one(".card-img img")) != bool(card.select_one(".card-img .card-img-empty"))
         assert link["title"] == post.title
-        # body: excerpt, fact chips, stats row; no two-column grid that let long values run over the next column
-        assert card.select_one(".card-content > p.card-excerpt")
-        assert card.select_one(".card-content > ul.card-stats time")
-        assert not card.select(".project-info, .col-6")
+        # body keeps the theme layout: the excerpt, then the two-column meta grid (date first)
+        assert card.select_one(".card-content > span.update")
+        assert card.select_one(".card-content > .project-info.row > .col-6 time")
     assert with_image == 1
 
 

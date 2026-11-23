@@ -1,27 +1,26 @@
 {% load i18n blog_base_tag %}{% comment %}
 Home "latest" card (theme post-item). item is a .values() dict with a `table` key:
 map it to the detail URL, the list URL and the kind label.
-The title sits in the top band (over the thumbnail, or in the gradient box without one) and is the card link.
-Layout and the shared card rules: css/pages/cards.css.
+The title sits in the top band (over the thumbnail, or in the gradient box without one) and is the detail link: css/pages/cards.css.
 {% endcomment %}
 {% if item.table == "OnlineStudy" %}{% url 'blog:online_study_detail' item.pk as u %}{% url 'blog:online_study_list' as list_u %}{% trans "Online study" as k %}
 {% elif item.table == "Blog" %}{% url 'blog:blog_detail' item.pk as u %}{% url 'blog:blog_list' as list_u %}{% trans "Blog" as k %}
 {% elif item.table == "OpenSource" %}{% url 'blog:opensource_detail' item.pk as u %}{% url 'blog:opensource_list' as list_u %}{% trans "Open source" as k %}
 {% else %}{% url 'blog:books_detail' item.pk as u %}{% url 'blog:books_list' as list_u %}{% trans "Books" as k %}{% endif %}
-<div class="card-box post-item h-100">
+<div class="card-box post-item">
     <div class="card-img">
         {% if item.title_image %}<img src="{{ item.title_image }}" alt="" loading="lazy" decoding="async">{% else %}<span class="card-img-empty"></span>{% endif %}
         <h3 class="card-title"><a href="{{ u }}" title="{{ item.title }}">{{ item.title }}</a></h3>
     </div>
-    <div class="card-content">
-        <p class="card-excerpt">{{ item.content|remove_styles|truncatechars:160 }}</p>
-        <ul class="card-chips">
-            <li><a class="category" href="{{ list_u }}"><i class="lni lni-folder" aria-hidden="true"></i>{{ k }}</a></li>
-        </ul>
-        <ul class="card-stats">
-            <li><i class="lni lni-calendar" aria-hidden="true"></i><time datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:'Y-m-d' }}</time></li>
-            <li><i class="lni lni-comments" aria-hidden="true"></i><span class="visually-hidden">{% trans "Comments" %}</span>{{ item.reply_count }}</li>
-            <li><i class="lni lni-eye" aria-hidden="true"></i><span class="visually-hidden">{% trans "Views" %}</span>{{ item.visit_count }}</li>
-        </ul>
+    <div class="card-content content">
+        <p>{{ item.content|remove_styles|truncatechars:20 }}</p>
+        <div class="meta bottom meta-bottom">
+            <div class="blog-info row col-12 justify-content-center">
+                <div class="col-6"><i class="lni lni-calendar" aria-hidden="true"></i> <time datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:'Y-m-d' }}</time></div>
+                <div class="col-6"><i class="lni lni-comments" aria-hidden="true"></i> {{ item.reply_count }}</div>
+                <div class="col-6"><i class="lni lni-eye" aria-hidden="true"></i> {{ item.visit_count }}</div>
+                <div class="col-6"><a class="category" href="{{ list_u }}"><i class="lni lni-folder" aria-hidden="true"></i> {{ k }}</a></div>
+            </div>
+        </div>
     </div>
 </div>

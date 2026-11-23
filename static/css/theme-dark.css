@@ -88,6 +88,7 @@
 [data-bs-theme="dark"] .tb-row a { color: #E8ECF4; }
 [data-bs-theme="dark"] .board-table { --bs-table-hover-color: #E8ECF4; --bs-table-hover-bg: #2A3550; border-color: #3A4660; }
 [data-bs-theme="dark"] .card-box .card-img .card-img-empty { background: linear-gradient(135deg, #3A2E3E, #263047); }
+[data-bs-theme="dark"] .card-box .card-img .card-img-empty ~ .card-title { color: #E8ECF4; }
 [data-bs-theme="dark"] .post-details-content .post-details-body { background-color: transparent; }
 [data-bs-theme="dark"] .page-title-area .page-title-content .title,
 [data-bs-theme="dark"] .page-title-area .page-title-content .bread-crumbs span.active { color: #E8ECF4; }
