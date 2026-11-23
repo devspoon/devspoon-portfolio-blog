@@ -70,6 +70,14 @@ def test_experience_title_and_summary_render_admin_html(client):
     assert '<font color="#ff69b4"><b>Freelance</b></font>' in html
     assert "<p>UI test service</p>" in html
     assert "&lt;p&gt;" not in html
+    # card layout (pages/portfolio.css): dates, role badge, title and summary each in their own block
+    from bs4 import BeautifulSoup
+
+    card = BeautifulSoup(html, "html.parser").select_one(".single-timeline-content .timeline-text")
+    assert card.select_one(".timeline-meta time")
+    assert card.select_one(".timeline-role")
+    assert card.select_one(".timeline-title b").get_text() == "Freelance"
+    assert card.select_one(".timeline-summary").get_text(strip=True) == "UI test service"
 
 
 @pytest.mark.django_db

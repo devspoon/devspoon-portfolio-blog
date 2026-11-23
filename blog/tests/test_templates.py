@@ -142,6 +142,11 @@ def test_list_card_title_is_in_the_top_band_once(client, posts):
         assert not card.select_one(".card-content").find(["h1", "h2", "h3", "h4", "h5", "h6"])
         with_image += bool(card.select_one(".card-img img"))
         assert bool(card.select_one(".card-img img")) != bool(card.select_one(".card-img .card-img-empty"))
+        assert link["title"] == post.title
+        # body: excerpt, fact chips, stats row; no two-column grid that let long values run over the next column
+        assert card.select_one(".card-content > p.card-excerpt")
+        assert card.select_one(".card-content > ul.card-stats time")
+        assert not card.select(".project-info, .col-6")
     assert with_image == 1
 
 

@@ -1,31 +1,36 @@
 {% load i18n blog_base_tag %}{% comment %}
 Theme project card (card-box) for the home and portfolio project lists. Args: post (a ProjectPost).
 The title sits in the top band (over the thumbnail, or in the gradient box without one) and is the only card link.
+Layout and the shared card rules: css/pages/cards.css.
 {% endcomment %}
 {% url 'blog:project_detail' post.pk as u %}
-<div class="card-box">
+<div class="card-box h-100">
     <div class="card-img">
         {% if post.title_image %}<img src="{{ post.title_image }}" alt="" loading="lazy" decoding="async">{% else %}<span class="card-img-empty"></span>{% endif %}
-        <h3 class="card-title"><a href="{{ u }}">{{ post.title }}</a></h3>
+        <h3 class="card-title"><a href="{{ u }}" title="{{ post.title }}">{{ post.title }}</a></h3>
         {% if post.repository %}
         <div class="product-action">
-            <a href="{{ post.repository }}" class="share" rel="noopener" aria-label="{% trans 'Repository' %}"><i class="lni lni-world" aria-hidden="true"></i></a>
+            <a href="{{ post.repository }}" class="share" rel="noopener" title="{% trans 'Repository' %}" aria-label="{% trans 'Repository' %}"><i class="lni lni-world" aria-hidden="true"></i></a>
         </div>
         {% endif %}
     </div>
     <div class="card-content">
-        <span class="update">{{ post.content|remove_styles|truncatechars:80 }}</span>
-        <div class="project-info row justify-content-center">
-            <div class="col-6"><i class="lni lni-calendar" aria-hidden="true"></i> <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:'Y-m-d H:i' }}</time></div>
-            {% if post.dev_lang %}<div class="col-6"><i class="lni lni-bookmark" aria-hidden="true"></i> {{ post.dev_lang }}</div>{% endif %}
-            {% if post.branch %}<div class="col-6"><i class="lni lni-layers" aria-hidden="true"></i> {{ post.get_branch_display }}</div>{% endif %}
-            {% if post.role %}<div class="col-6"><i class="lni lni-folder" aria-hidden="true"></i> {{ post.get_role_display }}</div>{% endif %}
-            {% if post.version %}<div class="col-6"><i class="lni lni-tag" aria-hidden="true"></i> {{ post.version }}</div>{% endif %}
-            {% if post.repository %}<div class="col-6"><i class="lni lni-tag" aria-hidden="true"></i> <a href="{{ post.repository }}" rel="noopener">{% trans "Repository" %}</a></div>{% endif %}
-            <div class="col-6"><i class="lni lni-heart" aria-hidden="true"></i> {{ post.like_count }}</div>
-            <div class="col-6"><i class="lni lni-comments-reply" aria-hidden="true"></i> {{ post.reply_count }}</div>
-            <div class="col-6"><i class="lni lni-eye" aria-hidden="true"></i> {{ post.visit_count }}</div>
-            <div class="col-6"><i class="lni lni-pencil-alt" aria-hidden="true"></i> {% if post.author.nickname %}{{ post.author.nickname }}{% endif %}</div>
-        </div>
+        <p class="card-excerpt">{{ post.content|remove_styles|truncatechars:160 }}</p>
+        {% if post.dev_lang or post.branch or post.role or post.version or post.repository %}
+        <ul class="card-chips">
+            {% if post.dev_lang %}<li><i class="lni lni-bookmark" aria-hidden="true"></i><span class="visually-hidden">{% trans "Language" %}</span><span>{{ post.dev_lang }}</span></li>{% endif %}
+            {% if post.branch %}<li><i class="lni lni-layers" aria-hidden="true"></i><span class="visually-hidden">{% trans "Branch" %}</span><span>{{ post.get_branch_display }}</span></li>{% endif %}
+            {% if post.role %}<li><i class="lni lni-folder" aria-hidden="true"></i><span class="visually-hidden">{% trans "Role" %}</span><span>{{ post.get_role_display }}</span></li>{% endif %}
+            {% if post.version %}<li><i class="lni lni-tag" aria-hidden="true"></i><span class="visually-hidden">{% trans "Version" %}</span><span>{{ post.version }}</span></li>{% endif %}
+            {% if post.repository %}<li><i class="lni lni-link" aria-hidden="true"></i><a href="{{ post.repository }}" rel="noopener">{% trans "Repository" %}</a></li>{% endif %}
+        </ul>
+        {% endif %}
+        <ul class="card-stats">
+            <li><i class="lni lni-calendar" aria-hidden="true"></i><time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:'Y-m-d' }}</time></li>
+            <li><i class="lni lni-heart" aria-hidden="true"></i><span class="visually-hidden">{% trans "Likes" %}</span>{{ post.like_count }}</li>
+            <li><i class="lni lni-comments-reply" aria-hidden="true"></i><span class="visually-hidden">{% trans "Comments" %}</span>{{ post.reply_count }}</li>
+            <li><i class="lni lni-eye" aria-hidden="true"></i><span class="visually-hidden">{% trans "Views" %}</span>{{ post.visit_count }}</li>
+            {% if post.author.nickname %}<li class="card-stats__author"><i class="lni lni-pencil-alt" aria-hidden="true"></i><span class="visually-hidden">{% trans "Author" %}</span><span>{{ post.author.nickname }}</span></li>{% endif %}
+        </ul>
     </div>
 </div>

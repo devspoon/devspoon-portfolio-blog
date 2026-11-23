@@ -33,12 +33,12 @@
             <div class="row">
                 {% for item in board %}
                 {% url url_base|add:'_detail' item.pk as u %}
-                <div class="col-xl-4 col-lg-6 col-md-6">
-                    <div class="card-box">
+                <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+                    <div class="card-box h-100">
                         <div class="card-img">
                             {# the thumbnail is decorative; the title link is the only card link and covers the image (pages/cards.css) #}
                             {% if item.title_image %}<img src="{{ item.title_image }}" alt="" loading="lazy" decoding="async">{% else %}<span class="card-img-empty"></span>{% endif %}
-                            <h2 class="card-title"><a href="{{ u }}">{{ item.title }}</a></h2>
+                            <h2 class="card-title"><a href="{{ u }}" title="{{ item.title }}">{{ item.title }}</a></h2>
                             {% if item.repository %}
                             <div class="product-action">
                                 <a href="{{ item.repository }}" class="share" rel="noopener" title="{% trans 'Repository' %}" aria-label="{% trans 'Repository' %}"><i class="lni lni-world" aria-hidden="true"></i></a>
@@ -47,20 +47,24 @@
                         </div>
 
                         <div class="card-content">
-                            <span class="update">{{ item.content|remove_styles|truncatechars:80 }}</span>
-                            <div class="project-info row justify-content-center">
-                                <div class="col-6"><i class="lni lni-calendar" aria-hidden="true"></i> <time datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:'Y-m-d H:i' }}</time></div>
-                                {% if item.dev_lang %}<div class="col-6"><i class="lni lni-bookmark" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Language" %}</span>{{ item.dev_lang }}</div>{% endif %}
-                                {% if item.branch %}<div class="col-6"><i class="lni lni-layers" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Branch" %}</span>{{ item.get_branch_display }}</div>{% endif %}
-                                {% if item.role %}<div class="col-6"><i class="lni lni-folder" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Role" %}</span>{{ item.get_role_display }}</div>{% endif %}
-                                {% if item.difficulty_level %}<div class="col-6"><i class="lni lni-book" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Difficulty" %}</span>{{ item.get_difficulty_level_display }}</div>{% endif %}
-                                {% if item.version %}<div class="col-6"><i class="lni lni-tag" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Version" %}</span>{{ item.version }}</div>{% endif %}
-                                {% if item.repository %}<div class="col-6"><i class="lni lni-tag" aria-hidden="true"></i> <a href="{{ item.repository }}" rel="noopener">{% trans "Repository" %}</a></div>{% endif %}
-                                <div class="col-6"><i class="lni lni-heart" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Likes" %}</span>{{ item.like_count }}</div>
-                                <div class="col-6"><i class="lni lni-comments-reply" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Comments" %}</span>{{ item.reply_count }}</div>
-                                <div class="col-6"><i class="lni lni-user" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Views" %}</span>{{ item.visit_count }}</div>
-                                <div class="col-6"><i class="lni lni-pencil-alt" aria-hidden="true"></i> <span class="visually-hidden">{% trans "Author" %}</span>{% if item.author.nickname %}{{ item.author.nickname }}{% endif %}</div>
-                            </div>
+                            <p class="card-excerpt">{{ item.content|remove_styles|truncatechars:160 }}</p>
+                            {% if item.dev_lang or item.branch or item.role or item.difficulty_level or item.version or item.repository %}
+                            <ul class="card-chips">
+                                {% if item.dev_lang %}<li><i class="lni lni-bookmark" aria-hidden="true"></i><span class="visually-hidden">{% trans "Language" %}</span><span>{{ item.dev_lang }}</span></li>{% endif %}
+                                {% if item.branch %}<li><i class="lni lni-layers" aria-hidden="true"></i><span class="visually-hidden">{% trans "Branch" %}</span><span>{{ item.get_branch_display }}</span></li>{% endif %}
+                                {% if item.role %}<li><i class="lni lni-folder" aria-hidden="true"></i><span class="visually-hidden">{% trans "Role" %}</span><span>{{ item.get_role_display }}</span></li>{% endif %}
+                                {% if item.difficulty_level %}<li><i class="lni lni-book" aria-hidden="true"></i><span class="visually-hidden">{% trans "Difficulty" %}</span><span>{{ item.get_difficulty_level_display }}</span></li>{% endif %}
+                                {% if item.version %}<li><i class="lni lni-tag" aria-hidden="true"></i><span class="visually-hidden">{% trans "Version" %}</span><span>{{ item.version }}</span></li>{% endif %}
+                                {% if item.repository %}<li><i class="lni lni-link" aria-hidden="true"></i><a href="{{ item.repository }}" rel="noopener">{% trans "Repository" %}</a></li>{% endif %}
+                            </ul>
+                            {% endif %}
+                            <ul class="card-stats">
+                                <li><i class="lni lni-calendar" aria-hidden="true"></i><time datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:'Y-m-d' }}</time></li>
+                                <li><i class="lni lni-heart" aria-hidden="true"></i><span class="visually-hidden">{% trans "Likes" %}</span>{{ item.like_count }}</li>
+                                <li><i class="lni lni-comments-reply" aria-hidden="true"></i><span class="visually-hidden">{% trans "Comments" %}</span>{{ item.reply_count }}</li>
+                                <li><i class="lni lni-eye" aria-hidden="true"></i><span class="visually-hidden">{% trans "Views" %}</span>{{ item.visit_count }}</li>
+                                {% if item.author.nickname %}<li class="card-stats__author"><i class="lni lni-pencil-alt" aria-hidden="true"></i><span class="visually-hidden">{% trans "Author" %}</span><span>{{ item.author.nickname }}</span></li>{% endif %}
+                            </ul>
                         </div>
                     </div>
                 </div>
