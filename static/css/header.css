@@ -146,6 +146,17 @@
 .offcanvas_menu_wrapper .offcanvas_main_menu li a .sub-caret { margin-left: auto; font-size: 11px; transition: transform .2s; }
 .offcanvas_menu_wrapper .offcanvas_main_menu li a[aria-expanded="true"] .sub-caret { transform: rotate(180deg); }
 .offcanvas_menu_wrapper .offcanvas_main_menu li a:hover { color: #D6383E; }
+/* account items: the log out button looks like the menu links above it */
+.offcanvas-account { margin-top: 12px; }
+.offcanvas-account form { margin: 0; }
+.offcanvas_menu_wrapper .offcanvas-logout {
+  display: flex; align-items: center; gap: 10px; width: 100%; padding: 11px 6px; margin: 0; border: 0;
+  border-bottom: 1px solid #ededed; background: none; font: inherit; font-size: 15px; color: #333F57; text-align: left; cursor: pointer;
+}
+.offcanvas_menu_wrapper .offcanvas-logout .lni { width: 18px; text-align: center; color: #6B7489; }
+.offcanvas_menu_wrapper .offcanvas-logout:hover { color: #D6383E; }
+[data-bs-theme="dark"] .offcanvas_menu_wrapper .offcanvas-logout { color: #E8ECF4; border-bottom-color: #3A4660; }
+[data-bs-theme="dark"] .offcanvas_menu_wrapper .offcanvas-logout .lni { color: #B0B8C8; }
 .offcanvas_menu_wrapper .offcanvas_main_menu .nav-item .sub-menu { padding-left: 16px; background: transparent; box-shadow: none; }
 .offcanvas_menu_wrapper .offcanvas_main_menu .sub-menu li a,
 .offcanvas_menu_wrapper .offcanvas_main_menu .sub-menu li a:hover { display: flex; gap: 10px; padding: 10px 6px; color: #4A5468; }

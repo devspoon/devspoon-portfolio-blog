@@ -52,6 +52,13 @@
                             {% endif %}{% endfor %}
                         </ul>
                     </nav>
+                    {% if request.user.is_authenticated %}
+                    {# touch screens cannot open the header account menu (it opens on hover/focus), so it is repeated here #}
+                    <ul class="offcanvas_main_menu offcanvas-account navbar-nav">
+                        <li class="nav-item"><a href="{% url 'users:profile' %}"><i class="lni lni-user" aria-hidden="true"></i>{% trans "Profile settings" %}</a></li>
+                        <li class="nav-item"><form method="post" action="{% url 'users:logout' %}">{% csrf_token %}<button type="submit" class="offcanvas-logout"><i class="lni lni-exit" aria-hidden="true"></i>{% trans "Log out" %}</button></form></li>
+                    </ul>
+                    {% endif %}
                 </div>
             </div>
         </div>

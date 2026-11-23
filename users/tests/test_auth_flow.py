@@ -36,9 +36,13 @@ def test_header_account_shows_the_nickname_never_the_email_or_login_id(client, n
 
 def test_logout_is_a_post_form_and_get_does_not_log_out(client):
     logged_in(client, "Nick")
-    form = header_of(client).select_one(".dropdown-nav form")
-    assert form["method"] == "post" and form["action"] == reverse("users:logout")
-    assert form.find("input", attrs={"name": "csrfmiddlewaretoken"}) and form.find("button", type="submit")
+    page = BeautifulSoup(client.get(reverse("home:search_queryset"), {"keyword": "x"}, **headers).content.decode(), "html.parser")
+    forms = page.select("#header_navbar .dropdown-nav form, #mobile-menu .offcanvas-account form")
+    assert len(forms) == 2  # the account menu and the off-canvas menu (touch screens cannot open the former)
+    for form in forms:
+        assert form["method"] == "post" and form["action"] == reverse("users:logout")
+        assert form.find("input", attrs={"name": "csrfmiddlewaretoken"}) and form.find("button", type="submit")
+    assert not page.select(f'a[href="{reverse("users:logout")}"]')
 
     assert client.get(reverse("users:logout"), **headers).status_code == 405
     assert "_auth_user_id" in client.session
