@@ -11,6 +11,18 @@ document.addEventListener("click", (event) => {
   try { localStorage.setItem("theme", next); } catch { /* private mode: theme just isn't remembered */ }
 });
 
+// header: when the menu does not fit next to the tools (many or long entries), it moves to a second row
+const siteNav = document.querySelector(".site-nav");
+if (siteNav && "ResizeObserver" in window) {
+  const fit = () => {
+    siteNav.classList.remove("is-compact");
+    siteNav.classList.toggle("is-compact", siteNav.scrollWidth > siteNav.clientWidth + 1);
+  };
+  const observer = new ResizeObserver(fit);
+  observer.observe(siteNav);
+  observer.observe(siteNav.querySelector(".navbar-nav")); // web fonts arriving change its width only
+}
+
 // <select data-autosubmit> (language switch) submits its form on change; <noscript> keeps a button
 document.addEventListener("change", (event) => {
   if (event.target.matches("select[data-autosubmit]")) event.target.form.requestSubmit();

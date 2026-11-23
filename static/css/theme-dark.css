@@ -34,12 +34,7 @@
 [data-bs-theme="dark"] .offcanvas_menu_wrapper { background: #263047; }
 [data-bs-theme="dark"] .offcanvas_menu_wrapper a, [data-bs-theme="dark"] .canvas_open a { color: #E8ECF4; }
 
-/* theme toggle (both modes need its size; only dark changes colour) */
-.theme-toggle { display: inline-grid; place-items: center; width: 40px; height: 40px; margin-right: 12px; flex: none;
-  border: 1px solid #E6E9F0; border-radius: 5px; background: transparent; color: #333F57; }
-.theme-toggle:hover { color: #FF6B6B; }
-[data-bs-theme="dark"] .theme-toggle { border-color: #3A4660; color: #E8ECF4; }
-[data-bs-theme="dark"] .theme-toggle:hover { color: #FF8E8E; }
+/* theme toggle and the header tool row: css/header.css */
 
 /* cards and boxed surfaces used by the theme sections */
 [data-bs-theme="dark"] .card,
@@ -55,6 +50,8 @@
 /* forms */
 [data-bs-theme="dark"] .form-control,
 [data-bs-theme="dark"] .form-select { background-color: #263047; color: #E8ECF4; border-color: #3A4660; }
+/* Bootstrap's select arrow is dark grey; a light one for the dark surface */
+[data-bs-theme="dark"] .form-select { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23B0B8C8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); }
 [data-bs-theme="dark"] .form-control::placeholder { color: #B0B8C8; }
 [data-bs-theme="dark"] .form-control:focus,
 [data-bs-theme="dark"] .form-select:focus { background-color: #263047; color: #E8ECF4; border-color: #FF6B6B; }

@@ -1,91 +1,70 @@
 {% load static i18n home_tag ui_tags %}
 {% main_menu_tag as main_menu %}
+{% comment %}
+One header row: logo, menu (css/header.css), then the tools — search, language, theme, account.
+Below lg the menu, search and language move to the off-canvas menu (base/mobile_menu.html). js/core.js adds
+.is-compact when the menu does not fit next to the tools; the menu then takes a second row.
+{% endcomment %}
 <header class="header_area">
     <div id="header_navbar" class="header_navbar">
-        <div class="container position-relative">
-            <div class="row align-items-center">
-                <div class="row">
-                    <nav class="navbar navbar-expand-lg" aria-label="{% trans 'Main menu' %}">
-                        <a class="navbar-brand" href="{% url 'home:index' %}">
-                            <img id="logo" src="{% static 'images/logo.png' %}" width="150" height="45" alt="devspoon">
-                        </a>
-                        <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
-                            <ul id="nav" class="navbar-nav">
-                                {% for node in main_menu %}{% if node.is_root_node %}
-                                {% if node.is_leaf_node %}
-                                <li class="nav-item">
-                                    <a class="page-scroll{% if node.menu_path and request.resolver_match.view_name == node.menu_path %} active{% endif %}"
-                                       href="{% if node.menu_path %}{% url node.menu_path %}{% else %}{{ node.menu_link }}{% endif %}"
-                                       {% if node.menu_path and request.resolver_match.view_name == node.menu_path %}aria-current="page"{% endif %}>{{ node.menu_name }}</a>
-                                </li>
-                                {% else %}
-                                <li class="nav-item">
-                                    <a class="page-scroll" href="{% if node.menu_path %}{% url node.menu_path %}{% elif node.menu_link %}{{ node.menu_link }}{% else %}#{% endif %}"
-                                       aria-haspopup="true">{{ node.menu_name }}
-                                        <div class="sub-nav-toggler"><span></span></div>
-                                    </a>
-                                    <ul class="dropdown-menu sub-menu collapse" id="submenu-desktop-{{ node.pk }}">
-                                        {% for child in main_menu %}{% if child.parent_id == node.pk %}
-                                        <li class="nav-item"><a class="page-scroll" href="{% if child.menu_path %}{% url child.menu_path %}{% else %}{{ child.menu_link }}{% endif %}">{{ child.menu_name }}</a></li>
-                                        {% endif %}{% endfor %}
-                                    </ul>
-                                </li>
-                                {% endif %}
+        <div class="container">
+            <nav class="navbar navbar-expand-lg site-nav" aria-label="{% trans 'Main menu' %}">
+                <a class="navbar-brand" href="{% url 'home:index' %}">
+                    <img id="logo" src="{% static 'images/logo.png' %}" width="150" height="45" alt="devspoon">
+                </a>
+                <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                    <ul id="nav" class="navbar-nav">
+                        {% for node in main_menu %}{% if node.is_root_node %}
+                        {% if node.is_leaf_node %}
+                        <li class="nav-item">
+                            <a class="page-scroll{% if node.menu_path and request.resolver_match.view_name == node.menu_path %} active{% endif %}"
+                               href="{% if node.menu_path %}{% url node.menu_path %}{% else %}{{ node.menu_link }}{% endif %}"
+                               {% if node.menu_path and request.resolver_match.view_name == node.menu_path %}aria-current="page"{% endif %}><i class="lni {{ node|menu_icon_class }}" aria-hidden="true"></i>{{ node.menu_name }}</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="page-scroll" href="{% if node.menu_path %}{% url node.menu_path %}{% elif node.menu_link %}{{ node.menu_link }}{% else %}#{% endif %}"
+                               aria-haspopup="true"><i class="lni {{ node|menu_icon_class }}" aria-hidden="true"></i>{{ node.menu_name }}<i class="lni lni-chevron-down sub-caret" aria-hidden="true"></i></a>
+                            <ul class="dropdown-menu sub-menu collapse" id="submenu-desktop-{{ node.pk }}">
+                                {% for child in main_menu %}{% if child.parent_id == node.pk %}
+                                <li class="nav-item"><a class="page-scroll{% if child.menu_path and request.resolver_match.view_name == child.menu_path %} active{% endif %}" href="{% if child.menu_path %}{% url child.menu_path %}{% else %}{{ child.menu_link }}{% endif %}"{% if child.menu_path and request.resolver_match.view_name == child.menu_path %} aria-current="page"{% endif %}><i class="lni {{ child|menu_icon_class }}" aria-hidden="true"></i>{{ child.menu_name }}</a></li>
                                 {% endif %}{% endfor %}
                             </ul>
-                        </div>
-                        <button class="theme-toggle" type="button" data-theme-toggle aria-label="{% trans 'Toggle dark mode' %}">{% icon "moon-stars" %}</button>
-                        <ul class="header-btn d-sm-flex">
-                            {% if request.user.is_authenticated %}
-                            <li>
-                                <a href="{% url 'users:profile' %}" class="main-btn account-btn" aria-haspopup="true" aria-label="{% trans 'Account' %}">
-                                    <span class="d-md-none"><i class="lni lni-user" aria-hidden="true"></i></span>
-                                    <span class="d-none d-md-block">{% firstof request.session.username request.session.email request.user %}</span>
-                                </a>
-                                <ul class="dropdown-nav">
-                                    <li><a href="{% url 'users:profile' %}">{% trans "Profile settings" %}</a></li>
-                                    <li><a href="{% url 'users:logout' %}">{% trans "Log out" %}</a></li>
-                                </ul>
-                            </li>
-                            {% else %}
-                            <li>
-                                <a href="{% url 'users:login' %}" class="main-btn btn-hover login d-block">{% trans "Log in" %}</a>
-                            </li>
-                            <li>
-                                <a href="{% url 'users:register' %}" class="main-btn btn-hover d-none d-md-block">{% trans "Register" %}</a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                        <div class="canvas_open d-lg-none">
-                            <a href="#mobile-menu" role="button" aria-controls="mobile-menu" aria-expanded="false" aria-label="{% trans 'Open menu' %}"><i class="lni lni-menu" aria-hidden="true"></i></a>
-                        </div>
-                    </nav> <!-- navbar -->
-                    <div class="d-flex justify-content-center align-items-center">
-                        <div class="col-8">
-                            <form action="{% url 'home:search_queryset' %}" method="get" id="search_form" role="search">
-                                <div class="input-group justify-content-center mt-2">
-                                    <label class="visually-hidden" for="site-search">{% trans "Search" %}</label>
-                                    <input type="search" class="form-control rounded" id="site-search" name="keyword" placeholder="{% trans 'Search posts' %}">
-                                    <button type="submit" class="btn btn-outline-primary search-btn">{% trans "Search" %}</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div>
-                            <form class="row g-3" action="{% url 'set_language' %}" method="post">
-                                {% csrf_token %}
-                                {% get_current_language as LANGUAGE_CODE %}{% get_available_languages as LANGUAGES %}
-                                <div class="col-auto">
-                                    <label class="visually-hidden" for="site-lang">{% trans "Language" %}</label>
-                                    <select class="form-select form-select-sm" id="site-lang" name="language" data-autosubmit>
-                                        {% for code, name in LANGUAGES %}<option value="{{ code }}"{% if code == LANGUAGE_CODE %} selected{% endif %}>{{ code }}</option>{% endfor %}
-                                    </select>
-                                </div>
-                                <noscript><div class="col-auto"><button class="btn btn-outline-secondary btn-sm" type="submit">{% trans "Change" %}</button></div></noscript>
-                            </form>
-                        </div>
+                        </li>
+                        {% endif %}
+                        {% endif %}{% endfor %}
+                    </ul>
+                </div>
+                <div class="header-tools">
+                    <div class="header-forms">{% include "base/_site_forms.html" with suffix="" %}</div>
+                    {# CSS shows the moon in light mode and the sun in dark mode #}
+                    <button class="theme-toggle" type="button" data-theme-toggle aria-label="{% trans 'Toggle dark mode' %}">{% icon "moon-stars" %}<i class="lni lni-sun" aria-hidden="true"></i></button>
+                    <ul class="header-btn">
+                        {% if request.user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'users:profile' %}" class="main-btn account-btn" aria-haspopup="true" aria-label="{% trans 'Account' %}">
+                                <i class="lni lni-user" aria-hidden="true"></i>
+                                <span class="account-btn__name d-none d-md-inline">{% firstof request.session.username request.session.email request.user %}</span>
+                            </a>
+                            <ul class="dropdown-nav">
+                                <li><a href="{% url 'users:profile' %}">{% trans "Profile settings" %}</a></li>
+                                <li><a href="{% url 'users:logout' %}">{% trans "Log out" %}</a></li>
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a href="{% url 'users:login' %}" class="main-btn btn-hover login">{% trans "Log in" %}</a>
+                        </li>
+                        <li class="d-none d-md-block">
+                            <a href="{% url 'users:register' %}" class="main-btn btn-hover">{% trans "Register" %}</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <div class="canvas_open">
+                        <a href="#mobile-menu" role="button" aria-controls="mobile-menu" aria-expanded="false" aria-label="{% trans 'Open menu' %}"><i class="lni lni-menu" aria-hidden="true"></i></a>
                     </div>
                 </div>
-            </div> <!-- row -->
-        </div> <!-- container -->
-    </div> <!-- header navbar -->
+            </nav>
+        </div>
+    </div>
 </header>

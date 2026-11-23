@@ -1,0 +1,19 @@
+{% load i18n %}{% comment %}
+Site search (GET) and language switch (POST + CSRF) for the header tool row and the off-canvas menu.
+Args: suffix — appended to the field ids so the two copies never share an id ("" in the header keeps site-search/site-lang).
+{% endcomment %}
+<form class="header-search" action="{% url 'home:search_queryset' %}" method="get" role="search"{% if not suffix %} id="search_form"{% endif %}>
+    <label class="visually-hidden" for="site-search{{ suffix }}">{% trans "Search" %}</label>
+    <input type="search" class="form-control" id="site-search{{ suffix }}" name="keyword" placeholder="{% trans 'Search posts' %}">
+    <button type="submit" class="header-search__btn" aria-label="{% trans 'Search' %}"><i class="lni lni-search-alt" aria-hidden="true"></i></button>
+</form>
+<form class="header-lang" action="{% url 'set_language' %}" method="post">
+    {% csrf_token %}
+    {% get_current_language as LANGUAGE_CODE %}{% get_available_languages as LANGUAGES %}
+    <i class="lni lni-world" aria-hidden="true"></i>
+    <label class="visually-hidden" for="site-lang{{ suffix }}">{% trans "Language" %}</label>
+    <select class="form-select" id="site-lang{{ suffix }}" name="language" data-autosubmit>
+        {% for code, name in LANGUAGES %}<option value="{{ code }}"{% if code == LANGUAGE_CODE %} selected{% endif %}>{{ code }}</option>{% endfor %}
+    </select>
+    <noscript><button class="btn btn-outline-secondary btn-sm" type="submit">{% trans "Change" %}</button></noscript>
+</form>
