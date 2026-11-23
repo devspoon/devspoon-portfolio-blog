@@ -13,24 +13,11 @@
 .about-me .about-left .tab-content ul.skill-chips li i { margin: 0; color: #D6383E; }
 [data-bs-theme="dark"] .about-me .about-left .tab-content ul.skill-chips li { border-color: #5A3E4C; background: #3E2C38; color: #E8ECF4; }
 [data-bs-theme="dark"] .about-me .about-left .tab-content ul.skill-chips li i { color: #FF8E8E; }
-/* timeline card: icon column + a text column that may shrink (long words used to push the text out of the card) */
-.single-timeline-area .single-timeline-content { gap: 14px; padding: 22px 22px 18px; border-radius: 14px; border-color: var(--c-line);
-  background: var(--c-surface); box-shadow: 0 2px 14px rgb(30 40 70 / .06); }
-.single-timeline-area .single-timeline-content .timeline-icon { display: grid; place-items: center; flex: 0 0 36px; width: 36px; max-width: 36px; height: 36px; margin: 0; }
-.single-timeline-area .single-timeline-content .timeline-icon i { line-height: 1; font-size: 15px; }
 /* white is under 3:1 on the light circles (pink 2.81, orange 1.97, yellow 1.07, skyblue 1.74), so their icons are
    dark (#333F57: 3.75, 5.35, 9.83, 6.06); the hover circle is near-black, where white is right again */
 .single-timeline-area .single-timeline-content :is(.timeline-icon-pink, .timeline-icon-orange, .timeline-icon-yellow, .timeline-icon-skyblue) i { color: #333F57; }
 .single-timeline-area .single-timeline-content:is(:hover, :focus) .timeline-icon i { color: #fff; }
-.single-timeline-content .timeline-text { flex: 1; min-width: 0; word-break: keep-all; overflow-wrap: anywhere; }
-.single-timeline-content .timeline-meta { font-size: 13px; line-height: 1.5; color: var(--c-text-muted); }
-.single-timeline-content .timeline-role { display: inline-block; margin-top: 6px; padding: 2px 10px; border-radius: 999px;
-  background: var(--c-accent-soft); color: var(--c-accent-text); font-size: 12px; font-weight: 600; line-height: 1.6; }
-.single-timeline-area .single-timeline-content .timeline-title,
-.single-timeline-area .single-timeline-content .timeline-title p { margin: 8px 0 0; font-size: 16px; font-weight: 700; line-height: 1.45; color: var(--c-heading); }
-.single-timeline-area .single-timeline-content .timeline-summary { margin-top: 6px; }
-.single-timeline-area .single-timeline-content .timeline-summary p { font-size: 14px; line-height: 1.6; color: var(--c-text-muted); }
-.single-timeline-content .timeline-more { margin-top: 8px; }
-@media (max-width: 575px) { .single-timeline-area .single-timeline-content { flex-direction: column; gap: 10px; padding: 18px; } }
+/* the text column may shrink: long words used to push the text out of the timeline card */
+.single-timeline-content .timeline-text { min-width: 0; word-break: keep-all; overflow-wrap: anywhere; }
 /* education / book entries: long site names, titles and URLs wrap inside their column instead of running over the next one */
 .educations-info-item > [class*="col-"] { min-width: 0; word-break: keep-all; overflow-wrap: anywhere; }

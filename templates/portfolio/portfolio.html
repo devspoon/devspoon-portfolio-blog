@@ -126,10 +126,10 @@ Admin-authored summernote fields go through sanitize_html, never |safe.
                                     <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" data-bs-toggle="collapse" data-bs-target="#exp-{{ item.pk }}">
                                         <div class="timeline-icon timeline-icon-{{ c }}"><i class="{% if c == 'orange' %}fa-regular fa-building{% elif c == 'red' %}fa-regular fa-clipboard{% elif c == 'pink' %}fa-solid fa-people-group{% elif c == 'yellow' %}fa-solid fa-laptop{% elif c == 'blue' %}fa-solid fa-bullhorn{% elif c == 'skyblue' %}fa-solid fa-chalkboard-user{% elif c == 'green' %}fa-solid fa-earth-americas{% elif c == 'gray' %}fa-solid fa-terminal{% else %}fa-solid fa-mug-hot{% endif %}" aria-hidden="true"></i></div>
                                         <div class="timeline-text">
-                                            <div class="timeline-meta"><time datetime="{{ item.project_start_date|date:'Y-m-d' }}">{{ item.project_start_date|date:'Y/m/d' }}</time>{% if item.project_end_date %} – <time datetime="{{ item.project_end_date|date:'Y-m-d' }}">{{ item.project_end_date|date:'Y/m/d' }}</time>{% endif %}</div>
-                                            <span class="timeline-role">{{ item.get_role_display }}</span>
-                                            <div class="timeline-title">{{ item.title|sanitize_html }}</div>
-                                            <div class="timeline-summary">{{ item.summary|sanitize_html }}</div>
+                                            <time datetime="{{ item.project_start_date|date:'Y-m-d' }}">{{ item.project_start_date|date:'Y/m/d' }}</time>{% if item.project_end_date %} – <time datetime="{{ item.project_end_date|date:'Y-m-d' }}">{{ item.project_end_date|date:'Y/m/d' }}</time>{% endif %}
+                                            <span class="d-block">{{ item.get_role_display }}</span>
+                                            {{ item.title|sanitize_html }}
+                                            <div class="mt-2">{{ item.summary|sanitize_html }}</div>
                                             <button type="button" class="btn btn-link p-0 timeline-more" data-bs-toggle="collapse" data-bs-target="#exp-{{ item.pk }}" aria-expanded="false" aria-controls="exp-{{ item.pk }}">{% trans "Details" %}</button>
                                         </div>
                                     </div>
@@ -215,7 +215,7 @@ Admin-authored summernote fields go through sanitize_html, never |safe.
             </div>
             <div class="row">
                 {% for item in projects %}
-                <div class="col-xl-4 col-lg-6 col-md-6 mb-4">{% include "home/_project_card.html" with post=item.projectpost %}</div>
+                <div class="col-xl-4 col-lg-6 col-md-6">{% include "home/_project_card.html" with post=item.projectpost %}</div>
                 {% empty %}
                 <div class="col-12">{% trans "No projects yet." as m %}{% include "components/empty.html" with message=m %}</div>
                 {% endfor %}
