@@ -18,6 +18,10 @@
   background: var(--c-surface); box-shadow: 0 2px 14px rgb(30 40 70 / .06); }
 .single-timeline-area .single-timeline-content .timeline-icon { display: grid; place-items: center; flex: 0 0 36px; width: 36px; max-width: 36px; height: 36px; margin: 0; }
 .single-timeline-area .single-timeline-content .timeline-icon i { line-height: 1; font-size: 15px; }
+/* white is under 3:1 on the light circles (pink 2.81, orange 1.97, yellow 1.07, skyblue 1.74), so their icons are
+   dark (#333F57: 3.75, 5.35, 9.83, 6.06); the hover circle is near-black, where white is right again */
+.single-timeline-area .single-timeline-content :is(.timeline-icon-pink, .timeline-icon-orange, .timeline-icon-yellow, .timeline-icon-skyblue) i { color: #333F57; }
+.single-timeline-area .single-timeline-content:is(:hover, :focus) .timeline-icon i { color: #fff; }
 .single-timeline-content .timeline-text { flex: 1; min-width: 0; word-break: keep-all; overflow-wrap: anywhere; }
 .single-timeline-content .timeline-meta { font-size: 13px; line-height: 1.5; color: var(--c-text-muted); }
 .single-timeline-content .timeline-role { display: inline-block; margin-top: 6px; padding: 2px 10px; border-radius: 999px;
