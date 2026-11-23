@@ -7,3 +7,5 @@
   .animated-item { animation: none; }
   .animated-item:first-child { opacity: 1; }
 }
+/* the rotating role keeps a 400px minimum (custom.css) that overflows phones */
+@media (max-width: 575px) { .animated-info { min-width: 0; } .animated { word-break: keep-all; } }
