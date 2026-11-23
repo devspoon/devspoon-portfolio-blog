@@ -28,14 +28,14 @@ class RegisterForm(forms.Form):
     password = forms.CharField(
         label=_("Password"),
         min_length=8,
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
         help_text=_("Enter between 8"),
         required=True,
     )
     password_confirm = forms.CharField(
         label=_("Password Confirm"),
         min_length=8,
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
         help_text=_("Enter the same password"),
         required=True,
     )
@@ -163,7 +163,7 @@ class ResendVerificationEmailForm(forms.Form):
 class LoginForm(forms.Form):
     email = forms.EmailField(
         label=_("Email"),
-        widget=forms.EmailInput(attrs={"autofocus": True}),
+        widget=forms.EmailInput(attrs={"autofocus": True, "autocomplete": "username"}),
         validators=(
             forms.EmailField.default_validators + [LoginVerificationEmailValidator()]
         ),
@@ -174,7 +174,7 @@ class LoginForm(forms.Form):
         label=_("Password"),
         min_length=8,
         max_length=20,
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={"autocomplete": "current-password"}),
         help_text=_("Enter password"),
         required=True,
     )
@@ -212,7 +212,7 @@ class UpdatePasswordForm(forms.Form):
         label=_("Password"),
         min_length=8,
         max_length=20,
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
         help_text=_("Enter password"),
         required=True,
     )
@@ -220,7 +220,7 @@ class UpdatePasswordForm(forms.Form):
         label=_("Password confirm"),
         min_length=8,
         max_length=20,
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
         help_text=_("Enter password"),
         required=True,
     )
@@ -244,7 +244,7 @@ class ReplacePasswordForm(forms.Form):
         label=_("Old Password"),
         min_length=8,
         max_length=20,
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={"autocomplete": "current-password"}),
         help_text=_("Enter old password"),
         required=True,
     )
@@ -252,7 +252,7 @@ class ReplacePasswordForm(forms.Form):
         label=_("Password"),
         min_length=8,
         max_length=20,
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
         help_text=_("Enter new password"),
         required=True,
     )
@@ -260,7 +260,7 @@ class ReplacePasswordForm(forms.Form):
         label=_("Password confirm"),
         min_length=8,
         max_length=20,
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
         help_text=_("Enter password same like new password"),
         required=True,
     )
@@ -285,7 +285,7 @@ class ProfileForm(forms.ModelForm):
         min_length=8,
         max_length=20,
         help_text=_("Enter old password"),
-        widget=forms.PasswordInput(attrs={"placeholder": "Enter old password"}),
+        widget=forms.PasswordInput(attrs={"placeholder": "Enter old password", "autocomplete": "current-password"}),
         required=False,
     )
 
@@ -294,7 +294,7 @@ class ProfileForm(forms.ModelForm):
         min_length=8,
         max_length=20,
         help_text=_("Enter new password"),
-        widget=forms.PasswordInput(attrs={"placeholder": "Enter new password"}),
+        widget=forms.PasswordInput(attrs={"placeholder": "Enter new password", "autocomplete": "new-password"}),
         required=False,
     )
 
@@ -302,7 +302,7 @@ class ProfileForm(forms.ModelForm):
         label=_("Password confirm"),
         min_length=8,
         max_length=20,
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
         help_text=_("Enter password confirm"),
         required=False,
     )

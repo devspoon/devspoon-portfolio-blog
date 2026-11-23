@@ -10,6 +10,7 @@ from django.db.models import F
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.utils.http import url_has_allowed_host_and_scheme, urlencode
 from django.views.generic import FormView, TemplateView, UpdateView, View
 
 from utils.email.verify_email_mixins import VerifyEmailMixin
@@ -216,9 +217,16 @@ class LoginView(AnonymousRequiredMixin, FormView):
     success_url = reverse_lazy("home:index")
     form_class = LoginForm
 
-    # def get_context_data(self, **kwargs):
-    #     logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
-    #     return super().get_context_data(**kwargs)
+    def safe_next(self):
+        """The ?next / posted next address, only when it stays on this site; otherwise ""."""
+        url = self.request.POST.get("next") or self.request.GET.get("next") or ""
+        ok = url_has_allowed_host_and_scheme(
+            url, allowed_hosts={self.request.get_host()}, require_https=self.request.is_secure()
+        )
+        return url if ok else ""
+
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(next=self.safe_next(), **kwargs)
 
     def form_valid(self, form):
         # logging.info(f"session info : {__class__.__name__} {self.request.user.is_authenticated} {timezone.now()} {self.request.session.get_expiry_date()}")
@@ -236,8 +244,10 @@ class LoginView(AnonymousRequiredMixin, FormView):
             user.last_login_ipaddress = self.request.META.get("REMOTE_ADDR")
             user.last_login_at = timezone.now()
             user.save()
+            if self.safe_next():
+                self.success_url = self.safe_next()
 
-            # password replacement check
+            # password replacement check (wins over next)
             current_date = timezone.now()
             six_months_ago = (
                 current_date - timedelta(days=settings.PASSWORD_REPLACEMENT_CYCLE * 30)
@@ -252,7 +262,8 @@ class LoginView(AnonymousRequiredMixin, FormView):
             return super().form_valid(form)
         else:
             messages.warning(self.request, "Please check your email or password.")
-            return redirect(reverse("users:login"))
+            query = "?" + urlencode({"next": self.safe_next()}) if self.safe_next() else ""
+            return redirect(reverse("users:login") + query)
 
 
 class LogoutView(View):

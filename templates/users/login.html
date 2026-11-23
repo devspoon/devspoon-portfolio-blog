@@ -3,6 +3,7 @@
 {% block title %}{% trans "Log in" %} | devspoon{% endblock %}
 {% block auth_before %}{% providers_media_js %}{% endblock %}
 {% block auth_heading %}{% trans "Log in" %}{% endblock %}
+{% block fields %}{{ block.super }}{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}{% endblock %}
 {% block submit_label %}{% trans "Log in" %}{% endblock %}
 {% block auth_links %}
 <div class="form-group text-center pt-10">

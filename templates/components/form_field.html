@@ -16,7 +16,7 @@ Passwords are never echoed back; other inputs keep their value after a failed su
 {% else %}
 <div class="form-group">
   <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-  <input type="{{ field.field.widget.input_type }}" class="form-control{% if field.errors %} is-invalid{% endif %}" id="{{ field.id_for_label }}" name="{{ field.name }}" placeholder="{{ placeholder|default:field.help_text }}"{% if field.field.widget.input_type != "password" and field.value %} value="{{ field.value }}"{% endif %}{% if field.errors %} aria-invalid="true" aria-describedby="{{ field.id_for_label }}-error"{% endif %}>
+  <input type="{{ field.field.widget.input_type }}" class="form-control{% if field.errors %} is-invalid{% endif %}" id="{{ field.id_for_label }}" name="{{ field.name }}" placeholder="{{ placeholder|default:field.help_text }}"{% if field.field.widget.attrs.autocomplete %} autocomplete="{{ field.field.widget.attrs.autocomplete }}"{% endif %}{% if field.field.widget.input_type != "password" and field.value %} value="{{ field.value }}"{% endif %}{% if field.errors %} aria-invalid="true" aria-describedby="{{ field.id_for_label }}-error"{% endif %}>
 </div>
 {% endif %}
 {% if field.errors %}
