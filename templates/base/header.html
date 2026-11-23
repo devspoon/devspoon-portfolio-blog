@@ -48,7 +48,7 @@ Below lg the menu, search and language move to the off-canvas menu (base/mobile_
                             </a>
                             <ul class="dropdown-nav">
                                 <li><a href="{% url 'users:profile' %}">{% trans "Profile settings" %}</a></li>
-                                <li><a href="{% url 'users:logout' %}">{% trans "Log out" %}</a></li>
+                                <li><form method="post" action="{% url 'users:logout' %}">{% csrf_token %}<button type="submit" class="dropdown-nav__btn">{% trans "Log out" %}</button></form></li>
                             </ul>
                         </li>
                         {% else %}

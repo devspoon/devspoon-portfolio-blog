@@ -256,7 +256,8 @@ class LoginView(AnonymousRequiredMixin, FormView):
 
 
 class LogoutView(View):
-    def get(self, request):
+    # POST only (GET answers 405): a link or <img> on another site must not be able to log the user out
+    def post(self, request):
         auth.logout(request)
         return redirect(reverse("home:index"))
 

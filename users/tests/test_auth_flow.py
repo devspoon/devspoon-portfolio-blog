@@ -32,3 +32,17 @@ def test_header_account_shows_the_nickname_never_the_email_or_login_id(client, n
     header = header_of(client)
     assert header.select_one(".account-btn__name").get_text(strip=True) == shown
     assert "me@example.com" not in str(header) and "login-id" not in str(header)
+
+
+def test_logout_is_a_post_form_and_get_does_not_log_out(client):
+    logged_in(client, "Nick")
+    form = header_of(client).select_one(".dropdown-nav form")
+    assert form["method"] == "post" and form["action"] == reverse("users:logout")
+    assert form.find("input", attrs={"name": "csrfmiddlewaretoken"}) and form.find("button", type="submit")
+
+    assert client.get(reverse("users:logout"), **headers).status_code == 405
+    assert "_auth_user_id" in client.session
+
+    response = client.post(reverse("users:logout"), **headers)
+    assert response.status_code == 302 and response.url == reverse("home:index")
+    assert "_auth_user_id" not in client.session

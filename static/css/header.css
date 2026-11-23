@@ -116,6 +116,14 @@
 .header_navbar .dropdown-nav li { margin: 0; }
 .header_navbar .dropdown-nav li a { display: block; padding: 9px 12px; border-radius: 10px; color: var(--hd-text); }
 .header_navbar .dropdown-nav li:hover a { background: var(--hd-hover); color: var(--hd-active); }
+/* log out is a POST form; its button looks like the links above */
+.header_navbar .dropdown-nav form { margin: 0; }
+.header_navbar .dropdown-nav__btn {
+  display: block; width: 100%; padding: 9px 12px; border: 0; border-radius: 10px; background: none;
+  color: var(--hd-text); font: inherit; line-height: inherit; text-align: left; cursor: pointer;
+}
+.header_navbar .dropdown-nav li:hover .dropdown-nav__btn,
+.header_navbar .dropdown-nav__btn:focus-visible { background: var(--hd-hover); color: var(--hd-active); outline: none; }
 
 /* off-canvas trigger: below lg, where the menu lives in the off-canvas menu */
 .header_navbar .canvas_open { display: none; padding: 0; }
