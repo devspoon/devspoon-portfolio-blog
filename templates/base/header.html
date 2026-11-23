@@ -44,7 +44,7 @@ Below lg the menu, search and language move to the off-canvas menu (base/mobile_
                         <li>
                             <a href="{% url 'users:profile' %}" class="main-btn account-btn" aria-haspopup="true" aria-label="{% trans 'Account' %}">
                                 <i class="lni lni-user" aria-hidden="true"></i>
-                                <span class="account-btn__name d-none d-md-inline">{% firstof request.session.username request.session.email request.user %}</span>
+                                <span class="account-btn__name d-none d-md-inline">{# nickname only: the session also holds the email and login id, which must never show #}{{ request.user.nickname|default:_("Account") }}</span>
                             </a>
                             <ul class="dropdown-nav">
                                 <li><a href="{% url 'users:profile' %}">{% trans "Profile settings" %}</a></li>
