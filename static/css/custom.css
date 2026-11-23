@@ -1640,6 +1640,11 @@ section.first button.btn {
     padding-right: 0;
     margin-right: 0;
   }
+/* phones: with 41px gaps six pages and the two arrows ran past a 375px screen */
+@media (max-width: 575px) {
+  .pagination-area nav .page-numbers { display: flex; flex-wrap: wrap; justify-content: center; row-gap: 12px; }
+  .pagination-area nav .page-numbers li { margin-right: 10px; }
+}
 .pagination-area nav .page-numbers.page-numbers-style {
     box-shadow: 0px 10px 50px 0px rgba(171, 181, 189, 0.35);
   }
@@ -2900,6 +2905,8 @@ section.first button.btn {
 .tb-row a {
     color: black;
   }
+/* the short columns keep their words on one line (the 5% header cells broke "No." and "Views" letter by letter); the title takes the rest */
+.board-table th, .board-table td:not(.th-title) { white-space: nowrap; }
 
 
 /*===========================
@@ -2995,6 +3002,10 @@ pre .text-wrapper {
       --header-h: 72px; --content-max: 1140px;
   
   }
+}
+
+/* unlayered: style.css resets every element's margin and padding (the * rule), and that reset beats any rule in a layer,
+   so the comment nesting indent and the empty-state spacing below never showed while they sat in @layer app */
   /* comment thread (components/comments.html): nesting is shown by a rule on the left, not by shrinking boxes */
   .c-comments h2 { font-size: var(--fs-4); margin-bottom: var(--sp-4); }
   .c-comments__list, .c-comment__children { list-style: none; padding: 0; margin: 0; }
@@ -3017,7 +3028,6 @@ pre .text-wrapper {
   .c-empty { padding: var(--sp-8) var(--sp-5); text-align: center; color: var(--c-text-muted); }
   .btn-quiet { color: var(--c-text-muted); background: transparent; border-color: transparent; }
   .btn-quiet:hover { color: var(--c-text); background: var(--c-surface-2); }
-}
 
 /* unlayered on purpose: these must beat the theme */
 svg.icon { width: 1em; height: 1em; vertical-align: -.125em; fill: currentColor; flex: none; }
