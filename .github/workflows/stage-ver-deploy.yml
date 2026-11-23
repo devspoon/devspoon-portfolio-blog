@@ -82,6 +82,9 @@ jobs:
             mkdir -p ~/backups
             git diff --quiet || git diff > ~/backups/devspoon-local-$(date +%Y%m%d-%H%M%S).patch
             git fetch origin main
+            # nginx serves static/ straight from this checkout: drop css/js so no stale or leftover file
+            # survives; the reset below restores exactly what origin/main tracks.
+            rm -rf static/css static/js
             git reset --hard origin/main
             rm -f .env
             mv ../.env ./
