@@ -18,7 +18,11 @@
     <!--====== ICONS & STYLES ======-->
     {% include "base/icons_styles.html" %}
     {% block extra_css %}{% endblock %}
-    <noscript><style>.preloader { display: none !important; }</style></noscript>
+    {# without JS nothing measures the header menu (js/core.js .is-compact), so it always takes the second row #}
+    <noscript><style>.preloader { display: none !important; }
+    .header_navbar .navbar.site-nav { flex-wrap: wrap; row-gap: 6px; }
+    .header_navbar .site-nav .navbar-collapse { order: 3; flex: 0 0 100%; justify-content: center; }
+    .header_navbar .site-nav .navbar-nav { flex-wrap: wrap; justify-content: center; }</style></noscript>
 </head>
 
 <body>
